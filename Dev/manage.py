@@ -5,11 +5,15 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Python3.Django.Manage.py - Ver.1.0.1 Update:2018.03.05" |
+#//|     "VsV.Python3.Django.Manage.py - Ver.2.0.1 Update:2018.03.05" |
 #//+------------------------------------------------------------------+
 #!/usr/bin/env python
 import os
 import sys
+
+### MatsuoStation : AWS.RDS.MySQL Setup ###
+import pymysql
+pymysql.install_as_MySQLdb()
 
 if __name__ == "__main__":
 
