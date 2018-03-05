@@ -1,3 +1,15 @@
+#//+------------------------------------------------------------------+
+#//|                           VerysVeryInc.Python3.Django.Setting.py |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//|    "VsV.Python3.Django.Setting.py - Ver.1.0.1 Update:2018.03.05" |
+#//+------------------------------------------------------------------+
+#//|                                           https://qiita.com/aion |
+#//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
+#//+------------------------------------------------------------------+
 """
 Django settings for LabMatsuo project.
 
@@ -20,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=1l9+x^w-n3d*!xx@eh5s0fx^rk5*^i-na7eepd1l@3+c-0&lq'
+SECRET_KEY = 'pcks&5c0=zo$7i%1m3bg0a2ke2^t_@&1%hfivh#!ef_o116z$5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,7 +61,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'LabMatsuo.urls'
+# (Ver.0.0.1.OK) ROOT_URLCONF = 'LabMatsuo.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +80,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'LabMatsuo.wsgi.application'
+# (Ver.0.0.1.OK) WSGI_APPLICATION = 'LabMatsuo.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
