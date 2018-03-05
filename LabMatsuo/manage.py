@@ -11,6 +11,11 @@
 import os
 import sys
 
+### MySQL.Setup ###
+import pymysql
+pymysql.install_as_MySQLdb()
+
+
 if __name__ == "__main__":
     # (Ver.0.0.1.OK) os.environ.setdefault("DJANGO_SETTINGS_MODULE", "LabMatsuo.settings")
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
