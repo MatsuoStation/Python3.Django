@@ -1,3 +1,15 @@
+#//+------------------------------------------------------------------+
+#//|                           VerysVeryInc.Python3.Django.Setting.py |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//|    "VsV.Python3.Django.Setting.py - Ver.1.0.1 Update:2018.03.05" |
+#//+------------------------------------------------------------------+
+#//|                                           https://qiita.com/aion |
+#//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
+#//+------------------------------------------------------------------+
 """
 Django settings for Dev project.
 
@@ -49,7 +61,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Dev.urls'
+### MatsuoStation : (Ver.0.0.1.OK) ROOT_URLCONF = 'Dev.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +80,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Dev.wsgi.application'
+### MatsuoStation : (Ver.0.0.1.OK) WSGI_APPLICATION = 'Dev.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
