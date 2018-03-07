@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Python3.Django.Setting.py - Ver.1.0.1 Update:2018.03.07" |
+#//|    "VsV.Python3.Django.Setting.py - Ver.3.0.0 Update:2018.03.07" |
 #//+------------------------------------------------------------------+
 """
 Django settings for Apps project.
@@ -37,7 +37,7 @@ SECRET_KEY = 'yn@7(#cv+3!lcptpwc^@tz#mz9**llagp&5s37l0n2@a(6v8!#'
 DEBUG = True
 
 ### MatsuoStation.Com ###
-ALLOWED_HOSTS = ['apps.matsuostation.com', '.compute-1.amazonaws.com', '*']
+ALLOWED_HOSTS = ['apps.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1']
 # ALLOWED_HOSTS = []
 
 
@@ -142,4 +142,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+### MatsuoStation.Com ###
+STATIC_URL = '/Static/'
+# STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'Static')
