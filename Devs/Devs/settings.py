@@ -1,3 +1,12 @@
+#//+------------------------------------------------------------------+
+#//|                           VerysVeryInc.Python3.Django.Setting.py |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//|    "VsV.Python3.Django.Setting.py - Ver.0.0.1 Update:2018.03.07" |
+#//+------------------------------------------------------------------+
 """
 Django settings for Devs project.
 
@@ -25,7 +34,9 @@ SECRET_KEY = '9ul)x)x8m(0vq4+v(u1%s0jjc9(ammz)b8+n*!hzcb%d&)$0m@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+### MatsuoStation.Com ###
+ALLOWED_HOSTS = ['apps.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1']
+# ALLOWED_HOSTS = []
 
 
 # Application definition
