@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Python3.Django.Setting.py - Ver.3.0.1 Update:2018.03.07" |
+#//|    "VsV.Python3.Django.Setting.py - Ver.3.0.3 Update:2018.03.07" |
 #//+------------------------------------------------------------------+
 #//|                                           https://qiita.com/aion |
 #//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
@@ -35,9 +35,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'yn@7(#cv+3!lcptpwc^@tz#mz9**llagp&5s37l0n2@a(6v8!#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# (Live) DEBUG = False
-# (Def)
-DEBUG = True
+# (Live)
+DEBUG = False
+# (Def) DEBUG = True
 
 ### MatsuoStation.Com ###
 ALLOWED_HOSTS = ['apps.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1']
@@ -138,7 +138,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 ### MatsuoStation.Com ###
-STATIC_URL = '/Static/'
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'Static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
