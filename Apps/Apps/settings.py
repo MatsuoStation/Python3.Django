@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Python3.Django.Setting.py - Ver.0.0.1 Update:2018.03.07" |
+#//|    "VsV.Python3.Django.Setting.py - Ver.1.0.1 Update:2018.03.07" |
 #//+------------------------------------------------------------------+
 """
 Django settings for Apps project.
@@ -37,7 +37,7 @@ SECRET_KEY = 'yn@7(#cv+3!lcptpwc^@tz#mz9**llagp&5s37l0n2@a(6v8!#'
 DEBUG = True
 
 ### MatsuoStation.Com ###
-ALLOWED_HOSTS = ['apps.matsuostation.com', '.compute-1.amazonaws.com']
+ALLOWED_HOSTS = ['apps.matsuostation.com', '.compute-1.amazonaws.com', '*']
 # ALLOWED_HOSTS = []
 
 
@@ -86,12 +86,24 @@ WSGI_APPLICATION = 'Apps.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+
+### MatsuoStation.Com : AWS.RDS.MySQL ###
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': './AWS_RDS_MatsuoSt.cnf',
+        },
     }
 }
+
+# (Default)
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+# }
 
 
 # Password validation
