@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Python3.Django.Setting.py - Ver.2.0.1 Update:2018.03.08" |
+#//|    "VsV.Python3.Django.Setting.py - Ver.3.0.1 Update:2018.03.08" |
 #//+------------------------------------------------------------------+
 #//|                                           https://qiita.com/aion |
 #//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
@@ -147,3 +147,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+### MatsuoStation.Com ###
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
