@@ -35,7 +35,7 @@ SECRET_KEY = '9ul)x)x8m(0vq4+v(u1%s0jjc9(ammz)b8+n*!hzcb%d&)$0m@'
 DEBUG = True
 
 ### MatsuoStation.Com ###
-ALLOWED_HOSTS = ['apps.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1']
+ALLOWED_HOSTS = ['dev.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1']
 # ALLOWED_HOSTS = []
 
 
