@@ -35,7 +35,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'f3#eo@#8sr+dd)z+9#_=u*-*asvcn-liwiabbg9#c#2!1osje&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+### MatsuoStation.Com ###
+DEBUG = False
+# DEBUG = True
 
 ### MatsuoStation.Com ###
 ALLOWED_HOSTS = ['apps.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1']
