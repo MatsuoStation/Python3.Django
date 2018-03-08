@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Python3.Django.Setting.py - Ver.3.0.1 Update:2018.03.08" |
+#//|    "VsV.Python3.Django.Setting.py - Ver.3.2.1 Update:2018.03.08" |
 #//+------------------------------------------------------------------+
 #//|                                           https://qiita.com/aion |
 #//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
@@ -37,7 +37,7 @@ SECRET_KEY = '9ul)x)x8m(0vq4+v(u1%s0jjc9(ammz)b8+n*!hzcb%d&)$0m@'
 # SECURITY WARNING: don't run with debug turned on in production!
 ### MatsuoStation.Com ###
 DEBUG = False
-### DEBUG = True
+# DEBUG = True
 
 ### MatsuoStation.Com ###
 ALLOWED_HOSTS = ['dev.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1']
@@ -133,9 +133,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+### MatsuoStation.Com ###
+LANGUAGE_CODE = 'ja-jp'
+# LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
+# TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
