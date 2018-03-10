@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Python3.Django.Setting.py - Ver.3.2.3 Update:2018.03.08" |
+#//|    "VsV.Python3.Django.Setting.py - Ver.3.3.1 Update:2018.03.10" |
 #//+------------------------------------------------------------------+
 #//|                                           https://qiita.com/aion |
 #//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
@@ -45,6 +45,10 @@ ALLOWED_HOSTS = ['dev.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1
 
 
 # Application definition
+### MatsuoStation.Com ###
+import sys
+sys.path.insert(0, os.path.join(BASE_DIR, 'Projects'))
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,6 +60,7 @@ INSTALLED_APPS = [
 
     ### MatsuoStaion.Com ###
     'bootstrap4',   # django-bootstrap4
+    'Finance.apps.FinanceConfig',      # Finance/
 ]
 
 MIDDLEWARE = [
@@ -147,7 +152,9 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+### MatsuoStation.Com ###
+USE_TZ = False
+# USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
