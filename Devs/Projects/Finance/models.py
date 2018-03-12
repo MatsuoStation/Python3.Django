@@ -5,12 +5,26 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.2 Update:2018.03.11" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.3 Update:2018.03.12" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
 # Create your models here.
 ### MatsuoStation.Com ###
+###* Guest.Name *###
+class Name_Test(models.Model):
+	class Meta:
+		db_table = 'Name_Test'
+		verbose_name = 'Name_000'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "User_ID", default=None, max_length=8 )
+	name = models.CharField( "User_ID", default=None, max_length=255 )
+	name_furigana = models.CharField( "User_ID", default=None, max_length=255 )
+
+
+
 ###* SHARP *###
 class SHARP_Test(models.Model):
 	class Meta:
