@@ -5,12 +5,28 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.6 Update:2018.03.12" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.7 Update:2018.03.12" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
 # Create your models here.
 ### MatsuoStation.Com ###
+###* Tools.Items *###
+class Items_Test(models.Model):
+	class Meta:
+		db_table = 'Items_Test'
+		verbose_name = 'Items_000'
+		verbose_name_plural = verbose_name
+		ordering = ['-id']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=4 )
+	hinmoku = models.CharField( "種別", default=None, max_length=255 )
+	h_name = models.CharField( "品目名", default=None, max_length=255 )
+	sc1 = models.CharField( "ショートカット1", default=None, max_length=255 )
+	sc2 = models.CharField( "ショートカット2", default=None, max_length=255 )
+	name = models.CharField( "正式名称", default=None, max_length=255 )
+
+
 ###* Guest.Tel *###
 class Tel_Test(models.Model):
 	class Meta:
@@ -47,12 +63,17 @@ class Bank_Test(models.Model):
 	id = models.AutoField( "id", primary_key=True )
 	uid  = models.CharField( "共通ID", default=None, max_length=16 )
 	bank_name = models.CharField( "銀行名", default=None, max_length=255 )
-	bank_number = models.IntegerField( "銀行番号", default=0 )
-	branch_number = models.IntegerField( "支店番号", default=0 )
+	# bank_number = models.CharField( "銀行番号", default=None, max_length=255 )
+	bank_number = models.PositiveSmallIntegerField( "銀行番号", default=None)
+	# branch_number = models.IntegerField( "支店番号", default=0 )
+	branch_number = models.PositiveSmallIntegerField( "支店番号", default=None )
 	account_kind = models.CharField( "口座種類", default=None, max_length=255 )
-	account = models.CharField( "口座番号", default=None, max_length=255 )
-	check = models.IntegerField( "締切日", default=0 )
-	receipt = models.IntegerField( "領収書添付有無", default=0 )
+	# account = models.CharField( "口座番号", default=None, max_length=255 )
+	account = models.PositiveIntegerField( "口座番号", default=None )
+	# check = models.IntegerField( "締切日", default=0 )
+	check_day = models.PositiveSmallIntegerField( "締切日", default=None )
+	# receipt = models.IntegerField( "領収書添付有無", default=0 )
+	receipt = models.PositiveSmallIntegerField( "領収書添付有無", default=None )
 
 
 ###* Guest.Name *###
