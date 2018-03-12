@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.7 Update:2018.03.12" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.8 Update:2018.03.13" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -25,6 +25,26 @@ class Items_Test(models.Model):
 	sc1 = models.CharField( "ショートカット1", default=None, max_length=255 )
 	sc2 = models.CharField( "ショートカット2", default=None, max_length=255 )
 	name = models.CharField( "正式名称", default=None, max_length=255 )
+
+
+###* Guest.Value *###
+class Value_Test(models.Model):
+	class Meta:
+		db_table = 'Value_Test'
+		verbose_name = 'Value_000'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=16 )
+	s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	day		= models.PositiveIntegerField( "設定日", default=None )
+	value	= models.FloatField( "価格", default=None )
+	date01	= models.PositiveIntegerField( "設定日01", default=None )
+	value01	= models.FloatField( "価格01", default=None )
+	date02	= models.PositiveIntegerField( "設定日02", default=None )
+	value02	= models.FloatField( "価格02", default=None )
+	date03	= models.PositiveIntegerField( "設定日03", default=None )
+	value03	= models.FloatField( "価格03", default=None )
 
 
 ###* Guest.Tel *###
@@ -114,7 +134,8 @@ class SHARP_Test(models.Model):
 	pump	= models.CharField( verbose_name='ポンプ番号', default=None, max_length=3 )
 	nozzle	= models.IntegerField( verbose_name='ノズル番号', default=0 )					# max_length=1,
 	pro_memo= models.CharField( verbose_name='商品メモ', default=None, max_length=11 )
-	product	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	# product	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
 	amount	= models.IntegerField( verbose_name='数量', default=0 )						# max_length=8,
 	unit	= models.IntegerField( verbose_name='単価', default=0 )						# max_length=8,
 	value	= models.IntegerField( verbose_name='税別金額', default=0 )					# max_length=9,
