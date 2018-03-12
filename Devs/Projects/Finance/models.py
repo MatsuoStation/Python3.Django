@@ -5,12 +5,30 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.3 Update:2018.03.12" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.4 Update:2018.03.12" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
 # Create your models here.
 ### MatsuoStation.Com ###
+###* Guest.Name *###
+class Bank_Test(models.Model):
+	class Meta:
+		db_table = 'Bank_Test'
+		verbose_name = 'Bank_000'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=16 )
+	bank_name = models.CharField( "銀行名", default=None, max_length=255 )
+	bank_number = models.IntegerField( "銀行番号", default=0 )
+	branch_number = models.IntegerField( "支店番号", default=0 )
+	account_kind = models.CharField( "口座種類", default=None, max_length=255 )
+	account = models.CharField( "口座番号", default=None, max_length=255 )
+	check = models.IntegerField( "締切日", default=0 )
+	receipt = models.IntegerField( "領収書添付有無", default=0 )
+
+
 ###* Guest.Name *###
 class Name_Test(models.Model):
 	class Meta:
@@ -19,11 +37,9 @@ class Name_Test(models.Model):
 		verbose_name_plural = verbose_name
 		ordering = ['-uid']
 	id = models.AutoField( "id", primary_key=True )
-	uid  = models.CharField( "User_ID", default=None, max_length=8 )
-	name = models.CharField( "User_ID", default=None, max_length=255 )
-	name_furigana = models.CharField( "User_ID", default=None, max_length=255 )
-
-
+	uid  = models.CharField( "共通ID", default=None, max_length=16 )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	name_furigana = models.CharField( "顧客フリガナ", default=None, max_length=255 )
 
 ###* SHARP *###
 class SHARP_Test(models.Model):
