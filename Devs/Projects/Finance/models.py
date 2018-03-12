@@ -5,12 +5,25 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.5 Update:2018.03.12" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.6 Update:2018.03.12" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
 # Create your models here.
 ### MatsuoStation.Com ###
+###* Guest.Tel *###
+class Tel_Test(models.Model):
+	class Meta:
+		db_table = 'Tel_Test'
+		verbose_name = 'Tel_000'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=16 )
+	phone = models.CharField( "電話番号", default=None, max_length=16 )
+	mobile_tel = models.CharField( "携帯電話", default=None, max_length=16 )
+
+
 ###* Guest.Address *###
 class Add_Test(models.Model):
 	class Meta:
@@ -54,6 +67,7 @@ class Name_Test(models.Model):
 	name = models.CharField( "顧客名", default=None, max_length=255 )
 	name_furigana = models.CharField( "顧客フリガナ", default=None, max_length=255 )
 
+
 ###* SHARP *###
 class SHARP_Test(models.Model):
 	class Meta:
@@ -66,7 +80,7 @@ class SHARP_Test(models.Model):
 	time	= models.IntegerField( verbose_name='時間', default=0 )						# max_length=4,
 	p_code	= models.CharField( verbose_name='処理区分', default=None, max_length=2 )
 	d_type	= models.CharField( verbose_name='データ種類', default=None, max_length=3 )
-	r_type	= models.IntegerField( verbose_name='現金/掛コード', default=0 )				# max_length=1,
+	r_code	= models.IntegerField( verbose_name='現金/掛コード', default=0 )				# max_length=1,
 	ss_code	= models.CharField( verbose_name='SSコード', default=None, max_length=5 )
 	g_code	= models.CharField( verbose_name='顧客コード', default=None, max_length=4 )
 	car_code= models.CharField( verbose_name='顧客車番', default=None, max_length=4 )
