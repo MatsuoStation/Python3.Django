@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Python3.Django.Setting.py - Ver.3.3.1 Update:2018.03.10" |
+#//|    "VsV.Python3.Django.Setting.py - Ver.3.5.1 Update:2018.03.10" |
 #//+------------------------------------------------------------------+
 #//|                                           https://qiita.com/aion |
 #//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
@@ -59,8 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     ### MatsuoStaion.Com ###
-    'bootstrap4',   # django-bootstrap4
-    'Finance.apps.FinanceConfig',      # Finance/
+    'bootstrap4',                           # django-bootstrap4
+    'Finance.apps.FinanceConfig',           # Finance/
 ]
 
 MIDDLEWARE = [
@@ -80,7 +80,8 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

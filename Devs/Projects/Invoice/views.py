@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.2.2 Update:2018.03.09" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.1 Update:2018.03.09" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -13,5 +13,7 @@ from django.shortcuts import render
 ### MatsuoStation.Com ###
 from django.http import HttpResponse
 
+
 def index(request):
-	return HttpResponse("Invoice Page!! Welcome to Devs.MatsuoStation.Com!")
+	# return HttpResponse("Invoice Page!! Welcome to Devs.MatsuoStation.Com!")
+	return render(request, 'index.html')

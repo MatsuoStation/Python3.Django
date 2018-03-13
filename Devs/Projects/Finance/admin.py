@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Admin.py - Ver.3.4.1 Update:2018.03.13" |
+#//|  "VsV.Python3.Dj.Finance.Admin.py - Ver.3.5.1 Update:2018.03.13" |
 #//+------------------------------------------------------------------+
 from django.contrib import admin
 
@@ -36,8 +36,8 @@ class ValueAdmin(admin.ModelAdmin):
 	search_fields = [ 'uid', 's_code', 'day' ]
 
 class SHARPAdmin(admin.ModelAdmin):
-	list_display = ('id', 'day', 'time', 'p_code', 'd_type', 'r_code', 'g_code', 'red_code', 's_code', 'amount', 'unit', 'value')
-	search_fields = [ 'id', 'day' ]
+	list_display = ('id', 'day', 'time', 'p_code', 'd_type', 'r_code', 'g_code', 'car_code', 'red_code', 'slip', 's_code', 'amount', 'unit', 'value')
+	search_fields = [ 'g_code', ]
 
 admin.site.register(Name_Test, NameAdmin)
 admin.site.register(Bank_Test, BankAdmin)
