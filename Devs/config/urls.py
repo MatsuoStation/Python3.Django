@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.config.urls.py - Ver.3.2.2 Update:2018.03.09" |
+#//|"VsV.Python3.Django.config.urls.py - Ver.3.5.2 Update:2018.03.14" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -32,7 +32,7 @@ urlpatterns = [
 	### MatsuoStation.Com ###
 	path('', include('Projects.Index.urls')),
     path('Finance/', include('Projects.Finance.urls')),
-	path('Finance/Invoice/', include('Projects.Invoice.urls')),
+	path('Invoice/', include('Projects.Invoice.urls')),
     path('LPG/', include('Projects.LPG.urls')),
 
 	### Config ###
