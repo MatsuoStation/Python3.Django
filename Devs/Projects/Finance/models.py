@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.3.8 Update:2018.03.13" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.4.1 Update:2018.03.13" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -46,6 +46,9 @@ class Value_Test(models.Model):
 	date03	= models.PositiveIntegerField( "設定日03", default=None )
 	value03	= models.FloatField( "価格03", default=None )
 
+	def __str__(self):
+		return self.uid
+
 
 ###* Guest.Tel *###
 class Tel_Test(models.Model):
@@ -59,6 +62,9 @@ class Tel_Test(models.Model):
 	phone = models.CharField( "電話番号", default=None, max_length=16 )
 	mobile_tel = models.CharField( "携帯電話", default=None, max_length=16 )
 
+	def __str__(self):
+		return self.uid
+
 
 ###* Guest.Address *###
 class Add_Test(models.Model):
@@ -71,6 +77,9 @@ class Add_Test(models.Model):
 	uid  = models.CharField( "共通ID", default=None, max_length=16 )
 	postal_code = models.CharField( "郵便番号", default=None, max_length=16 )
 	address = models.CharField( "住所", default=None, max_length=255 )
+
+	def __str__(self):
+		return self.uid
 
 
 ###* Guest.Bank *###
@@ -95,6 +104,9 @@ class Bank_Test(models.Model):
 	# receipt = models.IntegerField( "領収書添付有無", default=0 )
 	receipt = models.PositiveSmallIntegerField( "領収書添付有無", default=None )
 
+	def __str__(self):
+		return self.uid
+
 
 ###* Guest.Name *###
 class Name_Test(models.Model):
@@ -108,6 +120,9 @@ class Name_Test(models.Model):
 	name = models.CharField( "顧客名", default=None, max_length=255 )
 	name_furigana = models.CharField( "顧客フリガナ", default=None, max_length=255 )
 
+	def __str__(self):
+		return self.name
+
 
 ###* SHARP *###
 class SHARP_Test(models.Model):
@@ -115,7 +130,7 @@ class SHARP_Test(models.Model):
 		db_table = 'SHARP_Test'
 		verbose_name = 'SHARP_000'
 		verbose_name_plural = verbose_name
-		ordering = ['-day']
+		ordering = ['id']
 	id 		= models.IntegerField( verbose_name='id', unique=True, primary_key=True )	# max_length=4
 	day		= models.IntegerField( verbose_name='取引日', default=0 )					# max_length=8,
 	time	= models.IntegerField( verbose_name='時間', default=0 )						# max_length=4,
@@ -153,6 +168,9 @@ class SHARP_Test(models.Model):
 	c_no	= models.CharField( verbose_name='伝票No(修正)', default=None, max_length=4 )
 	sub_data= models.CharField( verbose_name='サブデータ(修正)', default=None, max_length=8 )
 	ss_dev	= models.CharField( verbose_name='SSコード(修正)', default=None, max_length=10 )
+
+	def __str__(self):
+		return self.g_code
 
 
 ###* ScanXLS *###
