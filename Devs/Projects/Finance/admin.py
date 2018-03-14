@@ -21,7 +21,7 @@ class NameAdmin(admin.ModelAdmin):
 	search_fields = ['uid','name', 'name_furigana']
 
 class BankAdmin(admin.ModelAdmin):
-	list_display = ('uid', 'bank_name', 'bank_number', 'branch_number', 'account_kind', 'account', 'check_day', 'receipt')
+	list_display = ('uid', 'bank_name', 'bank_number', 'branch_number', 'account_kind', 'account', 'check_day', 'receipt', 's_format')
 	search_fields = [ 'uid', 'check_day', 'bank_name', 'bank_number' ]
 
 class AddAdmin(admin.ModelAdmin):

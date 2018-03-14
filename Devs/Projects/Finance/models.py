@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.5.3 Update:2018.03.13" |
+#//|"VsV.Python3.Dj.Finance.Models.py - Ver.3.5.10 Update:2018.03.13" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -106,6 +106,7 @@ class Bank_Test(models.Model):
 	check_day = models.PositiveSmallIntegerField( "締切日", default=None )
 	# receipt = models.IntegerField( "領収書添付有無", default=0 )
 	receipt = models.PositiveSmallIntegerField( "領収書添付有無", default=None )
+	s_format = models.PositiveSmallIntegerField( "領収書フォーマット", default=None )
 
 	def __str__(self):
 		return self.uid
