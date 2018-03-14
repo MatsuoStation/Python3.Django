@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.2 Update:2018.03.09" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.5 Update:2018.03.14" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -13,6 +13,7 @@ from django.shortcuts import render
 ### MatsuoStation.Com ###
 # from django.http import HttpResponse
 from Finance.models import Items_Test
+from .forms import MyForm
 
 
 def index(request):
@@ -24,5 +25,14 @@ def index(request):
 			# 'names' : Name_Test.objects.all(),
 			# 'Yuki'	: 'Yuki',
 			'items'	: items,
+		}
+	)
+
+def form_test(request):
+	form = MyForm()
+
+	return render(request, 'form.html',
+		{
+			'form'	: form,
 		}
 	)
