@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.5 Update:2018.03.14" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.6 Update:2018.03.14" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -29,7 +29,14 @@ def index(request):
 	)
 
 def form_test(request):
-	form = MyForm()
+	if request.method == "POST" :
+		form = MyForm(data=request.POST)	# 受け取ったPOSTデータを渡す
+		if form.is_valid():					# 受け取ったデータの正当性確認
+			pass							# 正しいデータを受け取った場合の処理
+	else:
+		form = MyForm()
+
+	# form = MyForm()
 
 	return render(request, 'form.html',
 		{

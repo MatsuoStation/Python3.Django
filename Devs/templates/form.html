@@ -61,8 +61,10 @@
         <h1>Invoice / 請求書</h1>
         <!-- p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p -->
 
-        <form>
+        <form action="" method="POST">
+          {% csrf_token %}
           {{ form }}
+          <input type="submit" name="送信">
         </form>
 
         <P>請求書作成</P>
