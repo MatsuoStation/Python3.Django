@@ -64,17 +64,35 @@
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
-              <td>共通ID</td>
-              <td>種別</td>
-              <td>品目名</td>
+              <td width="2">月</td>
+              <td width="2">日</td>
+              <td>給油SS</td>
+              <td>車番</td>
+              <td>商品コード</td>
+              <td>商品名</td>
+              <td>数量</td>
+              <td>単価</td>
+              <td>金額</td>
+              <td>税区分</td>
+              <td>車両別合計</td>
+              <td>備考</td>
             </tr>
           </thead>
           <thead>
             {% for item in items %}
             <tr>
-              <td>{{ item.uid }}</td>
-              <td>{{ item.hinmoku }}</td>
-              <td>{{ item.h_name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.name }}</td>
             </tr>
             {% endfor %}
           </thead>

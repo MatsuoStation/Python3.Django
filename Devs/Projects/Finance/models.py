@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.4.1 Update:2018.03.13" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.5.3 Update:2018.03.13" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -17,7 +17,7 @@ class Items_Test(models.Model):
 		db_table = 'Items_Test'
 		verbose_name = 'Items_000'
 		verbose_name_plural = verbose_name
-		ordering = ['-id']
+		ordering = ['uid']
 	id = models.AutoField( "id", primary_key=True )
 	uid  = models.CharField( "共通ID", default=None, max_length=4 )
 	hinmoku = models.CharField( "種別", default=None, max_length=255 )
@@ -25,6 +25,9 @@ class Items_Test(models.Model):
 	sc1 = models.CharField( "ショートカット1", default=None, max_length=255 )
 	sc2 = models.CharField( "ショートカット2", default=None, max_length=255 )
 	name = models.CharField( "正式名称", default=None, max_length=255 )
+
+	def __str__(self):
+		return self.uid
 
 
 ###* Guest.Value *###
