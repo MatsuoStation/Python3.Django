@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.11 Update:2018.03.15" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.12 Update:2018.03.15" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
@@ -13,7 +13,9 @@ from django.shortcuts import get_object_or_404, render, redirect
 
 # Create your views here.
 ### MatsuoStation.Com ###
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+# from django.urls import reverse
+
 from django.views.generic import ListView
 from Finance.models import Name_Test, Items_Test, SHARP_Test, Items_Test
 from .forms import NameForm
@@ -24,10 +26,18 @@ class Invoice_List(ListView):
 
 	# model = Name_Test
 	model = SHARP_Test
-	# form_class = NameForm
+	form_class = NameForm
 	template_name = 'list.html'
 	context_object_name = "sharptb"
 	# paginate_by = 10
+
+	def post(self, request, *args, **kwargs):
+		form = self.form_class(request.POST)
+		nid_post = request.POST['nid']
+		if form.is_valid():
+			return HttpResponseRedirect('/Invoice/%s' % nid_post)
+
+		return render(request, self.template_name, {'form': form})
 
 	def get_queryset(self):
 		# uid = self.request.GET.get('uid')
@@ -41,7 +51,7 @@ class Invoice_List(ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
-		context['form'] = NameForm
+		context['form'] = NameForm()
 		# context['nid_post'] = request.POST.get('nid')
 
 		# context['nid'] = request.POST['nid']
@@ -64,20 +74,30 @@ class Invoice_List(ListView):
 		return context
 
 
-
 def index(request):
 	# return HttpResponse("Invoice Page!! Welcome to Devs.MatsuoStation.Com!")
-	items = Items_Test.objects.all().order_by('uid')
-	names = Name_Test.objects.all().order_by('uid')
 
-	return render(request, 'invoice.html',
-		{
-			# 'names' : Name_Test.objects.all(),
-			# 'Yuki'	: 'Yuki',
-			'names' : names,
-			'items'	: items,
-		}
-	)
+	if request.method == 'POST':
+		form = NameForm(request.POST)
+		nid_post = request.POST['nid']
+		if form.is_valid():
+			return HttpResponseRedirect('/Invoice/%s' % nid_post)
+
+	else:
+		form = NameForm()
+
+	return render(request, 'invoice.html', {'form': form})
+
+	# items = Items_Test.objects.all().order_by('uid')
+	# names = Name_Test.objects.all().order_by('uid')
+	# return render(request, 'invoice.html',
+	#	{
+	#		# 'names' : Name_Test.objects.all(),
+	#		# 'Yuki'	: 'Yuki',
+	#		'names' : names,
+	#		'items'	: items,
+	#	}
+	# )
 
 
 def form_invoice(request, nid):
