@@ -5,18 +5,64 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.10 Update:2018.03.14" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.11 Update:2018.03.15" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 
 # Create your views here.
 ### MatsuoStation.Com ###
-# from django.http import HttpResponse
+from django.http import HttpResponse
+from django.views.generic import ListView
+from Finance.models import Name_Test, Items_Test, SHARP_Test, Items_Test
+from .forms import NameForm
+# from .forms import NameForm, MyForm
 
-from Finance.models import Name_Test, Items_Test
-from .forms import NameForm, MyForm
+
+class Invoice_List(ListView):
+
+	# model = Name_Test
+	model = SHARP_Test
+	# form_class = NameForm
+	template_name = 'list.html'
+	context_object_name = "sharptb"
+	# paginate_by = 10
+
+	def get_queryset(self):
+		# uid = self.request.GET.get('uid')
+		# uid = self.request.POST.get('uid')
+
+		# (OK)
+		return SHARP_Test.objects.filter(g_code__endswith=self.kwargs.get('nid'))
+		# return SHARP_Test.objects.filter(g_code__endswith=uid)
+		# return SHARP_Test.objects.filter(g_code="0104")
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		context['form'] = NameForm
+		# context['nid_post'] = request.POST.get('nid')
+
+		# context['nid'] = request.POST['nid']
+		# context['post_nid'] = self.NameForm
+
+		# sharps = SHARP_Test.objects.all().filter(uid__endswith=self.kwargs.get('nid'))
+		names = Name_Test.objects.all().filter(uid__endswith=self.kwargs.get('nid'))
+		# names = Name_Test.objects.all().filter(uid__startswith="0104")
+		#context['sharps'] = sharps
+		for name in names:
+			context['names'] = name
+
+		# context['names'] = names
+
+		# items = Items_Test.objects.all().filter(uid__startswith="1010")
+		# context['s_codes'] = items
+
+		# context['sc'] = Items_Test.objects.filter(uid__startswith="1010")
+
+		return context
+
 
 
 def index(request):
@@ -33,14 +79,30 @@ def index(request):
 		}
 	)
 
+
 def form_invoice(request, nid):
 	# return HttpResponse("You're looking at Form_Invoice %s" % uid)
 	forms = get_object_or_404(Name_Test, uid__endswith=nid)
 	# forms = get_list_or_404(Name_Test, uid=nid)
+	sharps = SHARP_Test.objects.all().filter(g_code__endswith=nid)
+	items = Items_Test.objects.all()
+
+
+	if request.method == 'POST':
+		form = NameForm(request.POST)
+
+		if form.is_valid():
+			pass
+
+	else:
+		form = NameForm()
 
 	return render(request, 'form.html',
 		{
+			'form'	: form,
 			'forms'	: forms,
+			'sharps': sharps,
+			'items'	: items,
 		}
 	)
 
@@ -64,7 +126,7 @@ def form_name(request):
 		}
 	)
 
-
+''' (Def)
 def form_test(request):
 	if request.method == "POST" :
 		form = MyForm(data=request.POST)	# 受け取ったPOSTデータを渡す
@@ -80,3 +142,4 @@ def form_test(request):
 			'form'	: form,
 		}
 	)
+'''

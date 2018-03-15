@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.urls.py - Ver.3.5.10 Update:2018.03.14" |
+#//|  "VsV.Python3.Dj.Invoice.urls.py - Ver.3.5.11 Update:2018.03.14" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -31,7 +31,9 @@ app_name = 'Invoice'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('<int:nid>/', views.form_invoice, name='form_invoice')
+    # re_path(r'(?P<uid>\d+)/$', views.Invoice_List.as_view(), name='invoice_list')
+    path('<int:nid>/', views.Invoice_List.as_view(), name='invoice_list')
+    # path('<int:nid>/', views.form_invoice, name='form_invoice')
     # path('form/', views.form_name, name='form_name')
     # path('form/', views.form_test, name='form_test')
 ]
