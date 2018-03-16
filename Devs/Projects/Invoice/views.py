@@ -5,7 +5,11 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
+<<<<<<< HEAD
 #//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.13 Update:2018.03.16" |
+=======
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.12 Update:2018.03.15" |
+>>>>>>> ea9a9e431bf133298a3c73582b5de04211e9cdad
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
@@ -24,8 +28,13 @@ from .forms import NameForm
 
 class Invoice_List(ListView):
 
+<<<<<<< HEAD
 	model = Name_Test
 	# model = SHARP_Test
+=======
+	# model = Name_Test
+	model = SHARP_Test
+>>>>>>> ea9a9e431bf133298a3c73582b5de04211e9cdad
 	form_class = NameForm
 	template_name = 'list.html'
 	# (OK) context_object_name = "sharptb"
@@ -35,12 +44,16 @@ class Invoice_List(ListView):
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
 		nid_post = request.POST['nid']
+<<<<<<< HEAD
 		lastday_post = request.POST['lastday']
+=======
+>>>>>>> ea9a9e431bf133298a3c73582b5de04211e9cdad
 		if form.is_valid():
 			return HttpResponseRedirect('/Invoice/%s' % nid_post)
 
 		return render(request, self.template_name, {'form': form})
 
+<<<<<<< HEAD
 	'''
 	def h_name(self):
 		sharps = SHARP_Test.objects.filter(g_code__endswith=self.kwargs.get('nid'))
@@ -51,6 +64,9 @@ class Invoice_List(ListView):
 	'''
 
 	# def get_queryset(self):
+=======
+	def get_queryset(self):
+>>>>>>> ea9a9e431bf133298a3c73582b5de04211e9cdad
 		# uid = self.request.GET.get('uid')
 		# uid = self.request.POST.get('uid')
 
