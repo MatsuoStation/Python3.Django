@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Forms.py - Ver.3.5.11 Update:2018.03.15" |
+#//| "VsV.Python3.Dj.Invoice.Forms.py - Ver.3.5.13 Update:2018.03.15" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 from django import forms
@@ -18,6 +18,7 @@ from Finance.models import Name_Test
 class NameForm(forms.Form):
 # class NameForm(ModelForm):
 	nid = forms.CharField(max_length=5, required=False, label='顧客番号')
+	lastday = forms.CharField( required=False, label='締切日' )
 
 	# class Meta:
 	#	model = Name_Test

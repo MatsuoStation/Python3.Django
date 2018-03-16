@@ -5,13 +5,13 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Admin.py - Ver.3.5.3 Update:2018.03.13" |
+#//| "VsV.Python3.Dj.Finance.Admin.py - Ver.3.5.13 Update:2018.03.16" |
 #//+------------------------------------------------------------------+
 from django.contrib import admin
 
 # Register your models here.
 ### MatsuoStation.Com ###
-from .models import Name_Test, Bank_Test, Add_Test, Tel_Test, Value_Test
+from .models import Name_Test, Bank_Test, Add_Test, Tel_Test, Value_Test, Discount_Test
 from .models import Items_Test
 from .models import SHARP_Test
 
@@ -36,6 +36,10 @@ class ValueAdmin(admin.ModelAdmin):
 	list_display = ('uid', 's_code', 'day', 'value', 'date01', 'value01', 'date02', 'value02', 'date03', 'value03')
 	search_fields = [ 'uid', 's_code', 'day' ]
 
+class DiscountAdmin(admin.ModelAdmin):
+	list_display = ('uid', 'car_code', 'lastday', 'value',)
+	search_fields = [ 'uid', ]
+
 class iTemsAdmin(admin.ModelAdmin):
 	list_display = ('id', 'uid', 'hinmoku', 'h_name')
 	search_fields = [ 'uid', ]
@@ -49,6 +53,7 @@ admin.site.register(Bank_Test, BankAdmin)
 admin.site.register(Add_Test, AddAdmin)
 admin.site.register(Tel_Test, TelAdmin)
 admin.site.register(Value_Test, ValueAdmin)
+admin.site.register(Discount_Test, DiscountAdmin)
 
 admin.site.register(Items_Test, iTemsAdmin)
 admin.site.register(SHARP_Test, SHARPAdmin)

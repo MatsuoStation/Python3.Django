@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.12 Update:2018.03.15" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.13 Update:2018.03.16" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
@@ -17,34 +17,45 @@ from django.http import HttpResponse, HttpResponseRedirect
 # from django.urls import reverse
 
 from django.views.generic import ListView
-from Finance.models import Name_Test, Items_Test, SHARP_Test, Items_Test
+from Finance.models import Name_Test, Items_Test, SHARP_Test, Value_Test
 from .forms import NameForm
 # from .forms import NameForm, MyForm
 
 
 class Invoice_List(ListView):
 
-	# model = Name_Test
-	model = SHARP_Test
+	model = Name_Test
+	# model = SHARP_Test
 	form_class = NameForm
 	template_name = 'list.html'
-	context_object_name = "sharptb"
+	# (OK) context_object_name = "sharptb"
+	context_object_name = "nametb"
 	# paginate_by = 10
 
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
 		nid_post = request.POST['nid']
+		lastday_post = request.POST['lastday']
 		if form.is_valid():
 			return HttpResponseRedirect('/Invoice/%s' % nid_post)
 
 		return render(request, self.template_name, {'form': form})
 
-	def get_queryset(self):
+	'''
+	def h_name(self):
+		sharps = SHARP_Test.objects.filter(g_code__endswith=self.kwargs.get('nid'))
+
+		for sharp in sharps:
+			h_name = Items_Test.objects.all().filter(uid__startswith=sharp.s_code)
+		return h_name
+	'''
+
+	# def get_queryset(self):
 		# uid = self.request.GET.get('uid')
 		# uid = self.request.POST.get('uid')
 
-		# (OK)
-		return SHARP_Test.objects.filter(g_code__endswith=self.kwargs.get('nid'))
+		# (OK) return SHARP_Test.objects.filter(g_code__endswith=self.kwargs.get('nid'))
+		# return NAME_Test.objects.filter(uid__endswith=self.kwargs.get('nid'))
 		# return SHARP_Test.objects.filter(g_code__endswith=uid)
 		# return SHARP_Test.objects.filter(g_code="0104")
 
@@ -57,14 +68,23 @@ class Invoice_List(ListView):
 		# context['nid'] = request.POST['nid']
 		# context['post_nid'] = self.NameForm
 
-		# sharps = SHARP_Test.objects.all().filter(uid__endswith=self.kwargs.get('nid'))
+		sharps = SHARP_Test.objects.all().filter(
+			g_code__endswith=self.kwargs.get('nid'),
+		)
+		# (OK)
 		names = Name_Test.objects.all().filter(uid__endswith=self.kwargs.get('nid'))
 		# names = Name_Test.objects.all().filter(uid__startswith="0104")
-		#context['sharps'] = sharps
+
+		items = Items_Test.objects.all()
+
+		# context['sharps'] = sharps
 		for name in names:
 			context['names'] = name
-
 		# context['names'] = names
+		context['sharps'] = sharps
+		context['items'] = items
+
+		#context['h_name'] = self.h_name
 
 		# items = Items_Test.objects.all().filter(uid__startswith="1010")
 		# context['s_codes'] = items

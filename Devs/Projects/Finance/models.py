@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Dj.Finance.Models.py - Ver.3.5.10 Update:2018.03.13" |
+#//|"VsV.Python3.Dj.Finance.Models.py - Ver.3.5.13 Update:2018.03.16" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -25,6 +25,24 @@ class Items_Test(models.Model):
 	sc1 = models.CharField( "ショートカット1", default=None, max_length=255 )
 	sc2 = models.CharField( "ショートカット2", default=None, max_length=255 )
 	name = models.CharField( "正式名称", default=None, max_length=255 )
+
+	def __str__(self):
+		return self.uid
+
+
+
+###* Guest.Discount *###
+class Discount_Test(models.Model):
+	class Meta:
+		db_table = 'Discount_Test'
+		verbose_name = 'Discount_000'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=16 )
+	car_code= models.CharField( verbose_name='顧客車番', default=None, max_length=4 )
+	lastday	= models.PositiveIntegerField( "終了期日", default=None )
+	value	= models.FloatField( "価格", default=None )
 
 	def __str__(self):
 		return self.uid
@@ -106,7 +124,8 @@ class Bank_Test(models.Model):
 	check_day = models.PositiveSmallIntegerField( "締切日", default=None )
 	# receipt = models.IntegerField( "領収書添付有無", default=0 )
 	receipt = models.PositiveSmallIntegerField( "領収書添付有無", default=None )
-	s_format = models.PositiveSmallIntegerField( "領収書フォーマット", default=None )
+	s_format = models.PositiveSmallIntegerField( "請求書フォーマット", default=None )
+	r_code	= models.IntegerField( verbose_name='掛現金/掛振込', default=0 )
 
 	def __str__(self):
 		return self.uid
@@ -136,7 +155,7 @@ class SHARP_Test(models.Model):
 		verbose_name_plural = verbose_name
 		ordering = ['id']
 	id 		= models.IntegerField( verbose_name='id', unique=True, primary_key=True )	# max_length=4
-	day		= models.IntegerField( verbose_name='取引日', default=0 )					# max_length=8,
+	day 	= models.IntegerField( verbose_name='取引日', default=0 )					# max_length=8,
 	time	= models.IntegerField( verbose_name='時間', default=0 )						# max_length=4,
 	p_code	= models.CharField( verbose_name='処理区分', default=None, max_length=2 )
 	d_type	= models.CharField( verbose_name='データ種類', default=None, max_length=3 )
