@@ -5,15 +5,26 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Admin.py - Ver.3.5.13 Update:2018.03.16" |
+#//| "VsV.Python3.Dj.Finance.Admin.py - Ver.3.3.10 Update:2018.03.17" |
 #//+------------------------------------------------------------------+
 from django.contrib import admin
 
 # Register your models here.
 ### MatsuoStation.Com ###
+from .models import Name_Test02, SHARP_Test02
 from .models import Name_Test, Bank_Test, Add_Test, Tel_Test, Value_Test, Discount_Test
 from .models import Items_Test
 from .models import SHARP_Test
+
+
+class Name02Admin(admin.ModelAdmin):
+	list_display = ('uid', 'name', 'name_furigana')
+	search_fields = ['uid','name', 'name_furigana']
+
+class SHARP02Admin(admin.ModelAdmin):
+	# list_display = ('id', 'day', 'time', 'p_code', 'd_type', 'r_code', 'g_code', 'car_code', 'red_code', 'slip', 's_code', 'amount', 'unit', 'value', 'name_id')
+	list_display = ('id', 'm_day', 'm_time', 'p_code', 'd_type', 'r_code', 'g_code', 'car_code', 'red_code', 'slip', 's_code', 'amount', 'unit', 'value')
+	search_fields = [ 'g_code', ]
 
 
 class NameAdmin(admin.ModelAdmin):
@@ -48,7 +59,11 @@ class SHARPAdmin(admin.ModelAdmin):
 	list_display = ('id', 'day', 'time', 'p_code', 'd_type', 'r_code', 'g_code', 'car_code', 'red_code', 'slip', 's_code', 'amount', 'unit', 'value')
 	search_fields = [ 'g_code', ]
 
+
+
 admin.site.register(Name_Test, NameAdmin)
+admin.site.register(Name_Test02, Name02Admin)
+
 admin.site.register(Bank_Test, BankAdmin)
 admin.site.register(Add_Test, AddAdmin)
 admin.site.register(Tel_Test, TelAdmin)
@@ -57,3 +72,4 @@ admin.site.register(Discount_Test, DiscountAdmin)
 
 admin.site.register(Items_Test, iTemsAdmin)
 admin.site.register(SHARP_Test, SHARPAdmin)
+admin.site.register(SHARP_Test02, SHARP02Admin)
