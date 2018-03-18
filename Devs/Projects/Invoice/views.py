@@ -20,6 +20,7 @@ from django.views.generic import ListView
 from Finance.models import Name_Test, Items_Test, SHARP_Test, Value_Test
 from .forms import NameForm
 # from .forms import NameForm, MyForm
+from Finance.models import Name_Test02, SHARP_Test02
 
 
 class Invoice_List(ListView):
@@ -68,21 +69,45 @@ class Invoice_List(ListView):
 		# context['nid'] = request.POST['nid']
 		# context['post_nid'] = self.NameForm
 
+		# sharps = SHARP_Test02.objects.filter(g_code__uid__endswith='0104')
+		# sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid'))
+		sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
+
+		'''
 		sharps = SHARP_Test.objects.all().filter(
 			g_code__endswith=self.kwargs.get('nid'),
 		)
-		# (OK)
-		names = Name_Test.objects.all().filter(uid__endswith=self.kwargs.get('nid'))
+		'''
+
+		names = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')[:1]
+		# (OK) names = Name_Test02.objects.filter(uid__endswith=self.kwargs.get('nid'))
+		# (OK) names = Name_Test.objects.all().filter(uid__endswith=self.kwargs.get('nid'))
 		# names = Name_Test.objects.all().filter(uid__startswith="0104")
 
-		items = Items_Test.objects.all()
+		# items = Items_Test.objects.all().filter(uid__startswith='1010')
+		# items = Items_Test.objects.all().filter(uid__startswith="1020")
 
 		# context['sharps'] = sharps
-		for name in names:
-			context['names'] = name
 		# context['names'] = names
+		for name in names:
+			# context['names'] = name.name
+			context['names'] = name.g_code.name
+
+
+		# context['names'] = names
+
+		# items = Items_Test.objects.filter(uid=sharps.objects.filter(s_code))
+		# context['items'] = i.h_name
+
+		for sharp in sharps:
+			# items = Items_Test.objects.all().filter(uid__startswith='1010')
+			# items = Items_Test.objects.all().filter(uid__startswith='10200')
+			items = Items_Test.objects.filter(uid=sharp.s_code)
+			for i in items:
+				context['items'] = i.h_name
+
 		context['sharps'] = sharps
-		context['items'] = items
+		# context['items'] = items
 
 		#context['h_name'] = self.h_name
 
