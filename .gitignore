@@ -104,3 +104,10 @@ ENV/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# MatsuoStation.Com
+.DS_Store
+.local
+Devs/Projects/Finance/management/
+Devs/Projects/Finance/migrations/
+db.sqlite3
