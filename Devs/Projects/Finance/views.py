@@ -5,18 +5,19 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.6.1 Update:2018.03.21" |
+#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.6.2 Update:2018.03.21" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
-import re
 
 # Create your views here.
 ### MatsuoStation.Com ###
 from django.http import HttpResponse
+import re
+import numpy as np
+
 
 def index(request):
 	return HttpResponse("Finance Page!! Welcome to Devs.MatsuoStation.Com!")
-
 
 ### 93.92.91 : Delete ###
 
@@ -64,14 +65,40 @@ def DelEn(line):
 	return re.sub('^\n', '', line, flags=re.MULTILINE)
 
 
-
-
 def mysql(request):
+
+	csvfile = "PosData/20180228.csv"
+	SHARP_ALL(csvfile)
+	csvfile_out = "PosData/20180228_05.csv"
+
+	pData = np.genfromtxt(csvfile_out, delimiter=",", skip_header=0, dtype='str')
+	# posdata = np.loadtxt(csvfile_out, delimiter=',', skiprows=0, fmt="%.5f")
+	# data = np.genfromtxt(csvfile_out, delimiter=',', skiprows=0)
+
+	# FinalCheck : Delete - 93 & 92 & 91
+	FCrows, FCcols = np.where( (pData == '91') | (pData == '92') | (pData=='93') )
+	pData = np.delete( pData, FCrows[ np.where(FCcols==3) ], 0 )
+
+	# InvoiceList(売掛リスト) : 9
+	IVrows, IVcols = np.where( (pData != '9') )
+	pData = 4np.delete( pData, IVrows[ np.where(IVcols==5) ], 0 )
+
+	# np.savetxt("PosData/20180228_06.csv", posdata, delimiter=',', fmt='%.4f')
+	np.savetxt("PosData/20180228_06.csv", pData, delimiter=',', fmt='%s')
+
+	return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (IVrows,IVcols) )
+	# return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (FCrows,FCcols) )
+	# return HttpResponse("New.MySQL.OK! %s " % pData)
+
+
+def SHARP_ALL(csvfile):
 	# return HttpResponse("Finance MySQL Page!! Welcome to MySQL.Devs.MatsuoStation.Com!")
 
-	file = open("PosData/20180228.csv", "r")
+	# file = open("PosData/20180228.csv", "r")
+	# out_file = open("PosData/20180228_04.csv", "w")
 
-	out_file = open("PosData/20180228_04.csv", "w")
+	file = open(csvfile, "r")
+	out_file = open("PosData/20180228_05.csv", "w")
 
 	# file.readline()			# Delete : First Line
 	lines = file.readlines()
@@ -196,43 +223,9 @@ def mysql(request):
 
 		### End of SHARP ###
 
-		### 93.92.91 : Delete ###
-
-		# r = re.compile('(?<=^.{19}).{2}').search('93', line, flags=re.MULTILINE)
-		# if r:
-		#	line = re.sub('(.*)', '03', line, flags=re.MULTILINE)
-
-		## m = pattern.search(line)
-		# if r:
-		#	line = re.sub('(.*)', '03', line, flags=re.MULTILINE)
-
-
-		# pattern = re.compile(r'(?<=^.{19}).{2}')
-		# r =  re.compile('(?<=^.{19}).{2}').search('93', line, flags=re.MULTILINE)
-		# if r:
-		#	line = re.sub('(.*)', '03', line, flags=re.MULTILINE)
-		# r = re.compile("(?<=^.{19}).{2}").search(93,line)
-		# if r:
-		#	line = re.sub('(.*)', '03', line, flags=re.MULTILINE)
-
-		#pattern = '(?<=^.{19}).{2}'
-
-		# match93 = re.compile('(?<=^.{19}).{2}').search(93, line, flags=MULTILINE)
-		# match93 = re.finditer('(?<=^.{19}).{2}', line, flags=re.MULTILINE)
-		# match93 = re.search('(?<=^.{19}).{2}', line, flags=re.MULTILINE)
-		# match93 = re.search('(?<=^.{19}).{2}', line, flags=re.DOTALL)
-		# re.sub('(^([^,]*,){32})(.{65})(.*)', '\\1\\4', line, flags=re.MULTILINE)
-		# if match93:
-		# if match93 == 93:
-		# if re.compile('(?<=^.{19}).{2}').search("93",line):
-			# line = re.sub('(.*)', '', line, flags=re.DOTALL)
-			# line = re.sub('(.*)', '03', line, flags=re.MULTILINE)
-
-
-
 		out_file.write(line)
 
 	file.close()
 	out_file.close()
 
-	return HttpResponse("MySQL.OK!")
+	# return HttpResponse("MySQL.OK!")
