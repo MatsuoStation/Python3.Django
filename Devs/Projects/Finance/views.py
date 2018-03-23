@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.6.3 Update:2018.03.23" |
+#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.6.4 Update:2018.03.24" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -80,11 +80,12 @@ def DelEn(line):
 	return re.sub('^\n', '', line, flags=re.MULTILINE)
 
 
-def mysql_00(request):
+def mysql(request):
+# def mysql_00(request):
 
 	csvfile = "PosData/20180228.csv"
 	SHARP_ALL(csvfile)
-	csvfile_out = "PosData/20180228_05.csv"
+	csvfile_out = "PosData/20180228_11.csv"
 
 	pData = np.genfromtxt(csvfile_out, delimiter=",", skip_header=0, dtype='str')
 	# posdata = np.loadtxt(csvfile_out, delimiter=',', skiprows=0, fmt="%.5f")
@@ -92,28 +93,29 @@ def mysql_00(request):
 
 	# FinalCheck : Delete - 93 & 92 & 91
 	FCrows, FCcols = np.where( (pData == '91') | (pData == '92') | (pData=='93') )
-	pData = np.delete( pData, FCrows[ np.where(FCcols==3) ], 0 )
+	pData = np.delete( pData, FCrows[ np.where(FCcols==2) ], 0 )
 
 	# InvoiceList(売掛リスト) : 9
-	IVrows, IVcols = np.where( (pData != '9') )
-	pData = np.delete( pData, IVrows[ np.where(IVcols==5) ], 0 )
+	# (OK) IVrows, IVcols = np.where( (pData != '9') )
+	# (OK) pData = np.delete( pData, IVrows[ np.where(IVcols==5) ], 0 )
 
 	# np.savetxt("PosData/20180228_06.csv", posdata, delimiter=',', fmt='%.4f')
-	np.savetxt("PosData/20180228_06.csv", pData, delimiter=',', fmt='%s')
+	np.savetxt("SHARP/20180228_22.csv", pData, delimiter=',', fmt='%s')
 
-	return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (IVrows,IVcols) )
+	return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (FCrows,FCcols) )
+	# (OK) return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (IVrows,IVcols) )
 	# return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (FCrows,FCcols) )
 	# return HttpResponse("New.MySQL.OK! %s " % pData)
 
 
-# def SHARP_ALL(csvfile):
-def mysql(request):
+def SHARP_ALL(csvfile):
+# def mysql(request):
 	# return HttpResponse("Finance MySQL Page!! Welcome to MySQL.Devs.MatsuoStation.Com!")
 
-	file = open("PosData/20180228.csv", "r")
+	# (OK) file = open("PosData/20180228.csv", "r")
 	# out_file = open("PosData/20180228_04.csv", "w")
 
-	# file = open(csvfile, "r")
+	file = open(csvfile, "r")
 	out_file = open("PosData/20180228_11.csv", "w")
 
 	# file.readline()			# Delete : First Line
@@ -258,4 +260,4 @@ def mysql(request):
 	file.close()
 	out_file.close()
 
-	return HttpResponse("MySQL.OK!")
+	# (Def.OK) return HttpResponse("MySQL.OK!")
