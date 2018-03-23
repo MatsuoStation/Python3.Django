@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Python3.Django.Setting.py - Ver.3.3.10 Update:2018.03.17" |
+#//|   "VsV.Python3.Django.Setting.py - Ver.3.6.3 Update:2018.03.17" |
 #//+------------------------------------------------------------------+
 #//|                                           https://qiita.com/aion |
 #//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
@@ -152,9 +152,20 @@ TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
+### MatsuoStation.Com ###
+# DATE_FORMAT = [
+#    '%Y-%m-%d %H:%M',
+# ]
+
+#DATETIME_FORMAT = [
+#    '%H:%M',
+    # '%Y-%m-%d %H:%M',
+#]
+# DATE_INPUT_FORMATS = ['%Y/%d/%m']
+# USE_L10N = False
 USE_L10N = True
 
-### MatsuoStation.Com ###
+
 USE_TZ = False
 # USE_TZ = True
 

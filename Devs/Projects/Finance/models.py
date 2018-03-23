@@ -5,12 +5,17 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.6.1 Update:2018.03.21" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.6.3 Update:2018.03.22" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
 # Create your models here.
 ### MatsuoStation.Com ###
+from django.conf import settings
+
+
+settings.DATETIME_FORMAT
+
 ###* Tutorial.Dj2.0 *###
 '''
 class Question(models.Model):
@@ -472,3 +477,24 @@ class Invoice_Test(models.Model):
 
 	def __str__(self):
 		return self.s_code
+
+
+
+###* DayTime.000 *###
+'''
+class DayTime_Test(models.Model):
+	class Meta:
+		db_table = 'DayTime_Test'
+		verbose_name = 'DayTime_000'
+		verbose_name_plural = verbose_name
+		ordering = ['id']
+	id 		= models.IntegerField( verbose_name='id', unique=True, primary_key=True )	# max_length=4
+	m_date 	= models.DateField( verbose_name='取引日' )		# max_length=8
+	# m_date 	= models.DateField( verbose_name='取引日', input_formats=settings.DATETIME_FORMAT )		# max_length=8
+	m_time 	= models.DateTimeField( verbose_name='取引時刻' )		# max_length=8
+	# m_time 	= models.DateTimeField( verbose_name='取引時刻' )		# max_length=8
+	# m_time 	= models.DateTimeField( verbose_name='取引時刻', auto_now=False )		# max_length=8
+
+	def __str__(self):
+		return self.id
+'''

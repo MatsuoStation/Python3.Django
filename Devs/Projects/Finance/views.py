@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.6.2 Update:2018.03.21" |
+#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.6.3 Update:2018.03.23" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -25,10 +25,12 @@ def index(request):
 
 ### SHARP ###
 def GoLast_g_code(line):
-	return re.sub('(^([^,]*,){7})(.{5})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
+	# return re.sub('(^([^,]*,){7})(.{5})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
+	return re.sub('(^([^,]*,){6})(.{5})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
 
 def GoLast_s_code(line):
-	return re.sub('(^([^,]*,){17})(.{6})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
+	# return re.sub('(^([^,]*,){17})(.{6})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
+	return re.sub('(^([^,]*,){16})(.{6})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
 
 
 ### ALL ###
@@ -50,22 +52,35 @@ def LastCommaDel(line):
 def CalDel(line):
 	return re.sub('(.{9}$)', '', line, flags=re.MULTILINE)
 
-def DayMove(line):
-	return re.sub('(^.{5})(.*,)(.{8}$)', '\\1\\3,\\2', line, flags=re.MULTILINE)
+#def DayMove(line):
+#	return re.sub('(^.{5})(.*,)(.{8}$)', '\\1\\3,\\2', line, flags=re.MULTILINE)
+def DayBar(line):
+	return re.sub('(.{4})(.{2})(.{2}$)', '\\1/\\2/\\3', line, flags=re.MULTILINE)
 
-def TimeMove(line):
-	return re.sub('(^.{14})(.*,)(.{4})', '\\1\\3,\\2', line, flags=re.MULTILINE)
+# def TimeMove(line):
+#	return re.sub('(^.{14})(.*,)(.{4})', '\\1\\3,\\2', line, flags=re.MULTILINE)
+def TimeColon(line):
+	return re.sub('(.{11}$)', ':\\1', line, flags=re.MULTILINE)
+
+def DayTimeMerge(line):
+	return re.sub('(.*,)(.{6})(.{10}$)', '\\1\\3 \\2', line, flags=re.MULTILINE)
+def DayTimeMove(line):
+	return re.sub('(^.{5})(.*,)(.{16}$)', '\\1\\3,\\2', line, flags=re.MULTILINE)
+
 
 def Del5(line):
-	return re.sub('(^([^,]*,){29})(.{13})(.*)', '\\1\\4', line, flags=re.MULTILINE)
+	# return re.sub('(^([^,]*,){29})(.{13})(.*)', '\\1\\4', line, flags=re.MULTILINE)
+	return re.sub('(^([^,]*,){27})(.{16})(.*)', '\\1\\4', line, flags=re.MULTILINE)
 
 def Del7(line):
-	return re.sub('(^([^,]*,){32})(.{65})(.*)', '\\1\\4', line, flags=re.MULTILINE)
+	# return re.sub('(^([^,]*,){32})(.{65})(.*)', '\\1\\4', line, flags=re.MULTILINE)
+	return re.sub('(^([^,]*,){30})(.{46})(.*)', '\\1\\4', line, flags=re.MULTILINE)
+
 def DelEn(line):
 	return re.sub('^\n', '', line, flags=re.MULTILINE)
 
 
-def mysql(request):
+def mysql_00(request):
 
 	csvfile = "PosData/20180228.csv"
 	SHARP_ALL(csvfile)
@@ -81,7 +96,7 @@ def mysql(request):
 
 	# InvoiceList(売掛リスト) : 9
 	IVrows, IVcols = np.where( (pData != '9') )
-	pData = 4np.delete( pData, IVrows[ np.where(IVcols==5) ], 0 )
+	pData = np.delete( pData, IVrows[ np.where(IVcols==5) ], 0 )
 
 	# np.savetxt("PosData/20180228_06.csv", posdata, delimiter=',', fmt='%.4f')
 	np.savetxt("PosData/20180228_06.csv", pData, delimiter=',', fmt='%s')
@@ -91,14 +106,15 @@ def mysql(request):
 	# return HttpResponse("New.MySQL.OK! %s " % pData)
 
 
-def SHARP_ALL(csvfile):
+# def SHARP_ALL(csvfile):
+def mysql(request):
 	# return HttpResponse("Finance MySQL Page!! Welcome to MySQL.Devs.MatsuoStation.Com!")
 
-	# file = open("PosData/20180228.csv", "r")
+	file = open("PosData/20180228.csv", "r")
 	# out_file = open("PosData/20180228_04.csv", "w")
 
-	file = open(csvfile, "r")
-	out_file = open("PosData/20180228_05.csv", "w")
+	# file = open(csvfile, "r")
+	out_file = open("PosData/20180228_11.csv", "w")
 
 	# file.readline()			# Delete : First Line
 	lines = file.readlines()
@@ -194,11 +210,26 @@ def SHARP_ALL(csvfile):
 
 		# システムカレンダー削除
 		line = CalDel(line)
+
+		# 時分(処理) : コロン
+		line = TimeColon(line)
+		# 伝票年月日(処理)  : /
+		line = DayBar(line)
+
+		# 伝票年月日(処理) - 時分(処理) : 結合
+		line = DayTimeMerge(line)
+		line = LastCommaDel(line)
 		# 伝票年月日(処理) - 時分(処理) : 移動
-		line = DayMove(line)
+		line = DayTimeMove(line)
 		line = LastCommaDel(line)
-		line = TimeMove(line)
-		line = LastCommaDel(line)
+
+		### OLD ###
+		# 伝票年月日(処理) - 時分(処理) : 移動
+		# line = DayMove(line)
+		# line = LastCommaDel(line)
+		# line = TimeMove(line)
+		# line = LastCommaDel(line)
+		### End of OLD ###
 
 		# ( ペイパス - ID - 業態 - 企業コード - ネガ/オーソリFG : 削除 )
 		line = Del5(line)
@@ -209,7 +240,6 @@ def SHARP_ALL(csvfile):
 
 		# (空行削除)
 		line = DelEn(line)
-
 		### End of ALL ###
 
 		### SHARP ###
@@ -228,4 +258,4 @@ def SHARP_ALL(csvfile):
 	file.close()
 	out_file.close()
 
-	# return HttpResponse("MySQL.OK!")
+	return HttpResponse("MySQL.OK!")
