@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Python3.Dj.Finance.urls.py - Ver.3.6.1 Update:2018.03.21" |
+#//|   "VsV.Python3.Dj.Finance.urls.py - Ver.3.7.1 Update:2018.03.25" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -31,5 +31,5 @@ app_name = 'Finance'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('MySQL/', views.mysql, name='mysql'),
+    path('SHARP/', views.mysql, name='sharp'),
 ]

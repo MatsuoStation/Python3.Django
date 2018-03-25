@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.6.4 Update:2018.03.24" |
+#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.1 Update:2018.03.25" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -80,7 +80,8 @@ def DelEn(line):
 	return re.sub('^\n', '', line, flags=re.MULTILINE)
 
 
-def mysql(request):
+def sharp(request):
+# def mysql(request):
 # def mysql_00(request):
 
 	csvfile = "PosData/20180228.csv"
