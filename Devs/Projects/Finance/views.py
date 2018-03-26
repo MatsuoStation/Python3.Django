@@ -5,7 +5,10 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.1 Update:2018.03.25" |
+#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.2 Update:2018.03.25" |
+#//+------------------------------------------------------------------+
+#//|                                  © 2014-2018 Leverages Co., Ltd. |
+#//|                            https://teratail.com/questions/15486/ |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -14,6 +17,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import re
 import numpy as np
+import os
+import glob
 
 
 def index(request):
@@ -84,43 +89,78 @@ def sharp(request):
 # def mysql(request):
 # def mysql_00(request):
 
-	csvfile = "PosData/20180228.csv"
-	SHARP_ALL(csvfile)
-	csvfile_out = "PosData/20180228_11.csv"
+	Main_Dir = os.getcwd()
+	SHARP_Dir = os.path.join(os.path.dirname(Main_Dir), 'Devs' , 'SHARP')
 
-	pData = np.genfromtxt(csvfile_out, delimiter=",", skip_header=0, dtype='str')
+	for filename in glob.glob(SHARP_Dir + '/*.bak'):
+		path, _ = os.path.splitext(filename)
+
+		SHARP_ALL(filename, path + ".csv")
+		# SHARP_DB(path + ".csv")
+
+	for filename_out in glob.glob(SHARP_Dir + '/*.csv'):
+		path_out, _out = os.path.splitext(filename_out)
+
+		SHARP_DB(filename_out)
+
+	# (Ver.3.7.1.OK) csvfile = "PosData/20180228.csv"
+	# (Ver.3.7.1.OK)  SHARP_ALL(csvfile)
+	# (Ver.3.7.1.OK) csvfile_out = "SHARP/20180228.csv"
+
+	# (Ver.3.7.1.OK) pData = np.genfromtxt(csvfile_out, delimiter=",", skip_header=0, dtype='str')
 	# posdata = np.loadtxt(csvfile_out, delimiter=',', skiprows=0, fmt="%.5f")
 	# data = np.genfromtxt(csvfile_out, delimiter=',', skiprows=0)
 
 	# FinalCheck : Delete - 93 & 92 & 91
-	FCrows, FCcols = np.where( (pData == '91') | (pData == '92') | (pData=='93') )
-	pData = np.delete( pData, FCrows[ np.where(FCcols==2) ], 0 )
+	# (Ver.3.7.1.OK) FCrows, FCcols = np.where( (pData == '91') | (pData == '92') | (pData=='93') )
+	# (Ver.3.7.1.OK) pData = np.delete( pData, FCrows[ np.where(FCcols==2) ], 0 )
 
 	# InvoiceList(売掛リスト) : 9
 	# (OK) IVrows, IVcols = np.where( (pData != '9') )
 	# (OK) pData = np.delete( pData, IVrows[ np.where(IVcols==5) ], 0 )
 
 	# np.savetxt("PosData/20180228_06.csv", posdata, delimiter=',', fmt='%.4f')
-	np.savetxt("SHARP/20180228_22.csv", pData, delimiter=',', fmt='%s')
+	# (Ver.3.7.1.OK) np.savetxt("SHARP/20180228_22.csv", pData, delimiter=',', fmt='%s')
 
-	return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (FCrows,FCcols) )
+	return HttpResponse("New.MySQL.OK! filename=%s, path=%s, filename_out=%s" % (filename, path, filename_out) )
+	# return HttpResponse("New.MySQL.OK! SHARP_Dir=%s" % (SHARP_Dir) )
+	# (Ver.3.7.1.OK) return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (FCrows,FCcols) )
 	# (OK) return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (IVrows,IVcols) )
 	# return HttpResponse("New.MySQL.OK! rows=%s, cols=%s " % (FCrows,FCcols) )
 	# return HttpResponse("New.MySQL.OK! %s " % pData)
 
 
-def SHARP_ALL(csvfile):
+def SHARP_DB(csvfile_out):
+
+	pData = np.genfromtxt(csvfile_out, delimiter=",", skip_header=0, dtype='str')
+
+	# FinalCheck : Delete - 93 & 92 & 91
+	FCrows, FCcols = np.where( (pData == '91') | (pData == '92') | (pData=='93') )
+	pData = np.delete( pData, FCrows[ np.where(FCcols==2) ], 0 )
+
+	np.savetxt(csvfile_out, pData, delimiter=',', fmt='%s')
+
+
+def SHARP_ALL(in_file, out_file):
+# def SHARP_ALL(csvfile):
 # def mysql(request):
 	# return HttpResponse("Finance MySQL Page!! Welcome to MySQL.Devs.MatsuoStation.Com!")
 
 	# (OK) file = open("PosData/20180228.csv", "r")
 	# out_file = open("PosData/20180228_04.csv", "w")
 
-	file = open(csvfile, "r")
-	out_file = open("PosData/20180228_11.csv", "w")
+	# (Ver.3.7.1.OK) file = open(csvfile, "r")
+	# (Ver.3.7.1.OK) out_file = open("PosData/20180228_11.csv", "w")
+
+	lines = []
+	file = open(in_file, 'r')
+	lines = file.readlines()
+	file.close()
+
+	out_file = open(out_file, 'w')
 
 	# file.readline()			# Delete : First Line
-	lines = file.readlines()
+	# (Ver.3.7.1.OK) lines = file.readlines()
 
 	for line in lines:
 		# HH_Del
@@ -258,7 +298,7 @@ def SHARP_ALL(csvfile):
 
 		out_file.write(line)
 
-	file.close()
+	# (Ver.3.7.1.OK) file.close()
 	out_file.close()
 
 	# (Def.OK) return HttpResponse("MySQL.OK!")

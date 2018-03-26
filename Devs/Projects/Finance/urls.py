@@ -31,5 +31,6 @@ app_name = 'Finance'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('SHARP/', views.mysql, name='sharp'),
+    path('SHARP/', views.sharp, name='sharp'),
+    # path('MySQL/', views.mysql, name='mysql'),
 ]
