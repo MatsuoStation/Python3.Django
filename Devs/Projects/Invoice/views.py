@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.5.13 Update:2018.03.16" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.3 Update:2018.03.26" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
@@ -80,6 +80,7 @@ class Invoice_List(ListView):
 		'''
 
 		names = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')[:1]
+		# names = SHARP_Test02.objects.filter(g_code__uid__startswith=self.kwargs.get('nid')).select_related('g_code')[:1]
 		# (OK) names = Name_Test02.objects.filter(uid__endswith=self.kwargs.get('nid'))
 		# (OK) names = Name_Test.objects.all().filter(uid__endswith=self.kwargs.get('nid'))
 		# names = Name_Test.objects.all().filter(uid__startswith="0104")

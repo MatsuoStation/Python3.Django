@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.2 Update:2018.03.25" |
+#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.3 Update:2018.03.25" |
 #//+------------------------------------------------------------------+
 #//|                                  © 2014-2018 Leverages Co., Ltd. |
 #//|                            https://teratail.com/questions/15486/ |
@@ -33,9 +33,15 @@ def GoLast_g_code(line):
 	# return re.sub('(^([^,]*,){7})(.{5})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
 	return re.sub('(^([^,]*,){6})(.{5})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
 
+def GoLast_g_code_XLS(line):
+	return re.sub('(^([^,]*,){6})(.{5})(.*)', '\\1\\4,,,,,,,,,,,,,,,\\3', line, flags=re.MULTILINE)
+
 def GoLast_s_code(line):
 	# return re.sub('(^([^,]*,){17})(.{6})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
 	return re.sub('(^([^,]*,){16})(.{6})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
+
+# def GoLast_s_code_XLS(line):
+#	return re.sub('(^([^,]*,){16})(.{6})(.*)', '\\1\\4,\\3', line, flags=re.MULTILINE)
 
 
 ### ALL ###
@@ -61,16 +67,23 @@ def CalDel(line):
 #	return re.sub('(^.{5})(.*,)(.{8}$)', '\\1\\3,\\2', line, flags=re.MULTILINE)
 def DayBar(line):
 	return re.sub('(.{4})(.{2})(.{2}$)', '\\1/\\2/\\3', line, flags=re.MULTILINE)
+def DayBar_XLS(line):
+	return re.sub('(^.{9})(.{2})(.{2})', '\\1/\\2/\\3', line, flags=re.MULTILINE)
 
 # def TimeMove(line):
 #	return re.sub('(^.{14})(.*,)(.{4})', '\\1\\3,\\2', line, flags=re.MULTILINE)
 def TimeColon(line):
 	return re.sub('(.{11}$)', ':\\1', line, flags=re.MULTILINE)
+def TimeColon_XLS(line):
+	return re.sub('(^.{18})(.{2})', '\\1:\\2', line, flags=re.MULTILINE)
 
 def DayTimeMerge(line):
 	return re.sub('(.*,)(.{6})(.{10}$)', '\\1\\3 \\2', line, flags=re.MULTILINE)
 def DayTimeMove(line):
 	return re.sub('(^.{5})(.*,)(.{16}$)', '\\1\\3,\\2', line, flags=re.MULTILINE)
+
+def DayTimeMerge_XLS(line):
+	return re.sub('(^([^,]*,){1})(.{8})(.{1})(.*)', '\\1\\3 \\5', line, flags=re.MULTILINE)
 
 
 def Del5(line):
@@ -85,12 +98,72 @@ def DelEn(line):
 	return re.sub('^\n', '', line, flags=re.MULTILINE)
 
 
+
+def sxls(request):
+	# (Def) return HttpResponse("ScanXLS OK!")
+
+	Main_Dir = os.getcwd()
+	ScanXLS_Dir = os.path.join(os.path.dirname(Main_Dir), 'Devs', 'SHARP', 'ScanXLS')
+
+	for filename in glob.glob(ScanXLS_Dir + '/*.bak'):
+		path, _ = os.path.splitext(filename)
+
+		ScanXLS_ALL(filename, path + ".csv")
+
+	return HttpResponse("ScanXLS OK! filename=%s, path=%s" % (filename, path) )
+	# return HttpResponse("ScanXLS OK! ScanXLS_Dir=%s" % (ScanXLS_Dir) )
+
+
+
+def ScanXLS_ALL(in_file, out_file):
+
+	lines = []
+
+	file = open(in_file, 'r')
+	lines = file.readlines()
+	file.close()
+
+	out_file = open(out_file, 'w')
+
+	for line in lines:
+
+		### ScanXLS ###
+		### ALL ###
+		# # 伝票年月日(処理) - 時分(処理) : 結合
+		line = DayTimeMerge_XLS(line)
+
+		# 伝票年月日(処理)  : /
+		line = DayBar_XLS(line)
+		# 時分(処理) : コロン
+		line = TimeColon_XLS(line)
+
+		# (空行削除)
+		line = DelEn(line)
+
+		### End of ALL ###
+
+		### SHARP ###
+		# g_code : 後退
+		line = GoLast_g_code_XLS(line)
+		line = LastCommaDel(line)
+
+		# s_code : 後退
+		line = GoLast_s_code(line)
+		line = LastCommaDel(line)
+
+		### End of SHARP ###
+
+		out_file.write(line)
+
+	out_file.close()
+
+
 def sharp(request):
 # def mysql(request):
 # def mysql_00(request):
 
 	Main_Dir = os.getcwd()
-	SHARP_Dir = os.path.join(os.path.dirname(Main_Dir), 'Devs' , 'SHARP')
+	SHARP_Dir = os.path.join(os.path.dirname(Main_Dir), 'Devs' , 'SHARP', 'POS')
 
 	for filename in glob.glob(SHARP_Dir + '/*.bak'):
 		path, _ = os.path.splitext(filename)

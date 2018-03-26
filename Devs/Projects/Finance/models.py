@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.6.4 Update:2018.03.23" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.3 Update:2018.03.26" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -281,7 +281,7 @@ class SHARP_Test02(models.Model):
 		db_table = 'SHARP_Test02'
 		verbose_name = 'SHARP_002'
 		verbose_name_plural = verbose_name
-		ordering = ['id']
+		ordering = ['m_day']
 	id 		= models.IntegerField( verbose_name='id', unique=True, primary_key=True )	# max_length=4
 	m_day 	= models.IntegerField( verbose_name='取引日', default=0 )					# max_length=8,
 	m_time	= models.IntegerField( verbose_name='時間', default=0 )						# max_length=4,
@@ -323,7 +323,7 @@ class SHARP_Test02(models.Model):
 	# name_id = models.ForeignKey('Name_Test', on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.s_code
+		return self.g_code
 
 
 

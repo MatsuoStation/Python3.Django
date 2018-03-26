@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Admin.py - Ver.3.5.14 Update:2018.03.19" |
+#//|  "VsV.Python3.Dj.Finance.Admin.py - Ver.3.7.3 Update:2018.03.26" |
 #//+------------------------------------------------------------------+
 from django.contrib import admin
 
@@ -24,7 +24,7 @@ class Name02Admin(admin.ModelAdmin):
 class SHARP02Admin(admin.ModelAdmin):
 	# list_display = ('id', 'day', 'time', 'p_code', 'd_type', 'r_code', 'g_code', 'car_code', 'red_code', 'slip', 's_code', 'amount', 'unit', 'value', 'name_id')
 	list_display = ('id', 'm_day', 'm_time', 'p_code', 'd_type', 'r_code', 'g_code', 'car_code', 'red_code', 'slip', 's_code', 'amount', 'unit', 'value')
-	search_fields = [ 'g_code', ]
+	search_fields = [ 'id' ]
 
 
 class NameAdmin(admin.ModelAdmin):
