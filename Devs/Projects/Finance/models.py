@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.3 Update:2018.03.26" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.4 Update:2018.03.26" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -14,7 +14,7 @@ from django.db import models
 from django.conf import settings
 
 
-settings.DATETIME_FORMAT
+# settings.DATETIME_FORMAT
 
 ###* Tutorial.Dj2.0 *###
 '''
@@ -410,6 +410,44 @@ class SHARP_Test03(models.Model):
 
 	def __str__(self):
 		return self.s_code
+
+
+
+###* Tools.Items10 *### (uid.unique)
+class Items_Test10(models.Model):
+	class Meta:
+		db_table = 'Items_Test10'
+		verbose_name = 'Items_010'
+		verbose_name_plural = verbose_name
+		ordering = ['uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=5, unique=True )
+	hinmoku = models.CharField( "種別", default=None, max_length=255 )
+	h_name = models.CharField( "品目名", default=None, max_length=255 )
+	sc1 = models.CharField( "ショートカット1", default=None, max_length=255 )
+	sc2 = models.CharField( "ショートカット2", default=None, max_length=255 )
+	name = models.CharField( "正式名称", default=None, max_length=255 )
+
+	def __str__(self):
+		return self.uid
+
+
+###* Guest.Name.010 *### ( uid : unique )
+class Name_Test10(models.Model):
+	class Meta:
+		db_table = 'Name_Test10'
+		verbose_name = 'Name_010'
+		verbose_name_plural = verbose_name
+		ordering = ['uid']
+	# id = models.AutoField( "id", primary_key=True )
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=16, unique=True )
+	# uid  = models.CharField( "共通ID", default=None, unique=True, max_length=16 )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	name_furigana = models.CharField( "顧客フリガナ", default=None, max_length=255 )
+
+	def __str__(self):
+		return self.uid
 
 
 
