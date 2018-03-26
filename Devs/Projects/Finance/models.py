@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.4 Update:2018.03.26" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.5 Update:2018.03.27" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -467,7 +467,7 @@ class SHARP_Test10(models.Model):
 	r_code	= models.IntegerField( verbose_name='現金/掛コード', default=0 )				# max_length=1,
 	ss_code	= models.CharField( verbose_name='SSコード', default=None, max_length=5 )
 	# g_code	= models.CharField( verbose_name='顧客コード', default=None, max_length=4 )
-	g_code = models.ForeignKey( 'Name_Test02',
+	g_code = models.ForeignKey( 'Name_Test10',
 		verbose_name='顧客コード',
 		db_column='g_code',
 		to_field='uid',
@@ -487,7 +487,7 @@ class SHARP_Test10(models.Model):
 	pro_memo= models.CharField( verbose_name='商品メモ', default=None, max_length=11 )
 	# product	= models.CharField( verbose_name='商品', default=None, max_length=5 )
 	# s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
-	s_code	= models.ForeignKey( 'Items_Test02',
+	s_code	= models.ForeignKey( 'Items_Test10',
 		verbose_name='商品',
 		db_column='s_code',
 		to_field='uid',
