@@ -5,10 +5,13 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.3 Update:2018.03.25" |
+#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.6 Update:2018.03.27" |
 #//+------------------------------------------------------------------+
 #//|                                  © 2014-2018 Leverages Co., Ltd. |
 #//|                            https://teratail.com/questions/15486/ |
+#//+------------------------------------------------------------------+
+#//|                                           Yohei Tsubuku @kurkuru |
+#//|             https://qiita.com/kurkuru/items/9daee5e9d18d0a7154d5 |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -19,6 +22,11 @@ import re
 import numpy as np
 import os
 import glob
+
+import json
+from urllib.parse import urlparse
+import pymysql.cursors
+from itertools import chain
 
 
 def index(request):
@@ -97,6 +105,21 @@ def Del7(line):
 def DelEn(line):
 	return re.sub('^\n', '', line, flags=re.MULTILINE)
 
+
+
+def pos(request):
+	# return HttpResponse("POS OK!")
+
+	pData = np.genfromtxt("SHARP/Invoice/SHARP_Test10.csv", delimiter=",", skip_header=0, dtype='str')
+
+	# InvoiceList(売掛リスト) : 9
+	IVrows, IVcols = np.where( (pData != '9') )
+	pData = np.delete( pData, IVrows[ np.where(IVcols==4) ], 0 )
+
+	np.savetxt("SHARP/Invoice/09.csv", pData, delimiter=',', fmt='%s')
+
+
+	return HttpResponse("POS OK!")
 
 
 def sxls(request):
