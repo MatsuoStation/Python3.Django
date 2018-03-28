@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.6 Update:2018.03.27" |
+#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.7 Update:2018.03.28" |
 #//+------------------------------------------------------------------+
 #//|                                  © 2014-2018 Leverages Co., Ltd. |
 #//|                            https://teratail.com/questions/15486/ |
@@ -117,6 +117,17 @@ def pos(request):
 	pData = np.delete( pData, IVrows[ np.where(IVcols==4) ], 0 )
 
 	np.savetxt("SHARP/Invoice/09.csv", pData, delimiter=',', fmt='%s')
+
+	line[]
+
+	file = open("SHARP/Invoice/09.csv", 'r')
+	lines = file.readlines()
+	file.close()
+
+	out_file = open("SHARP/Invoice/09r.csv", 'w')
+
+	# for line in lines:
+
 
 
 	return HttpResponse("POS OK!")

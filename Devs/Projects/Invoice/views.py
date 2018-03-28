@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.3 Update:2018.03.26" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.7 Update:2018.03.27" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
@@ -21,6 +21,9 @@ from Finance.models import Name_Test, Items_Test, SHARP_Test, Value_Test
 from .forms import NameForm
 # from .forms import NameForm, MyForm
 from Finance.models import Name_Test02, SHARP_Test02
+
+from Finance.models import Invoice_Test10, Name_Test10, Items_Test10, Value_Test10
+
 
 
 class Invoice_List(ListView):
@@ -71,7 +74,40 @@ class Invoice_List(ListView):
 
 		# sharps = SHARP_Test02.objects.filter(g_code__uid__endswith='0104')
 		# sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid'))
-		sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
+		# (Ver.3.7.3.OK) sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
+		IVs = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code').select_related('s_code')
+		# IVs = Invoice_Test10.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code')
+		# names = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')[:1]
+		names = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
+		items = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('s_code')
+		# values = Value_Test10.objects.all().filter(uid="0104", s_code="10100")
+		values = Value_Test10.objects.all().filter(uid__endswith=self.kwargs.get('nid'), s_code="10100")
+
+
+		for name in names:
+			context['names'] = name.g_code.name
+		# for name in IVs:
+		#	context['names'] = name.g_code.name
+
+		# for item in items:
+		#	context['items'] = item.s_code.h_name
+		# context['values'] = values
+
+		# for i in IVs:
+		#	values = Value_Test10.objects.all().filter(uid__endswith=self.kwargs.get('nid'), s_code=i.s_code)
+
+		#	for v in values:
+		#		context['values'] = v.value
+
+
+
+		for v in values:
+			context['values'] = v.value
+
+
+
+		context['ivs'] = IVs
+
 
 		'''
 		sharps = SHARP_Test.objects.all().filter(
@@ -79,7 +115,7 @@ class Invoice_List(ListView):
 		)
 		'''
 
-		names = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')[:1]
+		# (Ver.3.7.3.OK) names = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')[:1]
 		# names = SHARP_Test02.objects.filter(g_code__uid__startswith=self.kwargs.get('nid')).select_related('g_code')[:1]
 		# (OK) names = Name_Test02.objects.filter(uid__endswith=self.kwargs.get('nid'))
 		# (OK) names = Name_Test.objects.all().filter(uid__endswith=self.kwargs.get('nid'))
@@ -90,9 +126,9 @@ class Invoice_List(ListView):
 
 		# context['sharps'] = sharps
 		# context['names'] = names
-		for name in names:
+		# (Ver.3.7.3.OK) for name in names:
 			# context['names'] = name.name
-			context['names'] = name.g_code.name
+		# (Ver.3.7.3.OK) 	context['names'] = name.g_code.name
 
 
 		# context['names'] = names
@@ -100,14 +136,14 @@ class Invoice_List(ListView):
 		# items = Items_Test.objects.filter(uid=sharps.objects.filter(s_code))
 		# context['items'] = i.h_name
 
-		for sharp in sharps:
+		# (Ver.3.7.3.OK) for sharp in sharps:
 			# items = Items_Test.objects.all().filter(uid__startswith='1010')
 			# items = Items_Test.objects.all().filter(uid__startswith='10200')
-			items = Items_Test.objects.filter(uid=sharp.s_code)
-			for i in items:
-				context['items'] = i.h_name
+		# (Ver.3.7.3.OK) 	items = Items_Test.objects.filter(uid=sharp.s_code)
+		# (Ver.3.7.3.OK) 	for i in items:
+		# (Ver.3.7.3.OK) 		context['items'] = i.h_name
 
-		context['sharps'] = sharps
+		# (Ver.3.7.3.OK) context['sharps'] = sharps
 		# context['items'] = items
 
 		#context['h_name'] = self.h_name

@@ -5,10 +5,13 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Python3.Django.Setting.py - Ver.3.6.3 Update:2018.03.17" |
+#//|    "VsV.Python3.Django.Setting.py - Ver.3.7.7 Update:2018.03.17" |
 #//+------------------------------------------------------------------+
 #//|                                           https://qiita.com/aion |
 #//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
+#//+------------------------------------------------------------------+
+#//|                                        yuhei (id:yuheiomori0718) |
+#//|                http://y0m0r.hateblo.jp/entry/20130403/1365000970 |
 #//+------------------------------------------------------------------+
 """
 Django settings for Devs project.
@@ -49,6 +52,8 @@ ALLOWED_HOSTS = ['dev.matsuostation.com', '.compute-1.amazonaws.com', '127.0.0.1
 import sys
 sys.path.insert(0, os.path.join(BASE_DIR, 'Projects'))
 
+NUMBER_GROUPING = 3
+# USE_THOUSAND_SEPARATOR = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     ### MatsuoStaion.Com ###
+    'django.contrib.humanize',              # 1,000
     'bootstrap4',                           # django-bootstrap4
     'Finance.apps.FinanceConfig',           # Finance/
 ]
@@ -81,7 +87,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'DIRS': [],
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+                    os.path.join(BASE_DIR, 'templates'),
+                    # os.path.join(BASE_DIR, 'templatestags'),
+                ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,6 +98,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'builtins': [
+                # os.path.join(BASE_DIR, 'templatetags'),
             ],
         },
     },

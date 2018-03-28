@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.6 Update:2018.03.27" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.7 Update:2018.03.28" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -92,6 +92,30 @@ class Value_Test(models.Model):
 	date02	= models.PositiveIntegerField( "設定日02", default=None )
 	value02	= models.FloatField( "価格02", default=None )
 	date03	= models.PositiveIntegerField( "設定日03", default=None )
+	value03	= models.FloatField( "価格03", default=None )
+
+	def __str__(self):
+		return self.uid
+
+###* Guest.Value *###
+class Value_Test10(models.Model):
+	class Meta:
+		db_table = 'Value_Test10'
+		verbose_name = 'Value_010'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=16 )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	# day		= models.PositiveIntegerField( "設定日", default=None )
+	m_datetime 	= models.DateTimeField( verbose_name='設定日' )
+	value	= models.FloatField( "価格", default=None )
+	date01	= models.DateTimeField( "設定日01")
+	value01	= models.FloatField( "価格01", default=None )
+	date02	= models.DateTimeField( "設定日02")
+	value02	= models.FloatField( "価格02", default=None )
+	date03	= models.DateTimeField( "設定日03")
 	value03	= models.FloatField( "価格03", default=None )
 
 	def __str__(self):
@@ -524,7 +548,7 @@ class Invoice_Test10(models.Model):
 		db_table = 'Invoice_Test10'
 		verbose_name = 'Invoice_010'
 		verbose_name_plural = verbose_name
-		ordering = ['id']
+		ordering = ['m_datetime']
 	id 		= models.IntegerField( verbose_name='id', unique=True, primary_key=True )	# max_length=4
 	m_datetime 	= models.DateTimeField( verbose_name='取引日時' )		# 0000-00-00 00:00
 	# m_day 	= models.IntegerField( verbose_name='取引日', default=0 )					# max_length=8,
@@ -561,8 +585,9 @@ class Invoice_Test10(models.Model):
 		related_name='invoice10',
 		on_delete=models.CASCADE
 	)
-	amount	= models.IntegerField( verbose_name='数量', default=0 )						# max_length=8,
-	unit	= models.IntegerField( verbose_name='単価', default=0 )						# max_length=8,
+	# amount	= models.IntegerField( verbose_name='数量', default=0 )						# max_length=8,
+	amount	= models.FloatField( verbose_name='数量', default=0 )						# max_length=8,
+	unit	= models.FloatField( verbose_name='単価', default=0 )						# max_length=8,
 	value	= models.IntegerField( verbose_name='税別金額', default=0 )					# max_length=9,
 	tax_code= models.IntegerField( verbose_name='税区分', default=0 )					# max_length=1,
 	tax 	= models.IntegerField( verbose_name='消費税', default=0 )					# max_length=9,
