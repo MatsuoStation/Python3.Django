@@ -81,21 +81,62 @@
             <tr>
               <td width="2">月</td>
               <td width="2">日</td>
-              <td>給油SS</td>
-              <td>車番</td>
-              <td>商品コード</td>
+              <td width="5">給油SS</td>
+              <td width="4">車番</td>
+              <td width="5">商品ｺｰﾄﾞ</td>
               <td>商品名</td>
               <td>数量</td>
               <td>単価</td>
               <td>金額</td>
               <td>税区分</td>
-              <td>車両別合計</td>
+              <!--td>車両別合計</td-->
+              <td>税込金額</td>
               <td>備考</td>
-              <td>赤伝</td>
+              <!--td>赤伝</td-->
             </tr>
           </thead>
           <thead>
             {% for iv in ivs %}
+            {% if iv.s_code.uid == "10200" %}
+            <tr>
+              <td>{{ iv.m_datetime.date.month }}</td>
+              <td>{{ iv.m_datetime.date.day }}</td>
+              <td>{{ iv.ss_code|change_int }}</td>
+              <td>{{ iv.car_code }}</td>
+              <td>{{ iv.s_code  }}</td>
+              <td>{{ iv.s_code.h_name }}</td>
+              <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
+              <!-- td>{{ values }}</td-->
+              <!-- td>{{ iv.amount|notax:values }}</td -->
+
+              <td>{{ iv.g_code|keiyu_code_value:iv.s_code|floatformat:2 }}</td>
+              <td>{{ iv.g_code|keiyu_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
+
+              <td>{{ iv.s_code.uid|s_tax }}</td>
+              <td></td>
+              <td>{{ iv.g_code }} / {{ iv.g_code.name }}</td>
+              <!--td>{{ iv.red_code }}</td-->
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>軽油税</td>
+              <td></td>
+              <!-- td>{{ values }}</td-->
+              <!-- td>{{ iv.amount|notax:values }}</td -->
+
+              <td></td>
+              <td>{{ iv.g_code|k_tax:iv.amount|red_value:iv.red_code|intcomma }}</td>
+
+              <td>内</td>
+              <td></td>
+              <td>{{ iv.g_code }} / {{ iv.g_code.name }}</td>
+              <!--td>{{ iv.red_code }}</td-->
+            </tr>
+            {% else %}
             <tr>
               <td>{{ iv.m_datetime.date.month }}</td>
               <td>{{ iv.m_datetime.date.day }}</td>
@@ -112,13 +153,14 @@
               <td>{{ iv.value|intcomma }}</td>
               {% else %}
               <td>{{ iv.g_code|s_code_value:iv.s_code|floatformat:2 }}</td>
-              <td>{{ iv.g_code|s_code_value:iv.s_code|notax:iv.amount|intcomma }}</td>
+              <td>{{ iv.g_code|s_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
               {% endif %}
               <td>{{ iv.s_code.uid|s_tax }}</td>
               <td></td>
               <td>{{ iv.g_code }} / {{ iv.g_code.name }}</td>
-              <td>{{ iv.red_code }}</td>
+              <!--td>{{ iv.red_code }}</td-->
             </tr>
+            {% endif %}
             {% endfor %}
           </thead>
         </table>
