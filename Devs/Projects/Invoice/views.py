@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.7 Update:2018.03.27" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.9 Update:2018.03.29" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
@@ -23,7 +23,7 @@ from .forms import NameForm
 from Finance.models import Name_Test02, SHARP_Test02
 
 from Finance.models import Invoice_Test10, Name_Test10, Items_Test10, Value_Test10
-
+from Finance.models import Invoice_Test20, Name_Test20
 
 
 class Invoice_List(ListView):
@@ -75,13 +75,17 @@ class Invoice_List(ListView):
 		# sharps = SHARP_Test02.objects.filter(g_code__uid__endswith='0104')
 		# sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid'))
 		# (Ver.3.7.3.OK) sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
-		IVs = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code').select_related('s_code')
+		# (Ver.3.7.7.OK) IVs = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code').select_related('s_code')
+		IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code')
 		# IVs = Invoice_Test10.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code')
 		# names = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')[:1]
-		names = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
-		items = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('s_code')
+		# (Ver.3.7.7.OK) names = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
+		names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
+		# (Ver.3.7.7.OK) items = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('s_code')
+		# items = Invoice_Test20.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('s_code')
 		# values = Value_Test10.objects.all().filter(uid="0104", s_code="10100")
-		values = Value_Test10.objects.all().filter(uid__endswith=self.kwargs.get('nid'), s_code="10100")
+		# (Ver.3.7.7.OK) values = Value_Test10.objects.all().filter(uid__endswith=self.kwargs.get('nid'), s_code="10100")
+		# values = Value_Test20.objects.all().filter(uid__endswith=self.kwargs.get('nid'), s_code="10100")
 
 
 		for name in names:
@@ -101,8 +105,8 @@ class Invoice_List(ListView):
 
 
 
-		for v in values:
-			context['values'] = v.value
+		# for v in values:
+		#	context['values'] = v.value
 
 
 

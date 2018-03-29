@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.8 Update:2018.03.27" |
+#//|  "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.9 Update:2018.03.29" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -17,7 +17,7 @@ from django import template
 register = template.Library()
 
 import math
-from Finance.models import Value_Test10
+from Finance.models import Value_Test10, Value_Test20
 
 
 @register.filter("change_int")
@@ -28,7 +28,8 @@ def change_int(value):
 @register.filter("s_code_value")
 def s_code_value(gc, sc):
 
-	s_values = Value_Test10.objects.all().filter(uid__endswith=gc, s_code=sc)
+	# (Ver.3.7.8.OK) s_values = Value_Test10.objects.all().filter(uid__endswith=gc, s_code=sc)
+	s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc)
 
 	for v in s_values:
 		sv = v.value
@@ -38,7 +39,8 @@ def s_code_value(gc, sc):
 @register.filter("keiyu_code_value")
 def s_code_value(gc, sc):
 
-	s_values = Value_Test10.objects.all().filter(uid__endswith=gc, s_code=sc)
+	# (Ver.3.7.8.OK) s_values = Value_Test10.objects.all().filter(uid__endswith=gc, s_code=sc)
+	s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc)
 
 	for v in s_values:
 		sv = v.value - 32.1

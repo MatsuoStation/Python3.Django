@@ -108,6 +108,24 @@ ENV/
 # MatsuoStation.Com
 .DS_Store
 .local
+Django_Setup.*
+BackUp/
+MySQL_CSV_Setup.txt
 Devs/Projects/Finance/management/
-Devs/Projects/Finance/migrations/
+Devs/Projects/Finance/migrations*/
+Devs/Projects/Finance/models.py_*
+Devs/Projects/Finance/views_*.py
 db.sqlite3
+Devs/templates/list_*.html
+Devs/templates/base.html
+Devs/templates/invoice00.html
+Devs/templates/list00.html
+Devs/templates/index00.html
+Devs/templates/index_*.html
+Devs/templatetags/__*
+Devs/templatetags/math.py
+Devs/Guest/
+Devs/Tools/
+Devs/SHARP/
+Devs/ScanXLS/
+Devs/Visa/

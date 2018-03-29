@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.7 Update:2018.03.28" |
+#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.9 Update:2018.03.29" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -97,7 +97,8 @@ class Value_Test(models.Model):
 	def __str__(self):
 		return self.uid
 
-###* Guest.Value *###
+
+###* Guest.Value10 *###
 class Value_Test10(models.Model):
 	class Meta:
 		db_table = 'Value_Test10'
@@ -106,6 +107,31 @@ class Value_Test10(models.Model):
 		ordering = ['-uid']
 	id = models.AutoField( "id", primary_key=True )
 	uid  = models.CharField( "共通ID", default=None, max_length=16 )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	# day		= models.PositiveIntegerField( "設定日", default=None )
+	m_datetime 	= models.DateTimeField( verbose_name='設定日' )
+	value	= models.FloatField( "価格", default=None )
+	date01	= models.DateTimeField( "設定日01")
+	value01	= models.FloatField( "価格01", default=None )
+	date02	= models.DateTimeField( "設定日02")
+	value02	= models.FloatField( "価格02", default=None )
+	date03	= models.DateTimeField( "設定日03")
+	value03	= models.FloatField( "価格03", default=None )
+
+	def __str__(self):
+		return self.uid
+
+
+###* Guest.Value20 *### (uid : IntegerField)
+class Value_Test20(models.Model):
+	class Meta:
+		db_table = 'Value_Test20'
+		verbose_name = 'Value_020'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.IntegerField( "共通ID", default=None )
 	name = models.CharField( "顧客名", default=None, max_length=255 )
 	s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
 	# day		= models.PositiveIntegerField( "設定日", default=None )
@@ -473,6 +499,89 @@ class Name_Test10(models.Model):
 	def __str__(self):
 		return self.uid
 
+###* Guest.Name.020 *### ( uid : IntegerField, unique )
+class Name_Test20(models.Model):
+	class Meta:
+		db_table = 'Name_Test20'
+		verbose_name = 'Name_020'
+		verbose_name_plural = verbose_name
+		ordering = ['uid']
+	# id = models.AutoField( "id", primary_key=True )
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.IntegerField( "共通ID", default=None, unique=True )
+	# uid  = models.CharField( "共通ID", default=None, unique=True, max_length=16 )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	name_furigana = models.CharField( "顧客フリガナ", default=None, max_length=255 )
+
+	def __str__(self):
+		return self.uid
+
+
+###* SHARP.020 *### ( m_datetime : DateTimeField, g_code : ForeignKeyField, s_code : ForeignKeyField )
+class SHARP_Test20(models.Model):
+	class Meta:
+		db_table = 'SHARP_Test20'
+		verbose_name = 'SHARP_020'
+		verbose_name_plural = verbose_name
+		ordering = ['id']
+	id 		= models.IntegerField( verbose_name='id', unique=True, primary_key=True )	# max_length=4
+	m_datetime 	= models.DateTimeField( verbose_name='取引日時' )		# 0000-00-00 00:00
+	# m_day 	= models.IntegerField( verbose_name='取引日', default=0 )					# max_length=8,
+	# m_time	= models.IntegerField( verbose_name='時間', default=0 )						# max_length=4,
+	p_code	= models.CharField( verbose_name='処理区分', default=None, max_length=2 )
+	d_type	= models.CharField( verbose_name='データ種類', default=None, max_length=3 )
+	r_code	= models.IntegerField( verbose_name='現金/掛コード', default=0 )				# max_length=1,
+	ss_code	= models.CharField( verbose_name='SSコード', default=None, max_length=5 )
+	# g_code	= models.CharField( verbose_name='顧客コード', default=None, max_length=4 )
+	g_code = models.ForeignKey( 'Name_Test20',
+		verbose_name='顧客コード',
+		db_column='g_code',
+		to_field='uid',
+		related_name='sharp20',
+		on_delete=models.CASCADE
+	)
+	# g_code = models.OneToOneField('Name_Test02', verbose_name='顧客コード', db_column='g_code', to_field='uid', related_name='sharp03', on_delete=models.CASCADE)
+	car_code= models.CharField( verbose_name='顧客車番', default=None, max_length=4 )
+	memo	= models.CharField( verbose_name='メモ', default=None, max_length=3 )
+	pw_code	= models.CharField( verbose_name='暗証番号', default=None, max_length=4 )
+	exp_day	= models.CharField( verbose_name='有効期限', default=None, max_length=6 )
+	staff	= models.CharField( verbose_name='担当コード', default=None, max_length=3 )
+	red_code= models.IntegerField( verbose_name='赤伝', default=0 )						# max_length=1,
+	slip	= models.CharField( verbose_name='伝票番号', default=None, max_length=4 )
+	pump	= models.CharField( verbose_name='ポンプ番号', default=None, max_length=3 )
+	nozzle	= models.IntegerField( verbose_name='ノズル番号', default=0 )					# max_length=1,
+	pro_memo= models.CharField( verbose_name='商品メモ', default=None, max_length=11 )
+	# product	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	# s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	s_code	= models.ForeignKey( 'Items_Test10',
+		verbose_name='商品',
+		db_column='s_code',
+		to_field='uid',
+		related_name='sharp20',
+		on_delete=models.CASCADE
+	)
+	amount	= models.IntegerField( verbose_name='数量', default=0 )						# max_length=8,
+	unit	= models.IntegerField( verbose_name='単価', default=0 )						# max_length=8,
+	value	= models.IntegerField( verbose_name='税別金額', default=0 )					# max_length=9,
+	tax_code= models.IntegerField( verbose_name='税区分', default=0 )					# max_length=1,
+	tax 	= models.IntegerField( verbose_name='消費税', default=0 )					# max_length=9,
+	oil_tax	= models.IntegerField( verbose_name='軽油税', default=0 )					# max_length=9,
+	point	= models.IntegerField( verbose_name='ポイント', default=0 )					# max_length=7,
+	pay_code= models.IntegerField( verbose_name='支払区分', default=0 )					# max_length=1,
+	auth_no	= models.CharField( verbose_name='承認No', default=None, max_length=10 )
+	allot	= models.IntegerField( verbose_name='割賦回数', default=0 )					# max_length=2,
+	coupon	= models.IntegerField( verbose_name='クーポン割引区分', default=0 )			# max_length=1,
+	dis_unit= models.IntegerField( verbose_name='割引単価', default=0 )					# max_length=5,
+	d_value	= models.IntegerField( verbose_name='割引金額', default=0 )					# max_length=6,
+	c_day	= models.IntegerField( verbose_name='伝票年月日(修正)', default=0 )			# max_length=8,
+	c_no	= models.CharField( verbose_name='伝票No(修正)', default=None, max_length=4 )
+	sub_data= models.CharField( verbose_name='サブデータ(修正)', default=None, max_length=8 )
+	ss_dev	= models.CharField( verbose_name='SSコード(修正)', default=None, max_length=10 )
+	# name_id = models.ForeignKey('Name_Test', on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.s_code
+
 
 
 ###* SHARP.010 *### ( m_datetime : DateTimeField, g_code : ForeignKeyField, s_code : ForeignKeyField )
@@ -520,6 +629,74 @@ class SHARP_Test10(models.Model):
 	)
 	amount	= models.IntegerField( verbose_name='数量', default=0 )						# max_length=8,
 	unit	= models.IntegerField( verbose_name='単価', default=0 )						# max_length=8,
+	value	= models.IntegerField( verbose_name='税別金額', default=0 )					# max_length=9,
+	tax_code= models.IntegerField( verbose_name='税区分', default=0 )					# max_length=1,
+	tax 	= models.IntegerField( verbose_name='消費税', default=0 )					# max_length=9,
+	oil_tax	= models.IntegerField( verbose_name='軽油税', default=0 )					# max_length=9,
+	point	= models.IntegerField( verbose_name='ポイント', default=0 )					# max_length=7,
+	pay_code= models.IntegerField( verbose_name='支払区分', default=0 )					# max_length=1,
+	auth_no	= models.CharField( verbose_name='承認No', default=None, max_length=10 )
+	allot	= models.IntegerField( verbose_name='割賦回数', default=0 )					# max_length=2,
+	coupon	= models.IntegerField( verbose_name='クーポン割引区分', default=0 )			# max_length=1,
+	dis_unit= models.IntegerField( verbose_name='割引単価', default=0 )					# max_length=5,
+	d_value	= models.IntegerField( verbose_name='割引金額', default=0 )					# max_length=6,
+	c_day	= models.IntegerField( verbose_name='伝票年月日(修正)', default=0 )			# max_length=8,
+	c_no	= models.CharField( verbose_name='伝票No(修正)', default=None, max_length=4 )
+	sub_data= models.CharField( verbose_name='サブデータ(修正)', default=None, max_length=8 )
+	ss_dev	= models.CharField( verbose_name='SSコード(修正)', default=None, max_length=10 )
+	# name_id = models.ForeignKey('Name_Test', on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.s_code
+
+
+
+###* Invoice.020 *### ( m_datetime : DateTimeField, g_code : ForeignKeyField, s_code : ForeignKeyField )
+class Invoice_Test20(models.Model):
+	class Meta:
+		db_table = 'Invoice_Test20'
+		verbose_name = 'Invoice_020'
+		verbose_name_plural = verbose_name
+		ordering = ['m_datetime']
+	id 		= models.IntegerField( verbose_name='id', unique=True, primary_key=True )	# max_length=4
+	m_datetime 	= models.DateTimeField( verbose_name='取引日時' )		# 0000-00-00 00:00
+	# m_day 	= models.IntegerField( verbose_name='取引日', default=0 )					# max_length=8,
+	# m_time	= models.IntegerField( verbose_name='時間', default=0 )						# max_length=4,
+	p_code	= models.CharField( verbose_name='処理区分', default=None, max_length=2 )
+	d_type	= models.CharField( verbose_name='データ種類', default=None, max_length=3 )
+	r_code	= models.IntegerField( verbose_name='現金/掛コード', default=0 )				# max_length=1,
+	ss_code	= models.CharField( verbose_name='SSコード', default=None, max_length=5 )
+	# g_code	= models.CharField( verbose_name='顧客コード', default=None, max_length=4 )
+	g_code = models.ForeignKey( 'Name_Test20',
+		verbose_name='顧客コード',
+		db_column='g_code',
+		to_field='uid',
+		related_name='invoice20',
+		on_delete=models.CASCADE
+	)
+	# g_code = models.OneToOneField('Name_Test02', verbose_name='顧客コード', db_column='g_code', to_field='uid', related_name='sharp03', on_delete=models.CASCADE)
+	car_code= models.CharField( verbose_name='顧客車番', default=None, max_length=4 )
+	memo	= models.CharField( verbose_name='メモ', default=None, max_length=3 )
+	pw_code	= models.CharField( verbose_name='暗証番号', default=None, max_length=4 )
+	exp_day	= models.CharField( verbose_name='有効期限', default=None, max_length=6 )
+	staff	= models.CharField( verbose_name='担当コード', default=None, max_length=3 )
+	red_code= models.IntegerField( verbose_name='赤伝', default=0 )						# max_length=1,
+	slip	= models.CharField( verbose_name='伝票番号', default=None, max_length=4 )
+	pump	= models.CharField( verbose_name='ポンプ番号', default=None, max_length=3 )
+	nozzle	= models.IntegerField( verbose_name='ノズル番号', default=0 )					# max_length=1,
+	pro_memo= models.CharField( verbose_name='商品メモ', default=None, max_length=11 )
+	# product	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	# s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	s_code	= models.ForeignKey( 'Items_Test10',
+		verbose_name='商品',
+		db_column='s_code',
+		to_field='uid',
+		related_name='invoice20',
+		on_delete=models.CASCADE
+	)
+	# amount	= models.IntegerField( verbose_name='数量', default=0 )						# max_length=8,
+	amount	= models.FloatField( verbose_name='数量', default=0 )						# max_length=8,
+	unit	= models.FloatField( verbose_name='単価', default=0 )						# max_length=8,
 	value	= models.IntegerField( verbose_name='税別金額', default=0 )					# max_length=9,
 	tax_code= models.IntegerField( verbose_name='税区分', default=0 )					# max_length=1,
 	tax 	= models.IntegerField( verbose_name='消費税', default=0 )					# max_length=9,
