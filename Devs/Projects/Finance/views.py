@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.9 Update:2018.03.29" |
+#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.10 Update:2018.03.29" |
 #//+------------------------------------------------------------------+
 #//|                                  © 2014-2018 Leverages Co., Ltd. |
 #//|                            https://teratail.com/questions/15486/ |
@@ -96,11 +96,11 @@ def DayTimeMerge_XLS(line):
 
 def Del5(line):
 	# return re.sub('(^([^,]*,){29})(.{13})(.*)', '\\1\\4', line, flags=re.MULTILINE)
-	return re.sub('(^([^,]*,){27})(.{16})(.*)', '\\1\\4', line, flags=re.MULTILINE)
+	return re.sub('(^([^,]*,){28})(.{13})(.*)', '\\1\\4', line, flags=re.MULTILINE)
 
 def Del7(line):
 	# return re.sub('(^([^,]*,){32})(.{65})(.*)', '\\1\\4', line, flags=re.MULTILINE)
-	return re.sub('(^([^,]*,){30})(.{46})(.*)', '\\1\\4', line, flags=re.MULTILINE)
+	return re.sub('(^([^,]*,){31})(.{65})(.*)', '\\1\\4', line, flags=re.MULTILINE)
 
 def DelEn(line):
 	return re.sub('^\n', '', line, flags=re.MULTILINE)
@@ -110,7 +110,8 @@ def DelEn(line):
 def pos(request):
 	# return HttpResponse("POS OK!")
 
-	pData = np.genfromtxt("SHARP/Invoice/SHARP_Test10.csv", delimiter=",", skip_header=0, dtype='str')
+	# pData = np.genfromtxt("SHARP/Invoice/SHARP_Test10.csv", delimiter=",", skip_header=0, dtype='str')
+	pData = np.genfromtxt("SHARP/Invoice/SHARP_Test20.csv", delimiter=",", skip_header=0, dtype='str')
 
 	# InvoiceList(売掛リスト) : 9
 	IVrows, IVcols = np.where( (pData != '9') )
@@ -118,13 +119,13 @@ def pos(request):
 
 	np.savetxt("SHARP/Invoice/09.csv", pData, delimiter=',', fmt='%s')
 
-	line = []
+	# line = []
 
-	file = open("SHARP/Invoice/09.csv", 'r')
-	lines = file.readlines()
-	file.close()
+	# file = open("SHARP/Invoice/09.csv", 'r')
+	# lines = file.readlines()
+	# file.close()
 
-	out_file = open("SHARP/Invoice/09r.csv", 'w')
+	# out_file = open("SHARP/Invoice/09r.csv", 'w')
 
 	# for line in lines:
 
