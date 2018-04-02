@@ -93,6 +93,7 @@
               <td>税込金額</td>
               <td>備考</td>
               <td>赤伝</td>
+              <td>担当者</td>
             </tr>
           </thead>
           <thead>
@@ -114,6 +115,7 @@
               <td></td>
               <td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td>
               <td>{{ iv.red_code }}</td>
+              <td>{{ iv.staff }}</td>
             </tr>
             <tr>
               <td></td>
@@ -131,6 +133,7 @@
               <td></td>
               <td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td>
               <td>{{ iv.red_code }}</td>
+              <td>{{ iv.staff }}</td>
             </tr>
 
             {% else %}
@@ -145,8 +148,13 @@
 
 
               {% if iv.value %}
+              {% if iv.unit != 0 %}
               <td>{{ iv.unit }}</td>
               <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
+              {% else %}
+              <td>{{ iv.value|check_unit:iv.amount }}</td>
+              <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
+              {% endif %}
 
               {% else %}
               {% if iv.g_code.uid|s_code_value:iv.s_code  %}
@@ -163,6 +171,7 @@
               <td></td>
               <td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td>
               <td>{{ iv.red_code }}</td>
+              <td>{{ iv.staff }}</td>
             </tr>
             {% endif %}
             {% endfor %}
