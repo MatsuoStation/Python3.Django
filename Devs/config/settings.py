@@ -5,13 +5,17 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Python3.Django.Setting.py - Ver.3.7.7 Update:2018.03.17" |
+#//|   "VsV.Python3.Django.Setting.py - Ver.3.7.13 Update:2018.03.17" |
 #//+------------------------------------------------------------------+
 #//|                                           https://qiita.com/aion |
 #//|               https://qiita.com/aion/items/ca375efac5b90deed382/ |
 #//+------------------------------------------------------------------+
 #//|                                        yuhei (id:yuheiomori0718) |
 #//|                http://y0m0r.hateblo.jp/entry/20130403/1365000970 |
+#//+------------------------------------------------------------------+
+#//|ShineSpark (https://github.com/shinespark/django2_tutorial_docker)|
+#//|         http://shinespark.hatenablog.com/entry/2018/03/24/090000 |
+#//|                   https://github.com/jrief/django-sass-processor |
 #//+------------------------------------------------------------------+
 """
 Django settings for Devs project.
@@ -67,6 +71,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',              # 1,000
     'bootstrap4',                           # django-bootstrap4
     'Finance.apps.FinanceConfig',           # Finance/
+    'sass_processor',                       # sass(For Bootstrap4)
 ]
 
 MIDDLEWARE = [
@@ -189,3 +194,11 @@ STATIC_URL = '/static/'
 
 ### MatsuoStation.Com ###
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+# Sass(SCSS)
+SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
+SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.(sass|scss)$'
+SASS_PRECISION = 8
+SASS_OUTPUT_STYLE = 'compressed'
+SASS_TEMPLATE_EXTS = ['.html', '.haml']
