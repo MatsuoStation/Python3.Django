@@ -37,4 +37,6 @@ urlpatterns = [
     # path('<int:nid>/', views.form_invoice, name='form_invoice')
     # path('form/', views.form_name, name='form_name')
     # path('form/', views.form_test, name='form_test')
+    path('<int:nid>/page<int:page>', views.Invoice_List.as_view(), name='inovice_list_paginated'),
+    # (NG) path('<int:nid>/page<int:page>', PaginatedView.as_view()),
 ]

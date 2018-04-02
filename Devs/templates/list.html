@@ -183,6 +183,26 @@
         {% endfor %}
         <p>{{ Yuki }}</p>
         -->
+
+        <div class="pagination">
+        <span class="step-links">
+          {% if ivs.has_previous %}
+            <a href="?page=1">&laquo; 最初頁へ&nbsp;</a>
+            <a href="?page={{ ivs.previous_page_number }}">|&nbsp;前頁へ&nbsp;|&nbsp;</a>&nbsp;
+          {% endif %}
+
+          <span class="current">
+            Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+          </span>
+
+          {% if ivs.has_next %}
+            &nbsp;<a href="?page={{ ivs.next_page_number }}">&nbsp;|&nbsp;次頁へ&nbsp;|</a>
+            <a href="?page={{ ivs.paginator.num_pages }}">&nbsp;&nbsp;最終頁へ &raquo;</a>
+          {% endif %}
+
+        </span>
+        </div>
+
       </div>
 
     </main><!-- /.container -->

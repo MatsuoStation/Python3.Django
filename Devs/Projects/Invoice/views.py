@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.11 Update:2018.03.29" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.12 Update:2018.03.29" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
@@ -25,6 +25,8 @@ from Finance.models import Name_Test02, SHARP_Test02
 from Finance.models import Invoice_Test10, Name_Test10, Items_Test10, Value_Test10
 from Finance.models import Invoice_Test20, Name_Test20
 
+from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
+
 
 class Invoice_List(ListView):
 
@@ -34,7 +36,8 @@ class Invoice_List(ListView):
 	template_name = 'list.html'
 	# (OK) context_object_name = "sharptb"
 	context_object_name = "nametb"
-	# paginate_by = 10
+	paginate_by = 10
+
 
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
@@ -108,7 +111,16 @@ class Invoice_List(ListView):
 		# for v in values:
 		#	context['values'] = v.value
 
+		paginator = Paginator(IVs, 10)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
 
+		try:
+			IVs = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			IVs = paginator.page(1)
 
 		context['ivs'] = IVs
 
