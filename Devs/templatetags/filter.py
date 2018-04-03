@@ -5,10 +5,13 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.11 Update:2018.03.29" |
+#//| "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.14 Update:2018.03.29" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
+#//+------------------------------------------------------------------+
+#//|               id:domodomodomo http://nihaoshijie.hatenadiary.jp/ |
+#//|        http://nihaoshijie.hatenadiary.jp/entry/2017/12/19/013413 |
 #//+------------------------------------------------------------------+
 #//|                                                            @Usek |
 #//|                https://qiita.com/Usek/items/53527feba2adcb386aa8 |
@@ -40,7 +43,7 @@ def s_code_value(gc, sc):
 		return sv
 
 @register.filter("keiyu_code_value")
-def s_code_value(gc, sc):
+def keiyu_code_value(gc, sc):
 
 	# (Ver.3.7.8.OK) s_values = Value_Test10.objects.all().filter(uid__endswith=gc, s_code=sc)
 	s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc)
@@ -73,15 +76,6 @@ def check_unit(value, amount):
 	return units
 	'''
 
-@register.filter("check_units")
-def check_units(unit, value):
-
-	# if isinstanc(value/unit, bool):
-
-	# return int(values)
-	return unit
-
-
 
 @register.filter("red_value")
 def red_value(value, rv):
@@ -96,15 +90,35 @@ def red_value(value, rv):
 @register.filter("notax")
 def notax(value, args):
 	# values = math.floor(value * args / 100)
-	values = -(-value * args / 100)
+	# values = -(-value * args / 100)
+	values = round(value * args / 100, 0)
 	return int(values)
+
+@register.filter("intax")
+def intax(value, args):
+	if args != 0:
+		values = args + value
+	else:
+		# values = -(-value * 0.08) + value
+		values = round(value * 0.08, 0) + value
+
+	return int(values)
+
+	# values = math.floor(value * args / 100)
+	# values = -(-value * args / 100)
+	# return int(values)
 
 
 @register.filter("s_tax")
-def s_tax(sc):
+def s_tax(sc, tax_value):
+# def s_tax(sc):
 
-	if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10500":
+	# if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10500":
+	if sc == "10000" or sc == "10100" or sc == "10200":
 		return str("")
+	elif tax_value > 0:
+		return str("")
+
 	else:
 		return str("内")
 
@@ -114,6 +128,29 @@ def s_tax(sc):
 def k_tax(value, args):
 	values = math.floor(32.1 * args / 100)
 	return int(values)
+
+@register.filter("c_tax")
+def c_tax(value, args ):
+
+	if args != 0:
+		values = args
+	else:
+		# values = -(-value * 0.08)
+		values = round(value * 0.08, 0)
+
+	return int(values)
+
+@register.filter("o_tax")
+def o_tax(value, args ):
+
+	if args != 0:
+		values = args
+	else:
+		# values = -(-value * 0.08)
+		values = round(value - (value / 1.08), 0)
+
+	return int(values)
+
 
 
 

@@ -1,7 +1,5 @@
 {% load humanize %}
-
 {% load static %}
-
 {% load filter %}
 
 
@@ -81,99 +79,146 @@
             <tr>
               <td width="2">月</td>
               <td width="2">日</td>
-              <td width="5">給油SS</td>
+              <td width="5">SS</td>
               <td width="4">車番</td>
-              <td width="5">商品コード</td>
+              <td width="5">Scode</td>
               <td>商品名</td>
               <td>数量</td>
               <td>単価</td>
               <td>金額</td>
               <td>税区分</td>
               <!--td>車両別合計</td-->
-              <td>税込金額</td>
+              <td>消費税</td>
+              <td>税込</td>
               <td>備考</td>
               <td>赤伝</td>
-              <td>担当者</td>
+              <!-- td>担当者</td-->
             </tr>
           </thead>
           <thead>
             {% for iv in ivs %}
+
+            <!-- ### 軽油 : True -->
             {% if iv.s_code.uid == "10200" %}
             <tr>
+              <!-- 月 - 日 - 給油SS - 車番 -->
               <td>{{ iv.m_datetime.date.month }}</td>
               <td>{{ iv.m_datetime.date.day }}</td>
               <td>{{ iv.ss_code|change_int }}</td>
               <td>{{ iv.car_code }}</td>
+              <!-- 商品コード - 商品名 -->
               <td>{{ iv.s_code  }}</td>
               <td>{{ iv.s_code.h_name }}</td>
+              <!-- 数量 -->
               <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
-
+              <!-- 単価 - 金額 -->
               <td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|floatformat:2 }}</td>
               <td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
-
-              <td>{{ iv.s_code.uid|s_tax }}</td>
-              <td></td>
-              <td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td>
+              <!-- 税区分 - 消費税 - 税込 -->
+              <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+              <td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|c_tax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+              <td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|intax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+              <!-- 備考 - 赤伝 - 担当者 -->
+              <td>{{ iv.g_code.uid }}</td>
+              <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td-->
               <td>{{ iv.red_code }}</td>
-              <td>{{ iv.staff }}</td>
+              <!-- td>{{ iv.staff }}</td -->
             </tr>
             <tr>
+              <!-- 月 - 日 - 給油SS - 車番 -->
               <td></td>
               <td></td>
               <td></td>
               <td></td>
+              <!-- 商品コード - 商品名 -->
               <td></td>
               <td>軽油税</td>
+              <!-- 数量 -->
               <td></td>
-
+              <!-- 単価 - 金額 -->
               <td></td>
               <td>{{ iv.g_code.uid|k_tax:iv.amount|red_value:iv.red_code|intcomma }}</td>
-
+              <!-- 税区分 - 消費税 - 税込 -->
               <td>内</td>
               <td></td>
-              <td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td>
+              <td>{{ iv.g_code.uid|k_tax:iv.amount|red_value:iv.red_code|intcomma }}</td>
+              <!-- 備考 - 赤伝 - 担当者 -->
+              <td>{{ iv.g_code.uid }}</td>
+              <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
               <td>{{ iv.red_code }}</td>
-              <td>{{ iv.staff }}</td>
+              <!-- td>{{ iv.staff }}</td -->
             </tr>
 
             {% else %}
             <tr>
+              <!-- 月 - 日 - 給油SS - 車番 -->
               <td>{{ iv.m_datetime.date.month }}</td>
               <td>{{ iv.m_datetime.date.day }}</td>
               <td>{{ iv.ss_code|change_int }}</td>
               <td>{{ iv.car_code }}</td>
+              <!-- 商品コード - 商品名 -->
               <td>{{ iv.s_code  }}</td>
               <td>{{ iv.s_code.h_name }}</td>
+              <!-- 数量 -->
               <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
 
-
+              <!-- ### 金額 : True -->
               {% if iv.value %}
-              {% if iv.unit != 0 %}
-              <td>{{ iv.unit }}</td>
-              <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
-              {% else %}
-              <td>{{ iv.value|check_unit:iv.amount }}</td>
-              <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
-              {% endif %}
 
-              {% else %}
-              {% if iv.g_code.uid|s_code_value:iv.s_code  %}
-              <td>{{ iv.g_code.uid|s_code_value:iv.s_code|floatformat:2 }}</td>
-              <td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
+                <!-- ### 単価 : True -->
+                {% if iv.unit != 0 %}
+                  <!-- 単価 - 金額 -->
+                  <td>{{ iv.unit }}</td>
+                  <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
+                  <!-- 税区分 - 消費税 - 税込 -->
+                  <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                  <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
+                  <td>{{ iv.value|add:iv.tax|intcomma }}</td>
 
-              {% else %}
-              <td>None</td>
-              <td></td>
-              {% endif %}
-              {% endif %}
+                <!-- ### 単価 : False -->
+                {% else %}
+                  <!-- 単価 - 金額 -->
+                  <td>{{ iv.value|add:iv.tax|check_unit:iv.amount|floatformat:2 }}</td>
+                  <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
+                  <!-- 税区分 - 消費税 - 税込 -->
+                  <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                  <td>{{ iv.value|o_tax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+                  <td>{{ iv.value|add:iv.tax|intcomma }}</td>
+                {% endif %}
 
-              <td>{{ iv.s_code.uid|s_tax }}</td>
-              <td></td>
-              <td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td>
+              <!-- ### 金額 : False -->
+              {% else %}
+
+                <!-- ### 商品コード : True -->
+                {% if iv.g_code.uid|s_code_value:iv.s_code  %}
+                  <!-- 単価 - 金額 -->
+                  <td>{{ iv.g_code.uid|s_code_value:iv.s_code|floatformat:2 }}</td>
+                  <td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
+                  <!-- 税区分 - 消費税 - 税込 -->
+                  <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                  <td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|c_tax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+                  <td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|intax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+
+                <!-- ### 商品コード : False -->
+                {% else %}
+                  <!-- 単価 - 金額 -->
+                  <td>None</td>
+                  <td></td>
+                  <!-- 税区分 - 消費税 - 税込 -->
+                  <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                  <td>{{ iv.tax }}</td>
+                  <td>{{ iv.value|add:iv.tax|intcomma }}</td>
+                {% endif %}
+
+              {% endif %}
+              <!-- 備考 - 赤伝 - 担当者 -->
+              <td>{{ iv.g_code.uid }}</td>
+              <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
               <td>{{ iv.red_code }}</td>
-              <td>{{ iv.staff }}</td>
+              <!-- td>{{ iv.staff }}</td-->
             </tr>
             {% endif %}
+
             {% endfor %}
           </thead>
         </table>
