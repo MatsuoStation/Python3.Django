@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.15 Update:2018.03.29" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.16 Update:2018.04.08" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -48,11 +48,10 @@ class Invoice_List(ListView):
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
 		nid_post = request.POST['nid']
-		deadline_post = request.POST['deadline']
+		# deadline_post = request.POST['deadline']
 		if form.is_valid():
-			# (OK)
-			return HttpResponseRedirect('/Invoice/%s/?dl=%s' % (nid_post, deadline_post) )
-			# return HttpResponseRedirect( '/Invoice/%s' % nid_post )
+			# (OK)return HttpResponseRedirect('/Invoice/%s/?dl=%s' % (nid_post, deadline_post) )
+			return HttpResponseRedirect( '/Invoice/%s' % nid_post )
 			# return HttpResponseRedirect( '/Invoice/%s' % nid_post, kwargs={'dl':deadline_post} )
 			# return redirect(request, '/Invoice/%s' % nid_post, kwargs={'deadline':deadline_post} )
 			# return render(request, '/Invoice/%s' % nid_post, {'deadline': deadline_post})
@@ -87,8 +86,41 @@ class Invoice_List(ListView):
 		# context['deadlines'] = datetime(self.kwargs.get('deadline'),'Y-m-d')
 		# context['deadlines'] = self.kwargs.get('deadline')
 		# context['deadlines'] = self.request.POST.get('deadline', 'None')
-		# (GET.OK)
-		context['deadlines'] = self.request.GET.get('dl', '0000-00-00')
+		# (GET.OK) context['deadlines'] = self.request.GET.get('dl', '0000-00-00')
+
+		try:
+			dl = self.request.GET.get('dl', '')
+
+			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dl).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
+			# months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct()
+			# months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct()
+			months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+
+			dlms = months.dates('m_datetime', 'month', order='ASC')
+			context['dlms'] = dlms
+
+			# for dlm in dlms:
+			#	context['deadlines'] = dlm.strftime('%Y-%m')
+
+			# context['deadlines'] = months.dates('m_datetime', 'month', order='DESC')
+			# for mt in months:
+				# context['deadlines'] = mt.strftime('%Y-%m')
+				# context['deadlines'] = months
+
+
+				# context['deadlines'] = dl
+
+		except:
+
+			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
+			months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+
+			dlms = months.dates('m_datetime', 'month', order='ASC')
+			context['dlms'] = dlms
+
+
 
 		# deadline = datetime.format(self.kwargs.get('deadline'), 'Y-m-d')
 		'''
@@ -113,13 +145,11 @@ class Invoice_List(ListView):
 		# sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid'))
 		# (Ver.3.7.3.OK) sharps = SHARP_Test02.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
 		# (Ver.3.7.7.OK) IVs = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code').select_related('s_code')
-		# (Ver.3.7.14.OK)
-		IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('m_datetime', 'car_code')
+		# (Ver.3.7.14.OK) IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('m_datetime', 'car_code')
 		# IVs = Invoice_Test10.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code')
 		# names = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')[:1]
 		# (Ver.3.7.7.OK) names = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('g_code')
-		# (Ver.3.7.14.OK)
-		names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
+		# (Ver.3.7.14.OK) names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
 		# (Ver.3.7.7.OK) items = Invoice_Test10.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('s_code')
 		# items = Invoice_Test20.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('s_code')
 		# values = Value_Test10.objects.all().filter(uid="0104", s_code="10100")
