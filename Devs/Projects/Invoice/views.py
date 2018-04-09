@@ -5,11 +5,14 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.16 Update:2018.04.08" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.17 Update:2018.04.09" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
 #//|               /request-post-getsth-vs-request-poststh-difference |
+#//+------------------------------------------------------------------+
+#//|                                                       @yoheiMune |
+#//|                       https://www.yoheim.net/blog.php?q=20160409 |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.shortcuts import render
@@ -32,7 +35,8 @@ from Finance.models import Invoice_Test20, Name_Test20
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 
 from django.utils import dateformat
-from datetime import datetime
+from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
 
 
 class Invoice_List(ListView):
@@ -88,17 +92,34 @@ class Invoice_List(ListView):
 		# context['deadlines'] = self.request.POST.get('deadline', 'None')
 		# (GET.OK) context['deadlines'] = self.request.GET.get('dl', '0000-00-00')
 
+
+		# dl = self.request.GET.get('dl', '')
+		# if dl:
 		try:
 			dl = self.request.GET.get('dl', '')
+			# (Def.OK) dld = datetime.strptime(dl, '%Y-%m-%d')
+			dlt = datetime.strptime(dl, '%Y-%m-%d')
+			dld = dlt + timedelta(days=1)
+			dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+			# dld = dl + timedelta(days=dl.day+1)
+			# dld = dl.strptime(dl, '%Y-%m-%d') + timedelta(days=dl.strptime(dl, '%Y-%m-%d')+1)
+			# dld = dl + timedelta(days=+1)
 
-			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dl).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+			# IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+			# (Def.Order.Date)
+			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('m_datetime', 'car_code',)
 			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
 			# months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct()
 			# months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct()
-			months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
 
-			dlms = months.dates('m_datetime', 'month', order='ASC')
+			dlms = lastmonths.dates('m_datetime', 'month', order='ASC')
 			context['dlms'] = dlms
+
+			context['deadlines'] = dl
+
+			context['dld'] = dld
+			context['dlm'] = dlm
 
 			# for dlm in dlms:
 			#	context['deadlines'] = dlm.strftime('%Y-%m')
@@ -108,18 +129,23 @@ class Invoice_List(ListView):
 				# context['deadlines'] = mt.strftime('%Y-%m')
 				# context['deadlines'] = months
 
-
 				# context['deadlines'] = dl
 
-		except:
+		# else:
+		except Exception as e:
+			# dl = self.request.GET.get('dl', '')
+			# dld = dl.strptime(dl, '%Y-%m-%d')
 
 			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
 			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
-			months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
 
-			dlms = months.dates('m_datetime', 'month', order='ASC')
+			dlms = lastmonths.dates('m_datetime', 'month', order='ASC')
 			context['dlms'] = dlms
 
+			context['deadlines'] = dl
+
+			print(e, 'error occured')
 
 
 		# deadline = datetime.format(self.kwargs.get('deadline'), 'Y-m-d')
