@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Models.py - Ver.3.7.9 Update:2018.03.29" |
+#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.7.18 Update:2018.04.09" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -133,6 +133,7 @@ class Value_Test20(models.Model):
 	id = models.AutoField( "id", primary_key=True )
 	uid  = models.IntegerField( "共通ID", default=None )
 	name = models.CharField( "顧客名", default=None, max_length=255 )
+	tax_code= models.IntegerField( verbose_name='税区分', default=0 )
 	s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
 	# day		= models.PositiveIntegerField( "設定日", default=None )
 	m_datetime 	= models.DateTimeField( verbose_name='設定日' )
@@ -512,6 +513,29 @@ class Name_Test20(models.Model):
 	# uid  = models.CharField( "共通ID", default=None, unique=True, max_length=16 )
 	name = models.CharField( "顧客名", default=None, max_length=255 )
 	name_furigana = models.CharField( "顧客フリガナ", default=None, max_length=255 )
+
+	def __str__(self):
+		return self.uid
+
+###* Guest.Bank020 *###
+class Bank_Test20(models.Model):
+	class Meta:
+		db_table = 'Bank_Test20'
+		verbose_name = 'Bank_020'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.IntegerField( "共通ID", default=None, unique=True )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	bank_name = models.CharField( "銀行名", default=None, max_length=255 )
+	bank_number = models.PositiveSmallIntegerField( "銀行番号", default=None)
+	branch_number = models.PositiveSmallIntegerField( "支店番号", default=None )
+	account_kind = models.CharField( "口座種類", default=None, max_length=255 )
+	account = models.PositiveIntegerField( "口座番号", default=None )
+	check_day = models.PositiveSmallIntegerField( "締切日", default=None )
+	receipt = models.PositiveSmallIntegerField( "領収書添付有無", default=None )
+	s_format = models.PositiveSmallIntegerField( "請求書フォーマット", default=None )
+	r_code	= models.IntegerField( verbose_name='掛現金/掛振込', default=0 )
 
 	def __str__(self):
 		return self.uid
