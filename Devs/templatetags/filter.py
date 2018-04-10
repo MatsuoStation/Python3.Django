@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.19 Update:2018.04.09" |
+#//| "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.20 Update:2018.04.10" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -36,7 +36,7 @@ def change_int(value):
 
 
 
-
+'''
 @register.filter("md_gc")
 def md_gc(md, gc):
 
@@ -50,6 +50,7 @@ def mdgc_sc(mdgc, sc):
 	md, gc = mdgc
 
 	return sc
+'''
 
 
 @register.filter("gc_sc")
@@ -106,9 +107,54 @@ def sc_value(gcsc, md):
 
 
 	except Exception as e:
-		print(e, 'error occured')
+		print(e, 'sc_value : error occured')
 
 	# return md
+
+
+@register.filter("kc_value")
+def kc_value(gcsc, md):
+
+	gc, sc = gcsc
+
+	try:
+		if Value_Test20.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
+			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
+
+			for v in s_values:
+				sv = v.value - 32.1
+				return sv
+
+		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
+			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date01__lte=md)
+
+			for v in s_values:
+				sv = v.value01 - 32.1
+				return sv
+
+		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
+			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date02__lte=md)
+
+			for v in s_values:
+				sv = v.value02 - 32.1
+				return sv
+
+		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
+			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date03__lte=md)
+
+			for v in s_values:
+				sv = v.value03 - 32.1
+				return sv
+
+		else:
+			sv = 0
+			return sv
+
+	except Exception as e:
+		print(e, 'kc_value : error occured')
+
+
+	# return sc
 
 
 
@@ -145,7 +191,7 @@ def check_unit(value, amount):
 		values = (value * 1.00 ) / ( amount / 100 )
 		return values
 	except ZeroDivisionError as e:
-		return print(e, ':ZeroDivisionError')
+		return print(e, 'check_unit : ZeroDivisionError')
 
 	# return values
 

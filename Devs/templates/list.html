@@ -121,12 +121,16 @@
               <!-- 数量 -->
               <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
               <!-- 単価 - 金額 -->
-              <td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|floatformat:2 }}</td>
-              <td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
+              <!--td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|floatformat:2 }}</td-->
+              <td>{{ iv.g_code.uid|gc_sc:iv.s_code|kc_value:iv.m_datetime.date|floatformat:2 }}</td>
+              <!--td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td-->
+              <td>{{ iv.g_code.uid|gc_sc:iv.s_code|kc_value:iv.m_datetime.date|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
               <!-- 税区分 - 消費税 - 税込 -->
               <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
-              <td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|c_tax:iv.tax|red_value:iv.red_code|intcomma }}</td>
-              <td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|intax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+              <!--td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|c_tax:iv.tax|red_value:iv.red_code|intcomma }}</td-->
+              <td>{{ iv.g_code.uid|gc_sc:iv.s_code|kc_value:iv.m_datetime.date|notax:iv.amount|c_tax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+              <!--td>{{ iv.g_code.uid|keiyu_code_value:iv.s_code|notax:iv.amount|intax:iv.tax|red_value:iv.red_code|intcomma }}</td-->
+              <td>{{ iv.g_code.uid|gc_sc:iv.s_code|kc_value:iv.m_datetime.date|notax:iv.amount|intax:iv.tax|red_value:iv.red_code|intcomma }}</td>
               <!-- 備考 - 赤伝 - 担当者 -->
               <td>{{ iv.g_code.uid }}</td>
               <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td-->
