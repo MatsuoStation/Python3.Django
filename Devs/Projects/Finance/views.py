@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.10 Update:2018.03.29" |
+#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.30 Update:2018.04.10" |
 #//+------------------------------------------------------------------+
 #//|                                  © 2014-2018 Leverages Co., Ltd. |
 #//|                            https://teratail.com/questions/15486/ |
@@ -85,10 +85,12 @@ def TimeColon(line):
 def TimeColon_XLS(line):
 	return re.sub('(^.{18})(.{2})', '\\1:\\2', line, flags=re.MULTILINE)
 
+def IDMergeDayTime(line):
+	return re.sub('(.*,)(.{6})', '\\2\\1\\2', line, flags=re.MULTILINE)
 def DayTimeMerge(line):
 	return re.sub('(.*,)(.{6})(.{10}$)', '\\1\\3 \\2', line, flags=re.MULTILINE)
 def DayTimeMove(line):
-	return re.sub('(^.{5})(.*,)(.{16}$)', '\\1\\3,\\2', line, flags=re.MULTILINE)
+	return re.sub('(^.{10})(.*,)(.{16}$)', '\\1,\\3\\2', line, flags=re.MULTILINE)
 
 def DayTimeMerge_XLS(line):
 	return re.sub('(^([^,]*,){1})(.{8})(.{1})(.*)', '\\1\\3 \\5', line, flags=re.MULTILINE)
@@ -361,6 +363,9 @@ def SHARP_ALL(in_file, out_file):
 
 		# システムカレンダー削除
 		line = CalDel(line)
+
+		# 時分(処理) : ID枯渇対応
+		line = IDMergeDayTime(line)
 
 		# 時分(処理) : コロン
 		line = TimeColon(line)
