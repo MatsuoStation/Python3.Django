@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.14 Update:2018.03.29" |
+#//| "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.19 Update:2018.04.09" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -24,11 +24,92 @@ register = template.Library()
 
 import math
 from Finance.models import Value_Test10, Value_Test20
+# from django.http import QueryDict
+from django.utils import dateformat
+from datetime import datetime, date, timedelta
+import time
 
 
 @register.filter("change_int")
 def change_int(value):
     return int(value)
+
+
+
+
+@register.filter("md_gc")
+def md_gc(md, gc):
+
+	mdt = datetime.strptime(md, '%Y-%m-%d')
+
+	return md, gc
+
+@register.filter("mdgc_sc")
+def mdgc_sc(mdgc, sc):
+
+	md, gc = mdgc
+
+	return sc
+
+
+@register.filter("gc_sc")
+def gc_sc(gc, sc):
+
+	return gc, sc
+
+
+@register.filter("sc_value")
+def sc_value(gcsc, md):
+
+	gc, sc = gcsc
+
+	# d = md.replace('"','')
+	# mdt = datetime.strptime(d, '%Y-%m-%d %H:%M:%S')
+
+	# mdt = datetime.strptime(md, '%Y-%m-%d %H:%M:%S.%f')
+	# mdt = mdt.replace(microsecond=0)
+
+	# mdt = datetime.datetime.strptime(md, '%Y-%m-%d %H:%M:%S')
+
+	try:
+		if Value_Test20.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
+			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
+
+			for v in s_values:
+				sv = v.value
+				return sv
+
+		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
+			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date01__lte=md)
+
+			for v in s_values:
+				sv = v.value01
+				return sv
+
+		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
+			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date02__lte=md)
+
+			for v in s_values:
+				sv = v.value02
+				return sv
+
+		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
+			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date03__lte=md)
+
+			for v in s_values:
+				sv = v.value03
+				return sv
+
+		else:
+			sv = 0
+			return sv
+
+
+	except Exception as e:
+		print(e, 'error occured')
+
+	# return md
+
 
 
 @register.filter("s_code_value")
@@ -42,6 +123,8 @@ def s_code_value(gc, sc):
 
 		return sv
 
+
+
 @register.filter("keiyu_code_value")
 def keiyu_code_value(gc, sc):
 
@@ -54,7 +137,6 @@ def keiyu_code_value(gc, sc):
 		return sv
 
 
-
 @register.filter("check_unit")
 def check_unit(value, amount):
 
@@ -62,8 +144,8 @@ def check_unit(value, amount):
 		# values = (value * 1.08 ) / ( amount / 100 )
 		values = (value * 1.00 ) / ( amount / 100 )
 		return values
-	except ZeroDivisionError:
-		return print("ZeroDivisionError")
+	except ZeroDivisionError as e:
+		return print(e, ':ZeroDivisionError')
 
 	# return values
 

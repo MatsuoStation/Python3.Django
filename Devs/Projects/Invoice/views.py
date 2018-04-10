@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.17 Update:2018.04.09" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.19 Update:2018.04.09" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -47,7 +47,7 @@ class Invoice_List(ListView):
 	template_name = 'list.html'
 	# (OK) context_object_name = "sharptb"
 	context_object_name = "nametb"
-	paginate_by = 10
+	paginate_by = 30
 
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
@@ -201,7 +201,7 @@ class Invoice_List(ListView):
 		# for v in values:
 		#	context['values'] = v.value
 
-		paginator = Paginator(IVs, 10)
+		paginator = Paginator(IVs, 30)
 		try:
 			page = int(self.request.GET.get('page'))
 		except:

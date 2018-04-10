@@ -163,6 +163,7 @@
               <!-- 月 - 日 - 給油SS - 車番 -->
               <td>{{ iv.m_datetime.date.month }}</td>
               <td>{{ iv.m_datetime.date.day }}</td>
+              <!--td>{{ iv.m_datetime.date }}</td -->
               <td>{{ iv.ss_code|change_int }}</td>
               <td>{{ iv.car_code }}</td>
               <!-- 商品コード - 商品名 -->
@@ -201,12 +202,16 @@
                 <!-- ### 商品コード : True -->
                 {% if iv.g_code.uid|s_code_value:iv.s_code  %}
                   <!-- 単価 - 金額 -->
-                  <td>{{ iv.g_code.uid|s_code_value:iv.s_code|floatformat:2 }}</td>
-                  <td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
+                  <!-- td>{{ iv.g_code.uid|s_code_value:iv.s_code|floatformat:2 }}</td -->
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code|sc_value:iv.m_datetime.date|floatformat:2 }}</td>
+                  <!--td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|red_value:iv.red_code|intcomma }}</td-->
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code|sc_value:iv.m_datetime.date|notax:iv.amount|red_value:iv.red_code|intcomma }}</td>
                   <!-- 税区分 - 消費税 - 税込 -->
                   <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
-                  <td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|c_tax:iv.tax|red_value:iv.red_code|intcomma }}</td>
-                  <td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|intax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+                  <!--td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|c_tax:iv.tax|red_value:iv.red_code|intcomma }}</td-->
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code|sc_value:iv.m_datetime.date|notax:iv.amount|c_tax:iv.tax|red_value:iv.red_code|intcomma }}</td>
+                  <!--td>{{ iv.g_code.uid|s_code_value:iv.s_code|notax:iv.amount|intax:iv.tax|red_value:iv.red_code|intcomma }}</td-->
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code|sc_value:iv.m_datetime.date|notax:iv.amount|intax:iv.tax|red_value:iv.red_code|intcomma }}</td>
 
                 <!-- ### 商品コード : False -->
                 {% else %}
