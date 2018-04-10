@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TemplateTags.Math.py - Ver.3.7.20 Update:2018.04.10" |
+#//|   "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.7.21 Update:2018.04.10" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -16,6 +16,9 @@
 #//|                                                            @Usek |
 #//|                https://qiita.com/Usek/items/53527feba2adcb386aa8 |
 #//+------------------------------------------------------------------+
+#//|                                                       @yoheiMune |
+#//|                       https://www.yoheim.net/blog.php?q=20160409 |
+#//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.template.defaultfilters import register
 
@@ -23,11 +26,12 @@ from django import template
 register = template.Library()
 
 import math
-from Finance.models import Value_Test10, Value_Test20
+from Finance.models import Value_Test10, Value_Test20, Bank_Test20
 # from django.http import QueryDict
 from django.utils import dateformat
 from datetime import datetime, date, timedelta
-import time
+from dateutil.relativedelta import relativedelta
+# import time
 
 
 @register.filter("change_int")
@@ -35,6 +39,30 @@ def change_int(value):
     return int(value)
 
 
+@register.filter("check_day")
+def check_day(gc, dlm):
+
+	try:
+		if Bank_Test20.objects.all().filter(uid=gc):
+			d_values = Bank_Test20.objects.all().filter(uid=gc)
+
+			for d in d_values:
+				dv = d.check_day
+
+				if dv != 0:
+					dls = dlm - relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+				else:
+					dls = dlm - timedelta(days=1)
+
+				return dls
+				# return dv
+		else:
+			return 0
+
+	except Exception as e:
+		print(e, 'check_day : error occured')
+
+    # return dlm
 
 '''
 @register.filter("md_gc")
@@ -219,7 +247,7 @@ def red_value(value, rv):
 def notax(value, args):
 	# values = math.floor(value * args / 100)
 	# values = -(-value * args / 100)
-	values = round(value * args / 100, 0)
+	values = round(value * (args / 100), 0)
 	return int(values)
 
 @register.filter("intax")
@@ -258,7 +286,7 @@ def k_tax(value, args):
 	return int(values)
 
 @register.filter("c_tax")
-def c_tax(value, args ):
+def c_tax(value, args):
 
 	if args != 0:
 		values = args

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.19 Update:2018.04.09" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.21 Update:2018.04.10" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -86,6 +86,8 @@ class Invoice_List(ListView):
 
 		context['form'] = NameForm()
 
+		context['gid'] = self.kwargs.get('nid')
+
 		# (Def.OK) context['deadlines'] = '2018-04-05'
 		# context['deadlines'] = datetime(self.kwargs.get('deadline'),'Y-m-d')
 		# context['deadlines'] = self.kwargs.get('deadline')
@@ -113,6 +115,8 @@ class Invoice_List(ListView):
 			# months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct()
 			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
 
+			# check_days = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
 			dlms = lastmonths.dates('m_datetime', 'month', order='ASC')
 			context['dlms'] = dlms
 
@@ -120,6 +124,7 @@ class Invoice_List(ListView):
 
 			context['dld'] = dld
 			context['dlm'] = dlm
+
 
 			# for dlm in dlms:
 			#	context['deadlines'] = dlm.strftime('%Y-%m')
@@ -139,6 +144,7 @@ class Invoice_List(ListView):
 			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
 			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
 			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+
 
 			dlms = lastmonths.dates('m_datetime', 'month', order='ASC')
 			context['dlms'] = dlms

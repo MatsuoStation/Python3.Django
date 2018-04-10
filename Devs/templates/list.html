@@ -79,7 +79,8 @@
         <p>{% if dlms %}
           |
               {% for dlm in dlms %}
-                &nbsp;&nbsp;<a href="?dl={{ dlm|date:"Y-m" }}-25"">{{ dlm|date:"Y-m" }}</a>&nbsp;&nbsp;|
+                &nbsp;&nbsp;<a href="?dl={{ gid|check_day:dlm|date:"Y-m-d" }}"">{{ dlm|date:"Y-m" }}</a>&nbsp;&nbsp;|
+                <!-- &nbsp;&nbsp;<a href="?dl={{ dlm|date:"Y-m" }}-25"">{{ dlm|date:"Y-m" }}</a>&nbsp;&nbsp;|-->
               {% endfor %}
             {% endif %}
         </p>
@@ -101,7 +102,8 @@
               <td>税込</td>
               <td>備考</td>
               <td>赤伝</td>
-              <!-- td>担当者</td-->
+              <td>時間</td>
+              <td>伝票番号</td>
             </tr>
           </thead>
           <thead>
@@ -135,7 +137,8 @@
               <td>{{ iv.g_code.uid }}</td>
               <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td-->
               <td>{{ iv.red_code }}</td>
-              <!-- td>{{ iv.staff }}</td -->
+              <td>{{ iv.m_datetime|date:"H:i" }}</td>
+              <td>{{ iv.slip }}</td>
             </tr>
             <tr>
               <!-- 月 - 日 - 給油SS - 車番 -->
@@ -159,7 +162,8 @@
               <td>{{ iv.g_code.uid }}</td>
               <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
               <td>{{ iv.red_code }}</td>
-              <!-- td>{{ iv.staff }}</td -->
+              <td>{{ iv.m_datetime|date:"H:i" }}</td>
+              <td>{{ iv.slip }}</td>
             </tr>
 
             {% else %}
@@ -233,7 +237,8 @@
               <td>{{ iv.g_code.uid }}</td>
               <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
               <td>{{ iv.red_code }}</td>
-              <!-- td>{{ iv.staff }}</td-->
+              <td>{{ iv.m_datetime|date:"H:i" }}</td>
+              <td>{{ iv.slip }}</td>
             </tr>
             {% endif %}
 
