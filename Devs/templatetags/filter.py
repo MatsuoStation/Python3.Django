@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.7.21 Update:2018.04.10" |
+#//|   "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.7.31 Update:2018.04.11" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -18,6 +18,9 @@
 #//+------------------------------------------------------------------+
 #//|                                                       @yoheiMune |
 #//|                       https://www.yoheim.net/blog.php?q=20160409 |
+#//+------------------------------------------------------------------+
+#//|                                                    @beatdown0514 |
+#//|        https://qiita.com/beatdown0514/items/361d6c213c2a1f2f5767 |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.template.defaultfilters import register
@@ -245,20 +248,46 @@ def red_value(value, rv):
 
 @register.filter("notax")
 def notax(value, args):
+	values = value * (args / 100)
+
+	d_point = len(str(values).split('.')[1])
+	ndigits = 0
+
+	if ndigits >= d_point:
+		return round(values, 0)
+
+	c = (10 ** d_point) * 2
+
+	return round((values * c + 1) / c, 0)
+
 	# values = math.floor(value * args / 100)
 	# values = -(-value * args / 100)
-	values = round(value * (args / 100), 0)
-	return int(values)
+	# values = round(value * (args / 100), 0)
+	# return int(values)
 
 @register.filter("intax")
 def intax(value, args):
 	if args != 0:
 		values = args + value
+		return values
+
 	else:
 		# values = -(-value * 0.08) + value
-		values = round(value * 0.08, 0) + value
+		# values = round(value * 0.08, 0) + value
+		values = value * 0.08 + value
 
-	return int(values)
+		d_point = len(str(values).split('.')[1])
+		ndigits = 0
+
+		if ndigits >= d_point:
+			return round(values, 0)
+
+		c = (10 ** d_point) * 2
+
+		return round((values * c + 1) / c, 0)
+
+
+	# return int(values)
 
 	# values = math.floor(value * args / 100)
 	# values = -(-value * args / 100)
@@ -282,7 +311,8 @@ def s_tax(sc, tax_value):
 
 @register.filter("k_tax")
 def k_tax(value, args):
-	values = math.floor(32.1 * args / 100)
+	# values = math.floor(32.1 * args / 100)
+	values = -(-32.1 * args / 100)
 	return int(values)
 
 @register.filter("c_tax")
@@ -290,22 +320,48 @@ def c_tax(value, args):
 
 	if args != 0:
 		values = args
+		return values
+
 	else:
 		# values = -(-value * 0.08)
-		values = round(value * 0.08, 0)
+		# values = round(value * 0.08, 0)
+		values = value * 0.08
 
-	return int(values)
+		d_point = len(str(values).split('.')[1])
+		ndigits = 0
+
+		if ndigits >= d_point:
+			return round(values, 0)
+
+		c = (10 ** d_point) * 2
+
+		return round((values * c + 1) / c, 0)
+
+	# return int(values)
 
 @register.filter("o_tax")
 def o_tax(value, args ):
 
 	if args != 0:
 		values = args
+		return values
+
 	else:
 		# values = -(-value * 0.08)
-		values = round(value - (value / 1.08), 0)
+		# values = round(value - (value / 1.08), 0)
+		values = value - (value / 1.08)
 
-	return int(values)
+		d_point = len(str(values).split('.')[1])
+		ndigits = 0
+
+		if ndigits >= d_point:
+			return round(values, 0)
+
+		c = (10 ** d_point) * 2
+
+		return round((values * c + 1) / c, 0)
+
+	# return int(values)
 
 
 
