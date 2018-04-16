@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.21 Update:2018.04.10" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.32 Update:2018.04.15" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -30,7 +30,7 @@ from .forms import NameForm
 from Finance.models import Name_Test02, SHARP_Test02
 
 from Finance.models import Invoice_Test10, Name_Test10, Items_Test10, Value_Test10
-from Finance.models import Invoice_Test20, Name_Test20
+from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20
 
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 
@@ -97,12 +97,33 @@ class Invoice_List(ListView):
 
 		# dl = self.request.GET.get('dl', '')
 		# if dl:
+
+		dd_list = list()
+
 		try:
 			dl = self.request.GET.get('dl', '')
 			# (Def.OK) dld = datetime.strptime(dl, '%Y-%m-%d')
 			dlt = datetime.strptime(dl, '%Y-%m-%d')
-			dld = dlt + timedelta(days=1)
-			dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+			# (OK) dld = dlt + timedelta(days=1)
+
+			dd = dlt.day
+			if dd == 20 or dd == 25:
+				dld = dlt - relativedelta(months=1)
+				dlm = dlt - timedelta(microseconds=1)
+				# dld = dlt - relativedelta(months=1) + timedelta(days=1)
+				# dlm = dld + relativedelta(months=2) - timedelta(microseconds=1)
+
+			else:
+				dt = dlt - relativedelta(months=1)
+				dld = dt + relativedelta(months=1) - timedelta(days=dt.day) + timedelta(days=1)
+				dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+
+
+			# dt = dlt - relativedelta(months=1)
+			# dld = dt + relativedelta(months=1) - timedelta(days=dt.day) + timedelta(days=1)
+			# (OK) dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+			# dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+			# dlm = dlt + relativedelta(months=1) - timedelta(microseconds=1)
 			# dld = dl + timedelta(days=dl.day+1)
 			# dld = dl.strptime(dl, '%Y-%m-%d') + timedelta(days=dl.strptime(dl, '%Y-%m-%d')+1)
 			# dld = dl + timedelta(days=+1)
@@ -117,13 +138,63 @@ class Invoice_List(ListView):
 
 			# check_days = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
 
-			dlms = lastmonths.dates('m_datetime', 'month', order='ASC')
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+
 			context['dlms'] = dlms
+
+			try:
+				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
+					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+
+				for dlm in dlms:
+					dd = dlm.day
+					# dd_list.append(dd)
+					for d in d_values:
+						dv = d.check_day
+
+						if dv != 0:
+							if dd >= 25:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+							elif dd >=20:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+							else:
+								dls = dlm - timedelta(days=dd) + timedelta(days=dv)
+
+						else:
+							dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
+
+							'''
+							if dd >= dv:	# 31 >= 25
+								dls = (dlm + relativedelta(months=1)) - timedelta(days=dd) + timedelta(days=dv)
+
+							elif dd < dv:	# 16 < 25
+								dls = dlm - timedelta(days=dd) + timedelta(days=dv)
+
+							else:
+								dls = dlm + relativedelta(months=1) - timedelta(days=dd)
+
+						else:
+							dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
+						'''
+
+						dd_list.append(dls)
+
+						dds = sorted(set(dd_list), key=dd_list.index)
+
+						# context['dd'] = dd_list
+						context['dds'] = dds
+
+			except Exception as e:
+				print(e, 'Invoice/views.py_dds : error occured')
+
 
 			context['deadlines'] = dl
 
-			context['dld'] = dld
-			context['dlm'] = dlm
+			dlb = dlt + timedelta(days=1) - relativedelta(months=1)
+			context['dlb'] = dlb
+			dla = dlt + timedelta(days=1) - timedelta(microseconds=1)
+			context['dla'] = dla
 
 
 			# for dlm in dlms:
@@ -145,13 +216,59 @@ class Invoice_List(ListView):
 			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
 			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
 
-
-			dlms = lastmonths.dates('m_datetime', 'month', order='ASC')
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
 			context['dlms'] = dlms
+
+			# dd_list = list()
+
+			try:
+				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
+					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+
+				for dlm in dlms:
+					dd = dlm.day
+					# dd_list.append(dd)
+					for d in d_values:
+						dv = d.check_day
+
+						if dv != 0:
+							if dd >= 25:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+							elif dd >=20:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+							else:
+								dls = dlm - timedelta(days=dd) + timedelta(days=dv)
+
+
+						# if dv != 0:
+						#	if dd >= dv:	# 31 >= 25
+
+						#		dls = (dlm + relativedelta(months=1)) - timedelta(days=dd) + timedelta(days=dv)
+
+						#	elif dd < dv:	# 16 < 25
+						#		dls = dlm - timedelta(days=dd) + timedelta(days=dv)
+
+						#	else:
+						#		dls = dlm + relativedelta(months=1) - timedelta(days=dd)
+
+						else:
+							# dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
+							dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
+
+						dd_list.append(dls)
+
+						dds = sorted(set(dd_list), key=dd_list.index)
+
+						# context['dd'] = dd_list
+						context['dds'] = dds
+
+			except Exception as e:
+				print(e, 'Invoice/views.py_dds : error occured')
 
 			context['deadlines'] = dl
 
-			print(e, 'error occured')
+			print(e, 'Invoice/Views : error occured')
 
 
 		# deadline = datetime.format(self.kwargs.get('deadline'), 'Y-m-d')

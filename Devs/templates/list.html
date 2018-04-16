@@ -73,13 +73,22 @@
           <input type="submit" name="送信">
         </form>
         <p><br>{{ names }}</p>
-        <p>{{ dld }} - {{ dlm }}</p>
+        <p>{{ dlb }} - {{ dla }}</p>
         <!--p>{{ deadlines }}</p-->
         <!--p>{{ forms }}</p-->
         <p>{% if dlms %}
           |
+              {% for dd in dds %}
+                &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|
+              <!-- &nbsp;&nbsp;<a href="?dl={{ dds }}"">{{ dds }}</a>&nbsp;&nbsp;| -->
+              {% endfor %}
               {% for dlm in dlms %}
-                &nbsp;&nbsp;<a href="?dl={{ gid|check_day:dlm|date:"Y-m-d" }}"">{{ dlm|date:"Y-m" }}</a>&nbsp;&nbsp;|
+
+                <!-- &nbsp;&nbsp;<a href="?dl={{ gid|check_day:dlm|day_list }}"">{{ gid|check_day:dlm|day_list }}</a>&nbsp;&nbsp;| -->
+                <!-- &nbsp;&nbsp;<a href="?dl={{ gid|check_day:dlm|date:"Y-m-d" }}"">{{ gid|check_day:dlm|date:"Y-m-d" }}</a>&nbsp;&nbsp;| -->
+                <!-- &nbsp;&nbsp;<a href="?dl={{ gid|check_day:dlm|date:"Y-m-d" }}"">{{ gid|check_day:dlm|date:"Y-m-d" }}</a>&nbsp;&nbsp;|-->
+                <!-- &nbsp;&nbsp;<a href="?dl={{ gid|check_day:dlm|date:"Y-m-d" }}"">{{ dlm|date:"Y-m" }}</a>&nbsp;&nbsp;|
+                -->
                 <!-- &nbsp;&nbsp;<a href="?dl={{ dlm|date:"Y-m" }}-25"">{{ dlm|date:"Y-m" }}</a>&nbsp;&nbsp;|-->
               {% endfor %}
             {% endif %}

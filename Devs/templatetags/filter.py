@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.7.31 Update:2018.04.11" |
+#//|   "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.7.32 Update:2018.04.11" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -29,7 +29,7 @@ from django import template
 register = template.Library()
 
 import math
-from Finance.models import Value_Test10, Value_Test20, Bank_Test20
+from Finance.models import Value_Test10, Value_Test20, Bank_Test20, Invoice_Test20
 # from django.http import QueryDict
 from django.utils import dateformat
 from datetime import datetime, date, timedelta
@@ -41,9 +41,38 @@ from dateutil.relativedelta import relativedelta
 def change_int(value):
     return int(value)
 
+@register.filter("merge_day")
+def merge_day(gc, dlms):
+
+	# dls = len(dlms)
+	lastmonths = Invoice_Test20.objects.filter(g_code__uid=gc).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+
+	dlmm = lastmonths.dates('m_datetime', 'month', order='ASC')
+	for dl in dlmm:
+		dls = dl
+
+	return dls
+
+
+@register.filter("day_list")
+def day_list(dls_daylist):
+
+	dls, day_list = dls_daylist
+
+	# print(day_list)
+	# print(day_list[0])
+
+
+	return day_list
+
+
 
 @register.filter("check_day")
 def check_day(gc, dlm):
+
+	dd = dlm.day
+
+	day_list = list()
 
 	try:
 		if Bank_Test20.objects.all().filter(uid=gc):
@@ -53,14 +82,48 @@ def check_day(gc, dlm):
 				dv = d.check_day
 
 				if dv != 0:
-					dls = dlm - relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+					if dd >= dv:	# 31 >= 25
+						dls = (dlm + relativedelta(months=1)) - timedelta(days=dd-1) + timedelta(days=dv)
+						# day_list = day_list + datetime.strftime(dls, '%Y-%m-%d')
+						# day_list = datetime.strftime(dls, '%Y-%m-%d')
+
+					elif dd < dv:	# 16 < 25
+						dls = dlm - timedelta(days=dd) + timedelta(days=dv)
+						# day_list = day_list + datetime.strftime(dls, '%Y-%m-%d')
+						# day_list = datetime.strftime(dls, '%Y-%m-%d')
+					else:
+						dls = dlm + relativedelta(months=1) - timedelta(days=dd)
+						# day_list = day_list + datetime.strptime(str(dls), '%Y-%m-%d')
+						# day_list = datetime.strftime(dls, '%Y-%m-%d')
+
+				else:
+					# dls = dlm - timedelta(days=dd) + relativedelta(months=1)
+					dls = dlm + relativedelta(months=1) - timedelta(days=dd)
+					# day_list += datetime.strftime(dls, '%Y-%m-%d')
+					day_list += datetime.strftime(dls, '%Y-%m-%d').split("''")
+					# days = day_list.append( datetime.strftime(dls, "%Y-%m-%d") )
+					# days = day_list.append( dls )
+
+
+				# return dls
+
+				return dls, day_list
+				# return dls, days
+
+				''' (OK)
+				if dv != 0:
+					# dls = dlm - relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+					# dls = dlm - relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+					dls = dlm
+
 				else:
 					dls = dlm - timedelta(days=1)
 
 				return dls
 				# return dv
+				'''
 		else:
-			return 0
+			return 0, 0
 
 	except Exception as e:
 		print(e, 'check_day : error occured')
