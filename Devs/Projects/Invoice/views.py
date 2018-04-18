@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.34 Update:2018.04.17" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.35 Update:2018.04.18" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -155,13 +155,24 @@ class Invoice_List(ListView):
 					for d in d_values:
 						dv = d.check_day
 
-						if dv != 0:
-							if dd >= 25:
-								dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
-							elif dd >=20:
-								dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+						if dv == 25:
+							if dd >=25:
+								dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
 							else:
-								dls = dmm - timedelta(days=dd) + timedelta(days=dv)
+								dls = (dmm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						elif dv == 20:
+							if dd >= 20:
+								dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dmm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+
+						# if dv != 0:
+						#	if dd >= 25:
+						#		dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+						#	elif dd >=20:
+						#		dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+						#	else:
+						#		dls = dmm - timedelta(days=dd) + timedelta(days=dv)
 
 						else:
 							dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
@@ -236,13 +247,25 @@ class Invoice_List(ListView):
 					for d in d_values:
 						dv = d.check_day
 
-						if dv != 0:
-							if dd >= 25:
-								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
-							elif dd >=20:
-								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+						if dv == 25:
+							if dd >=25:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
 							else:
-								dls = dlm - timedelta(days=dd) + timedelta(days=dv)
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						elif dv == 20:
+							if dd >= 20:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+
+
+						# if dv != 0:
+						#	if dd >= 25:
+						#		dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+						#	elif dd >=20:
+						#		dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv) - timedelta(days=1)
+						#	else:
+						#		dls = dlm - timedelta(days=dd) + timedelta(days=dv)
 
 
 						# if dv != 0:
