@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.7.35 Update:2018.04.18" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.1 Update:2018.04.19" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -144,6 +144,13 @@ class Invoice_List(ListView):
 
 			context['dlms'] = dlms
 
+			incash_list = list()
+			for iv in IVs:
+				if iv.s_code.uid == "00000":
+					incash_list.append(iv.value)
+					incash_values = sum(incash_list)
+					context['incash_values'] = incash_values
+
 			try:
 				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
 					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
@@ -233,6 +240,13 @@ class Invoice_List(ListView):
 
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
 			context['dlms'] = dlms
+
+			incash_list = list()
+			for iv in IVs:
+				if iv.s_code.uid == "00000":
+					incash_list.append(iv.value)
+					incash_values = sum(incash_list)
+					context['incash_values'] = incash_values
 
 			# dd_list = list()
 
