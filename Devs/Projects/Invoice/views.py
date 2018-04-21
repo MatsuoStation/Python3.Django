@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.1 Update:2018.04.19" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.2 Update:2018.04.21" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -30,7 +30,7 @@ from .forms import NameForm
 from Finance.models import Name_Test02, SHARP_Test02
 
 from Finance.models import Invoice_Test10, Name_Test10, Items_Test10, Value_Test10
-from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20
+from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test20
 
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 
@@ -144,6 +144,7 @@ class Invoice_List(ListView):
 
 			context['dlms'] = dlms
 
+			### Income Total Cash ###
 			incash_list = list()
 			for iv in IVs:
 				if iv.s_code.uid == "00000":
@@ -151,6 +152,128 @@ class Invoice_List(ListView):
 					incash_values = sum(incash_list)
 					context['incash_values'] = incash_values
 
+
+			### Total Value Cash ###
+			total_list = list()
+			notax_list = list()
+			tax_list = list()
+			ndigits = 0
+
+			try:
+				for iv in IVs:
+					### 現金関係 & 振込関係
+					if iv.s_code.uid == "00000":
+						sv = 0
+						total_list.append(sv)
+					elif iv.s_code.uid == "00002":
+						sv = 0
+						total_list.append(sv)
+
+					### 金額 : True
+					elif iv.value:
+						### 単価 : True
+						if iv.unit != 0:
+							notax_v = iv.value
+							tax_v = iv.tax
+							sv = notax_v + tax_v
+
+							if iv.red_code:
+								notax_v = -(notax_v)
+								tax_v = -(tax_v)
+								sv = -(sv)
+
+							total_list.append(sv)
+							notax_list.append(notax_v)
+							tax_list.append(tax_v)
+
+						### 単価 : False
+						else:
+							### 税金 : True
+							if iv.tax != 0:
+								tax_v = iv.tax
+								notax_v = iv.value
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									tax_v = -(tax_v)
+									notax_v = -(notax_v)
+									sv = -(sv)
+
+								total_list.append(sv)
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+
+							### 税金 : False
+							else:
+								values = iv.value - (iv.value / 1.08)
+								d_point = len(str(values).split('.')[1])
+								if ndigits >= d_point:
+									tax_v = int(round(values, 0))
+								c = (10 ** d_point) * 2
+								tax_v = int(round((values * c + 1) / c, 0))
+								sv = iv.value
+								notax_v = sv - tax_v
+
+								if iv.red_code:
+									tax_v = -(tax_v)
+									sv = -(sv)
+									notax_v = -(notax_v)
+
+								tax_list.append(tax_v)
+								notax_list.append(notax_v)
+								total_list.append(sv)
+
+						'''
+						if iv.tax != 0:
+							tax_v = iv.tax
+							sv = iv.value + tax_v
+
+							total_list.append(sv)
+							notax_list.append(iv.value)
+							tax_list.append(tax_v)
+
+
+						else:
+							values = iv.value - (iv.value / 1.08)
+							d_point = len(str(values).split('.')[1])
+							if ndigits >= d_point:
+								tax_v = round(values,0)
+
+							c = (10 ** d_point) * 2
+							tax_v = int(round((values * c + 1) / c, 0))
+							sv = iv.value
+
+							total_list.append(sv)
+							notax_list.append(sv-tax_v)
+							tax_list.append(tax_v)
+						'''
+
+
+
+						# tax_v = iv.tax
+						# sv = iv.value + tax_v
+
+						# total_list.append(sv)
+						# notax_list.append(iv.value)
+						# tax_list.append(tax_v)
+
+					else:
+						sv = 0
+						total_list.append(sv)
+
+				total_values = sum(total_list)
+				notax_values = sum(notax_list)
+				tax_values = sum(tax_list)
+
+
+				context['total_values'] = total_values
+				context['notax_values'] = notax_values
+				context['tax_values'] = tax_values
+
+			except Exception as e:
+				print(e, 'Invoice/views.total_values - in_dl : error occured')
+
+			### LastDay : Check ###
 			try:
 				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
 					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
@@ -241,15 +364,19 @@ class Invoice_List(ListView):
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
 			context['dlms'] = dlms
 
+			### Income Total Cash ###
+			'''
 			incash_list = list()
 			for iv in IVs:
 				if iv.s_code.uid == "00000":
 					incash_list.append(iv.value)
 					incash_values = sum(incash_list)
 					context['incash_values'] = incash_values
+			'''
 
 			# dd_list = list()
 
+			### LastDay : Check ###
 			try:
 				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
 					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
