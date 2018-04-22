@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.4 Update:2018.04.22" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.5 Update:2018.04.22" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -167,6 +167,9 @@ class Invoice_List(ListView):
 
 			high_a_list = list()
 			high_list = list()
+
+			reg_a_list = list()
+			reg_list = list()
 
 			nonoil_list = list()
 			ndigits = 0
@@ -345,6 +348,41 @@ class Invoice_List(ListView):
 								high_a_list.append(h_amount)
 								high_list.append(notax_v)
 
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value * r_amount
+								d_point = len(str(rs_values).split('.')[1])
+								if ndigits >= d_point:
+									rs_value = round(rs_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((rs_values * c + 1) / c, 0))
+
+								# hs_tax = notax_v * 0.08
+								rs_tax = notax_v * jtax
+								dd_point = len(str(rs_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(rs_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((rs_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+
 
 					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime):
 						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime)
@@ -426,6 +464,40 @@ class Invoice_List(ListView):
 								high_a_list.append(h_amount)
 								high_list.append(notax_v)
 
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value01 * r_amount
+								d_point = len(str(rs_values).split('.')[1])
+								if ndigits >= d_point:
+									rs_value = round(rs_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((rs_values * c + 1) / c, 0))
+
+								# hs_tax = notax_v * 0.08
+								rs_tax = notax_v * jtax
+								dd_point = len(str(rs_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(rs_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((rs_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
 					else:
 						sv = 0
 						total_list.append(sv)
@@ -444,7 +516,10 @@ class Invoice_List(ListView):
 				high_amounts = sum(high_a_list)
 				high_values = sum(high_list)
 
-				nonoil_values = notax_values - toyu_values - high_values - keiyu_values
+				reg_amounts = sum(reg_a_list)
+				reg_values = sum(reg_list)
+
+				nonoil_values = notax_values - toyu_values - high_values - reg_values - keiyu_values
 
 				context['total_values'] = total_values
 				context['notax_values'] = notax_values
@@ -459,6 +534,9 @@ class Invoice_List(ListView):
 
 				context['high_amounts'] = high_amounts
 				context['high_values'] = high_values
+
+				context['reg_amounts'] = reg_amounts
+				context['reg_values'] = reg_values
 
 				context['nonoil_values'] = nonoil_values
 
