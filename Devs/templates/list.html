@@ -74,6 +74,26 @@
         </form>
         <p><br>{{ names }}</p>
         <p>{{ dlb }} - {{ dla }}</p>
+
+        <div class="pagination">
+        <span class="step-links">
+          {% if ivs.has_previous %}
+            <a href="?page=1&dl={{ deadlines }}">&laquo; 最初頁へ&nbsp;</a>
+            <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;前頁へ&nbsp;|&nbsp;</a>&nbsp;
+          {% endif %}
+
+          <span class="current">
+            Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+          </span>
+
+          {% if ivs.has_next %}
+            &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;次頁へ&nbsp;|</a>
+            <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;最終頁へ &raquo;</a>
+          {% endif %}
+
+        </span>
+        </div>
+
         <!--p>{{ deadlines }}</p-->
         <!--p>{{ forms }}</p-->
         <p>{% if dlms %}
@@ -288,11 +308,14 @@
             <tr>
               <td><主要商品合計></td>
               <td width="1"></td>
-              <td>課税売上高 : {{ notax_values|intcomma }}</td>
+              <td>課税売上高</td>
+              <td>{{ notax_values|intcomma }}</td>
               <td width="1"></td>
-              <td>消費税額 : {{ tax_values|intcomma }}</td>
+              <td>消費税額</td>
+              <td>{{ tax_values|intcomma }}</td>
               <td width="1"></td>
-              <td>軽油税 :  {{ ktax_values|intcomma }}</td>
+              <td>軽油税</td>
+              <td>{{ ktax_values|intcomma }}</td>
               <td width="1"></td>
             </tr>
           </thead>
@@ -308,8 +331,8 @@
               <td>その他金額</td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
+              <td>{{ high_amounts|floatformat:2|intcomma }}</td>
+              <td>{{ high_values|intcomma }}</td>
               <td></td>
               <td></td>
               <td>{{ keiyu_amounts|floatformat:2|intcomma }}</td>

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.3 Update:2018.04.21" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.4 Update:2018.04.22" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -165,8 +165,12 @@ class Invoice_List(ListView):
 			keiyu_list = list()
 			ktax_list = list()
 
+			high_a_list = list()
+			high_list = list()
+
 			nonoil_list = list()
 			ndigits = 0
+			jtax = 0.08
 
 			try:
 				for iv in IVs:
@@ -232,7 +236,8 @@ class Invoice_List(ListView):
 
 							### 税金 : False
 							else:
-								values = iv.value - (iv.value / 1.08)
+								# values = iv.value - (iv.value / 1.08)
+								values = iv.value - (iv.value / (1+jtax))
 								d_point = len(str(values).split('.')[1])
 								if ndigits >= d_point:
 									tax_v = int(round(values, 0))
@@ -261,16 +266,17 @@ class Invoice_List(ListView):
 
 					### 金額 : False
 					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime):
-						t_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime)
+						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime)
 
+						# 軽油 = "10200"
 						if iv.s_code.uid == "10200":
 							# k_tax = 1
 							# ktax_list.append(k_tax)
 
-							for t in t_values:
+							for v in v_values:
 								k_amount = iv.amount / 100
 								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
-								ks_values = (t.value - 32.1) * k_amount
+								ks_values = (v.value - 32.1) * k_amount
 								d_point = len(str(ks_values).split('.')[1])
 								if ndigits >= d_point:
 									ks_value = round(ks_values, 0)
@@ -280,7 +286,8 @@ class Invoice_List(ListView):
 								k_tax = -(-32.1 * iv.amount / 100)
 								k_tax = int(k_tax)
 
-								ks_tax = notax_v * 0.08
+								# ks_tax = notax_v * 0.08
+								ks_tax = notax_v * jtax
 								dd_point = len(str(ks_tax).split('.')[1])
 								if ndigits >= dd_point:
 									tax_v = int(round(ks_tax, 0))
@@ -303,19 +310,54 @@ class Invoice_List(ListView):
 								keiyu_a_list.append(k_amount)
 								keiyu_list.append(notax_v)
 								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value * h_amount
+								d_point = len(str(hs_values).split('.')[1])
+								if ndigits >= d_point:
+									hs_value = round(hs_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((hs_values * c + 1) / c, 0))
+
+								# hs_tax = notax_v * 0.08
+								hs_tax = notax_v * jtax
+								dd_point = len(str(hs_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(hs_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((hs_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
 
 
 					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime):
-						t_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime)
+						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime)
 
+						# 軽油 = "10200"
 						if iv.s_code.uid == "10200":
 							# k_tax = 1
 							# ktax_list.append(k_tax)
 
-							for t in t_values:
+							for v in v_values:
 								k_amount = iv.amount / 100
 								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
-								ks_values = (t.value01 - 32.1) * k_amount
+								ks_values = (v.value01 - 32.1) * k_amount
 								d_point = len(str(ks_values).split('.')[1])
 								if ndigits >= d_point:
 									ks_value = round(ks_values, 0)
@@ -325,7 +367,8 @@ class Invoice_List(ListView):
 								k_tax = -(-32.1 * iv.amount / 100)
 								k_tax = int(k_tax)
 
-								ks_tax = notax_v * 0.08
+								# ks_tax = notax_v * 0.08
+								ks_tax = notax_v * jtax
 								dd_point = len(str(ks_tax).split('.')[1])
 								if ndigits >= dd_point:
 									tax_v = int(round(ks_tax, 0))
@@ -348,6 +391,40 @@ class Invoice_List(ListView):
 								keiyu_a_list.append(k_amount)
 								keiyu_list.append(notax_v)
 								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value01 * h_amount
+								d_point = len(str(hs_values).split('.')[1])
+								if ndigits >= d_point:
+									hs_value = round(hs_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((hs_values * c + 1) / c, 0))
+
+								# hs_tax = notax_v * 0.08
+								hs_tax = notax_v * jtax
+								dd_point = len(str(hs_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(hs_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((hs_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
 
 					else:
 						sv = 0
@@ -364,7 +441,10 @@ class Invoice_List(ListView):
 				keiyu_values = sum(keiyu_list)
 				ktax_values = sum(ktax_list)
 
-				nonoil_values = notax_values - toyu_values - keiyu_values
+				high_amounts = sum(high_a_list)
+				high_values = sum(high_list)
+
+				nonoil_values = notax_values - toyu_values - high_values - keiyu_values
 
 				context['total_values'] = total_values
 				context['notax_values'] = notax_values
@@ -376,6 +456,9 @@ class Invoice_List(ListView):
 				context['keiyu_amounts'] = keiyu_amounts
 				context['keiyu_values'] = keiyu_values
 				context['ktax_values'] = ktax_values
+
+				context['high_amounts'] = high_amounts
+				context['high_values'] = high_values
 
 				context['nonoil_values'] = nonoil_values
 
