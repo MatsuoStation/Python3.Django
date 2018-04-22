@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.2 Update:2018.04.21" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.3 Update:2018.04.21" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -157,6 +157,15 @@ class Invoice_List(ListView):
 			total_list = list()
 			notax_list = list()
 			tax_list = list()
+
+			toyu_a_list = list()
+			toyu_list = list()
+
+			keiyu_a_list = list()
+			keiyu_list = list()
+			ktax_list = list()
+
+			nonoil_list = list()
 			ndigits = 0
 
 			try:
@@ -186,6 +195,15 @@ class Invoice_List(ListView):
 							notax_list.append(notax_v)
 							tax_list.append(tax_v)
 
+							if iv.s_code.uid == "10500":
+								t_amount = iv.amount/100
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
 						### 単価 : False
 						else:
 							### 税金 : True
@@ -202,6 +220,15 @@ class Invoice_List(ListView):
 								total_list.append(sv)
 								notax_list.append(notax_v)
 								tax_list.append(tax_v)
+
+								if iv.s_code.uid == "10500":
+									t_amount = iv.amount/100
+
+									if iv.red_code:
+										t_amount = -(t_amount)
+
+									toyu_a_list.append(t_amount)
+									toyu_list.append(notax_v)
 
 							### 税金 : False
 							else:
@@ -223,39 +250,104 @@ class Invoice_List(ListView):
 								notax_list.append(notax_v)
 								total_list.append(sv)
 
-						'''
-						if iv.tax != 0:
-							tax_v = iv.tax
-							sv = iv.value + tax_v
+								if iv.s_code.uid == "10500":
+									t_amount = iv.amount/100
 
-							total_list.append(sv)
-							notax_list.append(iv.value)
-							tax_list.append(tax_v)
+									if iv.red_code:
+										t_amount = -(t_amount)
+
+									toyu_a_list.append(t_amount)
+									toyu_list.append(notax_v)
+
+					### 金額 : False
+					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime):
+						t_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime)
+
+						if iv.s_code.uid == "10200":
+							# k_tax = 1
+							# ktax_list.append(k_tax)
+
+							for t in t_values:
+								k_amount = iv.amount / 100
+								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
+								ks_values = (t.value - 32.1) * k_amount
+								d_point = len(str(ks_values).split('.')[1])
+								if ndigits >= d_point:
+									ks_value = round(ks_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((ks_values * c + 1) / c, 0))
+
+								k_tax = -(-32.1 * iv.amount / 100)
+								k_tax = int(k_tax)
+
+								ks_tax = notax_v * 0.08
+								dd_point = len(str(ks_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(ks_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((ks_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v + k_tax
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
 
 
-						else:
-							values = iv.value - (iv.value / 1.08)
-							d_point = len(str(values).split('.')[1])
-							if ndigits >= d_point:
-								tax_v = round(values,0)
+					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime):
+						t_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime)
 
-							c = (10 ** d_point) * 2
-							tax_v = int(round((values * c + 1) / c, 0))
-							sv = iv.value
+						if iv.s_code.uid == "10200":
+							# k_tax = 1
+							# ktax_list.append(k_tax)
 
-							total_list.append(sv)
-							notax_list.append(sv-tax_v)
-							tax_list.append(tax_v)
-						'''
+							for t in t_values:
+								k_amount = iv.amount / 100
+								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
+								ks_values = (t.value01 - 32.1) * k_amount
+								d_point = len(str(ks_values).split('.')[1])
+								if ndigits >= d_point:
+									ks_value = round(ks_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((ks_values * c + 1) / c, 0))
 
+								k_tax = -(-32.1 * iv.amount / 100)
+								k_tax = int(k_tax)
 
+								ks_tax = notax_v * 0.08
+								dd_point = len(str(ks_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(ks_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((ks_tax * cc + 1) / cc, 0))
 
-						# tax_v = iv.tax
-						# sv = iv.value + tax_v
+								sv = notax_v + tax_v + k_tax
 
-						# total_list.append(sv)
-						# notax_list.append(iv.value)
-						# tax_list.append(tax_v)
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
 
 					else:
 						sv = 0
@@ -265,10 +357,28 @@ class Invoice_List(ListView):
 				notax_values = sum(notax_list)
 				tax_values = sum(tax_list)
 
+				toyu_amounts = sum(toyu_a_list)
+				toyu_values = sum(toyu_list)
+
+				keiyu_amounts = sum(keiyu_a_list)
+				keiyu_values = sum(keiyu_list)
+				ktax_values = sum(ktax_list)
+
+				nonoil_values = notax_values - toyu_values - keiyu_values
 
 				context['total_values'] = total_values
 				context['notax_values'] = notax_values
 				context['tax_values'] = tax_values
+
+				context['toyu_amounts'] = toyu_amounts
+				context['toyu_values'] = toyu_values
+
+				context['keiyu_amounts'] = keiyu_amounts
+				context['keiyu_values'] = keiyu_values
+				context['ktax_values'] = ktax_values
+
+				context['nonoil_values'] = nonoil_values
+
 
 			except Exception as e:
 				print(e, 'Invoice/views.total_values - in_dl : error occured')
