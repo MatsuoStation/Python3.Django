@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.7.32 Update:2018.04.11" |
+#//|    "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.8.7 Update:2018.04.11" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -36,6 +36,8 @@ from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 # import time
 
+jtax = 0.08
+ndigits = 0
 
 @register.filter("change_int")
 def change_int(value):
@@ -278,12 +280,23 @@ def keiyu_code_value(gc, sc):
 
 
 @register.filter("check_unit")
-def check_unit(value, amount):
+def check_unit(gcsc, amount):
+# def check_unit(value, amount):
+
+	value, tax = gcsc
 
 	try:
+		uc = (value+tax) / (amount/100)
+
+		if uc.is_integer():
+			return uc
+		else:
+			values = (value*1.00) / (amount/100)
+			return values
+
 		# values = (value * 1.08 ) / ( amount / 100 )
-		values = (value * 1.00 ) / ( amount / 100 )
-		return values
+		# (OK) values = (value * 1.00 ) / ( amount / 100 )
+		# (OK) return values
 	except ZeroDivisionError as e:
 		return print(e, 'check_unit : ZeroDivisionError')
 
@@ -297,6 +310,70 @@ def check_unit(value, amount):
 
 	return units
 	'''
+
+@register.filter("check_tax_code")
+def check_tax_code(gcsc, amount):
+
+	value, tax = gcsc
+
+	try:
+		uc = (value+tax) / (amount/100)
+
+		if uc.is_integer():
+			if tax > 0:
+				return str("")
+			else:
+				return str("内")
+		else:
+			return str("uchi")
+
+	except ZeroDivisionError as e:
+		return print(e, 'check_tax_code : ZeroDivisionError')
+
+@register.filter("check_unit_tax")
+def check_unit_tax(gcsc, amount):
+
+	value, tax = gcsc
+
+	try:
+		uc = (value+tax) / (amount/100)
+
+		if uc.is_integer():
+			values = (value+tax) - ((value+tax)/(1+jtax))
+			d_point = len(str(values).split('.')[1])
+			if ndigits >= d_point:
+				return round(values, 0)
+			c = (10 ** d_point) * 2
+			return round((values * c + 1) / c, 0)
+
+		else:
+			values = value - (value/(1+jtax))
+			d_point = len(str(values).split('.')[1])
+			if ndigits >= d_point:
+				return round(values, 0)
+			c = (10 ** d_point) * 2
+			return round((values * c + 1) / c, 0)
+
+	except ZeroDivisionError as e:
+		return print(e, 'check_unit_tax : ZeroDivisionError')
+
+
+
+@register.filter("check_unit_total")
+def check_unit_total(gcsc, amount):
+
+	value, tax = gcsc
+
+	try:
+		uc = (value+tax) / (amount/100)
+
+		if uc.is_integer():
+			return value + tax
+		else:
+			return value
+
+	except ZeroDivisionError as e:
+		return print(e, 'check_unit_total : ZeroDivisionError')
 
 
 @register.filter("red_value")
