@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.6 Update:2018.04.24" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.8 Update:2018.05.05" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -335,6 +335,7 @@ class Invoice_List(ListView):
 									# toyu_list.append(notax_v)
 
 					### 金額 : False
+					### Now ###
 					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime):
 						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime)
 
@@ -450,7 +451,42 @@ class Invoice_List(ListView):
 								reg_list.append(notax_v)
 
 
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value * t_amount
+								d_point = len(str(ts_values).split('.')[1])
+								if ndigits >= d_point:
+									ts_value = round(ts_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((ts_values * c + 1) / c, 0))
 
+								ts_tax = notax_v - (notax_v / (1+jtax))
+								dd_point = len(str(ts_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(ts_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((ts_tax * cc + 1) / cc, 0))
+
+								sv = notax_v
+								notax_v = notax_v - tax_v
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+
+					### Date01 ###
 					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime):
 						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime)
 
@@ -564,6 +600,338 @@ class Invoice_List(ListView):
 
 								reg_a_list.append(r_amount)
 								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value01 * t_amount
+								d_point = len(str(ts_values).split('.')[1])
+								if ndigits >= d_point:
+									ts_value = round(ts_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((ts_values * c + 1) / c, 0))
+
+								ts_tax = notax_v - (notax_v / (1+jtax))
+								dd_point = len(str(ts_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(ts_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((ts_tax * cc + 1) / cc, 0))
+
+								sv = notax_v
+								notax_v = notax_v - tax_v
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date02 ###
+					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date02__lte=iv.m_datetime):
+						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date02__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+							# k_tax = 1
+							# ktax_list.append(k_tax)
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
+								ks_values = (v.value02 - 32.1) * k_amount
+								d_point = len(str(ks_values).split('.')[1])
+								if ndigits >= d_point:
+									ks_value = round(ks_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((ks_values * c + 1) / c, 0))
+
+								k_tax = -(-32.1 * iv.amount / 100)
+								k_tax = int(k_tax)
+
+								# ks_tax = notax_v * 0.08
+								ks_tax = notax_v * jtax
+								dd_point = len(str(ks_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(ks_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((ks_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v + k_tax
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value02 * h_amount
+								d_point = len(str(hs_values).split('.')[1])
+								if ndigits >= d_point:
+									hs_value = round(hs_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((hs_values * c + 1) / c, 0))
+
+								# hs_tax = notax_v * 0.08
+								hs_tax = notax_v * jtax
+								dd_point = len(str(hs_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(hs_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((hs_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value02 * r_amount
+								d_point = len(str(rs_values).split('.')[1])
+								if ndigits >= d_point:
+									rs_value = round(rs_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((rs_values * c + 1) / c, 0))
+
+								# hs_tax = notax_v * 0.08
+								rs_tax = notax_v * jtax
+								dd_point = len(str(rs_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(rs_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((rs_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value02 * t_amount
+								d_point = len(str(ts_values).split('.')[1])
+								if ndigits >= d_point:
+									ts_value = round(ts_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((ts_values * c + 1) / c, 0))
+
+								ts_tax = notax_v - (notax_v / (1+jtax))
+								dd_point = len(str(ts_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(ts_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((ts_tax * cc + 1) / cc, 0))
+
+								sv = notax_v
+								notax_v = notax_v - tax_v
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date03 ###
+					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date03__lte=iv.m_datetime):
+						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date03__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+							# k_tax = 1
+							# ktax_list.append(k_tax)
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
+								ks_values = (v.value03 - 32.1) * k_amount
+								d_point = len(str(ks_values).split('.')[1])
+								if ndigits >= d_point:
+									ks_value = round(ks_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((ks_values * c + 1) / c, 0))
+
+								k_tax = -(-32.1 * iv.amount / 100)
+								k_tax = int(k_tax)
+
+								# ks_tax = notax_v * 0.08
+								ks_tax = notax_v * jtax
+								dd_point = len(str(ks_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(ks_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((ks_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v + k_tax
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value03 * h_amount
+								d_point = len(str(hs_values).split('.')[1])
+								if ndigits >= d_point:
+									hs_value = round(hs_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((hs_values * c + 1) / c, 0))
+
+								# hs_tax = notax_v * 0.08
+								hs_tax = notax_v * jtax
+								dd_point = len(str(hs_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(hs_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((hs_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value03 * r_amount
+								d_point = len(str(rs_values).split('.')[1])
+								if ndigits >= d_point:
+									rs_value = round(rs_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((rs_values * c + 1) / c, 0))
+
+								# hs_tax = notax_v * 0.08
+								rs_tax = notax_v * jtax
+								dd_point = len(str(rs_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(rs_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((rs_tax * cc + 1) / cc, 0))
+
+								sv = notax_v + tax_v
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value03 * t_amount
+								d_point = len(str(ts_values).split('.')[1])
+								if ndigits >= d_point:
+									ts_value = round(ts_values, 0)
+								c = (10 ** d_point) * 2
+								notax_v = int(round((ts_values * c + 1) / c, 0))
+
+								ts_tax = notax_v - (notax_v / (1+jtax))
+								dd_point = len(str(ts_tax).split('.')[1])
+								if ndigits >= dd_point:
+									tax_v = int(round(ts_tax, 0))
+								cc = (10 ** dd_point) * 2
+								tax_v = int(round((ts_tax * cc + 1) / cc, 0))
+
+								sv = notax_v
+								notax_v = notax_v - tax_v
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
 
 					else:
 						sv = 0

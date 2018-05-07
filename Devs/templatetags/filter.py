@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.8.7 Update:2018.04.11" |
+#//|    "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.8.8 Update:2018.05.07" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -325,10 +325,12 @@ def check_tax_code(gcsc, amount):
 			else:
 				return str("内")
 		else:
-			return str("uchi")
+			# return str("uchi")
+			return str("内")
 
 	except ZeroDivisionError as e:
 		return print(e, 'check_tax_code : ZeroDivisionError')
+
 
 @register.filter("check_unit_tax")
 def check_unit_tax(gcsc, amount):
