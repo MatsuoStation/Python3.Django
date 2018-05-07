@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.8 Update:2018.05.05" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.9 Update:2018.05.07" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -219,10 +219,10 @@ class Invoice_List(ListView):
 								notax_v = iv.value
 								sv = notax_v + tax_v
 
-								# if iv.red_code:
-								#	tax_v = -(tax_v)
-								#	notax_v = -(notax_v)
-								#	sv = -(sv)
+								if iv.red_code:
+									tax_v = -(tax_v)
+									notax_v = -(notax_v)
+									sv = -(sv)
 
 								# total_list.append(sv)
 								# notax_list.append(notax_v)
