@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.9.1 Update:2018.05.08" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.9.2 Update:2018.05.08" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -176,7 +176,9 @@ class Invoice_List(ListView):
 			ndigits = 0
 			jtax = 0.08
 
+			### Caluculate ###
 			try:
+				### Select Month ###
 				for iv in IVs:
 					### 現金関係 & 振込関係
 					if iv.s_code.uid == "00000":
@@ -240,9 +242,9 @@ class Invoice_List(ListView):
 										t_amount = iv.amount/100
 										if iv.red_code:
 											t_amount = -(t_amount)
-											notax_v = -(notax_v)
-											sv = -(sv)
-											tax_v = -(tax_v)
+										#	notax_v = -(notax_v)
+										#	sv = -(sv)
+										#	tax_v = -(tax_v)
 
 									else:
 										# t_amount = 1
@@ -258,9 +260,9 @@ class Invoice_List(ListView):
 
 										if iv.red_code:
 											t_amount = -(t_amount)
-											tax_v = -(tax_v)
-											sv = -(sv)
-											notax_v = -(notax_v)
+										#	tax_v = -(tax_v)
+										#	sv = -(sv)
+										#	notax_v = -(notax_v)
 
 									toyu_a_list.append(t_amount)
 									toyu_list.append(notax_v)
@@ -271,28 +273,17 @@ class Invoice_List(ListView):
 
 							### 税金 : False
 							else:
-								# values = iv.value - (iv.value / 1.08)
-								values = iv.value - (iv.value / (1+jtax))
-								d_point = len(str(values).split('.')[1])
-								if ndigits >= d_point:
-									tax_v = int(round(values, 0))
-								c = (10 ** d_point) * 2
-								tax_v = int(round((values * c + 1) / c, 0))
-								sv = iv.value
-								notax_v = sv - tax_v
-
-								# if iv.red_code:
-								#	tax_v = -(tax_v)
-								#	sv = -(sv)
-								#	notax_v = -(notax_v)
-
-								# tax_list.append(tax_v)
-								# notax_list.append(notax_v)
-								# total_list.append(sv)
-
-								### Unit Int Check
+								# 灯油 = "10500"
 								if iv.s_code.uid == "10500":
-									# t_amount = iv.amount/100
+									values = iv.value - (iv.value / (1+jtax))
+									d_point = len(str(values).split('.')[1])
+									if ndigits >= d_point:
+										tax_v = int(round(values, 0))
+									c = (10 ** d_point) * 2
+									tax_v = int(round((values * c + 1) / c, 0))
+									sv = iv.value
+									notax_v = sv - tax_v
+
 									ta = iv.amount/100
 									uc = sv / ta
 
@@ -304,7 +295,6 @@ class Invoice_List(ListView):
 											notax_v = -(notax_v)
 											sv = -(sv)
 											tax_v = -(tax_v)
-
 									else:
 										t_amount = ta
 										values = notax_v - (notax_v / (1+jtax))
@@ -324,16 +314,27 @@ class Invoice_List(ListView):
 									toyu_a_list.append(t_amount)
 									toyu_list.append(notax_v)
 
+								# 灯油 : False
+								else:
+									values = iv.value - (iv.value / (1+jtax))
+									d_point = len(str(values).split('.')[1])
+									if ndigits >= d_point:
+										tax_v = int(round(values, 0))
+									c = (10 ** d_point) * 2
+									tax_v = int(round((values * c + 1) / c, 0))
+									sv = iv.value
+									notax_v = sv - tax_v
+
+									if iv.red_code:
+										tax_v = -(tax_v)
+										sv = -(sv)
+										notax_v = -(notax_v)
+
 								tax_list.append(tax_v)
 								notax_list.append(notax_v)
 								total_list.append(sv)
 
 
-									# if iv.red_code:
-									#	t_amount = -(t_amount)
-
-									# toyu_a_list.append(t_amount)
-									# toyu_list.append(notax_v)
 
 					### 金額 : False
 					### Now ###
@@ -976,9 +977,13 @@ class Invoice_List(ListView):
 
 				context['nonoil_values'] = nonoil_values
 
+				### End of Select Month ###
 
 			except Exception as e:
 				print(e, 'Invoice/views.total_values - in_dl : error occured')
+
+			### End of Caluculate ###
+
 
 			### LastDay : Check ###
 			try:
@@ -1037,6 +1042,8 @@ class Invoice_List(ListView):
 
 			except Exception as e:
 				print(e, 'Invoice/views.py_dds : error occured')
+
+			### End of LastDay : Check ###
 
 
 			context['deadlines'] = dl
