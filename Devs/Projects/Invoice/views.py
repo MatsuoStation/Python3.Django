@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.8.9 Update:2018.05.07" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.9.1 Update:2018.05.08" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -47,6 +47,7 @@ class Invoice_List(ListView):
 	# model = SHARP_Test
 	form_class = NameForm
 	template_name = 'list.html'
+	# template_name = 'index.html'
 	# (OK) context_object_name = "sharptb"
 	context_object_name = "nametb"
 	paginate_by = 30
