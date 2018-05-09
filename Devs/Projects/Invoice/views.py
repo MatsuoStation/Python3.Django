@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.9.2 Update:2018.05.08" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.9.3 Update:2018.05.09" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -39,6 +39,97 @@ from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 
 from django.db.models import Count, Min, Max, Sum, Avg
+
+jtax = 0.08
+ndigits = 0
+ktax = 32.1
+
+
+def SS_InTax(value):
+	# jtax = 0.08
+	# ndigits = 0
+
+	values = value - (value / (1+jtax))
+	d_point = len(str(values).split('.')[1])
+	if ndigits >= d_point:
+		tax_v = int(round(values, 0))
+	c = (10 ** d_point) * 2
+	tax_v = int(round((values * c + 1) / c, 0))
+	sv = value
+	notax_v = sv - tax_v
+
+	return sv, tax_v, notax_v
+
+
+def SS_Values(values):
+	# jtax = 0.08
+	# ndigits = 0
+
+	d_point = len(str(values).split('.')[1])
+	if ndigits >= d_point:
+		notax_v = round(values, 0)
+	c = (10 ** d_point) * 2
+	notax_v = int(round((values * c + 1) / c, 0))
+
+	s_tax = notax_v * jtax
+	dd_point = len(str(s_tax).split('.')[1])
+	if ndigits >= dd_point:
+		tax_v = int(round(s_tax, 0))
+	cc = (10 ** dd_point) * 2
+	tax_v = int(round((s_tax * cc + 1) / cc, 0))
+
+	sv = notax_v + tax_v
+
+	return sv, tax_v, notax_v
+
+
+def Keiyu_Values(value, amount):
+	# ktax = 32.1
+	# jtax = 0.08
+
+	values = (value - ktax) * amount
+
+	d_point = len(str(values).split('.')[1])
+	if ndigits >= d_point:
+		notax_v = round(values, 0)
+	c = (10 ** d_point) * 2
+	notax_v = int(round((values * c + 1) / c, 0))
+
+	k_tax = -(-ktax * amount)
+	k_tax = int(k_tax)
+
+	ks_tax = notax_v * jtax
+	dd_point = len(str(ks_tax).split('.')[1])
+	if ndigits >= dd_point:
+		tax_v = int(round(ks_tax, 0))
+	cc = (10 ** dd_point) * 2
+	tax_v = int(round((ks_tax * cc + 1) / cc, 0))
+
+	sv = notax_v + tax_v + k_tax
+
+	return k_tax, sv, tax_v, notax_v
+
+
+def Toyu_Values(values):
+
+	d_point = len(str(values).split('.')[1])
+	if ndigits >= d_point:
+		notax_v = round(values, 0)
+	c = (10 ** d_point) * 2
+	notax_v = int(round((values * c + 1) / c, 0))
+
+	ts_tax = notax_v - (notax_v / (1+jtax))
+	dd_point = len(str(ts_tax).split('.')[1])
+	if ndigits >= dd_point:
+		tax_v = int(round(ts_tax, 0))
+	cc = (10 ** dd_point) * 2
+	tax_v = int(round((ts_tax * cc + 1) / cc, 0))
+
+	sv = notax_v
+	notax_v = notax_v - tax_v
+
+	return sv, tax_v, notax_v
+
 
 
 class Invoice_List(ListView):
@@ -249,6 +340,9 @@ class Invoice_List(ListView):
 									else:
 										# t_amount = 1
 										t_amount = iv.amount/100
+										sv, tax_v, notax_v = SS_InTax(notax_v)
+
+										'''
 										values = notax_v - (notax_v / (1+jtax))
 										d_point = len(str(values).split('.')[1])
 										if ndigits >= d_point:
@@ -257,6 +351,7 @@ class Invoice_List(ListView):
 										tax_v = int(round((values * c + 1) / c, 0))
 										sv = notax_v
 										notax_v = notax_v - tax_v
+										'''
 
 										if iv.red_code:
 											t_amount = -(t_amount)
@@ -275,6 +370,9 @@ class Invoice_List(ListView):
 							else:
 								# 灯油 = "10500"
 								if iv.s_code.uid == "10500":
+									sv, tax_v, notax_v = SS_InTax(iv.value)
+
+									'''
 									values = iv.value - (iv.value / (1+jtax))
 									d_point = len(str(values).split('.')[1])
 									if ndigits >= d_point:
@@ -283,6 +381,7 @@ class Invoice_List(ListView):
 									tax_v = int(round((values * c + 1) / c, 0))
 									sv = iv.value
 									notax_v = sv - tax_v
+									'''
 
 									ta = iv.amount/100
 									uc = sv / ta
@@ -297,6 +396,9 @@ class Invoice_List(ListView):
 											tax_v = -(tax_v)
 									else:
 										t_amount = ta
+										sv, tax_v, notax_v = SS_InTax(notax_v)
+
+										'''
 										values = notax_v - (notax_v / (1+jtax))
 										d_point = len(str(values).split('.')[1])
 										if ndigits >= d_point:
@@ -304,6 +406,7 @@ class Invoice_List(ListView):
 										tax_v = int(round((values * c + 1) / c, 0))
 										sv = notax_v
 										notax_v = notax_v - tax_v
+										'''
 
 										if iv.red_code:
 											t_amount = -(t_amount)
@@ -316,6 +419,9 @@ class Invoice_List(ListView):
 
 								# 灯油 : False
 								else:
+									sv, tax_v, notax_v = SS_InTax(iv.value)
+
+									'''
 									values = iv.value - (iv.value / (1+jtax))
 									d_point = len(str(values).split('.')[1])
 									if ndigits >= d_point:
@@ -324,6 +430,7 @@ class Invoice_List(ListView):
 									tax_v = int(round((values * c + 1) / c, 0))
 									sv = iv.value
 									notax_v = sv - tax_v
+									'''
 
 									if iv.red_code:
 										tax_v = -(tax_v)
@@ -349,7 +456,10 @@ class Invoice_List(ListView):
 							for v in v_values:
 								k_amount = iv.amount / 100
 								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
-								ks_values = (v.value - 32.1) * k_amount
+								# ks_values = (v.value - 32.1) * k_amount
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value, k_amount)
+
+								'''
 								d_point = len(str(ks_values).split('.')[1])
 								if ndigits >= d_point:
 									ks_value = round(ks_values, 0)
@@ -368,6 +478,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((ks_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v + k_tax
+								'''
 
 								if iv.red_code:
 									notax_v = -(notax_v)
@@ -389,6 +500,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								h_amount = iv.amount / 100
 								hs_values = v.value * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								'''
 								d_point = len(str(hs_values).split('.')[1])
 								if ndigits >= d_point:
 									hs_value = round(hs_values, 0)
@@ -404,6 +518,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((hs_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v
+								'''
 
 								if iv.red_code:
 									h_amount = -(h_amount)
@@ -423,6 +538,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								r_amount = iv.amount / 100
 								rs_values = v.value * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								'''
 								d_point = len(str(rs_values).split('.')[1])
 								if ndigits >= d_point:
 									rs_value = round(rs_values, 0)
@@ -438,6 +556,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((rs_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v
+								'''
 
 								if iv.red_code:
 									r_amount = -(r_amount)
@@ -458,6 +577,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								t_amount = iv.amount/100
 								ts_values = v.value * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								'''
 								d_point = len(str(ts_values).split('.')[1])
 								if ndigits >= d_point:
 									ts_value = round(ts_values, 0)
@@ -473,6 +595,7 @@ class Invoice_List(ListView):
 
 								sv = notax_v
 								notax_v = notax_v - tax_v
+								'''
 
 								if iv.red_code:
 									t_amount = -(t_amount)
@@ -500,7 +623,10 @@ class Invoice_List(ListView):
 							for v in v_values:
 								k_amount = iv.amount / 100
 								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
-								ks_values = (v.value01 - 32.1) * k_amount
+								# ks_values = (v.value01 - 32.1) * k_amount
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value01, k_amount)
+
+								'''
 								d_point = len(str(ks_values).split('.')[1])
 								if ndigits >= d_point:
 									ks_value = round(ks_values, 0)
@@ -519,6 +645,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((ks_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v + k_tax
+								'''
 
 								if iv.red_code:
 									notax_v = -(notax_v)
@@ -540,6 +667,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								h_amount = iv.amount / 100
 								hs_values = v.value01 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								'''
 								d_point = len(str(hs_values).split('.')[1])
 								if ndigits >= d_point:
 									hs_value = round(hs_values, 0)
@@ -555,6 +685,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((hs_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v
+								'''
 
 								if iv.red_code:
 									h_amount = -(h_amount)
@@ -574,6 +705,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								r_amount = iv.amount / 100
 								rs_values = v.value01 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								'''
 								d_point = len(str(rs_values).split('.')[1])
 								if ndigits >= d_point:
 									rs_value = round(rs_values, 0)
@@ -589,6 +723,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((rs_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v
+								'''
 
 								if iv.red_code:
 									r_amount = -(r_amount)
@@ -608,6 +743,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								t_amount = iv.amount/100
 								ts_values = v.value01 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								'''
 								d_point = len(str(ts_values).split('.')[1])
 								if ndigits >= d_point:
 									ts_value = round(ts_values, 0)
@@ -623,6 +761,7 @@ class Invoice_List(ListView):
 
 								sv = notax_v
 								notax_v = notax_v - tax_v
+								'''
 
 								if iv.red_code:
 									t_amount = -(t_amount)
@@ -649,7 +788,10 @@ class Invoice_List(ListView):
 							for v in v_values:
 								k_amount = iv.amount / 100
 								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
-								ks_values = (v.value02 - 32.1) * k_amount
+								# ks_values = (v.value02 - 32.1) * k_amount
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value02, k_amount)
+
+								'''
 								d_point = len(str(ks_values).split('.')[1])
 								if ndigits >= d_point:
 									ks_value = round(ks_values, 0)
@@ -668,6 +810,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((ks_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v + k_tax
+								'''
 
 								if iv.red_code:
 									notax_v = -(notax_v)
@@ -689,6 +832,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								h_amount = iv.amount / 100
 								hs_values = v.value02 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								'''
 								d_point = len(str(hs_values).split('.')[1])
 								if ndigits >= d_point:
 									hs_value = round(hs_values, 0)
@@ -704,6 +850,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((hs_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v
+								'''
 
 								if iv.red_code:
 									h_amount = -(h_amount)
@@ -723,6 +870,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								r_amount = iv.amount / 100
 								rs_values = v.value02 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								'''
 								d_point = len(str(rs_values).split('.')[1])
 								if ndigits >= d_point:
 									rs_value = round(rs_values, 0)
@@ -738,6 +888,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((rs_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v
+								'''
 
 								if iv.red_code:
 									r_amount = -(r_amount)
@@ -757,6 +908,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								t_amount = iv.amount/100
 								ts_values = v.value02 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								'''
 								d_point = len(str(ts_values).split('.')[1])
 								if ndigits >= d_point:
 									ts_value = round(ts_values, 0)
@@ -772,6 +926,7 @@ class Invoice_List(ListView):
 
 								sv = notax_v
 								notax_v = notax_v - tax_v
+								'''
 
 								if iv.red_code:
 									t_amount = -(t_amount)
@@ -798,7 +953,10 @@ class Invoice_List(ListView):
 							for v in v_values:
 								k_amount = iv.amount / 100
 								# ks_values = (t.value01 - 32.1) * (iv.amount / 100)
-								ks_values = (v.value03 - 32.1) * k_amount
+								# ks_values = (v.value03 - 32.1) * k_amount
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value03, k_amount)
+
+								'''
 								d_point = len(str(ks_values).split('.')[1])
 								if ndigits >= d_point:
 									ks_value = round(ks_values, 0)
@@ -817,6 +975,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((ks_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v + k_tax
+								'''
 
 								if iv.red_code:
 									notax_v = -(notax_v)
@@ -838,6 +997,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								h_amount = iv.amount / 100
 								hs_values = v.value03 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								'''
 								d_point = len(str(hs_values).split('.')[1])
 								if ndigits >= d_point:
 									hs_value = round(hs_values, 0)
@@ -853,6 +1015,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((hs_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v
+								'''
 
 								if iv.red_code:
 									h_amount = -(h_amount)
@@ -872,6 +1035,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								r_amount = iv.amount / 100
 								rs_values = v.value03 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								'''
 								d_point = len(str(rs_values).split('.')[1])
 								if ndigits >= d_point:
 									rs_value = round(rs_values, 0)
@@ -887,6 +1053,7 @@ class Invoice_List(ListView):
 								tax_v = int(round((rs_tax * cc + 1) / cc, 0))
 
 								sv = notax_v + tax_v
+								'''
 
 								if iv.red_code:
 									r_amount = -(r_amount)
@@ -906,6 +1073,9 @@ class Invoice_List(ListView):
 							for v in v_values:
 								t_amount = iv.amount/100
 								ts_values = v.value03 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								'''
 								d_point = len(str(ts_values).split('.')[1])
 								if ndigits >= d_point:
 									ts_value = round(ts_values, 0)
@@ -921,6 +1091,7 @@ class Invoice_List(ListView):
 
 								sv = notax_v
 								notax_v = notax_v - tax_v
+								'''
 
 								if iv.red_code:
 									t_amount = -(t_amount)
