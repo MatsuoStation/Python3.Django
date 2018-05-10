@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.9.3 Update:2018.05.09" |
+#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.9.4 Update:2018.05.09" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -207,10 +207,16 @@ class Invoice_List(ListView):
 				# dld = dlt - relativedelta(months=1) + timedelta(days=1)
 				# dlm = dld + relativedelta(months=2) - timedelta(microseconds=1)
 
+				bld = dld - relativedelta(months=1)
+				blm = dlm - relativedelta(months=1)
+
 			else:
 				dt = dlt - relativedelta(months=1)
 				dld = dt + relativedelta(months=1) - timedelta(days=dt.day) + timedelta(days=1)
 				dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+
+				bld = dt - timedelta(days=dt.day) + timedelta(days=1)
+				blm = bld  + relativedelta(months=1) - timedelta(microseconds=1)
 
 
 			# dt = dlt - relativedelta(months=1)
@@ -224,6 +230,7 @@ class Invoice_List(ListView):
 
 			# (car_code to m_datetime)
 			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+			bIVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=bld, m_datetime__lte=blm).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
 			# (Def.Order.Date) IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('m_datetime', 'car_code',)
 			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
 			# months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct()
@@ -235,6 +242,9 @@ class Invoice_List(ListView):
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
 
 			context['dlms'] = dlms
+
+			# (Check) context['bld'] = bld
+			# (Check) context['blm'] = blm
 
 			### Income Total Cash ###
 			incash_list = list()
@@ -264,8 +274,11 @@ class Invoice_List(ListView):
 			reg_list = list()
 
 			nonoil_list = list()
-			ndigits = 0
-			jtax = 0.08
+
+			before_list = list()
+
+			# ndigits = 0
+			# jtax = 0.08
 
 			### Caluculate ###
 			try:
@@ -1149,6 +1162,379 @@ class Invoice_List(ListView):
 				context['nonoil_values'] = nonoil_values
 
 				### End of Select Month ###
+
+				### Next Month ###
+				for biv in bIVs:
+					### 現金関係 & 振込関係
+					if biv.s_code.uid == "00000":
+						sv = 0
+						before_list.append(sv)
+					elif biv.s_code.uid == "00002":
+						sv = 0
+						before_list.append(sv)
+
+					### 金額 : True
+					elif biv.value:
+						### 単価 : True
+						if biv.unit != 0:
+							notax_v = biv.value
+							tax_v = biv.tax
+							sv = notax_v + tax_v
+
+							if biv.red_code:
+								notax_v = -(notax_v)
+								tax_v = -(tax_v)
+								sv = -(sv)
+
+							before_list.append(sv)
+
+						### 単価 : False
+						else:
+							### 税金 : True
+							if biv.tax != 0:
+								tax_v = biv.tax
+								notax_v = biv.value
+								sv = notax_v + tax_v
+
+								if biv.red_code:
+									tax_v = -(tax_v)
+									notax_v = -(notax_v)
+									sv = -(sv)
+
+								# before_list.append(sv)
+
+								### Unit Int Check
+								if biv.s_code.uid == "10500":
+
+									ta = biv.amount/100
+									uc = sv / ta
+
+									if uc.is_integer():
+										t_amount = biv.amount/100
+										if biv.red_code:
+											t_amount = -(t_amount)
+
+									else:
+										t_amount = biv.amount/100
+										sv, tax_v, notax_v = SS_InTax(notax_v)
+
+								before_list.append(sv)
+
+
+							### 税金 : False
+							else:
+								# 灯油 = "10500"
+								if biv.s_code.uid == "10500":
+									sv, tax_v, notax_v = SS_InTax(biv.value)
+
+									ta = biv.amount/100
+									uc = sv / ta
+
+									if uc.is_integer():
+										t_amount = ta
+
+										if biv.red_code:
+											# t_amount = -(t_amount)
+											# notax_v = -(notax_v)
+											sv = -(sv)
+											# tax_v = -(tax_v)
+
+									else:
+										t_amount = ta
+										sv, tax_v, notax_v = SS_InTax(notax_v)
+
+										if biv.red_code:
+											# t_amount = -(t_amount)
+											# tax_v = -(tax_v)
+											sv = -(sv)
+											# notax_v = -(notax_v)
+
+								# 灯油 : False
+								else:
+									sv, tax_v, notax_v = SS_InTax(biv.value)
+
+									if biv.red_code:
+										# tax_v = -(tax_v)
+										sv = -(sv)
+										# notax_v = -(notax_v)
+
+								before_list.append(sv)
+
+								'''
+								sv, tax_v, notax_v = SS_InTax(biv.value)
+
+								if biv.red_code:
+									tax_v = -(tax_v)
+									sv = -(sv)
+									notax_v = -(notax_v)
+
+								before_list.append(sv)
+								'''
+
+					### 金額 : False
+					### Now ###
+					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, m_datetime__lte=biv.m_datetime):
+						bv_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, m_datetime__lte=biv.m_datetime)
+
+						# 軽油 = "10200"
+						if biv.s_code.uid == "10200":
+							for bv in bv_values:
+								k_amount = biv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(bv.value, k_amount)
+
+								if biv.red_code:
+									# notax_v = -(notax_v)
+									# k_amount = -(k_amount)
+									# k_tax = -(k_tax)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# ハイオク = "10000"
+						elif biv.s_code.uid == "10000":
+							for bv in bv_values:
+								h_amount = biv.amount / 100
+								hs_values = bv.value * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if biv.red_code:
+									# h_amount = -(h_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# レギュラー = "10100"
+						elif biv.s_code.uid == "10100":
+							for bv in bv_values:
+								r_amount = biv.amount / 100
+								rs_values = bv.value * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if biv.red_code:
+									# r_amount = -(r_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# 灯油 = "10500"
+						elif biv.s_code.uid == "10500":
+							for bv in bv_values:
+								t_amount = biv.amount/100
+								ts_values = bv.value * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if biv.red_code:
+									# t_amount = -(t_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+					### Date01 ###
+					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date01__lte=biv.m_datetime):
+						bv_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date01__lte=biv.m_datetime)
+
+						# 軽油 = "10200"
+						if biv.s_code.uid == "10200":
+							for bv in bv_values:
+								k_amount = biv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(bv.value01, k_amount)
+
+								if biv.red_code:
+									# notax_v = -(notax_v)
+									# k_amount = -(k_amount)
+									# k_tax = -(k_tax)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# ハイオク = "10000"
+						elif biv.s_code.uid == "10000":
+							for bv in bv_values:
+								h_amount = biv.amount / 100
+								hs_values = bv.value01 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if biv.red_code:
+									# h_amount = -(h_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# レギュラー = "10100"
+						elif biv.s_code.uid == "10100":
+							for bv in bv_values:
+								r_amount = biv.amount / 100
+								rs_values = bv.value01 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if biv.red_code:
+									# r_amount = -(r_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# 灯油 = "10500"
+						elif biv.s_code.uid == "10500":
+							for bv in bv_values:
+								t_amount = biv.amount/100
+								ts_values = bv.value01 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if biv.red_code:
+									# t_amount = -(t_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+					### Date02 ###
+					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date02__lte=biv.m_datetime):
+						bv_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date02__lte=biv.m_datetime)
+
+						# 軽油 = "10200"
+						if biv.s_code.uid == "10200":
+							for bv in bv_values:
+								k_amount = biv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(bv.value02, k_amount)
+
+								if biv.red_code:
+									# notax_v = -(notax_v)
+									# k_amount = -(k_amount)
+									# k_tax = -(k_tax)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# ハイオク = "10000"
+						elif biv.s_code.uid == "10000":
+							for bv in bv_values:
+								h_amount = biv.amount / 100
+								hs_values = bv.value02 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if biv.red_code:
+									# h_amount = -(h_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# レギュラー = "10100"
+						elif biv.s_code.uid == "10100":
+							for bv in bv_values:
+								r_amount = biv.amount / 100
+								rs_values = bv.value02 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if biv.red_code:
+									# r_amount = -(r_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# 灯油 = "10500"
+						elif biv.s_code.uid == "10500":
+							for bv in bv_values:
+								t_amount = biv.amount/100
+								ts_values = bv.value02 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if biv.red_code:
+									# t_amount = -(t_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+					### Date03 ###
+					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date03__lte=biv.m_datetime):
+						bv_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date03__lte=biv.m_datetime)
+
+						# 軽油 = "10200"
+						if biv.s_code.uid == "10200":
+							for bv in bv_values:
+								k_amount = biv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(bv.value03, k_amount)
+
+								if biv.red_code:
+									# notax_v = -(notax_v)
+									# k_amount = -(k_amount)
+									# k_tax = -(k_tax)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# ハイオク = "10000"
+						elif biv.s_code.uid == "10000":
+							for bv in bv_values:
+								h_amount = biv.amount / 100
+								hs_values = bv.value03 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if biv.red_code:
+									# h_amount = -(h_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# レギュラー = "10100"
+						elif biv.s_code.uid == "10100":
+							for bv in bv_values:
+								r_amount = biv.amount / 100
+								rs_values = bv.value033 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if biv.red_code:
+									# r_amount = -(r_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+						# 灯油 = "10500"
+						elif biv.s_code.uid == "10500":
+							for bv in bv_values:
+								t_amount = biv.amount/100
+								ts_values = bv.value03 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if biv.red_code:
+									# t_amount = -(t_amount)
+									# notax_v = -(notax_v)
+									# tax_v = -(tax_v)
+									sv = -(sv)
+
+								before_list.append(sv)
+
+					else:
+						sv = 0
+						before_list.append(sv)
+
+				before_values = sum(before_list)
+				context['before_values'] = before_values
+				### End of Next Month ###
 
 			except Exception as e:
 				print(e, 'Invoice/views.total_values - in_dl : error occured')

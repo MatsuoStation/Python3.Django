@@ -76,6 +76,8 @@
         </form>
         <p><br>{{ names }}</p>
         <p>{{ dlb }} - {{ dla }}</p>
+        <!-- <p>{{ bld }} - {{ blm }}</p> -->
+
 
         <div class="pagination">
         <span class="step-links">
@@ -133,7 +135,7 @@
             <tr>
               <td></td>
               <td width="1"></td>
-              <td></td>
+              <td>{{ before_values|intcomma }}</td>
               <td>{{ incash_values|intcomma }}</td>
               <td></td>
               <td></td>
