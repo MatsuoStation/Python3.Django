@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.Views.py - Ver.3.9.4 Update:2018.05.09" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.1 Update:2018.05.14" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -39,6 +39,12 @@ from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 
 from django.db.models import Count, Min, Max, Sum, Avg
+
+from reportlab.lib.pagesizes import A4, portrait
+from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.pdfgen import canvas
 
 jtax = 0.08
 ndigits = 0
@@ -1822,6 +1828,28 @@ class Invoice_List(ListView):
 		# context['sc'] = Items_Test.objects.filter(uid__startswith="1010")
 
 		return context
+
+
+	def get(self, request, *args, **kwargs):
+		# For PDF
+		response = HttpResponse(status=200, content_type='application/pdf')
+		response['Content-Disposition'] = 'filename="Invoice.pdf"'
+
+		self._create_pdf(response)
+		return response
+
+	def _create_pdf(self, response):
+		font_name = 'HeiseiKakuGo-W5'
+		pdfmetrics.registerFont(UnicodeCIDFont(font_name))
+
+		size = portrait(A4)
+
+		doc = canvas.Canvas(response, pagesize=size, bottomup=False)
+
+		doc.setFont(font_name, 12)
+		doc.drawString(20*mm, 18*mm, 'HellowWorld')
+
+		doc.save()
 
 
 def index(request):
