@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Python3.Django.LPG.urls.py - Ver.3.1.3 Update:2018.03.08" |
+#//|  "VsV.Python3.Django.LPG.urls.py - Ver.3.11.1 Update:2018.05.15" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -27,7 +27,9 @@ from django.urls import path
 ### MatsuoStation.Com ###
 from . import views
 
+app_name = 'LPG'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('<int:nid>/', views.LPG_List.as_view(), name='lpg_list')
 ]
