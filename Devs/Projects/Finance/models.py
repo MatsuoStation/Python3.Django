@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.7.18 Update:2018.04.09" |
+#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.11.2 Update:2018.05.16" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -15,6 +15,80 @@ from django.conf import settings
 
 
 # settings.DATETIME_FORMAT
+
+###* LPG.Meter00 *### (uid : IntegerField)
+class LPG_Meter00(models.Model):
+	class Meta:
+		db_table = 'LPG_Meter00'
+		verbose_name = 'LPT_Meter_020'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.IntegerField( "共通ID", default=None )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	route_code  = models.IntegerField( "ルート順番", default=None )
+	s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	m_datetime 	= models.DateTimeField( verbose_name='検針日' )
+	meter	= models.FloatField( "検針値", default=None )
+	amount	= models.FloatField( "使用量", default=None )
+	date01 	= models.DateTimeField( verbose_name='検針日01' )
+	meter01	= models.FloatField( "検針値01", default=None )
+	amount01= models.FloatField( "使用量01", default=None )
+	date02 	= models.DateTimeField( verbose_name='検針日02' )
+	meter02	= models.FloatField( "検針値02", default=None )
+	amount02= models.FloatField( "使用量02", default=None )
+	date03 	= models.DateTimeField( verbose_name='検針日03' )
+	meter03	= models.FloatField( "検針値03", default=None )
+	amount03= models.FloatField( "使用量03", default=None )
+	date04 	= models.DateTimeField( verbose_name='検針日04' )
+	meter04	= models.FloatField( "検針値04", default=None )
+	amount04= models.FloatField( "使用量04", default=None )
+	date05 	= models.DateTimeField( verbose_name='検針日05' )
+	meter05	= models.FloatField( "検針値05", default=None )
+	amount05= models.FloatField( "使用量05", default=None )
+	date06 	= models.DateTimeField( verbose_name='検針日06' )
+	meter06	= models.FloatField( "検針値06", default=None )
+	amount06= models.FloatField( "使用量06", default=None )
+	date07 	= models.DateTimeField( verbose_name='検針日07' )
+	meter07	= models.FloatField( "検針値07", default=None )
+	amount07= models.FloatField( "使用量07", default=None )
+	date08 	= models.DateTimeField( verbose_name='検針日08' )
+	meter08	= models.FloatField( "検針値08", default=None )
+	amount08= models.FloatField( "使用量08", default=None )
+	date09 	= models.DateTimeField( verbose_name='検針日09' )
+	meter09	= models.FloatField( "検針値09", default=None )
+	amount09= models.FloatField( "使用量09", default=None )
+	date10 	= models.DateTimeField( verbose_name='検針日10' )
+	meter10	= models.FloatField( "検針値10", default=None )
+	amount10= models.FloatField( "使用量10", default=None )
+	date11 	= models.DateTimeField( verbose_name='検針日11' )
+	meter11	= models.FloatField( "検針値11", default=None )
+	amount11= models.FloatField( "使用量11", default=None )
+	date12 	= models.DateTimeField( verbose_name='検針日12' )
+	meter12	= models.FloatField( "検針値12", default=None )
+	amount12= models.FloatField( "使用量12", default=None )
+
+	def __str__(self):
+		return self.uid
+
+
+###* LPG.Value00 *### (uid : IntegerField)
+class LPG_Value00(models.Model):
+	class Meta:
+		db_table = 'LPG_Value00'
+		verbose_name = 'LPT_Value_020'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.IntegerField( "共通ID", default=None )
+	base_value	= models.IntegerField( verbose_name='基本料金(税別)', default=0 )
+	start_value	= models.FloatField( "初期数量", default=None )
+	end_value	= models.FloatField( "上限数量", default=None )
+	unit    	= models.FloatField( "単価", default=None )
+
+	def __str__(self):
+		return self.uid
+
 
 ###* Tutorial.Dj2.0 *###
 '''
