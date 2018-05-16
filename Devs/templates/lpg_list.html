@@ -174,11 +174,11 @@
               <td></td>
               <td>{{ s_code }}</td>
               <td>{{ base_product }}</td>
+              <td>1</td>
+              <td>{{ bLPG|intcomma }}</td>
               <td>{{ bLPG|intcomma }}</td>
               <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{ taxLPG|intcomma }}</td>
               <td>{{ fLPG }}</td>
             </tr>
             <tr>
@@ -205,8 +205,112 @@
               <td></td>
               <td></td>
               <td></td>
-              <td>{{ cLPG }}</td>
+              <td></td>
             </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s0 }}&nbsp;〜&nbsp;{{ e0 }}</td>
+              <td>{{ r0|floatformat:1 }}</td>
+              <td>{{ u0 }}</td>
+              <td>{{ v0|intcomma }}</td>
+              <td></td>
+              <td>{{ t0|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% if v1 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s1 }}&nbsp;〜&nbsp;{{ e1 }}</td>
+              <td>{{ r1|floatformat:1 }}</td>
+              <td>{{ u1 }}</td>
+              <td>{{ v1|intcomma }}</td>
+              <td></td>
+              <td>{{ t1|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% if v2 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s2 }}&nbsp;〜&nbsp;{{ e2 }}</td>
+              <td>{{ r2|floatformat:1 }}</td>
+              <td>{{ u2 }}</td>
+              <td>{{ v2|intcomma }}</td>
+              <td></td>
+              <td>{{ t2|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% if v3 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s3 }}&nbsp;〜&nbsp;{{ e3 }}</td>
+              <td>{{ r3|floatformat:1 }}</td>
+              <td>{{ u3 }}</td>
+              <td>{{ v3|intcomma }}</td>
+              <td></td>
+              <td>{{ t3|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% if v4 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s4 }}&nbsp;〜&nbsp;{{ e4 }}</td>
+              <td>{{ r4|floatformat:1 }}</td>
+              <td>{{ u4 }}</td>
+              <td>{{ v4|intcomma }}</td>
+              <td></td>
+              <td>{{ t4|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% if v5 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s5 }}&nbsp;〜&nbsp;{{ e5 }}</td>
+              <td>{{ r5|floatformat:1 }}</td>
+              <td>{{ u5 }}</td>
+              <td>{{ v5|intcomma }}</td>
+              <td></td>
+              <td>{{ t5|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% if v6 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s6 }}&nbsp;〜&nbsp;{{ e6 }}</td>
+              <td>{{ r6|floatformat:1 }}</td>
+              <td>{{ u6 }}</td>
+              <td>{{ v6|intcomma }}</td>
+              <td></td>
+              <td>{{ t6|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% endif %}
+
             {% else %}
             <tr>
               <td>{{ monLPG }}</td>
@@ -219,7 +323,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td>{{ cLPG }}</td>
+              <td></td>
             </tr>
             {% endif %}
           </tbody>
