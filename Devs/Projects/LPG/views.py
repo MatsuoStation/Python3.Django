@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.10 Update:2018.05.23" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.11 Update:2018.05.24" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from .forms import NameForm
 
-from Finance.models import Name_Test20, LPG_Meter00, Bank_Test20, Value_Test20, LPG_Value00
+from Finance.models import Name_Test20, LPG_Meter00, Bank_Test20, Value_Test30, LPG_Value00
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
@@ -84,13 +84,27 @@ class LPG_List(ListView):
 			context['dlb'] = dlb
 			context['dla'] = dla
 
+			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			VLs = Value_Test30.objects.filter(uid=self.kwargs.get('nid')).order_by('s_code')
 			# LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'), m_datetime__lte=dlm)
 			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'))
-			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
-			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
-			VLs = Value_Test20.objects.filter(uid=self.kwargs.get('nid')).order_by('s_code')
 
 			context['lms'] = LMs
+
+			### 氏名 ###
+			for na in NAs:
+				names = na.name
+
+			### Bank.請求書フォーマット ###
+			for bf in BFs:
+				fLPG = bf.s_format
+				context['fLPG'] = fLPG
+
+			### LPG.料金コード ###
+			for vl in VLs:
+				cLPG = vl.lpg_code
+				context['cLPG'] = cLPG
 
 			### 検針実施日 ###
 			try:
@@ -100,84 +114,165 @@ class LPG_List(ListView):
 					date00 = (date00-timedelta(days=dd00-1)) + relativedelta(months=1) - timedelta(days=1)
 					dd_list.append(date00)
 
+					### LPG.検針データ ###
+					if dlt == date00:
+						# 日付
+						monLPG = datetime.strftime(lm.m_datetime, '%-m')
+						dayLPG = datetime.strftime(lm.m_datetime, '%-d')
+
 					if lm.date01:
 						date01 = lm.date01
 						dd01 = lm.date01.day
 						date01 = (date01-timedelta(days=dd01-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date01)
+
+						### LPG.検針データ ###
+						if dlt == date01:
+							# 日付
+							monLPG = datetime.strftime(lm.date01, '%-m')
+							dayLPG = datetime.strftime(lm.date01, '%-d')
+
 					if lm.date02:
 						date02 = lm.date02
 						dd02 = lm.date02.day
 						date02 = (date02-timedelta(days=dd02-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date02)
+
+						### LPG.検針データ ###
+						if dlt == date02:
+							# 日付
+							monLPG = datetime.strftime(lm.date02, '%-m')
+							dayLPG = datetime.strftime(lm.date02, '%-d')
+
 					if lm.date03:
 						date03 = lm.date03
 						dd03 = lm.date03.day
 						date03 = (date03-timedelta(days=dd03-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date03)
+
+						### LPG.検針データ ###
+						if dlt == date03:
+							# 日付
+							monLPG = datetime.strftime(lm.date03, '%-m')
+							dayLPG = datetime.strftime(lm.date03, '%-d')
+
 					if lm.date04:
 						date04 = lm.date04
 						dd04 = lm.date04.day
 						date04 = (date04-timedelta(days=dd04-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date04)
+
+						### LPG.検針データ ###
+						if dlt == date04:
+							# 日付
+							monLPG = datetime.strftime(lm.date04, '%-m')
+							dayLPG = datetime.strftime(lm.date04, '%-d')
+
 					if lm.date05:
 						date05 = lm.date05
 						dd05 = lm.date05.day
 						date05 = (date05-timedelta(days=dd05-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date05)
+
+						### LPG.検針データ ###
+						if dlt == date05:
+							# 日付
+							monLPG = datetime.strftime(lm.date05, '%-m')
+							dayLPG = datetime.strftime(lm.date05, '%-d')
+
 					if lm.date06:
 						date06 = lm.date06
 						dd06 = lm.date06.day
 						date06 = (date06-timedelta(days=dd06-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date06)
+
+						### LPG.検針データ ###
+						if dlt == date06:
+							# 日付
+							monLPG = datetime.strftime(lm.date06, '%-m')
+							dayLPG = datetime.strftime(lm.date06, '%-d')
+
 					if lm.date07:
 						date07 = lm.date07
 						dd07 = lm.date07.day
 						date07 = (date07-timedelta(days=dd07-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date07)
+
+						### LPG.検針データ ###
+						if dlt == date07:
+							# 日付
+							monLPG = datetime.strftime(lm.date07, '%-m')
+							dayLPG = datetime.strftime(lm.date07, '%-d')
+
 					if lm.date08:
 						date08 = lm.date08
 						dd08 = lm.date08.day
 						date08 = (date08-timedelta(days=dd08-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date08)
+
+						### LPG.検針データ ###
+						if dlt == date08:
+							# 日付
+							monLPG = datetime.strftime(lm.date08, '%-m')
+							dayLPG = datetime.strftime(lm.date08, '%-d')
+
 					if lm.date09:
 						date09 = lm.date09
 						dd09 = lm.date09.day
 						date09 = (date09-timedelta(days=dd09-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date09)
+
+						### LPG.検針データ ###
+						if dlt == date09:
+							# 日付
+							monLPG = datetime.strftime(lm.date09, '%-m')
+							dayLPG = datetime.strftime(lm.date09, '%-d')
+
 					if lm.date10:
 						date10 = lm.date10
 						dd10 = lm.date10.day
 						date10 = (date10-timedelta(days=dd10-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date10)
+
+						### LPG.検針データ ###
+						if dlt == date10:
+							# 日付
+							monLPG = datetime.strftime(lm.date10, '%-m')
+							dayLPG = datetime.strftime(lm.date10, '%-d')
+
 					if lm.date11:
 						date11 = lm.date11
 						dd11 = lm.date11.day
 						date11 = (date11-timedelta(days=dd11-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date11)
+
+						### LPG.検針データ ###
+						if dlt == date11:
+							# 日付
+							monLPG = datetime.strftime(lm.date11, '%-m')
+							dayLPG = datetime.strftime(lm.date11, '%-d')
+
 					if lm.date12:
 						date12 = lm.date12
 						dd12 = lm.date12.day
 						date12 = (date12-timedelta(days=dd12-1)) + relativedelta(months=1) - timedelta(days=1)
 						dd_list.append(date12)
 
+						### LPG.検針データ ###
+						if dlt == date12:
+							# 日付
+							monLPG = datetime.strftime(lm.date12, '%-m')
+							dayLPG = datetime.strftime(lm.date12, '%-d')
+
+
 				dds = sorted(set(dd_list), key=dd_list.index)
 				context['dds'] = dds
 
+				context['monLPG'] = monLPG
+				context['dayLPG'] = dayLPG
+
 			except Exception as e:
 				print(e, 'LPG/views.py_dds : error occured')
-
-			### 氏名 ###
-			for na in NAs:
-				names = na.name
-
-			### LPG.検針データ ###
-
-
-			### Bank.請求書フォーマット ###
-			for bf in BFs:
-				fLPG = bf.s_format
-				context['fLPG'] = fLPG
 
 
 		### DL : False ###

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.11.2 Update:2018.05.16" |
+#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.11.11 Update:2018.05.24" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -218,6 +218,51 @@ class Value_Test20(models.Model):
 	value02	= models.FloatField( "価格02", default=None )
 	date03	= models.DateTimeField( "設定日03")
 	value03	= models.FloatField( "価格03", default=None )
+
+	def __str__(self):
+		return self.uid
+
+
+###* Guest.Value30 *### (uid : IntegerField)
+class Value_Test30(models.Model):
+	class Meta:
+		db_table = 'Value_Test30'
+		verbose_name = 'Value_030'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.IntegerField( "共通ID", default=None )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	lpg_code= models.IntegerField( verbose_name='ガス料金コード', default=0 )
+	tax_code= models.IntegerField( verbose_name='税区分', default=0 )
+	s_code	= models.CharField( verbose_name='商品', default=None, max_length=5 )
+	# day		= models.PositiveIntegerField( "設定日", default=None )
+	m_datetime 	= models.DateTimeField( verbose_name='設定日' )
+	value	= models.FloatField( "価格", default=None )
+	date01	= models.DateTimeField( "設定日01")
+	value01	= models.FloatField( "価格01", default=None )
+	date02	= models.DateTimeField( "設定日02")
+	value02	= models.FloatField( "価格02", default=None )
+	date03	= models.DateTimeField( "設定日03")
+	value03	= models.FloatField( "価格03", default=None )
+	date04	= models.DateTimeField( "設定日04")
+	value04	= models.FloatField( "価格04", default=None )
+	date05	= models.DateTimeField( "設定日05")
+	value05	= models.FloatField( "価格05", default=None )
+	date06	= models.DateTimeField( "設定日06")
+	value06	= models.FloatField( "価格06", default=None )
+	date07	= models.DateTimeField( "設定日07")
+	value07	= models.FloatField( "価格07", default=None )
+	date08	= models.DateTimeField( "設定日08")
+	value08	= models.FloatField( "価格08", default=None )
+	date09	= models.DateTimeField( "設定日09")
+	value09	= models.FloatField( "価格09", default=None )
+	date10	= models.DateTimeField( "設定日10")
+	value10	= models.FloatField( "価格10", default=None )
+	date11	= models.DateTimeField( "設定日11")
+	value11	= models.FloatField( "価格11", default=None )
+	date12	= models.DateTimeField( "設定日12")
+	value12	= models.FloatField( "価格12", default=None )
 
 	def __str__(self):
 		return self.uid
