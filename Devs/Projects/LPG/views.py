@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Django.LPG.Views.py - Ver.3.11.3 Update:2018.05.16" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.10 Update:2018.05.23" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -64,262 +64,114 @@ class LPG_List(ListView):
 		context['form'] = NameForm()
 		context['gid'] = self.kwargs.get('nid')
 
+		dd_list = list()
+
 		### DL : True ###
 		try:
 			dl = self.request.GET.get('dl', '')
 			dlt = datetime.strptime(dl, '%Y-%m-%d')
 
-			dd = dlt.day
+			# (OK) dd = dlt.day
 
-			dt = dlt - relativedelta(months=1)
-			dld = dt + relativedelta(months=1) - timedelta(days=dt.day) + timedelta(days=1)
-			dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+			# (OK) dt = dlt - relativedelta(months=1)
+			# (OK) dld = dt + relativedelta(months=1) - timedelta(days=dt.day) + timedelta(days=1)
+			# (OK) dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
 
-			context['dld'] = dld
-			context['dlm'] = dlm
+			# (OK) context['dld'] = dld
+			# (OK) context['dlm'] = dlm
+			dlb = dlt + timedelta(days=1) - relativedelta(months=1)
+			dla = dlt + timedelta(days=1) - timedelta(microseconds=1)
+			context['dlb'] = dlb
+			context['dla'] = dla
 
-			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'), m_datetime__lte=dlm)
+			# LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'), m_datetime__lte=dlm)
+			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'))
 			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
 			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
 			VLs = Value_Test20.objects.filter(uid=self.kwargs.get('nid')).order_by('s_code')
 
 			context['lms'] = LMs
 
+			### 検針実施日 ###
+			try:
+				for lm in LMs:
+					date00 = lm.m_datetime
+					dd00 = lm.m_datetime.day
+					date00 = (date00-timedelta(days=dd00-1)) + relativedelta(months=1) - timedelta(days=1)
+					dd_list.append(date00)
+
+					if lm.date01:
+						date01 = lm.date01
+						dd01 = lm.date01.day
+						date01 = (date01-timedelta(days=dd01-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date01)
+					if lm.date02:
+						date02 = lm.date02
+						dd02 = lm.date02.day
+						date02 = (date02-timedelta(days=dd02-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date02)
+					if lm.date03:
+						date03 = lm.date03
+						dd03 = lm.date03.day
+						date03 = (date03-timedelta(days=dd03-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date03)
+					if lm.date04:
+						date04 = lm.date04
+						dd04 = lm.date04.day
+						date04 = (date04-timedelta(days=dd04-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date04)
+					if lm.date05:
+						date05 = lm.date05
+						dd05 = lm.date05.day
+						date05 = (date05-timedelta(days=dd05-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date05)
+					if lm.date06:
+						date06 = lm.date06
+						dd06 = lm.date06.day
+						date06 = (date06-timedelta(days=dd06-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date06)
+					if lm.date07:
+						date07 = lm.date07
+						dd07 = lm.date07.day
+						date07 = (date07-timedelta(days=dd07-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date07)
+					if lm.date08:
+						date08 = lm.date08
+						dd08 = lm.date08.day
+						date08 = (date08-timedelta(days=dd08-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date08)
+					if lm.date09:
+						date09 = lm.date09
+						dd09 = lm.date09.day
+						date09 = (date09-timedelta(days=dd09-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date09)
+					if lm.date10:
+						date10 = lm.date10
+						dd10 = lm.date10.day
+						date10 = (date10-timedelta(days=dd10-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date10)
+					if lm.date11:
+						date11 = lm.date11
+						dd11 = lm.date11.day
+						date11 = (date11-timedelta(days=dd11-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date11)
+					if lm.date12:
+						date12 = lm.date12
+						dd12 = lm.date12.day
+						date12 = (date12-timedelta(days=dd12-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date12)
+
+				dds = sorted(set(dd_list), key=dd_list.index)
+				context['dds'] = dds
+
+			except Exception as e:
+				print(e, 'LPG/views.py_dds : error occured')
+
+			### 氏名 ###
+			for na in NAs:
+				names = na.name
+
 			### LPG.検針データ ###
-			for lm in LMs:
-				# 氏名
-				for na in NAs:
-					names = na.name
-
-				# 日付
-				monLPG = datetime.strftime(lm.m_datetime, '%-m')
-				dayLPG = datetime.strftime(lm.m_datetime, '%-d')
-				context['monLPG'] = monLPG
-				context['dayLPG'] = dayLPG
-
-				# ガス使用量
-				aLPG = lm.amount
-
-				if aLPG > 0:
-					# 商品コード
-					s_code = lm.s_code
-
-					# ガス料金コード
-					for vl in VLs:
-						cLPG = vl.s_code
-
-					# 基本料金
-					LVs01 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:1]
-					for lv in LVs01:
-						bLPG = lv.base_value
-						taxLPG = tax_v(bLPG)
-
-						# ガス使用料金
-						s0 = lv.start_value
-						e0 = lv.end_value
-						u0 = int(lv.unit)
-
-						if aLPG >= e0:
-							v0 = invalue(u0*(e0-s0))
-							# v0 = u0 * (e0 - s0)
-
-							t0 = tax_v(v0)
-							# values = v0 * jtax
-							# d_point = len(str(values).split('.')[1])
-							# if ndigits >= d_point:
-							#	t0 = int(round(values, 0))
-							# c = (10 ** d_point) * 2
-							# t0 = int(round((values * c + 1) / c, 0))
-
-							# r0 = infloat(aLPG-e0)
-							r0 = e0 - s0
-
-						elif aLPG < s0:
-							v0 = int(0)
-						else:
-							v0 = invalue(u0*(aLPG-s0))
-							# v0 = u0 * (aLPG - s0)
-							t0 = tax_v(v0)
-							# values = v0 * jtax
-							# d_point = len(str(values).split('.')[1])
-							# if ndigits >= d_point:
-							#	t0 = int(round(values, 0))
-							# c = (10 ** d_point) * 2
-							# t0 = int(round((values * c + 1) / c, 0))
-							r0 = aLPG - s0
-
-
-					LVs02 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:2]
-					for lv in LVs02:
-						s1 = lv.start_value
-						e1 = lv.end_value
-						u1 = int(lv.unit)
-
-						if aLPG >= e1:
-							v1 = invalue(u1*(e1-e0))
-							# v1 = u1 * (e1 - e0)
-							t1 = tax_v(v1)
-							r1 = e1 - e0
-
-						elif aLPG < s1:
-							v1 = int(0)
-						else:
-							v1 = invalue(u1*(aLPG-e0))
-							# v1 = u1 * (aLPG - e0)
-							t1 = tax_v(v1)
-							r1 =  aLPG - e0
-
-					LVs03 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:3]
-					for lv in LVs03:
-						s2 = lv.start_value
-						e2 = lv.end_value
-						u2 = int(lv.unit)
-
-						if aLPG >= e2:
-							v2 = invalue(u2*(e2-e1))
-							t2 = tax_v(v2)
-							r2 = e2-e1
-
-						elif aLPG < s2:
-							v2 = int(0)
-						else:
-							v2 = invalue(u2*(aLPG-e1))
-							t2 = tax_v(v2)
-							r2 = aLPG - e1
-
-					LVs04 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:4]
-					for lv in LVs04:
-						s3 = lv.start_value
-						e3 = lv.end_value
-						u3 = int(lv.unit)
-
-						if aLPG >= e3:
-							v3 = invalue(u3*(e3-e2))
-							t3 = tax_v(v3)
-							r3 = e3-e2
-
-						elif aLPG < s3:
-							v3 = int(0)
-						else:
-							v3 = invalue(u3*(aLPG-e2))
-							t3 = tax_v(v3)
-							r3 = aLPG - e2
-
-					LVs05 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:5]
-					for lv in LVs05:
-						s4 = lv.start_value
-						e4 = lv.end_value
-						u4 = int(lv.unit)
-
-						if aLPG >= e4:
-							v4 = invalue(u4*(e4-e3))
-							t4 = tax_v(v4)
-							r4 = e4-e3
-
-						elif aLPG < s4:
-							v4 = int(0)
-						else:
-							v4 = invalue(u4*(aLPG-e3))
-							t4 = tax_v(v4)
-							r4 = aLPG - e3
-
-					LVs06 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:6]
-					for lv in LVs06:
-						s5 = lv.start_value
-						e5 = lv.end_value
-						u5 = int(lv.unit)
-
-						if aLPG >= e5:
-							v5 = invalue(u5*(e5-e4))
-							t5 = tax_v(v5)
-							r5 = e5-e4
-
-						elif aLPG < s5:
-							v5 = int(0)
-						else:
-							v5 = invalue(u5*(aLPG-e4))
-							t5 = tax_v(v5)
-							r5 = aLPG - e4
-
-					LVs07 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:7]
-					for lv in LVs07:
-						s6 = lv.start_value
-						e6 = lv.end_value
-						u6 = int(lv.unit)
-
-						if aLPG >= e6:
-							v6 = invalue(u6*(e6-e5))
-							t6 = tax_v(v6)
-							r6 = e6-e5
-
-						elif aLPG < s6:
-							v6 = int(0)
-						else:
-							v6 = invalue(u6*(aLPG-e5))
-							t6 = tax_v(v6)
-							r6 = aLPG - e5
-
-					context['s_code'] = s_code
-					context['cLPG'] = cLPG
-					context['bLPG'] = bLPG
-					context['taxLPG'] = taxLPG
-
-					context['s0'] = s0
-					context['e0'] = e0
-					context['u0'] = u0
-					context['v0'] = v0
-					context['r0'] = r0
-					context['t0'] = t0
-
-					context['s1'] = s1
-					context['e1'] = e1
-					context['u1'] = u1
-					context['v1'] = v1
-					context['r1'] = r1
-					context['t1'] = t1
-
-					context['s2'] = s2
-					context['e2'] = e2
-					context['u2'] = u2
-					context['v2'] = v2
-					context['r2'] = r2
-					context['t2'] = t2
-
-					context['s3'] = s3
-					context['e3'] = e3
-					context['u3'] = u3
-					context['v3'] = v3
-					context['r3'] = r3
-					context['t3'] = t3
-
-					context['s4'] = s4
-					context['e4'] = e4
-					context['u4'] = u4
-					context['v4'] = v4
-					context['r4'] = r4
-					context['t4'] = t4
-
-					context['s5'] = s5
-					context['e5'] = e5
-					context['u5'] = u5
-					context['v5'] = v5
-					context['r5'] = r5
-					context['t5'] = t5
-
-					context['s6'] = s6
-					context['e6'] = e6
-					context['u6'] = u6
-					context['v6'] = v6
-					context['r6'] = r6
-					context['t6'] = t6
-
-
-					context['base_product'] = "基本料金"
-					context['product'] = "ガス使用料"
-					context['unit_product'] = "(内訳)"
-
-				context['names'] = names
-				context['aLPG'] = aLPG
 
 
 			### Bank.請求書フォーマット ###
@@ -330,7 +182,92 @@ class LPG_List(ListView):
 
 		### DL : False ###
 		except Exception as e:
+			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'))
+			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+			### 検針実施日 ###
+			try:
+				for lm in LMs:
+					date00 = lm.m_datetime
+					dd00 = lm.m_datetime.day
+					date00 = (date00-timedelta(days=dd00-1)) + relativedelta(months=1) - timedelta(days=1)
+					dd_list.append(date00)
+
+					if lm.date01:
+						date01 = lm.date01
+						dd01 = lm.date01.day
+						date01 = (date01-timedelta(days=dd01-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date01)
+					if lm.date02:
+						date02 = lm.date02
+						dd02 = lm.date02.day
+						date02 = (date02-timedelta(days=dd02-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date02)
+					if lm.date03:
+						date03 = lm.date03
+						dd03 = lm.date03.day
+						date03 = (date03-timedelta(days=dd03-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date03)
+					if lm.date04:
+						date04 = lm.date04
+						dd04 = lm.date04.day
+						date04 = (date04-timedelta(days=dd04-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date04)
+					if lm.date05:
+						date05 = lm.date05
+						dd05 = lm.date05.day
+						date05 = (date05-timedelta(days=dd05-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date05)
+					if lm.date06:
+						date06 = lm.date06
+						dd06 = lm.date06.day
+						date06 = (date06-timedelta(days=dd06-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date06)
+					if lm.date07:
+						date07 = lm.date07
+						dd07 = lm.date07.day
+						date07 = (date07-timedelta(days=dd07-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date07)
+					if lm.date08:
+						date08 = lm.date08
+						dd08 = lm.date08.day
+						date08 = (date08-timedelta(days=dd08-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date08)
+					if lm.date09:
+						date09 = lm.date09
+						dd09 = lm.date09.day
+						date09 = (date09-timedelta(days=dd09-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date09)
+					if lm.date10:
+						date10 = lm.date10
+						dd10 = lm.date10.day
+						date10 = (date10-timedelta(days=dd10-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date10)
+					if lm.date11:
+						date11 = lm.date11
+						dd11 = lm.date11.day
+						date11 = (date11-timedelta(days=dd11-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date11)
+					if lm.date12:
+						date12 = lm.date12
+						dd12 = lm.date12.day
+						date12 = (date12-timedelta(days=dd12-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date12)
+
+				dds = sorted(set(dd_list), key=dd_list.index)
+				context['dds'] = dds
+
+			except Exception as e:
+				print(e, 'LPG/views.py_dds : error occured')
+
+
+			### 氏名 ###
+			for na in NAs:
+				names = na.name
+
 			print(e, 'LPG/Views - DL.False : error occured')
+
+		context['names'] = names
 
 		return context
 

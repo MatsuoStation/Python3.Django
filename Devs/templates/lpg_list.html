@@ -74,9 +74,11 @@
           {{ form }}
           <input type="submit" name="送信">
         </form>
+
         <p><br>{{ names }}</p>
+
+        <!--p>{{ dld }} - {{ dlm }}</p-->
         <p>{{ dlb }} - {{ dla }}</p>
-        <!-- <p>{{ bld }} - {{ blm }}</p> -->
 
 
         <div class="pagination">
@@ -100,53 +102,13 @@
 
         <!--p>{{ deadlines }}</p-->
         <!--p>{{ forms }}</p-->
-        <p>{% if dlms %}
+        <p>
           |
-              {% for dd in dds %}
-                &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|
-              <!-- &nbsp;&nbsp;<a href="?dl={{ dds }}"">{{ dds }}</a>&nbsp;&nbsp;| -->
-              {% endfor %}
-            {% endif %}
-        </p>
+          {% for dd in dds %}
+            &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m" }}</a>&nbsp;&nbsp;|
+          {% endfor %}
+        </p
 
-        <!-- table class="table table-striped table-bordered" -->
-        {% if ivs.number == 1 %}
-        <div class="mx-auto">
-        <table class="table table-striped table-bordered">
-        <!-- table class="table bg01 table-borderless" -->
-          <thead>
-            <tr>
-              <td width="2">月</td>
-              <td width="2">日</td>
-              <td>車番</td>
-              <td>商品コード</td>
-              <td>商品名</td>
-              <td>数量</td>
-              <td>単価</td>
-              <td>金額</td>
-              <td>税区分</td>
-              <td>消費税</td>
-              <td>備考</td>
-            </tr>
-          </thead>
-          <tbody>}
-            <tr>
-              <td>1</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ product }}</td>
-              <td>{{ aLPG }}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-        {% else %}
         <div class="mx-auto">
         <table class="table table-striped table-bordered">
         <!-- table class="table table-borderless" -->
@@ -165,172 +127,22 @@
               <td>備考</td>
             </tr>
           </thead>
-          {% for lm in lms %}
           <tbody>
-            {% if lm.amount %}
             <tr>
               <td>{{ monLPG }}</td>
               <td>{{ dayLPG }}</td>
               <td></td>
-              <td>{{ s_code }}</td>
+              <td></td>
               <td>{{ base_product }}</td>
-              <td>1</td>
-              <td>{{ bLPG|intcomma }}</td>
-              <td>{{ bLPG|intcomma }}</td>
-              <td></td>
-              <td>{{ taxLPG|intcomma }}</td>
-              <td>{{ fLPG }}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ product }}</td>
               <td>{{ aLPG }}</td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
               <td>{{ cLPG }}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ unit_product }}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ s0 }}&nbsp;〜&nbsp;{{ e0 }}</td>
-              <td>{{ r0|floatformat:1 }}</td>
-              <td>{{ u0 }}</td>
-              <td>{{ v0|intcomma }}</td>
-              <td></td>
-              <td>{{ t0|intcomma }}</td>
-              <td></td>
-            </tr>
-            {% if v1 %}
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ s1 }}&nbsp;〜&nbsp;{{ e1 }}</td>
-              <td>{{ r1|floatformat:1 }}</td>
-              <td>{{ u1 }}</td>
-              <td>{{ v1|intcomma }}</td>
-              <td></td>
-              <td>{{ t1|intcomma }}</td>
-              <td></td>
-            </tr>
-            {% endif %}
-            {% if v2 %}
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ s2 }}&nbsp;〜&nbsp;{{ e2 }}</td>
-              <td>{{ r2|floatformat:1 }}</td>
-              <td>{{ u2 }}</td>
-              <td>{{ v2|intcomma }}</td>
-              <td></td>
-              <td>{{ t2|intcomma }}</td>
-              <td></td>
-            </tr>
-            {% endif %}
-            {% if v3 %}
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ s3 }}&nbsp;〜&nbsp;{{ e3 }}</td>
-              <td>{{ r3|floatformat:1 }}</td>
-              <td>{{ u3 }}</td>
-              <td>{{ v3|intcomma }}</td>
-              <td></td>
-              <td>{{ t3|intcomma }}</td>
-              <td></td>
-            </tr>
-            {% endif %}
-            {% if v4 %}
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ s4 }}&nbsp;〜&nbsp;{{ e4 }}</td>
-              <td>{{ r4|floatformat:1 }}</td>
-              <td>{{ u4 }}</td>
-              <td>{{ v4|intcomma }}</td>
-              <td></td>
-              <td>{{ t4|intcomma }}</td>
-              <td></td>
-            </tr>
-            {% endif %}
-            {% if v5 %}
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ s5 }}&nbsp;〜&nbsp;{{ e5 }}</td>
-              <td>{{ r5|floatformat:1 }}</td>
-              <td>{{ u5 }}</td>
-              <td>{{ v5|intcomma }}</td>
-              <td></td>
-              <td>{{ t5|intcomma }}</td>
-              <td></td>
-            </tr>
-            {% endif %}
-            {% if v6 %}
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ s6 }}&nbsp;〜&nbsp;{{ e6 }}</td>
-              <td>{{ r6|floatformat:1 }}</td>
-              <td>{{ u6 }}</td>
-              <td>{{ v6|intcomma }}</td>
-              <td></td>
-              <td>{{ t6|intcomma }}</td>
-              <td></td>
-            </tr>
-            {% endif %}
-
-            {% else %}
-            <tr>
-              <td>{{ monLPG }}</td>
-              <td>{{ dayLPG }}</td>
-              <td></td>
-              <td></td>
-              <td>{{ base_product }}</td>
-              <td>{{ aLPG }}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            {% endif %}
           </tbody>
-          {% endfor %}
         </table>
         </div>
-        {% endif %}
 
 
         <div class="pagination">
