@@ -127,20 +127,335 @@
               <td>備考</td>
             </tr>
           </thead>
+          {% for lm in lms %}
           <tbody>
+          {% if dayLPG %}
             <tr>
               <td>{{ monLPG }}</td>
               <td>{{ dayLPG }}</td>
               <td></td>
-              <td></td>
+              <td>{{ s_code }}</td>
               <td>{{ base_product }}</td>
-              <td>{{ aLPG }}</td>
+              <td>1 契約</td>
+              <td>{{ bLPG|intcomma }}</td>
+              <td>{{ bLPG|intcomma }}</td>
               <td></td>
               <td></td>
+              <td>{{ fLPG }} / {{ gid }}</td>
+            </tr>
+            {% if lm.amount %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ product }}</td>
+              <td>{{ aLPG }} m&sup3;</td>
+              <td></td>
+              <td>{{ LPG_sTotal|intcomma }}</td>
               <td></td>
               <td></td>
               <td>{{ cLPG }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ unit_product }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            {% if e0 > 100 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s0 }}&nbsp;〜&nbsp;</td>
+              <td>{{ r0|floatformat:1 }}</td>
+              <td>{{ u0 }}</td>
+              <td>{{ v0|intcomma }}</td>
+              <td></td>
+              <td>{{ t0|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% else %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s0 }}&nbsp;〜&nbsp;{{ e0 }}</td>
+              <td>{{ r0|floatformat:1 }}</td>
+              <td>{{ u0 }}</td>
+              <td>{{ v0|intcomma }}</td>
+              <td></td>
+              <td>{{ t0|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% endif %}
+
+            {% if r1 > 0 %}
+            {% if e1 > 100 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s1 }}&nbsp;〜&nbsp;</td>
+              <td>{{ r1|floatformat:1 }}</td>
+              <td>{{ u1 }}</td>
+              <td>{{ v1|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% else %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s1 }}&nbsp;〜&nbsp;{{ e1 }}</td>
+              <td>{{ r1|floatformat:1 }}</td>
+              <td>{{ u1 }}</td>
+              <td>{{ v1|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% endif %}
+
+            {% if r2 > 0 %}
+            {% if e2 > 100 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s2 }}&nbsp;〜&nbsp;</td>
+              <td>{{ r2|floatformat:1 }}</td>
+              <td>{{ u2 }}</td>
+              <td>{{ v2|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% else %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s2 }}&nbsp;〜&nbsp;{{ e2 }}</td>
+              <td>{{ r2|floatformat:1 }}</td>
+              <td>{{ u2 }}</td>
+              <td>{{ v2|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% endif %}
+
+            {% if r3 > 0 %}
+            {% if e3 > 100 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s3 }}&nbsp;〜&nbsp;</td>
+              <td>{{ r3|floatformat:1 }}</td>
+              <td>{{ u3 }}</td>
+              <td>{{ v3|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% else %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s3 }}&nbsp;〜&nbsp;{{ e3 }}</td>
+              <td>{{ r3|floatformat:1 }}</td>
+              <td>{{ u3 }}</td>
+              <td>{{ v3|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% endif %}
+
+            {% if r4 > 0 %}
+            {% if e4 > 100 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s4 }}&nbsp;〜&nbsp;</td>
+              <td>{{ r4|floatformat:1 }}</td>
+              <td>{{ u4 }}</td>
+              <td>{{ v4|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% else %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s4 }}&nbsp;〜&nbsp;{{ e4 }}</td>
+              <td>{{ r4|floatformat:1 }}</td>
+              <td>{{ u4 }}</td>
+              <td>{{ v4|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% endif %}
+
+            {% if r5 > 0 %}
+            {% if e5 > 100 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s5 }}&nbsp;〜&nbsp;</td>
+              <td>{{ r5|floatformat:1 }}</td>
+              <td>{{ u5 }}</td>
+              <td>{{ v5|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% else %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s5 }}&nbsp;〜&nbsp;{{ e5 }}</td>
+              <td>{{ r5|floatformat:1 }}</td>
+              <td>{{ u5 }}</td>
+              <td>{{ v5|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% endif %}
+
+            {% if r6 > 0 %}
+            {% if e6 > 100 %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s6 }}&nbsp;〜&nbsp;</td>
+              <td>{{ r6|floatformat:1 }}</td>
+              <td>{{ u6 }}</td>
+              <td>{{ v6|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% else %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ s6 }}&nbsp;〜&nbsp;{{ e6 }}</td>
+              <td>{{ r6|floatformat:1 }}</td>
+              <td>{{ u6 }}</td>
+              <td>{{ v6|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endif %}
+            {% endif %}
+
+            {% endif %}
+            <!-- End of if lm.amount -->
+
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ sTotal_product }}</td>
+              <td></td>
+              <td></td>
+              <td>{{ sTotal|intcomma }}</td>
+              <td></td>
+              <td>{{ tax_sTotal|intcomma }}</td>
+              <td></td>
+            </tr>
+
+            {% if rLPG %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ rLPG_product }}</td>
+              <td></td>
+              <td></td>
+              <td>{{ rLPG }}</td>
+              <td>内</td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endif %}
+
+          {% endif %}
+          <!-- End of if dayLPG -->
           </tbody>
+          {% endfor %}
         </table>
         </div>
 
