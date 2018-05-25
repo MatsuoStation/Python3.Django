@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.20 Update:2018.05.25" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.21 Update:2018.05.25" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -25,8 +25,15 @@ jtax = 0.08
 ndigits = 0
 
 def tax_v(value):
-
 	values = value * jtax
+	d_point = len(str(values).split('.')[1])
+	if ndigits >= d_point:
+		return int(round(values, 0))
+	c = (10 ** d_point) * 2
+	return int(round((values * c + 1) / c, 0))
+
+def oTax_v(value):
+	values = value - (value / (1+jtax))
 	d_point = len(str(values).split('.')[1])
 	if ndigits >= d_point:
 		return int(round(values, 0))
@@ -200,7 +207,8 @@ class LPG_List(ListView):
 		context = super().get_context_data(**kwargs)
 
 		context['form'] = NameForm()
-		context['gid'] = self.kwargs.get('nid')
+		gid = self.kwargs.get('nid')
+		context['gid'] = gid
 
 		dd_list = list()
 		LPG_sTotal_list = list()
@@ -244,11 +252,15 @@ class LPG_List(ListView):
 			### LPG.料金コード ###
 			for vl in VLs:
 				cLPG = vl.lpg_code
-				context['cLPG'] = cLPG
+				# context['cLPG'] = cLPG
 
 				### LPG.ガス器具レンタル ###
 				rLPG = vl.tax_code
+				tax_rLPG = oTax_v(rLPG)
+				notax_rLPG = rLPG - tax_rLPG
+
 				context['rLPG'] = rLPG
+				context['tax_rLPG'] = tax_rLPG
 
 			### LPG.基本料金 ###
 			LVs01 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:1]
@@ -1154,6 +1166,8 @@ class LPG_List(ListView):
 					context['tax_sTotal'] = tax_sTotal
 
 				### LPG.Main ###
+				context['cLPG'] = cLPG
+
 				dds = sorted(set(dd_list), key=dd_list.index)
 				context['dds'] = dds
 
@@ -1167,6 +1181,10 @@ class LPG_List(ListView):
 				context['unit_product'] = "(ガス使用量 : 金額内訳)"
 
 				context['rLPG_product'] = "(ガス器具) レンタル代"
+
+				context['notax_values'] = sTotal + notax_rLPG
+				context['tax_values'] = tax_sTotal + tax_rLPG
+				context['total_values'] = sTotal + tax_sTotal + rLPG
 
 			except Exception as e:
 				print(e, 'LPG/views.py_dds : error occured')

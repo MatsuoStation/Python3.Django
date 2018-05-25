@@ -111,6 +111,34 @@
 
         <div class="mx-auto">
         <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <td>伝票枚数</td>
+              <td width="1"></td>
+              <td>前月ご請求額</td>
+              <td>当月ご入金額</td>
+              <td>手数料・調整</td>
+              <td>差引繰越額</td>
+              <td>当月お買上額</td>
+              <td width="1"></td>
+              <td>当月ご請求額</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td width="1"></td>
+              <td>{{ before_values|intcomma }}</td>
+              <td>{{ incash_values|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td>{{ total_values|intcomma }}</td>
+              <td width="1"></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-striped table-bordered">
         <!-- table class="table table-borderless" -->
           <thead>
             <tr>
@@ -447,7 +475,7 @@
               <td></td>
               <td>{{ rLPG }}</td>
               <td>内</td>
-              <td></td>
+              <td>{{ tax_rLPG }}</td>
               <td></td>
             </tr>
             {% endif %}
@@ -457,6 +485,21 @@
           </tbody>
           {% endfor %}
         </table>
+
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <td><主要商品合計></td>
+              <td width="1"></td>
+              <td>課税売上高</td>
+              <td>{{ notax_values|intcomma }}</td>
+              <td width="1"></td>
+              <td>消費税額</td>
+              <td>{{ tax_values|intcomma }}</td>
+            </tr>
+          </thead>
+        </table>
+
         </div>
 
 
