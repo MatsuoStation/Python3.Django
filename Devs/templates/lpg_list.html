@@ -75,7 +75,7 @@
           <input type="submit" name="送信">
         </form>
 
-        <p><br>{{ names }}</p>
+        <p><br>{{ names }} : {{ gid }} / {{ fLPG }} / {{ cLPG }}</p>
 
         <!--p>{{ dld }} - {{ dlm }}</p-->
         <p>{{ dlb }} - {{ dla }}</p>
@@ -141,9 +141,9 @@
               <td>{{ bLPG|intcomma }}</td>
               <td></td>
               <td></td>
-              <td>{{ fLPG }} / {{ gid }}</td>
+              <td></td>
             </tr>
-            {% if lm.amount %}
+            {% if aLPG %}
             <tr>
               <td></td>
               <td></td>
@@ -155,7 +155,7 @@
               <td>{{ LPG_sTotal|intcomma }}</td>
               <td></td>
               <td></td>
-              <td>{{ cLPG }}</td>
+              <td></td>
             </tr>
             <tr>
               <td></td>
