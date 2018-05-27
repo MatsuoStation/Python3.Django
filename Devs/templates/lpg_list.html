@@ -89,7 +89,7 @@
           {% endif %}
 
           <span class="current">
-            Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+            Page {{ lms.number }} of {{ lms.paginator.num_pages }}.
           </span>
 
           {% if ivs.has_next %}
@@ -115,7 +115,7 @@
             <tr>
               <td>伝票枚数</td>
               <td width="1"></td>
-              <td>前月ご請求額</td>
+              <td>前回ご請求額</td>
               <td>当月ご入金額</td>
               <td>手数料・調整</td>
               <td>差引繰越額</td>
@@ -511,7 +511,7 @@
           {% endif %}
 
           <span class="current">
-            Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+            Page {{ lms.number }} of {{ lms.paginator.num_pages }}.
           </span>
 
           {% if ivs.has_next %}

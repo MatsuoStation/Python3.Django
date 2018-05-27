@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.21 Update:2018.05.25" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.22 Update:2018.05.25" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -20,6 +20,8 @@ from .forms import NameForm
 from Finance.models import Name_Test20, LPG_Meter00, Bank_Test20, Value_Test30, LPG_Value00
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+
+from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 
 jtax = 0.08
 ndigits = 0
@@ -238,7 +240,7 @@ class LPG_List(ListView):
 			# LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'), m_datetime__lte=dlm)
 			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'))
 
-			context['lms'] = LMs
+			# context['lms'] = LMs
 
 			### 氏名 ###
 			for na in NAs:
@@ -1279,6 +1281,21 @@ class LPG_List(ListView):
 			print(e, 'LPG/Views - DL.False : error occured')
 
 		context['names'] = names
+
+		### Paginator ###
+		paginator = Paginator(LMs, 30)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+
+		try:
+			LMs = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			LMs = paginator.page(1)
+
+
+		context['lms'] = LMs
 
 		return context
 
