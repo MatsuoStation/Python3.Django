@@ -1,0 +1,44 @@
+{% load sass_tags %}
+{% load static %}
+
+
+
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="https://fonts.googleapis.com/earlyaccess/sawarabimincho.css" rel="stylesheet" />
+    <link href="{% sass_src 'sass/custom.sass' %}" rel="stylesheet" />
+
+     <style type="text/css">
+    @font-face {
+      font-family: "japanese";
+      src: url("https://dev.matsuostation.com/static/fonts/msmincho.ttf");
+    }
+    @page {
+      size: A4;
+      font-family: "japanese";
+      margin: 1cm;
+      background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');
+    }
+    html, body {
+
+    }
+    .LPG30 {
+
+    }
+  </style>
+
+
+  </head>
+  <body>
+    <div>
+    <table>
+      <tr>
+        <td>{{ Yuki }}</td>
+        <td></td>
+      </tr>
+    </table>
+    </div>
+  </body>
+</html>

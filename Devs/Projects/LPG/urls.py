@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Django.LPG.urls.py - Ver.3.11.1 Update:2018.05.15" |
+#//| "VsV.Python3.Django.LPG.urls.py - Ver.3.11.23 Update:2018.05.28" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -31,5 +31,6 @@ app_name = 'LPG'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('<int:nid>/', views.LPG_List.as_view(), name='lpg_list')
+    path('<int:nid>/', views.LPG_List.as_view(), name='lpg_list'),
+    path('PDF/<int:nid>/', views.PDF_List.as_view(), name='pdf_list'),
 ]

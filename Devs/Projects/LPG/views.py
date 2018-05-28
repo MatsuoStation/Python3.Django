@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.22 Update:2018.05.25" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.23 Update:2018.05.28" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -22,6 +22,12 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
+
+# PDF #
+import io
+import os
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 jtax = 0.08
 ndigits = 0
@@ -186,6 +192,34 @@ def lvs07(aLPG, cLPG):
 			v6 = invalue(u6*(aLPG-e5))
 			r6 = aLPG - e5
 	return s6, e6, u6, v6, r6
+
+
+class PDF_List(ListView):
+
+	model = Name_Test20
+	template_name = 'pdf_list.html'
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		context['Yuki'] = "祐希"
+
+		return context
+
+
+	def render_to_response(self, context):
+		html = get_template(self.template_name).render(self.get_context_data())
+		result = io.BytesIO()
+
+		pdf = pisa.pisaDocument(
+			io.BytesIO(html.encode("UTF-8")),
+			result,
+			encoding='utf-8',
+		)
+
+		if not pdf.err:
+			return HttpResponse(result.getvalue(), content_type='application/pdf')
+		return None
 
 
 class LPG_List(ListView):
