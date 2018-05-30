@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.24 Update:2018.05.28" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.25 Update:2018.05.30" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -309,7 +309,497 @@ class PDF_List(ListView):
 							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
 								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
 
+					### Date:01 ###
+					if lm.date01:
+						date01 = lm.date01
+						dd01 = lm.date01.day
+						date01 = (date01-timedelta(days=dd01-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date01)
 
+						### LPG.検針データ ###
+						if dlt == date01:
+							# 日付
+							monLPG = datetime.strftime(lm.date01, '%-m')
+							dayLPG = datetime.strftime(lm.date01, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount01
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:02 ###
+					if lm.date02:
+						date02 = lm.date02
+						dd02 = lm.date02.day
+						date02 = (date02-timedelta(days=dd02-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date02)
+
+						### LPG.検針データ ###
+						if dlt == date02:
+							# 日付
+							monLPG = datetime.strftime(lm.date02, '%-m')
+							dayLPG = datetime.strftime(lm.date02, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount02
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:03 ###
+					if lm.date03:
+						date03 = lm.date03
+						dd03 = lm.date03.day
+						date03 = (date03-timedelta(days=dd03-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date03)
+
+						### LPG.検針データ ###
+						if dlt == date03:
+							# 日付
+							monLPG = datetime.strftime(lm.date03, '%-m')
+							dayLPG = datetime.strftime(lm.date03, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount03
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:04 ###
+					if lm.date04:
+						date04 = lm.date04
+						dd04 = lm.date04.day
+						date04 = (date04-timedelta(days=dd04-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date04)
+
+						### LPG.検針データ ###
+						if dlt == date04:
+							# 日付
+							monLPG = datetime.strftime(lm.date04, '%-m')
+							dayLPG = datetime.strftime(lm.date04, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount04
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:05 ###
+					if lm.date05:
+						date05 = lm.date05
+						dd05 = lm.date05.day
+						date05 = (date05-timedelta(days=dd05-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date05)
+
+						### LPG.検針データ ###
+						if dlt == date05:
+							# 日付
+							monLPG = datetime.strftime(lm.date05, '%-m')
+							dayLPG = datetime.strftime(lm.date05, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount05
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:06 ###
+					if lm.date06:
+						date06 = lm.date06
+						dd06 = lm.date06.day
+						date06 = (date06-timedelta(days=dd06-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date06)
+
+						### LPG.検針データ ###
+						if dlt == date06:
+							# 日付
+							monLPG = datetime.strftime(lm.date06, '%-m')
+							dayLPG = datetime.strftime(lm.date06, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount06
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:07 ###
+					if lm.date07:
+						date07 = lm.date07
+						dd07 = lm.date07.day
+						date07 = (date07-timedelta(days=dd07-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date07)
+
+						### LPG.検針データ ###
+						if dlt == date07:
+							# 日付
+							monLPG = datetime.strftime(lm.date07, '%-m')
+							dayLPG = datetime.strftime(lm.date07, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount07
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:08 ###
+					if lm.date08:
+						date08 = lm.date08
+						dd08 = lm.date08.day
+						date08 = (date08-timedelta(days=dd08-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date08)
+
+						### LPG.検針データ ###
+						if dlt == date08:
+							# 日付
+							monLPG = datetime.strftime(lm.date08, '%-m')
+							dayLPG = datetime.strftime(lm.date08, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount08
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:09 ###
+					if lm.date09:
+						date09 = lm.date09
+						dd09 = lm.date09.day
+						date09 = (date09-timedelta(days=dd09-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date09)
+
+						### LPG.検針データ ###
+						if dlt == date09:
+							# 日付
+							monLPG = datetime.strftime(lm.date09, '%-m')
+							dayLPG = datetime.strftime(lm.date09, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount09
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:10 ###
+					if lm.date10:
+						date10 = lm.date10
+						dd10 = lm.date10.day
+						date10 = (date10-timedelta(days=dd10-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date10)
+
+						### LPG.検針データ ###
+						if dlt == date10:
+							# 日付
+							monLPG = datetime.strftime(lm.date10, '%-m')
+							dayLPG = datetime.strftime(lm.date10, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount10
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:11 ###
+					if lm.date11:
+						date11 = lm.date11
+						dd11 = lm.date11.day
+						date11 = (date11-timedelta(days=dd11-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date11)
+
+						### LPG.検針データ ###
+						if dlt == date11:
+							# 日付
+							monLPG = datetime.strftime(lm.date11, '%-m')
+							dayLPG = datetime.strftime(lm.date11, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount11
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+					### Date:12 ###
+					if lm.date12:
+						date12 = lm.date12
+						dd12 = lm.date12.day
+						date12 = (date12-timedelta(days=dd12-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date12)
+
+						### LPG.検針データ ###
+						if dlt == date12:
+							# 日付
+							monLPG = datetime.strftime(lm.date12, '%-m')
+							dayLPG = datetime.strftime(lm.date12, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount12
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
 
 					### LPG.小計 ###
 					# LVs01
