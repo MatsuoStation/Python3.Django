@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.8.8 Update:2018.05.07" |
+#//|   "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.2 Update:2018.05.30" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -29,7 +29,7 @@ from django import template
 register = template.Library()
 
 import math
-from Finance.models import Value_Test10, Value_Test20, Bank_Test20, Invoice_Test20
+from Finance.models import Value_Test10, Value_Test30, Bank_Test20, Invoice_Test20
 # from django.http import QueryDict
 from django.utils import dateformat
 from datetime import datetime, date, timedelta
@@ -169,29 +169,29 @@ def sc_value(gcsc, md):
 	# mdt = datetime.datetime.strptime(md, '%Y-%m-%d %H:%M:%S')
 
 	try:
-		if Value_Test20.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
-			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
+		if Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
 
 			for v in s_values:
 				sv = v.value
 				return sv
 
-		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
-			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date01__lte=md)
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md)
 
 			for v in s_values:
 				sv = v.value01
 				return sv
 
-		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
-			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date02__lte=md)
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md)
 
 			for v in s_values:
 				sv = v.value02
 				return sv
 
-		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
-			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date03__lte=md)
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md)
 
 			for v in s_values:
 				sv = v.value03
@@ -214,29 +214,29 @@ def kc_value(gcsc, md):
 	gc, sc = gcsc
 
 	try:
-		if Value_Test20.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
-			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
+		if Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
 
 			for v in s_values:
 				sv = v.value - 32.1
 				return sv
 
-		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
-			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date01__lte=md)
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md)
 
 			for v in s_values:
 				sv = v.value01 - 32.1
 				return sv
 
-		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
-			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date02__lte=md)
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md)
 
 			for v in s_values:
 				sv = v.value02 - 32.1
 				return sv
 
-		elif Value_Test20.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
-			s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc, date03__lte=md)
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md)
 
 			for v in s_values:
 				sv = v.value03 - 32.1
@@ -258,7 +258,7 @@ def kc_value(gcsc, md):
 def s_code_value(gc, sc):
 
 	# (Ver.3.7.8.OK) s_values = Value_Test10.objects.all().filter(uid__endswith=gc, s_code=sc)
-	s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc)
+	s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc)
 
 	for v in s_values:
 		sv = v.value
@@ -271,7 +271,7 @@ def s_code_value(gc, sc):
 def keiyu_code_value(gc, sc):
 
 	# (Ver.3.7.8.OK) s_values = Value_Test10.objects.all().filter(uid__endswith=gc, s_code=sc)
-	s_values = Value_Test20.objects.all().filter(uid=gc, s_code=sc)
+	s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc)
 
 	for v in s_values:
 		sv = v.value - 32.1

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.1 Update:2018.05.14" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.2 Update:2018.05.30" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -30,7 +30,7 @@ from .forms import NameForm
 from Finance.models import Name_Test02, SHARP_Test02
 
 from Finance.models import Invoice_Test10, Name_Test10, Items_Test10, Value_Test10
-from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test20
+from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30
 
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 
@@ -464,8 +464,8 @@ class Invoice_List(ListView):
 
 					### 金額 : False
 					### Now ###
-					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime):
-						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime)
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, m_datetime__lte=iv.m_datetime)
 
 						# 軽油 = "10200"
 						if iv.s_code.uid == "10200":
@@ -631,8 +631,8 @@ class Invoice_List(ListView):
 
 
 					### Date01 ###
-					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime):
-						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime)
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date01__lte=iv.m_datetime)
 
 						# 軽油 = "10200"
 						if iv.s_code.uid == "10200":
@@ -796,8 +796,8 @@ class Invoice_List(ListView):
 								toyu_list.append(notax_v)
 
 					### Date02 ###
-					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date02__lte=iv.m_datetime):
-						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date02__lte=iv.m_datetime)
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date02__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date02__lte=iv.m_datetime)
 
 						# 軽油 = "10200"
 						if iv.s_code.uid == "10200":
@@ -961,8 +961,8 @@ class Invoice_List(ListView):
 								toyu_list.append(notax_v)
 
 					### Date03 ###
-					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date03__lte=iv.m_datetime):
-						v_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date03__lte=iv.m_datetime)
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date03__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date03__lte=iv.m_datetime)
 
 						# 軽油 = "10200"
 						if iv.s_code.uid == "10200":
@@ -1279,8 +1279,8 @@ class Invoice_List(ListView):
 
 					### 金額 : False
 					### Now ###
-					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, m_datetime__lte=biv.m_datetime):
-						bv_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, m_datetime__lte=biv.m_datetime)
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, m_datetime__lte=biv.m_datetime):
+						bv_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, m_datetime__lte=biv.m_datetime)
 
 						# 軽油 = "10200"
 						if biv.s_code.uid == "10200":
@@ -1343,8 +1343,8 @@ class Invoice_List(ListView):
 								before_list.append(sv)
 
 					### Date01 ###
-					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date01__lte=biv.m_datetime):
-						bv_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date01__lte=biv.m_datetime)
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date01__lte=biv.m_datetime):
+						bv_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date01__lte=biv.m_datetime)
 
 						# 軽油 = "10200"
 						if biv.s_code.uid == "10200":
@@ -1407,8 +1407,8 @@ class Invoice_List(ListView):
 								before_list.append(sv)
 
 					### Date02 ###
-					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date02__lte=biv.m_datetime):
-						bv_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date02__lte=biv.m_datetime)
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date02__lte=biv.m_datetime):
+						bv_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date02__lte=biv.m_datetime)
 
 						# 軽油 = "10200"
 						if biv.s_code.uid == "10200":
@@ -1471,8 +1471,8 @@ class Invoice_List(ListView):
 								before_list.append(sv)
 
 					### Date03 ###
-					elif Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date03__lte=biv.m_datetime):
-						bv_values = Value_Test20.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date03__lte=biv.m_datetime)
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date03__lte=biv.m_datetime):
+						bv_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=biv.s_code.uid, date03__lte=biv.m_datetime)
 
 						# 軽油 = "10200"
 						if biv.s_code.uid == "10200":
@@ -1748,7 +1748,7 @@ class Invoice_List(ListView):
 		# items = Invoice_Test20.objects.filter(g_code__uid__endswith=self.kwargs.get('nid')).select_related('s_code')
 		# values = Value_Test10.objects.all().filter(uid="0104", s_code="10100")
 		# (Ver.3.7.7.OK) values = Value_Test10.objects.all().filter(uid__endswith=self.kwargs.get('nid'), s_code="10100")
-		# values = Value_Test20.objects.all().filter(uid__endswith=self.kwargs.get('nid'), s_code="10100")
+		# values = Value_Test30.objects.all().filter(uid__endswith=self.kwargs.get('nid'), s_code="10100")
 
 		for name in names:
 			context['names'] = name.g_code.name
@@ -1830,6 +1830,7 @@ class Invoice_List(ListView):
 		return context
 
 
+	'''
 	def get(self, request, *args, **kwargs):
 		# For PDF
 		response = HttpResponse(status=200, content_type='application/pdf')
@@ -1850,6 +1851,7 @@ class Invoice_List(ListView):
 		doc.drawString(20*mm, 18*mm, 'HellowWorld')
 
 		doc.save()
+	'''
 
 
 def index(request):
