@@ -75,7 +75,13 @@
           <input type="submit" name="送信">
         </form>
 
-        <p><br>{{ names }} : {{ gid }} / {{ fLPG }} / {{ cLPG }}</p>
+        <p><br>
+          {% if fLPG %}
+          {{ names }} : {{ gid }} / {{ fLPG }} / {{ cLPG }} / <a href="{{ pLink }}?dl={{ dla|date:"Y-m-d" }}" target="_blank">PDF</a>
+          {% else %}
+          {{ names }} : {{ gid }}
+          {% endif %}
+        </p>
 
         <!--p>{{ dld }} - {{ dlm }}</p-->
         <p>{{ dlb }} - {{ dla }}</p>

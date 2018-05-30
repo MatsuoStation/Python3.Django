@@ -1,5 +1,7 @@
 {% load sass_tags %}
+{% load humanize %}
 {% load static %}
+{% load filter %}
 
 
 
@@ -16,29 +18,605 @@
       src: url("https://dev.matsuostation.com/static/fonts/msmincho.ttf");
     }
     @page {
-      size: A4;
+      size: A4 portrait;
       font-family: "japanese";
       margin: 1cm;
       background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');
+
+      @frame address_frame {
+        -pdf-frame-content: address_frame;
+        left: 80pt; top: 50pt; height: 120pt; width: 200pt;
+        font-size: 18px;
+      }
+
+      @frame gid_frame {
+        -pdf-frame-content: gid_frame;
+        left: 139pt; top: 130pt; height: 40pt; width: 100pt;
+        font-size: 9px;
+      }
+
+      @frame deadline_frame {
+        -pdf-frame-content: deadline_frame;
+        left: 62pt; top: 215.5pt; height: 40pt; width: 102pt;
+        font-size: 10px;
+      }
+
+      @frame page_frame {
+        -pdf-frame-content: page_frame;
+        left: 31pt; top: 264pt; width: 532pt; height: 50px;
+        font-size: 39px;
+      }
+
+      @frame total_frame {
+        -pdf-frame-content: total_frame;
+        left: 31pt; top: 296.9pt; width: 532pt; height: 50px;
+        font-size: 39px;
+      }
+
+      @frame lpgmain_frame {
+        -pdf-frame-content: lpgmain_frame;
+        left: 31pt; top: 369pt; width: 532pt;
+        font-size: 10px;
+      }
+
+      @frame subtotal_frame {
+        -pdf-frame-content: subtotal_frame;
+        left: 161pt; top: 753.8pt; width: 402pt; height: 50px;
+        font-size: 30px;
+      }
+
+      @frame bumon_frame {
+        -pdf-frame-content: bumon_frame;
+        left: 31pt; top: 785pt; width: 532pt; height: 50px;
+        font-size: 30px;
+      }
+
     }
     html, body {
-
+      font-family: "japanese";
+      font-size: 12px;
     }
-    .LPG30 {
 
+    .lpgmain {
+      table-layout: fixed;
+      width: 533px;
+    }
+
+    .monLPG {
+      background-color: #000;
+    }
+    .dayLPG {
+      background-color: #f00;
+    }
+    /*
+    table td .car_code, table td .s_code {
+      width: 38px;
+      text-align: center;
+      min-width: 38px;
+    }
+    table td .product {
+      min-width: 114px;
+      text-align: center;
+    }
+    table td .amount {
+      min-width: 29px;
+      text-align: center;
+    }
+    table td .unit {
+      min-width: 48px;
+      text-align: center;
+    }
+    table td .value {
+      min-width: 77px;
+      text-align: center;
+    }
+    table td .tax_code {
+      min-width: 25px;
+      text-align: center;
+    }
+    table td .tax {
+      min-width: 46px;
+      text-align: center;
+    }
+    table td .memoLPG {
+      min-width: 78px;
+    }
+    */
+
+    .table  {
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: 5px;
+      background-color: #fff;
+      position: relative;
+      margin-top: 10cm;
+    }
+    .table .gid {
+      position: absolute;
+      top: 100px;
     }
   </style>
 
 
   </head>
   <body>
-    <div>
-    <table>
-      <tr>
-        <td>{{ Yuki }}</td>
-        <td></td>
-      </tr>
-    </table>
+    <div id="address_frame">
+      <table>
+        <thead>
+          <tr>
+            <td>{{ zipcode }}</td>
+          </tr>
+          <tr>
+            <td>{{ address }}</td>
+          </tr>
+          <tr>
+            <td>{{ names }} 様</td>
+          </tr>
+        </thead>
+      </table>
     </div>
+
+    <div id="gid_frame">
+      <table>
+        <thead>
+          <tr>
+            <td>{{ gid }}</td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div id="deadline_frame">
+      <table>
+        <thead>
+          <tr>
+            <td>{{ dla|date:"Y" }}</td>
+            <td style="text-align: center;">{{ mLPG }}</td>
+            <td style="text-align: center;">{{ dLPG }}</td>
+            <td style="text-align: center;">&nbsp;&nbsp;{{ deLPG }}</td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div id="page_frame">
+      <table>
+        <thead>
+          <tr style="vertical-align: bottom;">
+            <td style="text-align: center; width: 88%;"></td>
+            <td style="text-align: center; width: 3.8%;"></td>
+            <td style="text-align: center; width: 8.2%;">1</td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div id="total_frame">
+      <table>
+        <thead>
+          <tr style="vertical-align: bottom;">
+            <td style="text-align: center; width: 6.58%;"></td>
+            <td style="text-align: center; width: 1.32%;"></td>
+            <td style="text-align: center; width: 12.4%;">{{ before_values|intcomma }}</td>
+            <td style="text-align: center; width: 12.4%;">{{ incash_values|intcomma }}</td>
+            <td style="text-align: center; width: 10.71%;"></td>
+            <td style="text-align: center; width: 12.59%;"></td>
+            <td style="text-align: center; width: 12.78%;">{{ total_values|intcomma }}</td>
+            <td style="text-align: center; width: 0.94%;"></td>
+            <td style="text-align: center; width: 18.04%;">{{ all_total_values|intcomma }}</td>
+            <td style="text-align: center; width: 2.44%;"></td>
+            <td style="text-align: center; width: 9.8%;"></td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    {% if dayLPG %}
+    <div id="lpgmain_frame">
+      <table class="lpgmain">
+        <thead>
+          <tr style="height: 18px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ monLPG }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dayLPG }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ s_code }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ base_product }}</td>
+            <td style="text-align: center; width: 5.44%;">1</td>
+            <td style="text-align: center; width: 9.19%;">{{ bLPG|intcomma }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ bLPG|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;"></td>
+            <td style="text-align: center; width: 8.63%;"></td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+        </thead>
+        <tbody>
+        {% if aLPG %}
+          <tr style="height: 15.5px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;"></td>
+            <td style="text-align: center; width: 3.75%;"></td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 21.38%;">{{ product }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aLPG }}</td>
+            <td style="text-align: center; width: 9.19%;"></td>
+            <td style="text-align: center; width: 14.45%;">{{ LPG_sTotal|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;"></td>
+            <td style="text-align: center; width: 8.63%;"></td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;"></td>
+            <td style="text-align: center; width: 3.75%;"></td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 21.38%;">{{ unit_product }}</td>
+            <td style="text-align: center; width: 5.44%;"></td>
+            <td style="text-align: center; width: 9.19%;"></td>
+            <td style="text-align: center; width: 14.45%;"></td>
+            <td style="text-align: center; width: 4.69%;"></td>
+            <td style="text-align: center; width: 8.63%;"></td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+
+          {% if e0 > 100 %}
+          <tr style="height: 15.5px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;"></td>
+            <td style="text-align: center; width: 3.75%;"></td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 21.38%;">{{ s0 }}&nbsp;〜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td style="text-align: center; width: 5.44%;">{{ r0|floatformat:1 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ u0 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ v0|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;"></td>
+            <td style="text-align: center; width: 8.63%;"></td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% else %}
+          <tr style="height: 15.5px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;"></td>
+            <td style="text-align: center; width: 3.75%;"></td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 21.38%;">{{ s0 }}&nbsp;〜&nbsp;{{ e0 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ r0|floatformat:1 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ u0 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ v0|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;"></td>
+            <td style="text-align: center; width: 8.63%;"></td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if r1 > 0 %}
+            {% if e1 > 100 %}
+              <tr style="height: 16px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s1 }}&nbsp;〜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td style="text-align: center; width: 5.44%;">{{ r1|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u1 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v1|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% else %}
+            <tr style="height: 16px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s1 }}&nbsp;〜&nbsp;{{ e1 }}</td>
+              <td style="text-align: center; width: 5.44%;">{{ r1|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u1 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v1|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% endif %}
+          {% endif %}
+
+          {% if r2 > 0 %}
+            {% if e2 > 100 %}
+              <tr style="height: 15.5px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s2 }}&nbsp;〜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td style="text-align: center; width: 5.44%;">{{ r2|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u2 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v2|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% else %}
+            <tr style="height: 15.5px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s2 }}&nbsp;〜&nbsp;{{ e2 }}</td>
+              <td style="text-align: center; width: 5.44%;">{{ r2|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u2 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v2|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% endif %}
+          {% endif %}
+
+          {% if r3 > 0 %}
+            {% if e3 > 100 %}
+              <tr style="height: 16px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s3 }}&nbsp;〜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td style="text-align: center; width: 5.44%;">{{ r3|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u3 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v3|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% else %}
+            <tr style="height: 16px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s3 }}&nbsp;〜&nbsp;{{ e3 }}</td>
+              <td style="text-align: center; width: 5.44%;">{{ r3|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u3 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v3|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% endif %}
+          {% endif %}
+
+          {% if r4 > 0 %}
+            {% if e4 > 100 %}
+              <tr style="height: 15.5px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s4 }}&nbsp;〜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td style="text-align: center; width: 5.44%;">{{ r4|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u4 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v4|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% else %}
+            <tr style="height: 15.5px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s4 }}&nbsp;〜&nbsp;{{ e4 }}</td>
+              <td style="text-align: center; width: 5.44%;">{{ r4|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u4 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v4|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% endif %}
+          {% endif %}
+
+          {% if r5 > 0 %}
+            {% if e5 > 100 %}
+              <tr style="height: 16px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s5 }}&nbsp;〜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td style="text-align: center; width: 5.44%;">{{ r5|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u5 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v5|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% else %}
+            <tr style="height: 16px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s5 }}&nbsp;〜&nbsp;{{ e5 }}</td>
+              <td style="text-align: center; width: 5.44%;">{{ r5|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u5 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v5|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% endif %}
+          {% endif %}
+
+          {% if r6 > 0 %}
+            {% if e6 > 100 %}
+              <tr style="height: 16px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s6 }}&nbsp;〜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              <td style="text-align: center; width: 5.44%;">{{ r6|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u6 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v6|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% else %}
+            <tr style="height: 16px; vertical-align: bottom;">
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 3.75%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 7.12%;"></td>
+              <td style="text-align: center; width: 21.38%;">{{ s6 }}&nbsp;〜&nbsp;{{ e6 }}</td>
+              <td style="text-align: center; width: 5.44%;">{{ r6|floatformat:1 }}</td>
+              <td style="text-align: center; width: 9.19%;">{{ u6 }}</td>
+              <td style="text-align: center; width: 14.45%;">{{ v6|intcomma }}</td>
+              <td style="text-align: center; width: 4.69%;"></td>
+              <td style="text-align: center; width: 8.63%;"></td>
+              <td style="text-align: center; width: 14.48%;"></td>
+            </tr>
+            {% endif %}
+          {% endif %}
+
+        {% endif %}
+        <!-- End of if aLPG -->
+
+        {% if r6 > 0 %}
+        <tr style="height: 16.8px; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;"></td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;"></td>
+          <td style="text-align: center; width: 4.69%;"></td>
+          <td style="text-align: center; width: 8.63%;"></td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr>
+        {% elif r4 > 0 %}
+        <tr style="height: 16zpx; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;"></td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;"></td>
+          <td style="text-align: center; width: 4.69%;"></td>
+          <td style="text-align: center; width: 8.63%;"></td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr>
+        {% elif r2 > 0 %}
+        <tr style="height: 15.5px; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;"></td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;"></td>
+          <td style="text-align: center; width: 4.69%;"></td>
+          <td style="text-align: center; width: 8.63%;"></td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr>
+        {% else %}
+        <tr style="height: 15px; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;"></td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;"></td>
+          <td style="text-align: center; width: 4.69%;"></td>
+          <td style="text-align: center; width: 8.63%;"></td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr>
+        {% endif %}
+
+        <tr style="height: 16px; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;">{{ sTotal_product }}</td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;">{{ sTotal|intcomma }}</td>
+          <td style="text-align: center; width: 4.69%;"></td>
+          <td style="text-align: center; width: 8.63%;">{{ tax_sTotal|intcomma }}</td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr>
+
+        {% if rLPG %}
+        <tr style="height: 16.5px; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;"></td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;"></td>
+          <td style="text-align: center; width: 4.69%;"></td>
+          <td style="text-align: center; width: 8.63%;"></td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr>
+        <tr style="height: 16px; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;">{{ rLPG_product }}</td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;">{{ rLPG }}</td>
+          <td style="text-align: center; width: 4.69%;">内</td>
+          <td style="text-align: center; width: 8.63%;">{{ tax_rLPG|intcomma }}</td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr>
+        {% endif %}
+
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    <div id="subtotal_frame">
+      <table>
+        <thead>
+          <tr style="vertical-align: bottom;">
+            <td style="text-align: center; width: 5%;"></td>
+            <td style="text-align: left; width: 10%;">{{ notax_values|intcomma }}</td>
+            <td style="text-align: center; width: 37%;"></td>
+            <td style="text-align: center; width: 5%;"></td>
+            <td style="text-align: left; width: 10%;">{{ tax_values|intcomma }}</td>
+            <td style="text-align: center; width: 33%;"></td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div id="bumon_frame">
+      <table>
+        <thead>
+          <tr style="vertical-align: bottom;">
+            <td style="text-align: center; width: 20%;">{{ aLPG }}</td>
+            <td style="text-align: center; width: 20%;">{{ LPG_values|intcomma }}</td>
+            <td style="text-align: center; width: 20%;"></td>
+            <td style="text-align: center; width: 20%;"></td>
+            <td style="text-align: center; width: 20%;"></td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
   </body>
 </html>

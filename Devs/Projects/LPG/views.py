@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.23 Update:2018.05.28" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.24 Update:2018.05.28" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from .forms import NameForm
 
-from Finance.models import Name_Test20, LPG_Meter00, Bank_Test20, Value_Test30, LPG_Value00
+from Finance.models import Name_Test20, LPG_Meter00, Bank_Test20, Value_Test30, LPG_Value00, Add_Test20
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
@@ -202,7 +202,247 @@ class PDF_List(ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
-		context['Yuki'] = "祐希"
+		context['gid'] = self.kwargs.get('nid')
+
+		dd_list = list()
+		LPG_sTotal_list = list()
+		sTotal_list = list()
+
+		### DL : True ###
+		try:
+			dl = self.request.GET.get('dl', '')
+			dlt = datetime.strptime(dl, '%Y-%m-%d')
+			dlb = dlt + timedelta(days=1) - relativedelta(months=1)
+			dla = dlt + timedelta(days=1) - timedelta(microseconds=1)
+			dld = dlb + timedelta(days=25)
+			dldd = dld - timedelta(days=1)
+			context['dlb'] = dlb
+			context['dla'] = dla
+
+			mLPG = datetime.strftime(dla, '%-m')
+			dLPG = datetime.strftime(dld, '%-d')
+			deLPG = datetime.strftime(dldd, '%-d')
+
+			context['mLPG'] = mLPG
+			context['dLPG'] = dLPG
+			context['deLPG'] = deLPG
+
+			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			VLs = Value_Test30.objects.filter(uid=self.kwargs.get('nid')).order_by('s_code')
+			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'))
+			ADs = Add_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+			### 住所 ###
+			for ad in ADs:
+				zipcode = ad.postal_code
+				address = ad.address
+
+			### 氏名 ###
+			for na in NAs:
+				names = na.name
+
+			### Bank.請求書フォーマット ###
+			for bf in BFs:
+				fLPG = bf.s_format
+				context['fLPG'] = fLPG
+
+			### LPG.料金コード ###
+			for vl in VLs:
+				cLPG = vl.lpg_code
+				# context['cLPG'] = cLPG
+
+				### LPG.ガス器具レンタル ###
+				rLPG = vl.tax_code
+				tax_rLPG = oTax_v(rLPG)
+				notax_rLPG = rLPG - tax_rLPG
+
+				context['rLPG'] = rLPG
+				context['tax_rLPG'] = tax_rLPG
+
+			### LPG.基本料金 ###
+			LVs01 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:1]
+			for lv in LVs01:
+				bLPG = lv.base_value
+
+			### LPG.検針実施日 ###
+			try:
+				for lm in LMs:
+					if lm.m_datetime:
+						date00 = lm.m_datetime
+						dd00 = lm.m_datetime.day
+						date00 = (date00-timedelta(days=dd00-1)) + relativedelta(months=1) - timedelta(days=1)
+						dd_list.append(date00)
+
+						### LPG.検針データ ###
+						if dlt == date00:
+							# 日付
+							monLPG = datetime.strftime(lm.m_datetime, '%-m')
+							dayLPG = datetime.strftime(lm.m_datetime, '%-d')
+
+							# 商品コード
+							s_code = lm.s_code
+							context['s_code'] = s_code
+
+							# LPG.使用量
+							aLPG = lm.amount
+
+							# LPG.使用料金
+							s0, e0, u0, v0, r0 = lvs01(aLPG, cLPG)
+
+							# r0 > 0
+							if r0 > 0:
+								s1, e1, u1, v1, r1 = lvs02(aLPG, cLPG)
+							# r1 > 0
+							if r0 > 0 and r1 > 0:
+								s2, e2, u2, v2, r2 = lvs03(aLPG, cLPG)
+							# r2 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0:
+								s3, e3, u3, v3, r3 = lvs04(aLPG, cLPG)
+							# r3 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+								s4, e4, u4, v4, r4 = lvs05(aLPG, cLPG)
+							# r4 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+								s5, e5, u5, v5, r5 = lvs06(aLPG, cLPG)
+							# r5 > 0
+							if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+								s6, e6, u6, v6, r6 = lvs07(aLPG, cLPG)
+
+
+
+					### LPG.小計 ###
+					# LVs01
+					context['s0'] = s0
+					context['e0'] = e0
+					context['u0'] = u0
+					context['v0'] = v0
+					context['r0'] = r0
+					if v0 > 0:
+						LPG_sTotal_list.append(v0)
+
+					# LVs02
+					if r0 > 0:
+						context['s1'] = s1
+						context['e1'] = e1
+						context['u1'] = u1
+						context['v1'] = v1
+						context['r1'] = r1
+						if v1 > 0:
+							LPG_sTotal_list.append(v1)
+					# LVs03
+					if r0 > 0 and r1 > 0:
+						context['s2'] = s2
+						context['e2'] = e2
+						context['u2'] = u2
+						context['v2'] = v2
+						context['r2'] = r2
+						if v2 > 0:
+							LPG_sTotal_list.append(v2)
+					# LVs04
+					if r0 > 0 and r1 > 0 and r2 > 0:
+						context['s3'] = s3
+						context['e3'] = e3
+						context['u3'] = u3
+						context['v3'] = v3
+						context['r3'] = r3
+						if v3 > 0:
+							LPG_sTotal_list.append(v3)
+
+					# LVs05
+					if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0:
+						context['s4'] = s4
+						context['e4'] = e4
+						context['u4'] = u4
+						context['v4'] = v4
+						context['r4'] = r4
+						if v4 > 0:
+							LPG_sTotal_list.append(v4)
+
+					# LVs06
+					if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0:
+						context['s5'] = s5
+						context['e5'] = e5
+						context['u5'] = u5
+						context['v5'] = v5
+						context['r5'] = r5
+						if v5 > 0:
+							LPG_sTotal_list.append(v5)
+
+					# LVs07
+					if r0 > 0 and r1 > 0 and r2 > 0 and r3 > 0 and r4 > 0 and r5 > 0:
+						context['s6'] = s6
+						context['e6'] = e6
+						context['u6'] = u6
+						context['v6'] = v6
+						context['r6'] = r6
+						if v6 > 0:
+							LPG_sTotal_list.append(v6)
+
+					LPG_sTotal = sum(LPG_sTotal_list)
+					context['LPG_sTotal'] = LPG_sTotal
+
+					### 小計 ###
+					if LPG_sTotal > 0:
+						sTotal = LPG_sTotal + bLPG
+						lTotal = LPG_sTotal + bLPG
+					else:
+						sTotal = bLPG
+						lTotal = bLPG
+					tax_sTotal = tax_v(sTotal)
+					tax_lTotal = tax_v(lTotal)
+
+					sTotal_product = "[ 小計 ]"
+					context['sTotal_product'] = sTotal_product
+					context['sTotal'] = sTotal
+					context['tax_sTotal'] = tax_sTotal
+
+
+				### LPG.Main ###
+				context['monLPG'] = monLPG
+				context['dayLPG'] = dayLPG
+
+				context['base_product'] = "基本料金"
+				context['bLPG'] = bLPG
+				context['product'] = "ガス使用量"
+				context['aLPG'] = aLPG
+				context['unit_product'] = "(ガス使用量 : 金額内訳)"
+				context['rLPG_product'] = "(ガス器具)レンタル代"
+
+				context['notax_values'] = sTotal + notax_rLPG
+				context['tax_values'] = tax_sTotal + tax_rLPG
+
+				context['LPG_values'] = lTotal + notax_rLPG
+				context['LPG_tax_values'] = tax_lTotal + tax_rLPG
+
+				total_values = sTotal + tax_sTotal + rLPG
+				context['total_values'] = total_values
+
+				context['all_total_values'] = total_values
+
+			### LPG.検針実施日.Error ###
+			except Exception as e:
+				print(e, 'LPG/views.py_dds : error occured')
+
+
+		### DL : False ###
+		except Exception as e:
+			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'))
+			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+			### 氏名 ###
+			for na in NAs:
+				names = na.name
+
+			print(e, 'LPG/PDF/Views - PDF.DL.False : error occured')
+
+
+
+		# context['Yuki'] = "祐希"
+
+		context['zipcode'] = zipcode
+		context['address'] = address
+		context['names'] = names
 
 		return context
 
@@ -297,6 +537,10 @@ class LPG_List(ListView):
 
 				context['rLPG'] = rLPG
 				context['tax_rLPG'] = tax_rLPG
+
+			### PDF.リンク ###
+			PDF_Link = "../PDF/%s/" % gid
+			context['pLink'] = PDF_Link
 
 			### LPG.基本料金 ###
 			LVs01 = LPG_Value00.objects.all().filter(uid=cLPG).order_by('start_value')[:1]

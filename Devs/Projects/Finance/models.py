@@ -299,6 +299,23 @@ class Add_Test(models.Model):
 	def __str__(self):
 		return self.uid
 
+###* Guest.Address *###
+class Add_Test20(models.Model):
+	class Meta:
+		db_table = 'Address_Test20'
+		verbose_name = 'Address_020'
+		verbose_name_plural = verbose_name
+		ordering = ['-uid']
+	id = models.AutoField( "id", primary_key=True )
+	uid  = models.CharField( "共通ID", default=None, max_length=16 )
+	name = models.CharField( "顧客名", default=None, max_length=255 )
+	name_furigana = models.CharField( "顧客フリガナ", default=None, max_length=255 )
+	postal_code = models.CharField( "郵便番号", default=None, max_length=16 )
+	address = models.CharField( "住所", default=None, max_length=255 )
+
+	def __str__(self):
+		return self.uid
+
 
 ###* Guest.Bank *###
 class Bank_Test(models.Model):
