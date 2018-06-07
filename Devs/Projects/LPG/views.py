@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.25 Update:2018.05.30" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.26 Update:2018.06.07" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from .forms import NameForm
 
-from Finance.models import Name_Test20, LPG_Meter00, Bank_Test20, Value_Test30, LPG_Value00, Add_Test20
+from Finance.models import Name_Test20, LPG_Meter00, Bank_Test20, Value_Test30, LPG_Value00, Add_Test20, LPG_ToJyu00
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
@@ -978,6 +978,7 @@ class LPG_List(ListView):
 
 		dd_list = list()
 		LPG_sTotal_list = list()
+		TJ_sTotal_List = list()
 		sTotal_list = list()
 
 		### DL : True ###
@@ -1003,6 +1004,7 @@ class LPG_List(ListView):
 			VLs = Value_Test30.objects.filter(uid=self.kwargs.get('nid')).order_by('s_code')
 			# LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'), m_datetime__lte=dlm)
 			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'))
+			LTs = LPG_ToJyu00.objects.all().filter(uid=self.kwargs.get('nid'))
 
 			# context['lms'] = LMs
 
@@ -1926,9 +1928,12 @@ class LPG_List(ListView):
 					### 小計 ###
 					if LPG_sTotal > 0:
 						sTotal = LPG_sTotal + bLPG
+						lTotal = LPG_sTotal + bLPG
 					else:
 						sTotal = bLPG
+						lTotal = bLPG
 					tax_sTotal = tax_v(sTotal)
+					tax_lTotal = tax_v(lTotal)
 
 					sTotal_product = "[ 小計 ]"
 					context['sTotal_product'] = sTotal_product
@@ -1949,21 +1954,104 @@ class LPG_List(ListView):
 				context['product'] = "ガス使用量"
 				context['aLPG'] = aLPG
 				context['unit_product'] = "(ガス使用量 : 金額内訳)"
-
 				context['rLPG_product'] = "(ガス器具) レンタル代"
 
-				context['notax_values'] = sTotal + notax_rLPG
-				context['tax_values'] = tax_sTotal + tax_rLPG
-				context['total_values'] = sTotal + tax_sTotal + rLPG
+				# context['notax_values'] = sTotal + notax_rLPG
+				# context['tax_values'] = tax_sTotal + tax_rLPG
 
+				context['LPG_values'] = lTotal + notax_rLPG
+				context['LPG_tax_values'] = tax_lTotal + tax_rLPG
+
+				# total_values = sTotal + tax_sTotal + rLPG
+				# context['total_values'] = total_values
+
+			### LPG.検針実施日.Error ###
 			except Exception as e:
 				print(e, 'LPG/views.py_dds : error occured')
+
+
+			### LPG.灯油&A重油.取引日 ###
+			try:
+				for lt in LTs:
+					if lt.date00:
+						date00 = lt.date00
+						dt00 = lt.date00.day
+						date00 = (date00-timedelta(days=dt00-1)) + relativedelta(months=1) - timedelta(days=1)
+						context['tlb'] = date00
+
+						### LPG.灯油&A重油データ ###
+						if dlt == date00:
+							# 日付
+							monToJyu = datetime.strftime(lt.date00, '%-m')
+							dayToJyu = datetime.strftime(lt.date00, '%-d')
+
+					if lt.date01:
+						date01 = lt.date01
+						dt01 = lt.date01.day
+						date01 = (date01-timedelta(days=dt01-1)) + relativedelta(months=1) - timedelta(days=1)
+						context['tlb'] = date01
+
+						### LPG.灯油&A重油データ ###
+						if dlt == date01:
+							# 日付
+							monToJyu = datetime.strftime(lt.date01, '%-m')
+							dayToJyu = datetime.strftime(lt.date01, '%-d')
+
+							# 商品コード
+							ts_code = lt.s_code01
+
+							if ts_code == "10500":
+								ts_code_name = "灯油"
+							if ts_code == "10600":
+								ts_code_name = "A重油"
+
+							# 供給量
+							aTJ = lt.amount01
+
+							# 単価
+							uTJ = lt.unit01
+
+							# 税込金額
+							vTJ = lt.value01
+
+							# 内税金額
+							tax_TJ = oTax_v(vTJ)
+
+							# 税別金額
+							nontax_vTJ = vTJ - tax_TJ
+
+				### LPG.Toyu&AJyuyu.Main ###
+				context['monToJyu'] = monToJyu
+				context['dayToJyu'] = dayToJyu
+
+				context['ts_code'] = ts_code
+				context['ts_code_name'] = ts_code_name
+
+				context['aTJ'] = aTJ
+				context['uTJ'] = uTJ
+				context['vTJ'] = vTJ
+				context['tax_TJ'] = tax_TJ
+				context['nontax_vTJ'] = nontax_vTJ
+
+				if ts_code != "10500":
+					context['nonoil_values'] = nontax_vTJ
+
+				context['notax_values'] = sTotal + notax_rLPG + nontax_vTJ
+				context['tax_values'] = tax_sTotal + tax_rLPG + tax_TJ
+
+				total_values = sTotal + tax_sTotal + rLPG + vTJ
+				context['total_values'] = total_values
+
+			### LPG.灯油&A重油.取引日.Error ###
+			except Exception as e:
+				print(e, 'LPG/views.py_dds.ToJyu : error occured')
 
 
 		### DL : False ###
 		except Exception as e:
 			LMs = LPG_Meter00.objects.all().filter(uid=self.kwargs.get('nid'))
 			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			LTs = LPG_ToJyu00.objects.all().filter(uid=self.kwargs.get('nid'))
 
 			### 検針実施日 ###
 			try:
@@ -2064,6 +2152,7 @@ class LPG_List(ListView):
 
 
 		context['lms'] = LMs
+		context['lts'] = LTs
 
 		return context
 

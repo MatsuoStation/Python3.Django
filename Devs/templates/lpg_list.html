@@ -85,6 +85,7 @@
 
         <!--p>{{ dld }} - {{ dlm }}</p-->
         <p>{{ dlb }} - {{ dla }}</p>
+        <P>{{ tlb }} - {{ tla }}</P>
 
 
         <div class="pagination">
@@ -488,6 +489,54 @@
 
           {% endif %}
           <!-- End of if dayLPG -->
+
+          <!-- for lt in lts -->
+          {% for lt in lts %}
+          <!-- if dayToJyu -->
+            {% if dayToJyu%}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>{{ monToJyu }}</td>
+              <td>{{ dayToJyu }}</td>
+              <td></td>
+              <td>{{ ts_code }}</td>
+              <td>{{ ts_code_name }}</td>
+              <td>{{ aTJ|floatformat:2 }}</td>
+              <td>{{ uTJ|floatformat:2 }}</td>
+              <td>{{ vTJ|intcomma }}</td>
+              <td>内</td>
+              <td>{{ tax_TJ|intcomma}}</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endif %}
+          <!-- End fo dayToJyu -->
+          {% endfor %}
+          <!-- End for lt in lts -->
           </tbody>
           {% endfor %}
         </table>
@@ -503,6 +552,35 @@
               <td>消費税額</td>
               <td>{{ tax_values|intcomma }}</td>
             </tr>
+          </thead>
+        </table>
+
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <td colspan="2">ガス</td>
+              <td colspan="2">灯油</td>
+              <td>その他金額</td>
+            </tr>
+
+            {% if ts_code == "10500" %}
+            <tr>
+              <td>{{ aLPG|floatformat:2 }}</td>
+              <td>{{ LPG_values|intcomma }}</td>
+              <td>{{ aTJ|floatformat:2 }}</td>
+              <td>{{ nontax_vTJ|intcomma }}</td>
+              <td>{{ nonoil_values|intcomma }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td>{{ aLPG|floatformat:2 }}</td>
+              <td>{{ LPG_values|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td>{{ nonoil_values|intcomma }}</td>
+            </tr>
+            {% endif %}
+
           </thead>
         </table>
 
