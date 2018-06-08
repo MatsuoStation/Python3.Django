@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.11.26 Update:2018.06.07" |
+#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.11.30 Update:2018.06.08" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -937,6 +937,7 @@ class Bank_Test20(models.Model):
 	receipt = models.PositiveSmallIntegerField( "領収書添付有無", default=None )
 	s_format = models.PositiveSmallIntegerField( "請求書フォーマット", default=None )
 	r_code	= models.IntegerField( verbose_name='掛現金/掛振込', default=0 )
+	j_code = models.PositiveSmallIntegerField( "自振有効", default=None )
 
 	def __str__(self):
 		return self.uid
