@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.31 Update:2018.06.08" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.32 Update:2018.06.09" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -33,6 +33,7 @@ jtax = 0.08
 ndigits = 0
 company_line = 7
 cDatetime = datetime(2018,2,28,23,59,59)
+tDatetime = datetime(2018,3,31,23,59,59)
 
 def tax_v(value):
 	values = value * jtax
@@ -49,6 +50,39 @@ def oTax_v(value):
 		return int(round(values, 0))
 	c = (10 ** d_point) * 2
 	return int(round((values * c + 1) / c, 0))
+
+def tax_v_03(value, dlt, gid):
+	if dlt <= tDatetime and gid == 120020:		# 岡山市可知保育園
+		values = -(-value * jtax)
+		return int(values)
+	elif dlt <= tDatetime and gid == 120028:	# 岡山市可知保育園 北
+		values = -(-value * jtax)
+		return int(values)
+	elif dlt <= tDatetime and gid == 120030:	# 岡山市豊保育園
+		values = -(-value * jtax)
+		return int(values)
+	elif dlt <= tDatetime and gid == 120070:	# 岡山市立豊幼稚園
+		values = -(-value * jtax)
+		return int(values)
+	elif dlt <= tDatetime and gid == 120080:	# 岡山市太伯認定こども園
+		values = -(-value * jtax)
+		return int(values)
+	elif dlt <= tDatetime and gid == 120090:	# 岡山市金岡保育園
+		values = -(-value * jtax)
+		return int(values)
+	elif dlt <= tDatetime and gid == 130050:	# 岡山市西大寺保育園
+		values = -(-value * jtax)
+		return int(values)
+	elif dlt <= tDatetime and gid == 130080:	# 公民館振興室（西大寺公民館 久保東分館）
+		values = -(-value * jtax)
+		return int(values)
+	else:
+		values = value * jtax
+		d_point = len(str(values).split('.')[1])
+		if ndigits >= d_point:
+			return int(round(values, 0))
+		c = (10 ** d_point) * 2
+		return int(round((values * c + 1) / c, 0))
 
 def invalue(values):
 	d_point = len(str(values).split('.')[1])
@@ -311,11 +345,11 @@ class LPG_List(ListView):
 
 			### LPG.料金コード : (2018-02-28.以前対応) ###
 			for vl in VLs:
-				if dlt < cDatetime and gid == 10805:
+				if dlt < cDatetime and gid == 10805:	# ㈱東洋紡カンキョーテクノ 開発部
 					cLPG = 908
-				elif dlt < cDatetime and gid == 10806:
+				elif dlt < cDatetime and gid == 10806:	# ㈱東洋紡カンキョーテクノ 開発部No.2
 					cLPG = 908
-				elif dlt < cDatetime and gid == 130011:
+				elif dlt < cDatetime and gid == 130011:	# 吉原 栄
 					cLPG = 915
 				else:
 					cLPG = vl.lpg_code
@@ -990,12 +1024,15 @@ class LPG_List(ListView):
 					### 小計 ###
 					if LPG_sTotal > 0:
 						sTotal = LPG_sTotal + bLPG
-						lTotal = LPG_sTotal + bLPG
+						# lTotal = LPG_sTotal + bLPG
 					else:
 						sTotal = bLPG
-						lTotal = bLPG
-					tax_sTotal = tax_v(sTotal)
-					tax_lTotal = tax_v(lTotal)
+						# lTotal = bLPG
+
+					### LPG.税金 : (2018-03-31.以前.Tax小数点.切捨対応)
+					tax_sTotal = tax_v_03(sTotal, dlt, gid)
+					# tax_sTotal = tax_v(sTotal)
+					# tax_lTotal = tax_v(lTotal)
 
 					sTotal_product = "[ 小計 ]"
 					context['sTotal_product'] = sTotal_product
@@ -1019,8 +1056,11 @@ class LPG_List(ListView):
 				context['unit_product'] = "(ガス使用量 : 金額内訳)"
 				context['rLPG_product'] = "(ガス器具) レンタル代"
 
-				context['LPG_values'] = lTotal + notax_rLPG
-				context['LPG_tax_values'] = tax_lTotal + tax_rLPG
+				# context['LPG_values'] = lTotal + notax_rLPG
+				# context['LPG_tax_values'] = tax_lTotal + tax_rLPG
+
+				context['LPG_values'] = sTotal + notax_rLPG
+				context['LPG_tax_values'] = tax_sTotal + tax_rLPG
 
 				context['notax_values'] = sTotal + notax_rLPG
 				context['tax_values'] = tax_sTotal + tax_rLPG
