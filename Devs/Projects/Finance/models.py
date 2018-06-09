@@ -129,7 +129,7 @@ class LPG_ToJyu00(models.Model):
 	indate2		= models.DateTimeField( verbose_name='入金日2' )
 	invalue2	= models.IntegerField( verbose_name='入金金額2', default=0 )
 	indate02	= models.DateTimeField( verbose_name='入金日02' )
-	invalue01	= models.IntegerField( verbose_name='入金金額02', default=0 )
+	invalue02	= models.IntegerField( verbose_name='入金金額02', default=0 )
 
 	s_code03= models.CharField( verbose_name='商品03', default=None, max_length=5 )
 	date03 	= models.DateTimeField( verbose_name='取引日03' )

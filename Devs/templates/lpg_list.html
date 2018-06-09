@@ -490,10 +490,6 @@
           {% endif %}
           <!-- End of if dayLPG -->
 
-          <!-- for lt in lts -->
-          {% for lt in lts %}
-          <!-- if dayToJyu -->
-            {% if dayToJyu%}
             <tr>
               <td></td>
               <td></td>
@@ -507,38 +503,28 @@
               <td></td>
               <td></td>
             </tr>
+
+          <!-- if tlb -->
+          {% if dTJ02 %}
             <tr>
-              <td>{{ monToJyu }}</td>
-              <td>{{ dayToJyu }}</td>
+              <td>{{ dTJ02.date.month }}</td>
+              <td>{{ dTJ02.date.day }}</td>
               <td></td>
-              <td>{{ ts_code }}</td>
-              <td>{{ ts_code_name }}</td>
-              <td>{{ aTJ|floatformat:2 }}</td>
-              <td>{{ uTJ|floatformat:2 }}</td>
-              <td>{{ vTJ|intcomma }}</td>
+              <td>{{ sTJ02 }}</td>
+              <td>{{ sTJ_name02 }}</td>
+              <td>{{ aTJ02|floatformat:2 }}</td>
+              <td>{{ uTJ02|floatformat:2 }}</td>
+              <td>{{ vTJ02|intcomma }}</td>
               <td>内</td>
-              <td>{{ tax_TJ|intcomma}}</td>
+              <td>{{ tTJ02|intcomma }}</td>
               <td></td>
             </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            {% endif %}
-          <!-- End fo dayToJyu -->
-          {% endfor %}
-          <!-- End for lt in lts -->
+          {% endif %}
+
           </tbody>
+
           {% endfor %}
+          <!-- End for lm in lms -->
         </table>
 
         <table class="table table-striped table-bordered">
@@ -563,12 +549,28 @@
               <td>その他金額</td>
             </tr>
 
-            {% if ts_code == "10500" %}
+            {% if aTJ and nonoil_values %}
             <tr>
               <td>{{ aLPG|floatformat:2 }}</td>
               <td>{{ LPG_values|intcomma }}</td>
               <td>{{ aTJ|floatformat:2 }}</td>
-              <td>{{ nontax_vTJ|intcomma }}</td>
+              <td>{{ ntax_vTJ|intcomma }}</td>
+              <td>{{ nonoil_values|intcomma }}</td>
+            </tr>
+            {% elif aTJ %}
+            <tr>
+              <td>{{ aLPG|floatformat:2 }}</td>
+              <td>{{ LPG_values|intcomma }}</td>
+              <td>{{ aTJ|floatformat:2 }}</td>
+              <td>{{ ntax_vTJ|intcomma }}</td>
+              <td></td>
+            </tr>
+            {% elif nonoil_values %}
+            <tr>
+              <td>{{ aLPG|floatformat:2 }}</td>
+              <td>{{ LPG_values|intcomma }}</td>
+              <td></td>
+              <td></td>
               <td>{{ nonoil_values|intcomma }}</td>
             </tr>
             {% else %}
@@ -577,8 +579,9 @@
               <td>{{ LPG_values|intcomma }}</td>
               <td></td>
               <td></td>
-              <td>{{ nonoil_values|intcomma }}</td>
+              <td></td>
             </tr>
+
             {% endif %}
 
           </thead>
