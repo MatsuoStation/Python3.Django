@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.33 Update:2018.06.09" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.34 Update:2018.06.10" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -244,9 +244,6 @@ def dds_dls(dv, date00, dm00, dd00):
 		dls = (date00 - timedelta(days=dd00-1)) + timedelta(days=24)
 
 	return dls
-
-
-
 
 
 ### PDF_List ###
@@ -1084,12 +1081,72 @@ class LPG_List(ListView):
 					if lt.date00:
 						date00 = lt.date00
 						if dlb <= date00 and date00 <= dla:
-							context['tj_date00'] = date00
+							context['dTJ00'] = date00
+
+							sTJ00 = lt.s_code00
+							context['sTJ00'] = sTJ00
+
+							if sTJ00 == "10500":
+								s_code_name = "灯油"
+							if sTJ00 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name00'] = s_code_name
+
+							aTJ00 = lt.amount00
+							context['aTJ00'] = aTJ00
+
+							uTJ00 = lt.unit00
+							context['uTJ00'] = uTJ00
+
+							vTJ00 = lt.value00
+							context['vTJ00'] = vTJ00
+
+							tTJ00 = oTax_v(lt.value00)
+							context['tTJ00'] = tTJ00
+							tTJ_list.append(tTJ00)
+
+							ntax_vTJ00 = vTJ00 - tTJ00
+
+							if sTJ00 == "10500":
+								aTJ_list.append(aTJ00)
+								ntax_vTJ_list.append(ntax_vTJ00)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ00)
 
 					if lt.date01:
 						date01 = lt.date01
 						if dlb <= date01 and date01 <= dla:
-							context['tj_date01'] = date01
+							context['dTJ01'] = date01
+
+							sTJ01 = lt.s_code01
+							context['sTJ01'] = sTJ01
+
+							if sTJ01 == "10500":
+								s_code_name = "灯油"
+							if sTJ01 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name01'] = s_code_name
+
+							aTJ01 = lt.amount01
+							context['aTJ01'] = aTJ01
+
+							uTJ01 = lt.unit01
+							context['uTJ01'] = uTJ01
+
+							vTJ01 = lt.value01
+							context['vTJ01'] = vTJ01
+
+							tTJ01 = oTax_v(lt.value01)
+							context['tTJ01'] = tTJ01
+							tTJ_list.append(tTJ01)
+
+							ntax_vTJ01 = vTJ01 - tTJ01
+
+							if sTJ01 == "10500":
+								aTJ_list.append(aTJ01)
+								ntax_vTJ_list.append(ntax_vTJ01)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ01)
 
 					if lt.date02:
 						date02 = lt.date02
@@ -1126,26 +1183,797 @@ class LPG_List(ListView):
 							else:
 								noil_ntax_vTJ_list.append(ntax_vTJ02)
 
+					if lt.date03:
+						date03 = lt.date03
+						if dlb <= date03 and date03 <= dla:
+							context['dTJ03'] = date03
+
+							sTJ03 = lt.s_code03
+							context['sTJ03'] = sTJ03
+
+							if sTJ03 == "10500":
+								s_code_name = "灯油"
+							if sTJ03 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name03'] = s_code_name
+
+							aTJ03 = lt.amount03
+							context['aTJ03'] = aTJ03
+
+							uTJ03 = lt.unit03
+							context['uTJ03'] = uTJ03
+
+							vTJ03 = lt.value03
+							context['vTJ03'] = vTJ03
+
+							tTJ03 = oTax_v(lt.value03)
+							context['tTJ03'] = tTJ03
+							tTJ_list.append(tTJ03)
+
+							ntax_vTJ03 = vTJ03 - tTJ03
+
+							if sTJ03 == "10500":
+								aTJ_list.append(aTJ03)
+								ntax_vTJ_list.append(ntax_vTJ03)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ03)
+
+					if lt.date04:
+						date04 = lt.date04
+						if dlb <= date04 and date04 <= dla:
+							context['dTJ04'] = date04
+
+							sTJ04 = lt.s_code04
+							context['sTJ04'] = sTJ04
+
+							if sTJ04 == "10500":
+								s_code_name = "灯油"
+							if sTJ04 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name04'] = s_code_name
+
+							aTJ04 = lt.amount04
+							context['aTJ04'] = aTJ04
+
+							uTJ04 = lt.unit04
+							context['uTJ04'] = uTJ04
+
+							vTJ04 = lt.value04
+							context['vTJ04'] = vTJ04
+
+							tTJ04 = oTax_v(lt.value04)
+							context['tTJ04'] = tTJ04
+							tTJ_list.append(tTJ04)
+
+							ntax_vTJ04 = vTJ04 - tTJ04
+
+							if sTJ04 == "10500":
+								aTJ_list.append(aTJ04)
+								ntax_vTJ_list.append(ntax_vTJ04)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ04)
+
+					if lt.date05:
+						date05 = lt.date05
+						if dlb <= date05 and date05 <= dla:
+							context['dTJ05'] = date05
+
+							sTJ05 = lt.s_code05
+							context['sTJ05'] = sTJ05
+
+							if sTJ05 == "10500":
+								s_code_name = "灯油"
+							if sTJ05 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name05'] = s_code_name
+
+							aTJ05 = lt.amount05
+							context['aTJ05'] = aTJ05
+
+							uTJ05 = lt.unit05
+							context['uTJ05'] = uTJ05
+
+							vTJ05 = lt.value05
+							context['vTJ05'] = vTJ05
+
+							tTJ05 = oTax_v(lt.value05)
+							context['tTJ05'] = tTJ05
+							tTJ_list.append(tTJ05)
+
+							ntax_vTJ05 = vTJ05 - tTJ05
+
+							if sTJ05 == "10500":
+								aTJ_list.append(aTJ05)
+								ntax_vTJ_list.append(ntax_vTJ05)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ05)
+
+					if lt.date06:
+						date06 = lt.date06
+						if dlb <= date06 and date06 <= dla:
+							context['dTJ06'] = date06
+
+							sTJ06 = lt.s_code06
+							context['sTJ06'] = sTJ06
+
+							if sTJ06 == "10500":
+								s_code_name = "灯油"
+							if sTJ06 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name06'] = s_code_name
+
+							aTJ06 = lt.amount06
+							context['aTJ06'] = aTJ06
+
+							uTJ06 = lt.unit06
+							context['uTJ06'] = uTJ06
+
+							vTJ06 = lt.value06
+							context['vTJ06'] = vTJ06
+
+							tTJ06 = oTax_v(lt.value06)
+							context['tTJ06'] = tTJ06
+							tTJ_list.append(tTJ06)
+
+							ntax_vTJ06 = vTJ06 - tTJ06
+
+							if sTJ06 == "10500":
+								aTJ_list.append(aTJ06)
+								ntax_vTJ_list.append(ntax_vTJ06)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ06)
+
+					if lt.date07:
+						date07 = lt.date07
+						if dlb <= date07 and date07 <= dla:
+							context['dTJ07'] = date07
+
+							sTJ07 = lt.s_code07
+							context['sTJ07'] = sTJ07
+
+							if sTJ07 == "10500":
+								s_code_name = "灯油"
+							if sTJ07 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name07'] = s_code_name
+
+							aTJ07 = lt.amount07
+							context['aTJ07'] = aTJ07
+
+							uTJ07 = lt.unit07
+							context['uTJ07'] = uTJ07
+
+							vTJ07 = lt.value07
+							context['vTJ07'] = vTJ07
+
+							tTJ07 = oTax_v(lt.value07)
+							context['tTJ07'] = tTJ07
+							tTJ_list.append(tTJ07)
+
+							ntax_vTJ07 = vTJ07 - tTJ07
+
+							if sTJ07 == "10500":
+								aTJ_list.append(aTJ07)
+								ntax_vTJ_list.append(ntax_vTJ07)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ07)
+
+					if lt.date08:
+						date08 = lt.date08
+						if dlb <= date08 and date08 <= dla:
+							context['dTJ08'] = date08
+
+							sTJ08 = lt.s_code08
+							context['sTJ08'] = sTJ08
+
+							if sTJ08 == "10500":
+								s_code_name = "灯油"
+							if sTJ08 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name08'] = s_code_name
+
+							aTJ08 = lt.amount08
+							context['aTJ08'] = aTJ08
+
+							uTJ08 = lt.unit08
+							context['uTJ08'] = uTJ08
+
+							vTJ08 = lt.value08
+							context['vTJ08'] = vTJ08
+
+							tTJ08 = oTax_v(lt.value08)
+							context['tTJ08'] = tTJ08
+							tTJ_list.append(tTJ08)
+
+							ntax_vTJ08 = vTJ08 - tTJ08
+
+							if sTJ08 == "10500":
+								aTJ_list.append(aTJ08)
+								ntax_vTJ_list.append(ntax_vTJ08)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ08)
+
+					if lt.date09:
+						date09 = lt.date09
+						if dlb <= date09 and date09 <= dla:
+							context['dTJ09'] = date09
+
+							sTJ09 = lt.s_code09
+							context['sTJ09'] = sTJ09
+
+							if sTJ09 == "10500":
+								s_code_name = "灯油"
+							if sTJ09 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name09'] = s_code_name
+
+							aTJ09 = lt.amount09
+							context['aTJ09'] = aTJ09
+
+							uTJ09 = lt.unit09
+							context['uTJ09'] = uTJ09
+
+							vTJ09 = lt.value09
+							context['vTJ09'] = vTJ09
+
+							tTJ09 = oTax_v(lt.value09)
+							context['tTJ09'] = tTJ09
+							tTJ_list.append(tTJ09)
+
+							ntax_vTJ09 = vTJ09 - tTJ09
+
+							if sTJ09 == "10500":
+								aTJ_list.append(aTJ09)
+								ntax_vTJ_list.append(ntax_vTJ09)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ09)
+
+					if lt.date10:
+						date10 = lt.date10
+						if dlb <= date10 and date10 <= dla:
+							context['dTJ10'] = date10
+
+							sTJ10 = lt.s_code10
+							context['sTJ10'] = sTJ10
+
+							if sTJ10 == "10500":
+								s_code_name = "灯油"
+							if sTJ10 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name10'] = s_code_name
+
+							aTJ10 = lt.amount10
+							context['aTJ10'] = aTJ10
+
+							uTJ10 = lt.unit10
+							context['uTJ10'] = uTJ10
+
+							vTJ10 = lt.value10
+							context['vTJ10'] = vTJ10
+
+							tTJ10 = oTax_v(lt.value10)
+							context['tTJ10'] = tTJ10
+							tTJ_list.append(tTJ10)
+
+							ntax_vTJ10 = vTJ10 - tTJ10
+
+							if sTJ10 == "10500":
+								aTJ_list.append(aTJ10)
+								ntax_vTJ_list.append(ntax_vTJ10)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ10)
+
+					if lt.date11:
+						date11 = lt.date11
+						if dlb <= date11 and date11 <= dla:
+							context['dTJ11'] = date11
+
+							sTJ11 = lt.s_code11
+							context['sTJ11'] = sTJ11
+
+							if sTJ11 == "10500":
+								s_code_name = "灯油"
+							if sTJ11 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name11'] = s_code_name
+
+							aTJ11 = lt.amount11
+							context['aTJ11'] = aTJ11
+
+							uTJ11 = lt.unit11
+							context['uTJ11'] = uTJ11
+
+							vTJ11 = lt.value11
+							context['vTJ11'] = vTJ11
+
+							tTJ11 = oTax_v(lt.value11)
+							context['tTJ11'] = tTJ11
+							tTJ_list.append(tTJ11)
+
+							ntax_vTJ11 = vTJ11 - tTJ11
+
+							if sTJ11 == "10500":
+								aTJ_list.append(aTJ11)
+								ntax_vTJ_list.append(ntax_vTJ11)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ11)
+
+					if lt.date12:
+						date12 = lt.date12
+						if dlb <= date12 and date12 <= dla:
+							context['dTJ12'] = date12
+
+							sTJ12 = lt.s_code12
+							context['sTJ12'] = sTJ12
+
+							if sTJ12 == "10500":
+								s_code_name = "灯油"
+							if sTJ12 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name12'] = s_code_name
+
+							aTJ12 = lt.amount12
+							context['aTJ12'] = aTJ12
+
+							uTJ12 = lt.unit12
+							context['uTJ12'] = uTJ12
+
+							vTJ12 = lt.value12
+							context['vTJ12'] = vTJ12
+
+							tTJ12 = oTax_v(lt.value12)
+							context['tTJ12'] = tTJ12
+							tTJ_list.append(tTJ12)
+
+							ntax_vTJ12 = vTJ12 - tTJ12
+
+							if sTJ12 == "10500":
+								aTJ_list.append(aTJ12)
+								ntax_vTJ_list.append(ntax_vTJ12)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ12)
+
+					if lt.date13:
+						date13 = lt.date13
+						if dlb <= date13 and date13 <= dla:
+							context['dTJ13'] = date13
+
+							sTJ13 = lt.s_code13
+							context['sTJ13'] = sTJ13
+
+							if sTJ13 == "10500":
+								s_code_name = "灯油"
+							if sTJ13 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name13'] = s_code_name
+
+							aTJ13 = lt.amount13
+							context['aTJ13'] = aTJ13
+
+							uTJ13 = lt.unit13
+							context['uTJ13'] = uTJ13
+
+							vTJ13 = lt.value13
+							context['vTJ13'] = vTJ13
+
+							tTJ13 = oTax_v(lt.value13)
+							context['tTJ13'] = tTJ13
+							tTJ_list.append(tTJ13)
+
+							ntax_vTJ13 = vTJ13 - tTJ13
+
+							if sTJ13 == "10500":
+								aTJ_list.append(aTJ13)
+								ntax_vTJ_list.append(ntax_vTJ13)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ13)
+
+					if lt.date14:
+						date14 = lt.date14
+						if dlb <= date14 and date14 <= dla:
+							context['dTJ14'] = date14
+
+							sTJ14 = lt.s_code14
+							context['sTJ14'] = sTJ14
+
+							if sTJ14 == "10500":
+								s_code_name = "灯油"
+							if sTJ14 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name14'] = s_code_name
+
+							aTJ14 = lt.amount14
+							context['aTJ14'] = aTJ14
+
+							uTJ14 = lt.unit14
+							context['uTJ14'] = uTJ14
+
+							vTJ14 = lt.value14
+							context['vTJ14'] = vTJ14
+
+							tTJ14 = oTax_v(lt.value14)
+							context['tTJ14'] = tTJ14
+							tTJ_list.append(tTJ14)
+
+							ntax_vTJ14 = vTJ14 - tTJ14
+
+							if sTJ14 == "10500":
+								aTJ_list.append(aTJ14)
+								ntax_vTJ_list.append(ntax_vTJ14)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ14)
+
+					if lt.date15:
+						date15 = lt.date15
+						if dlb <= date15 and date15 <= dla:
+							context['dTJ15'] = date15
+
+							sTJ15 = lt.s_code15
+							context['sTJ15'] = sTJ15
+
+							if sTJ15 == "10500":
+								s_code_name = "灯油"
+							if sTJ15 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name15'] = s_code_name
+
+							aTJ15 = lt.amount15
+							context['aTJ15'] = aTJ15
+
+							uTJ15 = lt.unit15
+							context['uTJ15'] = uTJ15
+
+							vTJ15 = lt.value15
+							context['vTJ15'] = vTJ15
+
+							tTJ15 = oTax_v(lt.value15)
+							context['tTJ15'] = tTJ15
+							tTJ_list.append(tTJ15)
+
+							ntax_vTJ15 = vTJ15 - tTJ15
+
+							if sTJ15 == "10500":
+								aTJ_list.append(aTJ15)
+								ntax_vTJ_list.append(ntax_vTJ15)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ15)
+
+					if lt.date16:
+						date16 = lt.date16
+						if dlb <= date16 and date16 <= dla:
+							context['dTJ16'] = date16
+
+							sTJ16 = lt.s_code16
+							context['sTJ16'] = sTJ16
+
+							if sTJ16 == "10500":
+								s_code_name = "灯油"
+							if sTJ16 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name16'] = s_code_name
+
+							aTJ16 = lt.amount16
+							context['aTJ16'] = aTJ16
+
+							uTJ16 = lt.unit16
+							context['uTJ16'] = uTJ16
+
+							vTJ16 = lt.value16
+							context['vTJ16'] = vTJ16
+
+							tTJ16 = oTax_v(lt.value16)
+							context['tTJ16'] = tTJ16
+							tTJ_list.append(tTJ16)
+
+							ntax_vTJ16 = vTJ16 - tTJ16
+
+							if sTJ16 == "10500":
+								aTJ_list.append(aTJ16)
+								ntax_vTJ_list.append(ntax_vTJ16)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ16)
+
+					if lt.date17:
+						date17 = lt.date17
+						if dlb <= date17 and date17 <= dla:
+							context['dTJ17'] = date17
+
+							sTJ17 = lt.s_code17
+							context['sTJ17'] = sTJ17
+
+							if sTJ17 == "10500":
+								s_code_name = "灯油"
+							if sTJ17 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name17'] = s_code_name
+
+							aTJ17 = lt.amount17
+							context['aTJ17'] = aTJ17
+
+							uTJ17 = lt.unit17
+							context['uTJ17'] = uTJ17
+
+							vTJ17 = lt.value17
+							context['vTJ17'] = vTJ17
+
+							tTJ17 = oTax_v(lt.value17)
+							context['tTJ17'] = tTJ17
+							tTJ_list.append(tTJ17)
+
+							ntax_vTJ17 = vTJ17 - tTJ17
+
+							if sTJ17 == "10500":
+								aTJ_list.append(aTJ17)
+								ntax_vTJ_list.append(ntax_vTJ17)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ17)
+
+					if lt.date18:
+						date18 = lt.date18
+						if dlb <= date18 and date18 <= dla:
+							context['dTJ18'] = date18
+
+							sTJ18 = lt.s_code18
+							context['sTJ18'] = sTJ18
+
+							if sTJ18 == "10500":
+								s_code_name = "灯油"
+							if sTJ18 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name18'] = s_code_name
+
+							aTJ18 = lt.amount18
+							context['aTJ18'] = aTJ18
+
+							uTJ18 = lt.unit18
+							context['uTJ18'] = uTJ18
+
+							vTJ18 = lt.value18
+							context['vTJ18'] = vTJ18
+
+							tTJ18 = oTax_v(lt.value18)
+							context['tTJ18'] = tTJ18
+							tTJ_list.append(tTJ18)
+
+							ntax_vTJ18 = vTJ18 - tTJ18
+
+							if sTJ18 == "10500":
+								aTJ_list.append(aTJ18)
+								ntax_vTJ_list.append(ntax_vTJ18)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ18)
+
+					if lt.date19:
+						date19 = lt.date19
+						if dlb <= date19 and date19 <= dla:
+							context['dTJ19'] = date19
+
+							sTJ19 = lt.s_code19
+							context['sTJ19'] = sTJ19
+
+							if sTJ19 == "10500":
+								s_code_name = "灯油"
+							if sTJ19 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name19'] = s_code_name
+
+							aTJ19 = lt.amount19
+							context['aTJ19'] = aTJ19
+
+							uTJ19 = lt.unit19
+							context['uTJ19'] = uTJ19
+
+							vTJ19 = lt.value19
+							context['vTJ19'] = vTJ19
+
+							tTJ19 = oTax_v(lt.value19)
+							context['tTJ19'] = tTJ19
+							tTJ_list.append(tTJ19)
+
+							ntax_vTJ19 = vTJ19 - tTJ19
+
+							if sTJ19 == "10500":
+								aTJ_list.append(aTJ19)
+								ntax_vTJ_list.append(ntax_vTJ19)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ19)
+
+					if lt.date20:
+						date20 = lt.date20
+						if dlb <= date20 and date20 <= dla:
+							context['dTJ20'] = date20
+
+							sTJ20 = lt.s_code20
+							context['sTJ20'] = sTJ20
+
+							if sTJ20 == "10500":
+								s_code_name = "灯油"
+							if sTJ20 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name20'] = s_code_name
+
+							aTJ20 = lt.amount20
+							context['aTJ20'] = aTJ20
+
+							uTJ20 = lt.unit20
+							context['uTJ20'] = uTJ20
+
+							vTJ20 = lt.value20
+							context['vTJ20'] = vTJ20
+
+							tTJ20 = oTax_v(lt.value20)
+							context['tTJ20'] = tTJ20
+							tTJ_list.append(tTJ20)
+
+							ntax_vTJ20 = vTJ20 - tTJ20
+
+							if sTJ20 == "10500":
+								aTJ_list.append(aTJ20)
+								ntax_vTJ_list.append(ntax_vTJ20)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ20)
+
+					if lt.date21:
+						date21 = lt.date21
+						if dlb <= date21 and date21 <= dla:
+							context['dTJ21'] = date21
+
+							sTJ21 = lt.s_code21
+							context['sTJ21'] = sTJ21
+
+							if sTJ21 == "10500":
+								s_code_name = "灯油"
+							if sTJ21 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name21'] = s_code_name
+
+							aTJ21 = lt.amount21
+							context['aTJ21'] = aTJ21
+
+							uTJ21 = lt.unit21
+							context['uTJ21'] = uTJ21
+
+							vTJ21 = lt.value21
+							context['vTJ21'] = vTJ21
+
+							tTJ21 = oTax_v(lt.value21)
+							context['tTJ21'] = tTJ21
+							tTJ_list.append(tTJ21)
+
+							ntax_vTJ21 = vTJ21 - tTJ21
+
+							if sTJ21 == "10500":
+								aTJ_list.append(aTJ21)
+								ntax_vTJ_list.append(ntax_vTJ21)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ21)
+
+					if lt.date22:
+						date22 = lt.date22
+						if dlb <= date22 and date22 <= dla:
+							context['dTJ22'] = date22
+
+							sTJ22 = lt.s_code22
+							context['sTJ22'] = sTJ22
+
+							if sTJ22 == "10500":
+								s_code_name = "灯油"
+							if sTJ22 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name22'] = s_code_name
+
+							aTJ22 = lt.amount22
+							context['aTJ22'] = aTJ22
+
+							uTJ22 = lt.unit22
+							context['uTJ22'] = uTJ22
+
+							vTJ22 = lt.value22
+							context['vTJ22'] = vTJ22
+
+							tTJ22 = oTax_v(lt.value22)
+							context['tTJ22'] = tTJ22
+							tTJ_list.append(tTJ22)
+
+							ntax_vTJ22 = vTJ22 - tTJ22
+
+							if sTJ22 == "10500":
+								aTJ_list.append(aTJ22)
+								ntax_vTJ_list.append(ntax_vTJ22)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ22)
+
+					if lt.date23:
+						date23 = lt.date23
+						if dlb <= date23 and date23 <= dla:
+							context['dTJ23'] = date23
+
+							sTJ23 = lt.s_code23
+							context['sTJ23'] = sTJ23
+
+							if sTJ23 == "10500":
+								s_code_name = "灯油"
+							if sTJ23 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name23'] = s_code_name
+
+							aTJ23 = lt.amount23
+							context['aTJ23'] = aTJ23
+
+							uTJ23 = lt.unit23
+							context['uTJ23'] = uTJ23
+
+							vTJ23 = lt.value23
+							context['vTJ23'] = vTJ23
+
+							tTJ23 = oTax_v(lt.value23)
+							context['tTJ23'] = tTJ23
+							tTJ_list.append(tTJ23)
+
+							ntax_vTJ23 = vTJ23 - tTJ23
+
+							if sTJ23 == "10500":
+								aTJ_list.append(aTJ23)
+								ntax_vTJ_list.append(ntax_vTJ23)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ23)
+
+					if lt.date24:
+						date24 = lt.date24
+						if dlb <= date24 and date24 <= dla:
+							context['dTJ24'] = date24
+
+							sTJ24 = lt.s_code24
+							context['sTJ24'] = sTJ24
+
+							if sTJ24 == "10500":
+								s_code_name = "灯油"
+							if sTJ24 == "10600":
+								s_code_name = "A重油"
+							context['sTJ_name24'] = s_code_name
+
+							aTJ24 = lt.amount24
+							context['aTJ24'] = aTJ24
+
+							uTJ24 = lt.unit24
+							context['uTJ24'] = uTJ24
+
+							vTJ24 = lt.value24
+							context['vTJ24'] = vTJ24
+
+							tTJ24 = oTax_v(lt.value24)
+							context['tTJ24'] = tTJ24
+							tTJ_list.append(tTJ24)
+
+							ntax_vTJ24 = vTJ24 - tTJ24
+
+							if sTJ24 == "10500":
+								aTJ_list.append(aTJ24)
+								ntax_vTJ_list.append(ntax_vTJ24)
+							else:
+								noil_ntax_vTJ_list.append(ntax_vTJ24)
+
+					### 灯油 & A重油 : 合計 ###
 					aTJ = sum(aTJ_list)
 					tTJ = sum(tTJ_list)
 					ntax_vTJ = sum(ntax_vTJ_list)
 					noil_ntax_vTJ = sum(noil_ntax_vTJ_list)
 
-				context['notax_values'] = sTotal + notax_rLPG + (ntax_vTJ)
+				### LPG.灯油 & A重油.Main ###
+				context['notax_values'] = sTotal + notax_rLPG + (ntax_vTJ + noil_ntax_vTJ)
 				context['tax_values'] = tax_sTotal + tax_rLPG + (tTJ)
 
 				context['aTJ'] = aTJ
 				context['ntax_vTJ'] = ntax_vTJ
 				context['nonoil_values'] = noil_ntax_vTJ
 
-				total_values = sTotal + tax_sTotal + rLPG + (ntax_vTJ + tTJ)
+				total_values = sTotal + tax_sTotal + rLPG + (ntax_vTJ + tTJ + noil_ntax_vTJ)
 				context['total_values'] = total_values
 
 
 			### LPG.灯油 & A重油.取引日.Error ###
 			except Exception as e:
 				print(e, 'LPG/views.Toyu.Jyuyu : error occured')
-
 
 
 		### DL : False ###
