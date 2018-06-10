@@ -212,9 +212,10 @@
       </table>
     </div>
 
-    {% if dayLPG %}
+    <!-- LPG -->
     <div id="lpgmain_frame">
       <table class="lpgmain">
+        {% if dayLPG %}
         <thead>
           <tr style="height: 18px; vertical-align: bottom;">
             <td style="text-align: center; width: 3.75%;">{{ monLPG }}</td>
@@ -542,6 +543,7 @@
         </tr>
         {% endif %}
 
+        <!-- sTotal -->
         <tr style="height: 16px; vertical-align: bottom;">
           <td style="text-align: center; width: 3.75%;"></td>
           <td style="text-align: center; width: 3.75%;"></td>
@@ -555,8 +557,6 @@
           <td style="text-align: center; width: 8.63%;">{{ tax_sTotal|intcomma }}</td>
           <td style="text-align: center; width: 14.48%;"></td>
         </tr>
-
-        {% if rLPG %}
         <tr style="height: 16.5px; vertical-align: bottom;">
           <td style="text-align: center; width: 3.75%;"></td>
           <td style="text-align: center; width: 3.75%;"></td>
@@ -570,11 +570,27 @@
           <td style="text-align: center; width: 8.63%;"></td>
           <td style="text-align: center; width: 14.48%;"></td>
         </tr>
+        <!-- End sTotal -->
+
+        {% if rLPG %}
+        <!--tr style="height: 16.5px; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;"></td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;"></td>
+          <td style="text-align: center; width: 4.69%;"></td>
+          <td style="text-align: center; width: 8.63%;"></td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr-->
         <tr style="height: 16px; vertical-align: bottom;">
           <td style="text-align: center; width: 3.75%;"></td>
           <td style="text-align: center; width: 3.75%;"></td>
           <td style="text-align: center; width: 7.12%;"></td>
-          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;">{{ rLPG_s_code }}</td>
           <td style="text-align: center; width: 21.38%;">{{ rLPG_product }}</td>
           <td style="text-align: center; width: 5.44%;"></td>
           <td style="text-align: center; width: 9.19%;"></td>
@@ -583,12 +599,434 @@
           <td style="text-align: center; width: 8.63%;">{{ tax_rLPG|intcomma }}</td>
           <td style="text-align: center; width: 14.48%;"></td>
         </tr>
+        <tr style="height: 16.5px; vertical-align: bottom;">
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 3.75%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 7.12%;"></td>
+          <td style="text-align: center; width: 21.38%;"></td>
+          <td style="text-align: center; width: 5.44%;"></td>
+          <td style="text-align: center; width: 9.19%;"></td>
+          <td style="text-align: center; width: 14.45%;"></td>
+          <td style="text-align: center; width: 4.69%;"></td>
+          <td style="text-align: center; width: 8.63%;"></td>
+          <td style="text-align: center; width: 14.48%;"></td>
+        </tr>
         {% endif %}
-
+        <!-- End if rLPG -->
         </tbody>
+        {% endif %}
+        <!-- End dayLPG -->
+
+
+        <!-- Toyu & Jyuyu -->
+        <tbody>
+          {% if dTJ24 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ24.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ24.date.day }}</td>
+            <td style="text-align: center; width: 7.24%;"></td>
+            <td style="text-align: center; width: 7.24%;">{{ sTJ24 }}</td>
+            <td style="text-align: center; width: 24.38%;">{{ sTJ_name24 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ24|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.24%;">{{ uTJ24|floatformat:2 }}</td>
+            <td style="text-align: center; width: 24.45%;">{{ vTJ24|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ24|intcomma }}</td>
+            <td style="text-align: center; width: 24.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ23 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ23.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ23.date.day }}</td>
+            <td style="text-align: center; width: 7.23%;"></td>
+            <td style="text-align: center; width: 7.23%;">{{ sTJ23 }}</td>
+            <td style="text-align: center; width: 23.38%;">{{ sTJ_name23 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ23|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.23%;">{{ uTJ23|floatformat:2 }}</td>
+            <td style="text-align: center; width: 23.45%;">{{ vTJ23|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ23|intcomma }}</td>
+            <td style="text-align: center; width: 23.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ22 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ22.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ22.date.day }}</td>
+            <td style="text-align: center; width: 7.22%;"></td>
+            <td style="text-align: center; width: 7.22%;">{{ sTJ22 }}</td>
+            <td style="text-align: center; width: 22.38%;">{{ sTJ_name22 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ22|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.22%;">{{ uTJ22|floatformat:2 }}</td>
+            <td style="text-align: center; width: 22.45%;">{{ vTJ22|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ22|intcomma }}</td>
+            <td style="text-align: center; width: 22.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ21 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ21.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ21.date.day }}</td>
+            <td style="text-align: center; width: 7.21%;"></td>
+            <td style="text-align: center; width: 7.21%;">{{ sTJ21 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name21 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ21|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.21%;">{{ uTJ21|floatformat:2 }}</td>
+            <td style="text-align: center; width: 21.45%;">{{ vTJ21|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ21|intcomma }}</td>
+            <td style="text-align: center; width: 21.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ20 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ20.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ20.date.day }}</td>
+            <td style="text-align: center; width: 7.20%;"></td>
+            <td style="text-align: center; width: 7.20%;">{{ sTJ20 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name20 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ20|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.20%;">{{ uTJ20|floatformat:2 }}</td>
+            <td style="text-align: center; width: 20.45%;">{{ vTJ20|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ20|intcomma }}</td>
+            <td style="text-align: center; width: 20.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ19 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ19.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ19.date.day }}</td>
+            <td style="text-align: center; width: 7.19%;"></td>
+            <td style="text-align: center; width: 7.19%;">{{ sTJ19 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name19 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ19|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ19|floatformat:2 }}</td>
+            <td style="text-align: center; width: 19.45%;">{{ vTJ19|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ19|intcomma }}</td>
+            <td style="text-align: center; width: 19.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ18 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ18.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ18.date.day }}</td>
+            <td style="text-align: center; width: 7.18%;"></td>
+            <td style="text-align: center; width: 7.18%;">{{ sTJ18 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name18 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ18|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ18|floatformat:2 }}</td>
+            <td style="text-align: center; width: 18.45%;">{{ vTJ18|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ18|intcomma }}</td>
+            <td style="text-align: center; width: 18.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ17 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ17.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ17.date.day }}</td>
+            <td style="text-align: center; width: 7.17%;"></td>
+            <td style="text-align: center; width: 7.17%;">{{ sTJ17 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name17 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ17|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ17|floatformat:2 }}</td>
+            <td style="text-align: center; width: 17.45%;">{{ vTJ17|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ17|intcomma }}</td>
+            <td style="text-align: center; width: 17.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ16 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ16.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ16.date.day }}</td>
+            <td style="text-align: center; width: 7.16%;"></td>
+            <td style="text-align: center; width: 7.16%;">{{ sTJ16 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name16 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ16|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ16|floatformat:2 }}</td>
+            <td style="text-align: center; width: 16.45%;">{{ vTJ16|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ16|intcomma }}</td>
+            <td style="text-align: center; width: 16.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ15 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ15.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ15.date.day }}</td>
+            <td style="text-align: center; width: 7.15%;"></td>
+            <td style="text-align: center; width: 7.15%;">{{ sTJ15 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name15 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ15|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ15|floatformat:2 }}</td>
+            <td style="text-align: center; width: 15.45%;">{{ vTJ15|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ15|intcomma }}</td>
+            <td style="text-align: center; width: 15.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ14 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ14.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ14.date.day }}</td>
+            <td style="text-align: center; width: 7.14%;"></td>
+            <td style="text-align: center; width: 7.14%;">{{ sTJ14 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name14 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ14|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ14|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ14|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ14|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ13 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ13.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ13.date.day }}</td>
+            <td style="text-align: center; width: 7.13%;"></td>
+            <td style="text-align: center; width: 7.13%;">{{ sTJ13 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name13 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ13|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ13|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ13|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ13|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ12 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ12.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ12.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ12 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name12 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ12|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ12|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ12|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ12|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ11 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ11.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ11.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ11 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name11 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ11|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ11|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ11|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ11|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ10 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ10.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ10.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ10 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name10 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ10|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ10|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ10|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ10|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ09 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ09.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ09.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ09 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name09 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ09|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ09|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ09|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ09|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ08 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ08.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ08.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ08 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name08 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ08|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ08|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ08|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ08|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ07 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ07.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ07.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ07 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name07 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ07|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ07|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ07|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ07|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ06 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ06.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ06.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ06 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name06 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ06|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ06|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ06|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ06|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ05 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ05.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ05.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ05 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name05 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ05|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ05|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ05|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ05|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ04 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ04.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ04.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ04 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name04 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ04|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ04|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ04|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ04|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ03 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ03.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ03.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ03 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name03 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ03|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ03|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ03|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ03|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ02 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ02.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ02.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ02 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name02 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ02|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ02|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ02|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ02|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ01 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ01.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ01.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ01 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name01 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ01|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ01|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ01|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ01|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+
+          {% if dTJ00 %}
+          <tr style="height: 16px; vertical-align: bottom;">
+            <td style="text-align: center; width: 3.75%;">{{ dTJ00.date.month }}</td>
+            <td style="text-align: center; width: 3.75%;">{{ dTJ00.date.day }}</td>
+            <td style="text-align: center; width: 7.12%;"></td>
+            <td style="text-align: center; width: 7.12%;">{{ sTJ00 }}</td>
+            <td style="text-align: center; width: 21.38%;">{{ sTJ_name00 }}</td>
+            <td style="text-align: center; width: 5.44%;">{{ aTJ00|floatformat:2 }}</td>
+            <td style="text-align: center; width: 9.19%;">{{ uTJ00|floatformat:2 }}</td>
+            <td style="text-align: center; width: 14.45%;">{{ vTJ00|intcomma }}</td>
+            <td style="text-align: center; width: 4.69%;">内</td>
+            <td style="text-align: center; width: 8.63%;">{{ tTJ00|intcomma }}</td>
+            <td style="text-align: center; width: 14.48%;"></td>
+          </tr>
+          {% endif %}
+      </tbody>
+      <!-- End Toyu & Jyuyu -->
+
       </table>
     </div>
-    {% endif %}
+    <!-- End LPG  -->
+
 
     <div id="subtotal_frame">
       <table>
@@ -608,13 +1046,39 @@
     <div id="bumon_frame">
       <table>
         <thead>
+          {% if aTJ and nonoil_values %}
           <tr style="vertical-align: bottom;">
-            <td style="text-align: center; width: 20%;">{{ aLPG }}</td>
+            <td style="text-align: center; width: 20%;">{{ aLPG|floatformat:1 }}</td>
+            <td style="text-align: center; width: 20%;">{{ LPG_values|intcomma }}</td>
+            <td style="text-align: center; width: 20%;">{{ aTJ|floatformat:2 }}</td>
+            <td style="text-align: center; width: 20%;">{{ ntax_vTJ|intcomma }}</td>
+            <td style="text-align: center; width: 20%;">{{ nonoil_values|intcomma }}</td>
+          </tr>
+          {% elif aTJ %}
+          <tr style="vertical-align: bottom;">
+            <td style="text-align: center; width: 20%;">{{ aLPG|floatformat:1 }}</td>
+            <td style="text-align: center; width: 20%;">{{ LPG_values|intcomma }}</td>
+            <td style="text-align: center; width: 20%;">{{ aTJ|floatformat:2 }}</td>
+            <td style="text-align: center; width: 20%;">{{ ntax_vTJ|intcomma }}</td>
+            <td style="text-align: center; width: 20%;"></td>
+          </tr>
+          {% elif nonoil_values %}
+          <tr style="vertical-align: bottom;">
+            <td style="text-align: center; width: 20%;">{{ aLPG|floatformat:1 }}</td>
+            <td style="text-align: center; width: 20%;">{{ LPG_values|intcomma }}</td>
+            <td style="text-align: center; width: 20%;"></td>
+            <td style="text-align: center; width: 20%;"></td>
+            <td style="text-align: center; width: 20%;">{{ nonoil_values|intcomma }}</td>
+          </tr>
+          {% else %}
+          <tr style="vertical-align: bottom;">
+            <td style="text-align: center; width: 20%;">{{ aLPG|floatformat:1 }}</td>
             <td style="text-align: center; width: 20%;">{{ LPG_values|intcomma }}</td>
             <td style="text-align: center; width: 20%;"></td>
             <td style="text-align: center; width: 20%;"></td>
             <td style="text-align: center; width: 20%;"></td>
           </tr>
+          {% endif %}
         </thead>
       </table>
     </div>

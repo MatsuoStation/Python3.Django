@@ -895,7 +895,7 @@
               <td>{{ dTJ00.date.day }}</td>
               <td></td>
               <td>{{ sTJ00 }}</td>
-              <td>{{ sTJ_name02 }}</td>
+              <td>{{ sTJ_name00 }}</td>
               <td>{{ aTJ00|floatformat:2 }}</td>
               <td>{{ uTJ00|floatformat:2 }}</td>
               <td>{{ vTJ00|intcomma }}</td>
@@ -936,7 +936,7 @@
 
             {% if aTJ and nonoil_values %}
             <tr>
-              <td>{{ aLPG|floatformat:2 }}</td>
+              <td>{{ aLPG|floatformat:1 }}</td>
               <td>{{ LPG_values|intcomma }}</td>
               <td>{{ aTJ|floatformat:2 }}</td>
               <td>{{ ntax_vTJ|intcomma }}</td>
@@ -944,7 +944,7 @@
             </tr>
             {% elif aTJ %}
             <tr>
-              <td>{{ aLPG|floatformat:2 }}</td>
+              <td>{{ aLPG|floatformat:1 }}</td>
               <td>{{ LPG_values|intcomma }}</td>
               <td>{{ aTJ|floatformat:2 }}</td>
               <td>{{ ntax_vTJ|intcomma }}</td>
@@ -952,7 +952,7 @@
             </tr>
             {% elif nonoil_values %}
             <tr>
-              <td>{{ aLPG|floatformat:2 }}</td>
+              <td>{{ aLPG|floatformat:1 }}</td>
               <td>{{ LPG_values|intcomma }}</td>
               <td></td>
               <td></td>
@@ -960,13 +960,12 @@
             </tr>
             {% else %}
             <tr>
-              <td>{{ aLPG|floatformat:2 }}</td>
+              <td>{{ aLPG|floatformat:1 }}</td>
               <td>{{ LPG_values|intcomma }}</td>
               <td></td>
               <td></td>
               <td></td>
             </tr>
-
             {% endif %}
 
           </thead>
