@@ -21,7 +21,8 @@
       size: A4 portrait;
       font-family: "japanese";
       margin: 1cm;
-      background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');
+      /*background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');*/
+      background-image: url('{{ fURL }}');
 
       @frame address_frame {
         -pdf-frame-content: address_frame;
@@ -172,8 +173,8 @@
           <tr>
             <td>{{ dla|date:"Y" }}</td>
             <td style="text-align: center;">{{ mLPG }}</td>
-            <td style="text-align: center;">{{ dLPG }}</td>
-            <td style="text-align: center;">&nbsp;&nbsp;{{ deLPG }}</td>
+            <td style="text-align: center;">{{ deLPG }}</td>
+            <td style="text-align: center;">&nbsp;&nbsp;{{ dLPG }}</td>
           </tr>
         </thead>
       </table>
@@ -185,7 +186,7 @@
           <tr style="vertical-align: bottom;">
             <td style="text-align: center; width: 88%;"></td>
             <td style="text-align: center; width: 3.8%;"></td>
-            <td style="text-align: center; width: 8.2%;">1</td>
+            <td style="text-align: center; width: 8.2%;">{{ lms.number }}</td>
           </tr>
         </thead>
       </table>
