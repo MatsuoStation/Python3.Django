@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.2 Update:2018.05.30" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.3 Update:2018.06.12" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -242,6 +242,8 @@ class Invoice_List(ListView):
 			# months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct()
 			# months = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct()
 			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+			VLs = Value_Test30.objects.filter(uid=self.kwargs.get('nid')).order_by('s_code')
+			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
 
 			# check_days = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
 
@@ -251,6 +253,20 @@ class Invoice_List(ListView):
 
 			# (Check) context['bld'] = bld
 			# (Check) context['blm'] = blm
+
+			### Bank.請求書フォーマット ###
+			for bf in BFs:
+				fLPG = bf.s_format
+				context['fLPG'] = fLPG
+
+				# 請求書フォーマット:BackImage.Setup
+				if fLPG == 0:
+					# fURL = "background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');"
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png"
+				if fLPG == 10:
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_10_02.png"
+				context['fURL'] = fURL
+
 
 			### Income Total Cash ###
 			incash_list = list()
@@ -1598,7 +1614,7 @@ class Invoice_List(ListView):
 
 						dd_list.append(dls)
 
-						dds = sorted(set(dd_list), key=dd_list.index)
+						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
 
 						# context['dd'] = dd_list
 						context['dds'] = dds
@@ -1703,7 +1719,7 @@ class Invoice_List(ListView):
 
 						dd_list.append(dls)
 
-						dds = sorted(set(dd_list), key=dd_list.index)
+						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
 
 						# context['dd'] = dd_list
 						context['dds'] = dds

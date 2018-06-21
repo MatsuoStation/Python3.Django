@@ -1960,6 +1960,8 @@ class PDF_List(ListView):
 				total_values = sTotal + tax_sTotal + rLPG + (ntax_vTJ + tTJ + noil_ntax_vTJ)
 				context['total_values'] = total_values
 
+				context['all_total_values'] = total_values
+
 			### LPG.灯油 & A重油.取引日.Error ###
 			except Exception as e:
 				print(e, 'LPG/views.Toyu.Jyuyu : error occured')
@@ -3734,6 +3736,8 @@ class LPG_List(ListView):
 
 				total_values = sTotal + tax_sTotal + rLPG + (ntax_vTJ + tTJ + noil_ntax_vTJ)
 				context['total_values'] = total_values
+
+				context['all_total_values'] = total_values
 
 
 			### LPG.灯油 & A重油.取引日.Error ###
