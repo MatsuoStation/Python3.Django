@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.2 Update:2018.05.30" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.10 Update:2018.07.04" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -39,10 +39,286 @@ from dateutil.relativedelta import relativedelta
 jtax = 0.08
 ndigits = 0
 
+
+### New ###
+# GC_SC
+@register.filter("gc_sc")
+def gc_sc(gc, sc):
+	return gc, sc
+
+
+# Change_Int
 @register.filter("change_int")
 def change_int(value):
     return int(value)
 
+
+# Red_Value
+@register.filter("red_value")
+def red_value(value, rv):
+	if(rv == 8):
+		values = -(value)
+	else:
+		values = value
+	return int(values)
+
+
+# Division
+@register.filter("divistion")
+def division(value, args):
+	return value / args
+
+
+# Get_Unit
+@register.filter("get_unit")
+def get_unit(gcsc, md):
+	gc, sc = gcsc
+
+	try:
+		if Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
+
+			for v in s_values:
+				sv = v.value
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md)
+
+			for v in s_values:
+				sv = v.value01
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md)
+
+			for v in s_values:
+				sv = v.value02
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md)
+
+			for v in s_values:
+				sv = v.value03
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md)
+
+			for v in s_values:
+				sv = v.value04
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md)
+
+			for v in s_values:
+				sv = v.value05
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md)
+
+			for v in s_values:
+				sv = v.value06
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md)
+
+			for v in s_values:
+				sv = v.value07
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md)
+
+			for v in s_values:
+				sv = v.value08
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md)
+
+			for v in s_values:
+				sv = v.value08
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md)
+
+			for v in s_values:
+				sv = v.value10
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md)
+
+			for v in s_values:
+				sv = v.value11
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md)
+
+			for v in s_values:
+				sv = v.value12
+				return sv
+
+		else:
+			sv = 0
+			return sv
+
+	except Exception as e:
+		print(e, 'get_unit : error occured')
+
+
+# In_Tax : 内税
+@register.filter("in_tax")
+def in_tax(value):
+	values = value - (value / (1+jtax))
+
+	d_point = len(str(values).split('.')[1])
+	ndigits = 0
+	if ndigits >= d_point:
+		return round(values, 0)
+	c = (10 ** d_point) * 2
+
+	return round((values * c + 1) / c, 0)
+
+
+# Out_Tax : 外税
+@register.filter("out_tax")
+def out_tax(value):
+	values = value * jtax
+
+	d_point = len(str(values).split('.')[1])
+	ndigits = 0
+	if ndigits >= d_point:
+		return round(values, 0)
+	c = (10 ** d_point) * 2
+
+	return round((values * c + 1) / c, 0)
+
+
+# Cal_Tax
+@register.filter("cal_tax")
+def cal_tax(value):
+
+	iTax = in_tax(value)	# 内税
+	oTax = out_tax(value)	# 外税
+
+	return iTax, oTax
+
+# Check_Tax
+@register.filter("chk_tax")
+def chk_tax(gcsc, ivtax):
+	gsm, amount = gcsc
+	gs, md = gsm
+	gc, sc = gs
+
+	try:
+		sv = get_unit(gs, md)
+		cv = sv * (amount/100)
+
+		# iTax:内税 | oTax:外税
+		iTax, oTax = cal_tax(cv)
+
+		# ivtax : True
+		if ivtax != 0:
+			# ハイオク.レギュラー.軽油 : 外税
+			if sc == "10000" or sc == "10100" or sc == "10200":
+				if ivtax == oTax:
+					cTax = 0
+				else:
+					cTax = 10
+
+			# 灯油.油外 : 内税
+			else:
+				if ivtax == iTax:
+					# cTax = ""	# AWS単価 = POS単価
+					cTax = 1
+				else:
+					# cTax = "*"	# AWS単価 ≠ POS単価
+					cTax = 11
+
+		# iv.tax : False
+		else:
+			# ハイオク.レギュラー.軽油 : 外税
+			if sc == "10000" or sc == "10100" or sc == "10200":
+				cTax = oTax
+
+			# 灯油.油外 : 内税
+			else:
+				cTax = iTax
+
+			# cTax = 20
+
+		return cTax
+
+		''' (Def)
+		if ivtax == iTax:
+			cTax = "iTax.OK"
+		elif ivtax == oTax:
+			cTax = "oTax.OK"
+		else:
+			cTax = "NG"
+
+		return cTax
+		'''
+
+	except ZeroDivisionError as e:
+		return print(e, 'chk_tax : ZeroDivisionError')
+
+
+
+# Check_Unit
+@register.filter("chk_unit")
+def chk_unit(gcsc, ivunit):
+	gsm, amount = gcsc
+	gs, md = gsm
+
+	try:
+		sv = get_unit(gs, md)
+
+		if ivunit == sv:
+			cUnit = 1
+
+		else:
+			cUnit = 0
+
+		return cUnit
+
+
+	except ZeroDivisionError as e:
+		return print(e, 'chk_unit : ZeroDivisionError')
+
+
+
+
+# Cal_Value
+'''
+@register.filter("cal_value")
+def cal_value(gcsc, amount):
+	gs, md = gcsc
+	sv = get_unit(gs, md)
+
+	try:
+		cv = sv * (amount/100)
+
+		iTax, oTax = cal_tax(cv)
+
+		return oTax
+
+	except ZeroDivisionError as e:
+		return print(e, 'check_unit_total : ZeroDivisionError')
+'''
+
+
+
+
+### OLD ###
 @register.filter("merge_day")
 def merge_day(gc, dlms):
 
@@ -279,6 +555,132 @@ def keiyu_code_value(gc, sc):
 		return sv
 
 
+
+@register.filter("check_unit01")
+def check_unit01(gcsc, md):
+
+	# value, tax = gcsc
+	vtgcsc, amount = gcsc
+	vtgc, sc = vtgcsc
+	vt, gc = vtgc
+	value, tax = vt
+
+	try:
+		uc = (value+tax) / (amount/100)
+
+		if Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
+
+			for v in s_values:
+				sv = v.value
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md)
+
+			for v in s_values:
+				sv = v.value01
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md)
+
+			for v in s_values:
+				sv = v.value02
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md)
+
+			for v in s_values:
+				sv = v.value03
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md)
+
+			for v in s_values:
+				sv = v.value04
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md)
+
+			for v in s_values:
+				sv = v.value05
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md)
+
+			for v in s_values:
+				sv = v.value06
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md)
+
+			for v in s_values:
+				sv = v.value07
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md)
+
+			for v in s_values:
+				sv = v.value08
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md)
+
+			for v in s_values:
+				sv = v.value09
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md)
+
+			for v in s_values:
+				sv = v.value10
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md)
+
+			for v in s_values:
+				sv = v.value11
+
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md)
+
+			for v in s_values:
+				sv = v.value12
+
+				return sv
+
+		else:
+			sv = uc
+			return sv
+
+	except Exception as e:
+		print(e, 'check_unit01 : error occured')
+
+
+	# return md
+
+
 @register.filter("check_unit")
 def check_unit(gcsc, amount):
 # def check_unit(value, amount):
@@ -310,6 +712,15 @@ def check_unit(gcsc, amount):
 
 	return units
 	'''
+
+@register.filter("check_tax")
+def check_tax(gcsc, amount):
+
+	vgc, sc = gcsc
+	value, gc = vgc
+
+	return sc
+
 
 @register.filter("check_tax_code")
 def check_tax_code(gcsc, amount):
@@ -378,14 +789,7 @@ def check_unit_total(gcsc, amount):
 		return print(e, 'check_unit_total : ZeroDivisionError')
 
 
-@register.filter("red_value")
-def red_value(value, rv):
-	if(rv == 8):
-		values = -(value)
-	else:
-		values = value
 
-	return int(values)
 
 
 @register.filter("notax")
@@ -440,7 +844,7 @@ def intax(value, args):
 def s_tax(sc, tax_value):
 # def s_tax(sc):
 
-	# if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10500":
+	# if ハイオク.sc == "10000" or レギュラー.sc == "10100" or 軽油.sc == "10200" or sc == "10500":
 	if sc == "10000" or sc == "10100" or sc == "10200":
 		return str("")
 	elif tax_value > 0:
@@ -481,8 +885,10 @@ def c_tax(value, args):
 
 	# return int(values)
 
+
+
 @register.filter("o_tax")
-def o_tax(value, args ):
+def o_tax(value, args):
 
 	if args != 0:
 		values = args
@@ -513,9 +919,6 @@ def o_tax(value, args ):
 def minus(value, args):
 	return value - args
 
-@register.filter("divistion")
-def division(value, args):
-	return value / args
 
 @register.filter("multiplication")
 def multiplication(value, args):

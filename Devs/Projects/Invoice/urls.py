@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Dj.Invoice.urls.py - Ver.3.5.16 Update:2018.04.08" |
+#//| "VsV.Python3.Dj.Invoice.urls.py - Ver.3.10.10 Update:2018.06.22" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -35,6 +35,7 @@ urlpatterns = [
     # re_path(r'(?P<uid>\d+)/$', views.Invoice_List.as_view(), name='invoice_list')
     # (Def.OK)
     path('<int:nid>/', views.Invoice_List.as_view(), name='invoice_list'),
+    path('SS/<int:nid>/', views.SS_List.as_view(), name='ss_list'),
     # path('<int:nid>/<int:deadline>', views.Invoice_List.as_view(), name='invoice_list_deadine'),
     # path('<int:nid>&dl=<int:deadline>/', views.Invoice_List.as_view(), name='invoice_list_get_deadline'),
     # path('<int:lastday>/', views.Invoice_List.as_view(), name='invoice_lastday'),

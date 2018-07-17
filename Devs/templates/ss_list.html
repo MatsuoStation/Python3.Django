@@ -1,0 +1,346 @@
+{% load sass_tags %}
+{% load humanize %}
+{% load static %}
+{% load filter %}
+
+
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>SS.Invoice : 請求書</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet" -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <!-- link href="starter-template.css" rel="stylesheet" -->
+    <link href="{% static 'css/starter-template.css' %}" rel="stylesheet">
+    <link href="{% sass_src 'sass/custom.sass' %}" rel="stylesheet" />
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+
+    <main role="main" class="container">
+
+      <div class="starter-template">
+        <h1>SS.Invoice / 請求書</h1>
+        <!-- p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p -->
+
+        <P>請求書作成</P>
+        <form action="" method="POST" class="form-horizontal" role="form">
+          {% csrf_token %}
+          <!-- {{ form.as_p }} -->
+          {{ form }}
+          <input type="submit" name="送信">
+        </form>
+
+        <p><br>
+          {% if fSS %}
+          {{ names }} : {{ gid }} / {{ fSS }} / <a href="{{ pLink }}?dl={{ dla|date:"Y-m-d" }}" target="_blank">PDF</a>
+          {% else %}
+          {{ names }} : {{ gid }} / {{ fSS }}
+          {% endif %}
+        </p>
+
+        <p>{{ dlb }} - {{ dla }}</p>
+        <!-- <p>{{ bld }} - {{ blm }}</p> -->
+
+
+        <div class="pagination">
+        <span class="step-links">
+          {% if ivs.has_previous %}
+            <a href="?page=1&dl={{ deadlines }}">&laquo; 最初頁へ&nbsp;</a>
+            <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;前頁へ&nbsp;|&nbsp;</a>&nbsp;
+          {% endif %}
+
+          <span class="current">
+            Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+          </span>
+
+          {% if ivs.has_next %}
+            &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;次頁へ&nbsp;|</a>
+            <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;最終頁へ &raquo;</a>
+          {% endif %}
+
+        </span>
+        </div>
+
+        <!--p>{{ deadlines }}</p-->
+        <!--p>{{ forms }}</p-->
+        <p>{% if dlms %}
+          |
+              {% for dd in dds %}
+                &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|
+              <!-- &nbsp;&nbsp;<a href="?dl={{ dds }}"">{{ dds }}</a>&nbsp;&nbsp;| -->
+              {% endfor %}
+            {% endif %}
+        </p>
+
+        <div class="mx-auto">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <td>伝票枚数</td>
+              <td width="1"></td>
+              <td>前月ご請求額</td>
+              <td>当月ご入金額</td>
+              <td>手数料・調整</td>
+              <td>差引繰越額</td>
+              <td>当月お買上額</td>
+              <td width="1"></td>
+              <td>当月ご請求額</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td width="1"></td>
+              <td>{{ before_values|intcomma }}</td>
+              <td>{{ incash_values|intcomma }}</td>
+              <td></td>
+              <td></td>
+              <td>{{ total_values|intcomma }}</td>
+              <td width="1"></td>
+              <td>{{ all_total_values|intcomma }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <td width="2">月</td>
+              <td width="2">日</td>
+              <td width="5">SS</td>
+              <td width="4">車番</td>
+              <td width="5">Scode</td>
+              <td>商品名</td>
+              <td>数量</td>
+              <td>単価</td>
+              <td>金額</td>
+              <td>税区分</td>
+              <!--td>車両別合計</td-->
+              <td>消費税</td>
+              <td>税込</td>
+              <td>備考</td>
+              <td>赤伝</td>
+              <td>時間</td>
+              <td>伝票番号</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for iv in ivs %}
+
+            <tr>
+              <!-- 月 - 日 - 給油SS - 車番 -->
+              <td>{{ iv.m_datetime.date.month }}</td>
+              <td>{{ iv.m_datetime.date.day }}</td>
+              <td>{{ iv.ss_code|change_int }}</td>
+              <td>{{ iv.car_code }}</td>
+
+              <!-- 商品コード - 商品名 -->
+              <td>{{ iv.s_code  }}</td>
+              <td>{{ iv.s_code.h_name }}</td>
+
+              <!-- 数量 -->
+              <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
+
+              <!-- # 金額 : True -->
+              {% if iv.value %}
+
+                <!-- # 単価 : True -->
+                {% if iv.unit != 0 %}
+                  <!-- 単価 - 金額 -->
+                  <td>{{ iv.unit }}</td>
+                  <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
+
+                  <!-- 税区分 - 消費税 - 税込 -->
+                  <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                  <td>{{ iv.tax|red_value:iv.red_code|intcomma }}</td>
+                  <td>{{ iv.value|add:iv.tax|intcomma }}</td>
+
+                  <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|chk_unit:iv.unit }} VU.T</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+
+                <!-- # 単価 : False  -->
+                {% else %}
+                  <!-- 単価 - 金額 -->
+                  <td></td>
+                  <td></td>
+
+                  <!-- (Def.OK)
+                  <td>{{ iv.value|gc_sc:iv.tax|gc_sc:iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.amount|check_unit01:iv.m_datetime.date|floatformat:2 }}</td>
+                  <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
+                  -->
+
+                  <!-- 税区分 - 消費税 - 税込 -->
+                  <td></td>
+                  <td></td>
+                  <td></td>
+
+                  <!-- (Def.OK)
+                  <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                  <td>{{ iv.tax|red_value:iv.red_code|intcomma }}</td>
+                  <td></td>
+                  -->
+
+                  <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|chk_tax:iv.tax }} U.F</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+
+                {% endif %}
+                <!-- End to 単価 : True & False  -->
+
+              <!-- 金額 : False -->
+              {% else %}
+                <!-- 単価 - 金額 -->
+                <td></td>
+                <td></td>
+
+                <!-- 税区分 - 消費税 - 税込 -->
+                <td></td>
+                <td></td>
+                <td></td>
+
+                <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->
+                <!--td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|get_unit:iv.m_datetime.date }} V.F</td-->
+                <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|chk_tax:iv.tax }} V.F</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              {% endif %}
+              <!-- End of 金額 : True & False -->
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <td><主要商品合計></td>
+              <td width="1"></td>
+              <td>課税売上高</td>
+              <td>{{ notax_values|intcomma }}</td>
+              <td width="1"></td>
+              <td>消費税額</td>
+              <td>{{ tax_values|intcomma }}</td>
+              <td width="1"></td>
+              <td>軽油税</td>
+              <td>{{ ktax_values|intcomma }}</td>
+              <td width="1"></td>
+            </tr>
+          </thead>
+        </table>
+
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <td colspan="2">GP-1プラス</td>
+              <td colspan="2">レギュラー</td>
+              <td colspan="2">軽油</td>
+              <td colspan="2">灯油</td>
+              <td>その他金額</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ high_amounts|floatformat:2|intcomma }}</td>
+              <td>{{ high_values|intcomma }}</td>
+              <td>{{ reg_amounts|floatformat:2|intcomma }}</td>
+              <td>{{ reg_values|intcomma }}</td>
+              <td>{{ keiyu_amounts|floatformat:2|intcomma }}</td>
+              <td>{{ keiyu_values|intcomma }}</td>
+              <td>{{ toyu_amounts|floatformat:2|intcomma }}</td>
+              <td>{{ toyu_values|intcomma }}</td>
+              <td>{{ nonoil_values|intcomma }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        </div>
+
+
+        <div class="pagination">
+        <span class="step-links">
+          {% if ivs.has_previous %}
+            <a href="?page=1&dl={{ deadlines }}">&laquo; 最初頁へ&nbsp;</a>
+            <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;前頁へ&nbsp;|&nbsp;</a>&nbsp;
+          {% endif %}
+
+          <span class="current">
+            Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+          </span>
+
+          {% if ivs.has_next %}
+            &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;次頁へ&nbsp;|</a>
+            <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;最終頁へ &raquo;</a>
+          {% endif %}
+
+        </span>
+        </div>
+
+      </div>
+
+    </main><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <!-- script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script -->
+
+    <!-- script src="../../../../assets/js/vendor/popper.min.js"></script -->
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <!-- script src="../../../../dist/js/bootstrap.min.js"></script -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

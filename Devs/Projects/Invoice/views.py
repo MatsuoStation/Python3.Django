@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.3 Update:2018.06.12" |
+#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.10 Update:2018.06.21" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -137,7 +137,289 @@ def Toyu_Values(values):
 	return sv, tax_v, notax_v
 
 
+### SS_List ###
+class SS_List(ListView):
 
+	model = Name_Test20
+	form_class = NameForm
+	template_name = 'ss_list.html'
+	context_object_name = "nametb"
+	paginate_by = 30
+
+	def post(self, request, *args, **kwargs):
+		form = self.form_class(request.POST)
+		nid_post = request.POST['nid']
+
+		if form.is_valid():
+			return HttpResponseRedirect( '/Invoice/%s' % nid_post )
+
+		return render(request, self.template_name, {'form': form})
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		context['form'] = NameForm()
+		gid = self.kwargs.get('nid')
+		context['gid'] = gid
+
+		### Total Value Cash ###
+		dd_list = list()
+
+		incash_list = list()
+
+		total_list = list()
+		notax_list = list()
+		tax_list = list()
+
+		toyu_a_list = list()
+		toyu_list = list()
+
+		keiyu_a_list = list()
+		keiyu_list = list()
+		ktax_list = list()
+
+		high_a_list = list()
+		high_list = list()
+
+		reg_a_list = list()
+		reg_list = list()
+
+		nonoil_list = list()
+
+		before_list = list()
+
+		### DL : True ###
+		try:
+			dl = self.request.GET.get('dl', '')
+			dlt = datetime.strptime(dl, '%Y-%m-%d')
+
+			# URL.期日
+			dd = dlt.day
+
+			# dd : 20日締日 or 25日締日
+			if dd == 20 or dd == 25:
+				dld = dlt + timedelta(days=1) - relativedelta(months=1)
+				dlm = dlt + timedelta(days=1) - timedelta(microseconds=1)
+
+				bld = dld - relativedelta(months=1)
+				blm = dlm - relativedelta(months=1)
+
+			# dd : 末日締日
+			else:
+				dt = dlt - relativedelta(months=1)
+				dld = dt + relativedelta(months=1) - timedelta(days=dt.day) + timedelta(days=1)
+				dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+
+				bld = dt - timedelta(days=dt.day) + timedelta(days=1)
+				blm = bld  + relativedelta(months=1) - timedelta(microseconds=1)
+
+			### MySQL : データ取得
+			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+			bIVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=bld, m_datetime__lte=blm).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+			VLs = Value_Test30.objects.filter(uid=self.kwargs.get('nid')).order_by('s_code')
+			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+			# 請求書.日付順
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			### LastDay : Check ###
+			try:
+				# MySQL.Bankデータ.有無
+				if BFs:
+					d_values = BFs
+
+				# Invoice.データ
+				for dlm in dlms:
+					# POS.取引日
+					dd = dlm.day
+
+					# MySQL.Bankデータ
+					for d in d_values:
+						# 顧客別.締切日
+						dv = d.check_day
+
+						# 取引日別.月期間
+						# 25日以降.取引日
+						if dv == 25:
+							if dd >=25:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						# 20日以降.取引日
+						elif dv == 20:
+							if dd >= 20:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						# 20日以前.取引日
+						else:
+							dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
+
+						# 月期間.リスト
+						dd_list.append(dls)
+						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+						context['dds'] = dds
+
+
+			### LastDay : Check.Error ###
+			except Exception as e:
+				print(e, 'Invoice/views.dds : error occured')
+
+
+			### Bank.請求書フォーマット ###
+			for bf in BFs:
+				fSS = bf.s_format
+				context['fSS'] = fSS
+
+				# 請求書フォーマット:BackImage.Setup
+				if fSS == 0:
+					# fURL = "background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');"
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png"
+				if fSS == 10:
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_10_02.png"
+				context['fURL'] = fURL
+
+			### PDF.リンク ###
+			PDF_Link = "../PDF/%s/" % gid
+			context['pLink'] = PDF_Link
+
+			### 氏名 ###
+			for na in NAs:
+				names = na.name
+
+			### 期間表示 ###
+			dlb = dlt + timedelta(days=1) - relativedelta(months=1)
+			context['dlb'] = dlb
+			dla = dlt + timedelta(days=1) - timedelta(microseconds=1)
+			context['dla'] = dla
+
+			### 現金入金.Incash Total Cash ###
+			for iv in IVs:
+				if iv.s_code.uid == "00000":
+					incash_list.append(iv.value)
+					incash_values = sum(incash_list)
+					context['incash_values'] = incash_values
+
+			### Caluculate ###
+			try:
+				### Select Month ###
+				for iv in IVs:
+					# 現金関係 & 振込関係
+					if iv.s_code.uid == "00000":
+						sv = 0
+						total_list.append(sv)
+					elif iv.s_code.uid == "00002":
+						sv = 0
+						total_list.append(sv)
+
+					# 金額(税別金額) : True
+					elif iv.value:
+						# 単価 : True
+						if iv.unit != 0:
+							# (SHARP.POS : 基本設定<税別>)
+							notax_v = iv.value
+							tax_v = iv.tax_v
+							sv = notax_v + tax_v
+
+							if iv.red_code:
+								notax_v = -(notax_v)
+								tax_v = -(tax_v)
+								sv = -(sv)
+
+					# 金額(税別金額) : False
+					else:
+						# 税金 : True
+						if iv.tax != 0:
+							tax_v = iv.tax
+							notax_v = iv.value
+							sv = notax_v + tax_v
+
+				### 総額 ###
+
+
+				### End of Select Month ###
+
+
+
+			### Caluculate.Error ###
+			except Exception as e:
+				print(e, 'Invoice/views.Caluculate : error occured')
+
+
+		### DL : False ###
+		except Exception as e:
+
+			### MySQL : データ取得
+			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
+			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+			# 請求書.日付順
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			### LastDay : Check ###
+			try:
+				# MySQL.Bankデータ.有無
+				if BFs:
+					d_values = BFs
+
+				# Invoice.データ
+				for dlm in dlms:
+					# POS.取引日
+					dd = dlm.day
+
+					# MySQL.Bankデータ
+					for d in d_values:
+						# 顧客別.締切日
+						dv = d.check_day
+
+						# 取引日別.月期間
+						# 25日以降.取引日
+						if dv == 25:
+							if dd >=25:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						# 20日以降.取引日
+						elif dv == 20:
+							if dd >= 20:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						# 20日以前.取引日
+						else:
+							dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
+
+						# 月期間.リスト
+						dd_list.append(dls)
+						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+						context['dds'] = dds
+
+
+
+			### LastDay : Check.Error ###
+			except Exception as e:
+				print(e, 'Invoice/views.dds : error occured')
+
+			### 氏名 ###
+			for na in NAs:
+				names = na.name
+
+			print(e, 'Invoice/Views - DL.False : error occured')
+
+		### ALL.Context ###
+		context['names'] = names
+		context['ivs'] = IVs
+
+		return context
+
+
+### Invoice_List ###
 class Invoice_List(ListView):
 
 	model = Name_Test20
@@ -265,6 +547,8 @@ class Invoice_List(ListView):
 					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png"
 				if fLPG == 10:
 					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_10_02.png"
+				if fLPG == 20:
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_20_02.png"
 				context['fURL'] = fURL
 
 
@@ -1844,30 +2128,6 @@ class Invoice_List(ListView):
 		# context['sc'] = Items_Test.objects.filter(uid__startswith="1010")
 
 		return context
-
-
-	'''
-	def get(self, request, *args, **kwargs):
-		# For PDF
-		response = HttpResponse(status=200, content_type='application/pdf')
-		response['Content-Disposition'] = 'filename="Invoice.pdf"'
-
-		self._create_pdf(response)
-		return response
-
-	def _create_pdf(self, response):
-		font_name = 'HeiseiKakuGo-W5'
-		pdfmetrics.registerFont(UnicodeCIDFont(font_name))
-
-		size = portrait(A4)
-
-		doc = canvas.Canvas(response, pagesize=size, bottomup=False)
-
-		doc.setFont(font_name, 12)
-		doc.drawString(20*mm, 18*mm, 'HellowWorld')
-
-		doc.save()
-	'''
 
 
 def index(request):
