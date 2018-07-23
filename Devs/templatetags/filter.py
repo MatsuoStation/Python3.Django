@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.10 Update:2018.07.04" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.20 Update:2018.07.17" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -35,6 +35,8 @@ from django.utils import dateformat
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 # import time
+
+from decimal import (Decimal, ROUND_DOWN)
 
 jtax = 0.08
 ndigits = 0
@@ -174,6 +176,83 @@ def get_unit(gcsc, md):
 		print(e, 'get_unit : error occured')
 
 
+### 3.10.11 ###
+# Round_Down2 : 小数点第2位.切り捨て
+@register.filter("round_dw2")
+def round_dw2(value):
+	values = Decimal(value).quantize(Decimal('.01'), rounding=ROUND_DOWN)
+	return values
+
+
+
+# set_unit : 単価設定
+@register.filter("set_unit")
+def set_unit(gcsc, ivalue):
+	gsma, tax = gcsc
+	gsm, amount = gsma
+	gs, md = gsm
+	gc, sc = gs
+
+	# AWS単価.金額
+	sv = get_unit(gs, md)
+	# cv = sv * (amount/100)
+	cv = round(sv * (amount/100), 0)
+
+	# POS.金額
+	vt = ivalue + tax
+
+	# AWS | POS : 金額比較
+	if sv == 0:
+		return ""
+	# if cv == vt:
+	elif cv == vt:
+		return sv
+	else:
+		if vt != 0 and amount != 0:
+			sv = round_dw2(vt / (amount/100))
+			# sv = vt / (amount/100)
+		elif amount != 0:
+			sv = sv
+			# sv = cv / (amount/100)
+			# sv = round_dw2(cv / (amount/100))
+		else:
+			sv = ""
+		return sv
+
+
+# chk_unit : 単価設定
+@register.filter("chk_unit")
+def chk_unit(gcsc, ivalue):
+	gsma, tax = gcsc
+	gsm, amount = gsma
+	gs, md = gsm
+	gc, sc = gs
+
+	# AWS単価.金額
+	sv = get_unit(gs, md)
+	cv = round(sv * (amount/100), 0)
+	# cv = sv * (amount/100)
+
+	# POS.金額
+	vt = ivalue + tax
+
+	# AWS | POS : 金額比較
+	if sv == 0:						# AWS.単価 : False
+		cu = ".*."
+	# if cv == vt:
+	elif cv == vt:					# AWS.金額 =  POS.金額
+		cu = ""
+	elif vt != 0 and amount != 0:	# AWS.金額 ≠ POS.金額 & POS.金額 > 0 & 数量 > 0
+		cu = "*"
+	elif amount != 0:				# 数量のみ
+		cu = "**"
+	else:
+		cu = "."
+
+	return cu
+
+
+### 3.10.10 ###
 # In_Tax : 内税
 @register.filter("in_tax")
 def in_tax(value):
@@ -273,9 +352,70 @@ def chk_tax(gcsc, ivtax):
 
 
 
-# Check_Unit
-@register.filter("chk_unit")
-def chk_unit(gcsc, ivunit):
+# Set_Tax
+@register.filter("set_tax")
+def set_tax(gcsc, ivtax):
+	gsm, amount = gcsc
+	gs, md = gsm
+	gc, sc = gs
+
+	try:
+		sv = get_unit(gs, md)
+		cv = sv * (amount/100)
+
+		iTax, oTax = cal_tax(cv)
+		cTax = chk_tax(gcsc, ivtax)
+
+		if cTax == 0:
+			return oTax
+		elif cTax == 10:
+			return ivtax
+		elif cTax == 1:
+			return iTax
+		elif cTax == 11:
+			return ivtax
+		else:
+			return cTax
+
+
+	except ZeroDivisionError as e:
+		return print(e, 'set_tax : ZeroDivisionError')
+
+# Set_Tax_Code
+@register.filter("set_tax_code")
+def set_tax_code(gcsc, ivtax):
+	gsm, amount = gcsc
+	gs, md = gsm
+	gc, sc = gs
+
+	try:
+		cTax = chk_tax(gcsc, ivtax)
+
+		if sc == "00000":
+			tCode = "内"
+
+		elif cTax == 0 or cTax == 10:
+			tCode = ""
+
+		elif cTax == 1 or cTax == 11:
+			tCode = "内"
+
+		elif sc == "10000" or sc == "10100" or sc == "10200":
+			tCode = ""
+
+		else:
+			tCode = "内"
+
+		return tCode
+
+	except ZeroDivisionError as e:
+		return print(e, 'set_tax : ZeroDivisionError')
+
+
+
+# Chk_Unit00
+@register.filter("chk_unit00")
+def chk_unit00(gcsc, ivunit):
 	gsm, amount = gcsc
 	gs, md = gsm
 

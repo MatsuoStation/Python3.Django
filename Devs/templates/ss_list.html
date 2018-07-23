@@ -201,7 +201,7 @@
                   <td>{{ iv.value|add:iv.tax|intcomma }}</td>
 
                   <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->
-                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|chk_unit:iv.unit }} VU.T</td>
+                  <td>{{ iv.unit }} VU.T</td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -209,8 +209,8 @@
                 <!-- # 単価 : False  -->
                 {% else %}
                   <!-- 単価 - 金額 -->
-                  <td></td>
-                  <td></td>
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|gc_sc:iv.tax|set_unit:iv.value|floatformat:2 }}</td>
+                  <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
 
                   <!-- (Def.OK)
                   <td>{{ iv.value|gc_sc:iv.tax|gc_sc:iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.amount|check_unit01:iv.m_datetime.date|floatformat:2 }}</td>
@@ -219,7 +219,7 @@
 
                   <!-- 税区分 - 消費税 - 税込 -->
                   <td></td>
-                  <td></td>
+                  <td>{{ iv.tax|red_value:iv.red_code|intcomma }}</td>
                   <td></td>
 
                   <!-- (Def.OK)
@@ -229,7 +229,7 @@
                   -->
 
                   <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->
-                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|chk_tax:iv.tax }} U.F</td>
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|gc_sc:iv.tax|chk_unit:iv.value }}U.F</td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -240,17 +240,16 @@
               <!-- 金額 : False -->
               {% else %}
                 <!-- 単価 - 金額 -->
-                <td></td>
-                <td></td>
+                <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|gc_sc:iv.tax|set_unit:iv.value|floatformat:2 }}</td>
+                <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
 
                 <!-- 税区分 - 消費税 - 税込 -->
                 <td></td>
-                <td></td>
+                <td>{{ iv.tax|red_value:iv.red_code|intcomma }}</td>
                 <td></td>
 
                 <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->
-                <!--td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|get_unit:iv.m_datetime.date }} V.F</td-->
-                <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|chk_tax:iv.tax }} V.F</td>
+                <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|gc_sc:iv.tax|chk_unit:iv.value }}V.F</td>
                 <td></td>
                 <td></td>
                 <td></td>

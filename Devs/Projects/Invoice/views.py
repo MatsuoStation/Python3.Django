@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.10 Update:2018.06.21" |
+#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.20 Update:2018.07.17" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
