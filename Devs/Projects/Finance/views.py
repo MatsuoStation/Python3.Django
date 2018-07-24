@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.7.30 Update:2018.04.10" |
+#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.12.1 Update:2018.07.24" |
 #//+------------------------------------------------------------------+
 #//|                                  © 2014-2018 Leverages Co., Ltd. |
 #//|                            https://teratail.com/questions/15486/ |
@@ -131,9 +131,30 @@ def pos(request):
 
 	# for line in lines:
 
-
-
 	return HttpResponse("POS OK!")
+
+def incash(request):
+	pData = np.genfromtxt("SHARP/Invoice/SHARP_Test20.csv", delimiter=",", skip_header=0, dtype='str')
+
+	# InCashList(現金売上リスト) : r_code != 9
+	IVrows, IVcols = np.where( (pData == '9') )
+	pData = np.delete( pData, IVrows[ np.where(IVcols==4) ], 0 )
+
+	# 在庫チェックリスト : p_code != 50
+	IVrows, IVcols = np.where( (pData == '50') )
+	pData = np.delete( pData, IVrows[ np.where(IVcols==2) ], 0 )
+
+	# 始業&就業チェックリスト : p_code != 1
+	# IVrows, IVcols = np.where( (pData == '1') )
+	# pData = np.delete( pData, IVrows[ np.where(IVcols==2) ], 0 )
+
+	# 始業&就業チェックリスト(税別金額.False) : value != 0
+	IVrows, IVcols = np.where( (pData == '0') )
+		pData = np.delete( pData, IVrows[ np.where(IVcols==18) ], 0 )
+
+	np.savetxt("SHARP/InCash/01.csv", pData, delimiter=',', fmt='%s')
+
+	return HttpResponse("InCash OK!")
 
 
 def sxls(request):

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Python3.Dj.Finance.urls.py - Ver.3.7.6 Update:2018.03.27" |
+#//|  "VsV.Python3.Dj.Finance.urls.py - Ver.3.12.1 Update:2018.07.24" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -34,6 +34,7 @@ urlpatterns = [
     path('SHARP/', views.sharp, name='sharp'),
     path('ScanXLS/', views.sxls, name='sxls'),
     path('POS/', views.pos, name='pos'),
+    path('InCash/', views.incash, name='incash'),
 
     # path('MySQL/', views.mysql, name='mysql'),
 ]
