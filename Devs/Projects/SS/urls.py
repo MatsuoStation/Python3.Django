@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Python3.Django.SS.urls.py - Ver.3.12.2 Update:2018.07.24" |
+#//|   "VsV.Python3.Django.SS.urls.py - Ver.3.12.3 Update:2018.07.24" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -31,6 +31,6 @@ app_name = 'SS'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    # path('<int:nid>/', views.LPG_List.as_view(), name='lpg_list'),
+    path('<int:nid>/', views.SS_InCash.as_view(), name='ss_incash'),
     # path('PDF/<int:nid>/', views.PDF_List.as_view(), name='pdf_list'),
 ]

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Python3.Dj.SS.Forms.py - Ver.3.12.2 Update:2018.07.24" |
+#//|      "VsV.Python3.Dj.SS.Forms.py - Ver.3.12.3 Update:2018.07.24" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 from django import forms
@@ -24,6 +24,9 @@ class NameForm(forms.Form):
 	# class Meta:
 	#	model = Name_Test
 	#	fields = ['uid']
+
+class DateForm(forms.Form):
+	md = forms.DateTimeField(required=False, label='締切日')
 
 
 class MyForm(forms.Form):
