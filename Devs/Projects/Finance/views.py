@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.12.1 Update:2018.07.24" |
+#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.12.4 Update:2018.07.26" |
 #//+------------------------------------------------------------------+
 #//|                                  © 2014-2018 Leverages Co., Ltd. |
 #//|                            https://teratail.com/questions/15486/ |
@@ -136,23 +136,59 @@ def pos(request):
 def incash(request):
 	pData = np.genfromtxt("SHARP/Invoice/SHARP_Test20.csv", delimiter=",", skip_header=0, dtype='str')
 
-	# InCashList(現金売上リスト) : r_code != 9
+	### 現金売上リスト : InCashList ###
+	# 売掛チェックリスト : r_code != 9
 	IVrows, IVcols = np.where( (pData == '9') )
-	pData = np.delete( pData, IVrows[ np.where(IVcols==4) ], 0 )
+	czData = np.delete( pData, IVrows[ np.where(IVcols==4) ], 0 )
 
 	# 在庫チェックリスト : p_code != 50
-	IVrows, IVcols = np.where( (pData == '50') )
-	pData = np.delete( pData, IVrows[ np.where(IVcols==2) ], 0 )
+	IVrows, IVcols = np.where( (czData == '50') )
+	czData = np.delete( czData, IVrows[ np.where(IVcols==2) ], 0 )
+
+	# np.savetxt("SHARP/InCash/9_50.csv", czData, delimiter=',', fmt='%s')
+
+	# 振込除く : r_code == 002
+	IVrows, IVcols = np.where( (czData == '2') )
+	czData = np.delete( czData, IVrows[ np.where(IVcols==4) ], 0 )
+
+	# np.savetxt("SHARP/InCash/9_50_2.csv", czData, delimiter=',', fmt='%s')
+
+
+	### 売掛.現金関係リスト ###
+	# 現金関係 : 全リスト.p_code != 20
+	IVrows, IVcols = np.where( (pData != '20') )
+	rData = np.delete( pData, IVrows[ np.where(IVcols==2) ], 0 )
+
+	# np.savetxt("SHARP/InCash/20.csv", rData, delimiter=',', fmt='%s')
+
+	# 現金関係 : 現金のみ d_code != 000
+	IVrows, IVcols = np.where( (rData != '000') )
+	rcData = np.delete( rData, IVrows[ np.where(IVcols==3) ], 0 )
+
+	# np.savetxt("SHARP/InCash/20_0.csv", rcData, delimiter=',', fmt='%s')
+
+	ccData = np.vstack((czData,rcData))
+	# np.savetxt("SHARP/InCash/AWSInCash.csv", ccData, delimiter=',', fmt='%s')
+
+	# 出金リスト : p_code != 40
+	IVrows, IVcols = np.where( (pData != '40') )
+	oData = np.delete( pData, IVrows[ np.where(IVcols==2) ], 0 )
+
+	# np.savetxt("SHARP/InCash/40.csv", oData, delimiter=',', fmt='%s')
+
+	mcData = np.vstack((ccData, oData))
+
+	np.savetxt("SHARP/InCash/AWSInCash.csv", mcData, delimiter=',', fmt='%s')
 
 	# 始業&就業チェックリスト : p_code != 1
 	# IVrows, IVcols = np.where( (pData == '1') )
 	# pData = np.delete( pData, IVrows[ np.where(IVcols==2) ], 0 )
 
 	# 始業&就業チェックリスト(税別金額.False) : value != 0
-	IVrows, IVcols = np.where( (pData == '0') )
-		pData = np.delete( pData, IVrows[ np.where(IVcols==18) ], 0 )
+	# IVrows, IVcols = np.where( (pData == '0') )
+	# pData = np.delete( pData, IVrows[ np.where(IVcols==18) ], 0 )
 
-	np.savetxt("SHARP/InCash/01.csv", pData, delimiter=',', fmt='%s')
+	# np.savetxt("SHARP/InCash/01.csv", pData, delimiter=',', fmt='%s')
 
 	return HttpResponse("InCash OK!")
 
