@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.20 Update:2018.07.17" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.21 Update:2018.07.30" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -202,15 +202,35 @@ def set_unit(gcsc, ivalue):
 	vt = ivalue + tax
 
 	# AWS | POS : 金額比較
+	# AWS.単価 : False
 	if sv == 0:
-		return ""
+
+		### 単価.逆計算
+		iTax, oTax = cal_tax(vt)
+		# 現金関連
+		if sc == "00000":
+			nv = ""
+		# ハイオク.レギュラー.軽油 : 外税
+		elif sc == "10000" or sc == "10100" or sc == "10200":
+			nv = (vt-oTax)/(amount/100)
+		else:
+			nv = vt/(amount/100)
+		return nv
+
+		# return ""
+
+	# AWS.金額 = POS.金額
 	# if cv == vt:
 	elif cv == vt:
 		return sv
+
+	# AWS.金額 ≠ POS.金額
 	else:
+		# POS.金額 > 0 & 数量 > 0
 		if vt != 0 and amount != 0:
 			sv = round_dw2(vt / (amount/100))
 			# sv = vt / (amount/100)
+		# 数量 > 0
 		elif amount != 0:
 			sv = sv
 			# sv = cv / (amount/100)
@@ -220,7 +240,7 @@ def set_unit(gcsc, ivalue):
 		return sv
 
 
-# chk_unit : 単価設定
+# chk_unit : 単価チェック
 @register.filter("chk_unit")
 def chk_unit(gcsc, ivalue):
 	gsma, tax = gcsc

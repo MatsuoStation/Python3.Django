@@ -192,7 +192,8 @@
                 <!-- # 単価 : True -->
                 {% if iv.unit != 0 %}
                   <!-- 単価 - 金額 -->
-                  <td>{{ iv.unit }}</td>
+                  <!--td>{{ iv.unit }}</td-->
+                  <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|gc_sc:iv.tax|set_unit:iv.value|floatformat:2 }}</td>
                   <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
 
                   <!-- 税区分 - 消費税 - 税込 -->
