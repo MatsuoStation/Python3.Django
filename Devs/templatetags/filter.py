@@ -1,11 +1,11 @@
 #//+------------------------------------------------------------------+
-#//|                 VerysVeryInc.Python3.Django.TemplateTags.Math.py |
+#//|               VerysVeryInc.Python3.Django.TemplateTags.Filter.py |
 #//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
 #//|                 https://github.com/MatsuoStation/Python3.Django/ |
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.21 Update:2018.07.30" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.22 Update:2018.08.02" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -188,7 +188,8 @@ def round_dw2(value):
 # set_unit : 単価設定
 @register.filter("set_unit")
 def set_unit(gcsc, ivalue):
-	gsma, tax = gcsc
+	gsmat, unit = gcsc
+	gsma, tax = gsmat
 	gsm, amount = gsma
 	gs, md = gsm
 	gc, sc = gs
@@ -209,7 +210,8 @@ def set_unit(gcsc, ivalue):
 		iTax, oTax = cal_tax(vt)
 		# 現金関連
 		if sc == "00000":
-			nv = ""
+			# nv = ""
+			nv = unit
 		# ハイオク.レギュラー.軽油 : 外税
 		elif sc == "10000" or sc == "10100" or sc == "10200":
 			nv = (vt-oTax)/(amount/100)
@@ -265,7 +267,7 @@ def chk_unit(gcsc, ivalue):
 	elif vt != 0 and amount != 0:	# AWS.金額 ≠ POS.金額 & POS.金額 > 0 & 数量 > 0
 		cu = "*"
 	elif amount != 0:				# 数量のみ
-		cu = "**"
+		cu = ".."
 	else:
 		cu = "."
 
