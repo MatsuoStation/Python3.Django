@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.22 Update:2018.08.02" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.23 Update:2018.08.04" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -260,10 +260,28 @@ def chk_unit(gcsc, ivalue):
 
 	# AWS | POS : 金額比較
 	if sv == 0:						# AWS.単価 : False
-		cu = ".*."
+		# (Def.OK) cu = ".*."
+		if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10500":
+			cu = ".*."
+		else:
+			cu = ""
+
 	# if cv == vt:
 	elif cv == vt:					# AWS.金額 =  POS.金額
-		cu = ""
+		# (Def.OK) cu = ""
+
+		# (金額.True)
+		if ivalue != 0:
+			### (外税) ###
+			if sc == "10000" or sc == "10100" or sc == "10200":
+				cu = ""
+			### (内税) ###
+			else:
+				if tax == 0:	# tax.False
+					cu = "*"
+				else:
+					cu = ""
+
 	elif vt != 0 and amount != 0:	# AWS.金額 ≠ POS.金額 & POS.金額 > 0 & 数量 > 0
 		cu = "*"
 	elif amount != 0:				# 数量のみ
