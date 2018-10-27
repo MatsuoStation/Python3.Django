@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.12.4 Update:2018.07.26" |
+#//| "VsV.Python3.Dj.Finance.Views.py - Ver.3.12.5 Update:2018.09.16" |
 #//+------------------------------------------------------------------+
 #//|                                  © 2014-2018 Leverages Co., Ltd. |
 #//|                            https://teratail.com/questions/15486/ |
@@ -77,6 +77,8 @@ def DayBar(line):
 	return re.sub('(.{4})(.{2})(.{2}$)', '\\1/\\2/\\3', line, flags=re.MULTILINE)
 def DayBar_XLS(line):
 	return re.sub('(^.{9})(.{2})(.{2})', '\\1/\\2/\\3', line, flags=re.MULTILINE)
+def DayBar_XLS_10(line):
+	return re.sub('(^.{15})(.{2})(.{2})', '\\1/\\2/\\3', line, flags=re.MULTILINE)
 
 # def TimeMove(line):
 #	return re.sub('(^.{14})(.*,)(.{4})', '\\1\\3,\\2', line, flags=re.MULTILINE)
@@ -84,6 +86,8 @@ def TimeColon(line):
 	return re.sub('(.{11}$)', ':\\1', line, flags=re.MULTILINE)
 def TimeColon_XLS(line):
 	return re.sub('(^.{18})(.{2})', '\\1:\\2', line, flags=re.MULTILINE)
+def TimeColon_XLS_10(line):
+	return re.sub('(^.{24})(.{2})', '\\1:\\2', line, flags=re.MULTILINE)
 
 def IDMergeDayTime(line):
 	return re.sub('(.*,)(.{6})', '\\2\\1\\2', line, flags=re.MULTILINE)
@@ -227,9 +231,11 @@ def ScanXLS_ALL(in_file, out_file):
 		line = DayTimeMerge_XLS(line)
 
 		# 伝票年月日(処理)  : /
-		line = DayBar_XLS(line)
+		# line = DayBar_XLS(line)
+		line = DayBar_XLS_10(line)
 		# 時分(処理) : コロン
-		line = TimeColon_XLS(line)
+		# line = TimeColon_XLS(line)
+		line = TimeColon_XLS_10(line)
 
 		# (空行削除)
 		line = DelEn(line)
