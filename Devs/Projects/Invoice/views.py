@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.21 Update:2018.07.30" |
+#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.25 Update:2018.10.27" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -1425,6 +1425,1898 @@ class Invoice_List(ListView):
 								toyu_a_list.append(t_amount)
 								toyu_list.append(notax_v)
 
+					### Date04 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date04__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date04__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value04, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value04 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value04 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value04 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date05 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date05__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date05__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value05, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value05 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value05 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value05 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date06 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date06__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date06__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value06, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value06 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value06 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value06 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date07 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date07__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date07__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value07, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value07 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value07 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value07 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date08 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date08__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date08__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value08, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value08 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value08 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value08 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date09 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date09__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date09__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value09, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value09 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value09 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value09 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date10 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date10__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date10__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value10, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value10 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value10 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value10 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date11 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date11__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date11__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value11, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value11 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value11 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value11 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date12 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date12__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date12__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value12, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value12 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value12 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value12 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date13 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date13__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date13__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value13, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value13 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value13 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value13 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date14 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date14__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date14__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value14, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value14 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value14 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value14 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date15 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date15__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date15__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value15, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value15 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value15 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value15 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date16 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date16__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date16__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value16, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value16 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value16 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value16 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date17 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date17__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date17__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value17, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value17 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value17 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value17 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date18 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date18__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date18__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value18, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value18 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value18 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value18 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+					### Date19 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date19__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date19__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value19, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value19 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value19 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value19 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date20 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date20__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date20__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value20, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value20 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value20 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value20 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date21 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date21__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date21__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value21, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value21 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value21 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value21 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date22 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date22__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date22__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value22, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value22 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value22 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value22 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date23 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date23__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date23__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value23, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value23 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value23 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value23 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date24 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date24__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date24__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value24, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value24 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value24 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value24 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Date25 ###
+					elif Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date25__lte=iv.m_datetime):
+						v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=iv.s_code.uid, date25__lte=iv.m_datetime)
+
+						# 軽油 = "10200"
+						if iv.s_code.uid == "10200":
+
+							for v in v_values:
+								k_amount = iv.amount / 100
+								k_tax, sv, tax_v, notax_v = Keiyu_Values(v.value25, k_amount)
+
+								if iv.red_code:
+									notax_v = -(notax_v)
+									k_amount = -(k_amount)
+									k_tax = -(k_tax)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								keiyu_a_list.append(k_amount)
+								keiyu_list.append(notax_v)
+								ktax_list.append(k_tax)
+
+						# ハイオク = "10000"
+						elif iv.s_code.uid == "10000":
+							for v in v_values:
+								h_amount = iv.amount / 100
+								hs_values = v.value25 * h_amount
+								sv, tax_v, notax_v = SS_Values(hs_values)
+
+								if iv.red_code:
+									h_amount = -(h_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								high_a_list.append(h_amount)
+								high_list.append(notax_v)
+
+						# レギュラー = "10100"
+						elif iv.s_code.uid == "10100":
+							for v in v_values:
+								r_amount = iv.amount / 100
+								rs_values = v.value25 * r_amount
+								sv, tax_v, notax_v = SS_Values(rs_values)
+
+								if iv.red_code:
+									r_amount = -(r_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								reg_a_list.append(r_amount)
+								reg_list.append(notax_v)
+
+						# 灯油 = "10500"
+						elif iv.s_code.uid == "10500":
+							for v in v_values:
+								t_amount = iv.amount/100
+								ts_values = v.value25 * t_amount
+								sv, tax_v, notax_v = Toyu_Values(ts_values)
+
+								if iv.red_code:
+									t_amount = -(t_amount)
+									notax_v = -(notax_v)
+									tax_v = -(tax_v)
+									sv = -(sv)
+
+								notax_list.append(notax_v)
+								tax_list.append(tax_v)
+								total_list.append(sv)
+
+								toyu_a_list.append(t_amount)
+								toyu_list.append(notax_v)
+
+					### Another.Date ###
 					else:
 						sv = 0
 						total_list.append(sv)

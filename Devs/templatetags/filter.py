@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.23 Update:2018.08.04" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.25 Update:2018.10.27" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -653,6 +653,160 @@ def sc_value(gcsc, md):
 				sv = v.value03
 				return sv
 
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md)
+
+			for v in s_values:
+				sv = v.value04
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md)
+
+			for v in s_values:
+				sv = v.value05
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md)
+
+			for v in s_values:
+				sv = v.value06
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md)
+
+			for v in s_values:
+				sv = v.value07
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md)
+
+			for v in s_values:
+				sv = v.value08
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md)
+
+			for v in s_values:
+				sv = v.value09
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md)
+
+			for v in s_values:
+				sv = v.value10
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md)
+
+			for v in s_values:
+				sv = v.value11
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md)
+
+			for v in s_values:
+				sv = v.value12
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date13__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date13__lte=md)
+
+			for v in s_values:
+				sv = v.value13
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date14__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date14__lte=md)
+
+			for v in s_values:
+				sv = v.value14
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date15__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date15__lte=md)
+
+			for v in s_values:
+				sv = v.value15
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date16__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date16__lte=md)
+
+			for v in s_values:
+				sv = v.value16
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date17__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date17__lte=md)
+
+			for v in s_values:
+				sv = v.value17
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date18__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date18__lte=md)
+
+			for v in s_values:
+				sv = v.value18
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date19__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date19__lte=md)
+
+			for v in s_values:
+				sv = v.value19
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date20__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date20__lte=md)
+
+			for v in s_values:
+				sv = v.value20
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date21__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date21__lte=md)
+
+			for v in s_values:
+				sv = v.value21
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date22__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date22__lte=md)
+
+			for v in s_values:
+				sv = v.value22
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date23__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date23__lte=md)
+
+			for v in s_values:
+				sv = v.value23
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date24__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date24__lte=md)
+
+			for v in s_values:
+				sv = v.value24
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date25__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date25__lte=md)
+
+			for v in s_values:
+				sv = v.value25
+				return sv
+
 		else:
 			sv = 0
 			return sv
@@ -696,6 +850,160 @@ def kc_value(gcsc, md):
 
 			for v in s_values:
 				sv = v.value03 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md)
+
+			for v in s_values:
+				sv = v.value04 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md)
+
+			for v in s_values:
+				sv = v.value05 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md)
+
+			for v in s_values:
+				sv = v.value06 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md)
+
+			for v in s_values:
+				sv = v.value07 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md)
+
+			for v in s_values:
+				sv = v.value08 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md)
+
+			for v in s_values:
+				sv = v.value09 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md)
+
+			for v in s_values:
+				sv = v.value10 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md)
+
+			for v in s_values:
+				sv = v.value11 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md)
+
+			for v in s_values:
+				sv = v.value12 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date13__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date13__lte=md)
+
+			for v in s_values:
+				sv = v.value13 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date14__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date14__lte=md)
+
+			for v in s_values:
+				sv = v.value14 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date15__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date15__lte=md)
+
+			for v in s_values:
+				sv = v.value15 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date16__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date16__lte=md)
+
+			for v in s_values:
+				sv = v.value16 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date17__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date17__lte=md)
+
+			for v in s_values:
+				sv = v.value17 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date18__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date18__lte=md)
+
+			for v in s_values:
+				sv = v.value18 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date19__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date19__lte=md)
+
+			for v in s_values:
+				sv = v.value19 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date20__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date20__lte=md)
+
+			for v in s_values:
+				sv = v.value20 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date21__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date21__lte=md)
+
+			for v in s_values:
+				sv = v.value21 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date22__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date22__lte=md)
+
+			for v in s_values:
+				sv = v.value22 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date23__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date23__lte=md)
+
+			for v in s_values:
+				sv = v.value23 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date24__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date24__lte=md)
+
+			for v in s_values:
+				sv = v.value24 - 32.1
+				return sv
+
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date25__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date25__lte=md)
+
+			for v in s_values:
+				sv = v.value25 - 32.1
 				return sv
 
 		else:
