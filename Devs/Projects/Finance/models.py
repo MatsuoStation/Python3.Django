@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.13.2 Update:2018.10.27" |
+#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.13.3 Update:2018.10.27" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -221,7 +221,7 @@ class LPG_Meter10(models.Model):
 	date10 	= models.DateTimeField( verbose_name='検針日10' )
 	meter10	= models.FloatField( "検針値10", default=None )
 	amount10= models.FloatField( "使用量10", default=None )
-	indate10		= models.DateTimeField( verbose_name='入金日10' )
+	indate10	= models.DateTimeField( verbose_name='入金日10' )
 	invalue10	= models.IntegerField( verbose_name='入金金額10', default=0 )
 	indate010	= models.DateTimeField( verbose_name='入金日010' )
 	invalue010	= models.IntegerField( verbose_name='入金金額010', default=0 )
@@ -229,7 +229,7 @@ class LPG_Meter10(models.Model):
 	date11 	= models.DateTimeField( verbose_name='検針日11' )
 	meter11	= models.FloatField( "検針値11", default=None )
 	amount11= models.FloatField( "使用量11", default=None )
-	indate11		= models.DateTimeField( verbose_name='入金日11' )
+	indate11	= models.DateTimeField( verbose_name='入金日11' )
 	invalue11	= models.IntegerField( verbose_name='入金金額11', default=0 )
 	indate011	= models.DateTimeField( verbose_name='入金日011' )
 	invalue011	= models.IntegerField( verbose_name='入金金額011', default=0 )
@@ -237,10 +237,58 @@ class LPG_Meter10(models.Model):
 	date12 	= models.DateTimeField( verbose_name='検針日12' )
 	meter12	= models.FloatField( "検針値12", default=None )
 	amount12= models.FloatField( "使用量12", default=None )
-	indate12		= models.DateTimeField( verbose_name='入金日12' )
+	indate12	= models.DateTimeField( verbose_name='入金日12' )
 	invalue12	= models.IntegerField( verbose_name='入金金額12', default=0 )
 	indate012	= models.DateTimeField( verbose_name='入金日012' )
 	invalue012	= models.IntegerField( verbose_name='入金金額012', default=0 )
+
+	date13 	= models.DateTimeField( verbose_name='検針日13', blank=True, null=True  )
+	meter13	= models.FloatField( "検針値13", default=None )
+	amount13= models.FloatField( "使用量13", default=None )
+	indate13	= models.DateTimeField( verbose_name='入金日13', blank=True, null=True  )
+	invalue13	= models.IntegerField( verbose_name='入金金額13', default=0 )
+	indate013	= models.DateTimeField( verbose_name='入金日013', blank=True, null=True  )
+	invalue013	= models.IntegerField( verbose_name='入金金額013', default=0 )
+
+	date14 	= models.DateTimeField( verbose_name='検針日14', blank=True, null=True  )
+	meter14	= models.FloatField( "検針値14", default=None )
+	amount14= models.FloatField( "使用量14", default=None )
+	indate14	= models.DateTimeField( verbose_name='入金日14', blank=True, null=True  )
+	invalue14	= models.IntegerField( verbose_name='入金金額14', default=0 )
+	indate014	= models.DateTimeField( verbose_name='入金日014', blank=True, null=True  )
+	invalue014	= models.IntegerField( verbose_name='入金金額014', default=0 )
+
+	date15 	= models.DateTimeField( verbose_name='検針日15', blank=True, null=True  )
+	meter15	= models.FloatField( "検針値15", default=None )
+	amount15= models.FloatField( "使用量15", default=None )
+	indate15	= models.DateTimeField( verbose_name='入金日15', blank=True, null=True  )
+	invalue15	= models.IntegerField( verbose_name='入金金額15', default=0 )
+	indate015	= models.DateTimeField( verbose_name='入金日015', blank=True, null=True  )
+	invalue015	= models.IntegerField( verbose_name='入金金額015', default=0 )
+
+	date16 	= models.DateTimeField( verbose_name='検針日16', blank=True, null=True  )
+	meter16	= models.FloatField( "検針値16", default=None )
+	amount16= models.FloatField( "使用量16", default=None )
+	indate16	= models.DateTimeField( verbose_name='入金日16', blank=True, null=True  )
+	invalue16	= models.IntegerField( verbose_name='入金金額16', default=0 )
+	indate016	= models.DateTimeField( verbose_name='入金日016', blank=True, null=True  )
+	invalue016	= models.IntegerField( verbose_name='入金金額016', default=0 )
+
+	date17 	= models.DateTimeField( verbose_name='検針日17', blank=True, null=True  )
+	meter17	= models.FloatField( "検針値17", default=None )
+	amount17= models.FloatField( "使用量17", default=None )
+	indate17	= models.DateTimeField( verbose_name='入金日17', blank=True, null=True  )
+	invalue17	= models.IntegerField( verbose_name='入金金額17', default=0 )
+	indate017	= models.DateTimeField( verbose_name='入金日017', blank=True, null=True  )
+	invalue017	= models.IntegerField( verbose_name='入金金額017', default=0 )
+
+	date18 	= models.DateTimeField( verbose_name='検針日18', blank=True, null=True  )
+	meter18	= models.FloatField( "検針値18", default=None )
+	amount18= models.FloatField( "使用量18", default=None )
+	indate18	= models.DateTimeField( verbose_name='入金日18', blank=True, null=True  )
+	invalue18	= models.IntegerField( verbose_name='入金金額18', default=0 )
+	indate018	= models.DateTimeField( verbose_name='入金日018', blank=True, null=True  )
+	invalue018	= models.IntegerField( verbose_name='入金金額018', default=0 )
 
 	def __str__(self):
 		return self.uid
