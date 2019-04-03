@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TLs.SS_List.html - Ver.3.10.22 Update:2018.08.02" |
+#//|    "VsV.Py3.Dj.TLs.SS_List.html - Ver.3.10.26 Update:2019.02.18" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -197,10 +197,10 @@
               <!-- 数量 -->
               <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
 
-              <!-- # 金額 : True -->
+              <!-- # 1.POS.金額 : True -->
               {% if iv.value %}
 
-                <!-- # 単価 : True -->
+                <!-- # 1-1.POS.単価 : True -->
                 {% if iv.unit != 0 %}
                   <!-- 単価 - 金額 -->
                   <!--td>{{ iv.unit }}</td-->
@@ -218,7 +218,7 @@
                   <td></td>
                   <td></td>
 
-                <!-- # 単価 : False  -->
+                <!-- # 1-2.POS.単価 : False  -->
                 {% else %}
                   <!-- 単価 - 金額 -->
                   <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|gc_sc:iv.tax|gc_sc:iv.unit|set_unit:iv.value|floatformat:2 }}</td>
@@ -249,7 +249,7 @@
                 {% endif %}
                 <!-- End to 単価 : True & False  -->
 
-              <!-- 金額 : False -->
+              <!-- 2.POS.金額 : False -->
               {% else %}
                 <!-- 単価 - 金額 -->
                 <td>{{ iv.g_code.uid|gc_sc:iv.s_code.uid|gc_sc:iv.m_datetime.date|gc_sc:iv.amount|gc_sc:iv.tax|gc_sc:iv.unit|set_unit:iv.value|floatformat:2 }}</td>

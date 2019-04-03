@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.25 Update:2018.10.27" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.26 Update:2019.02.18" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -39,6 +39,8 @@ from dateutil.relativedelta import relativedelta
 from decimal import (Decimal, ROUND_DOWN)
 
 jtax = 0.08
+jtax8 = 0.08
+jtax10 = 0.10
 ndigits = 0
 
 
@@ -140,11 +142,11 @@ def get_unit(gcsc, md):
 				sv = v.value08
 				return sv
 
-		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md):
-			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md)
+		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md):
+			s_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md)
 
 			for v in s_values:
-				sv = v.value08
+				sv = v.value09
 				return sv
 
 		elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md):
@@ -196,37 +198,42 @@ def set_unit(gcsc, ivalue):
 
 	# AWS単価.金額
 	sv = get_unit(gs, md)
+
+	# AWS.総額
 	# cv = sv * (amount/100)
 	cv = round(sv * (amount/100), 0)
 
-	# POS.金額
+	# POS.総額
 	vt = ivalue + tax
 
-	# AWS | POS : 金額比較
+	# AWS | POS : 総額比較
 	# AWS.単価 : False
 	if sv == 0:
 
-		### 単価.逆計算
+		### POS.単価.逆計算
+		# 内税&外税.計算
 		iTax, oTax = cal_tax(vt)
+
 		# 現金関連
 		if sc == "00000":
-			# nv = ""
-			nv = unit
+			pv = ""
+			# pv = unit
+
 		# ハイオク.レギュラー.軽油 : 外税
 		elif sc == "10000" or sc == "10100" or sc == "10200":
-			nv = (vt-oTax)/(amount/100)
+			pv = (vt-oTax)/(amount/100)
 		else:
-			nv = vt/(amount/100)
-		return nv
+			pv = vt/(amount/100)
+		return pv
 
 		# return ""
 
-	# AWS.金額 = POS.金額
+	# AWS.総額 = POS.総額
 	# if cv == vt:
 	elif cv == vt:
 		return sv
 
-	# AWS.金額 ≠ POS.金額
+	# AWS.総額 ≠ POS.総額
 	else:
 		# POS.金額 > 0 & 数量 > 0
 		if vt != 0 and amount != 0:
@@ -252,13 +259,15 @@ def chk_unit(gcsc, ivalue):
 
 	# AWS単価.金額
 	sv = get_unit(gs, md)
+
+	# AWS.総額
 	cv = round(sv * (amount/100), 0)
 	# cv = sv * (amount/100)
 
-	# POS.金額
+	# POS.総額
 	vt = ivalue + tax
 
-	# AWS | POS : 金額比較
+	# AWS | POS : 総額比較
 	if sv == 0:						# AWS.単価 : False
 		# (Def.OK) cu = ".*."
 		if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10500":
@@ -267,10 +276,10 @@ def chk_unit(gcsc, ivalue):
 			cu = ""
 
 	# if cv == vt:
-	elif cv == vt:					# AWS.金額 =  POS.金額
+	elif cv == vt:					# AWS.総額 =  POS.総額
 		# (Def.OK) cu = ""
 
-		# (金額.True)
+		# (POS金額.True)
 		if ivalue != 0:
 			### (外税) ###
 			if sc == "10000" or sc == "10100" or sc == "10200":
@@ -282,7 +291,7 @@ def chk_unit(gcsc, ivalue):
 				else:
 					cu = ""
 
-	elif vt != 0 and amount != 0:	# AWS.金額 ≠ POS.金額 & POS.金額 > 0 & 数量 > 0
+	elif vt != 0 and amount != 0:	# AWS.総額 ≠ POS.総額 & POS.総額 > 0 & 数量 > 0
 		cu = "*"
 	elif amount != 0:				# 数量のみ
 		cu = ".."
@@ -296,7 +305,7 @@ def chk_unit(gcsc, ivalue):
 # In_Tax : 内税
 @register.filter("in_tax")
 def in_tax(value):
-	values = value - (value / (1+jtax))
+	values = value - (value / (1+jtax8))
 
 	d_point = len(str(values).split('.')[1])
 	ndigits = 0
@@ -310,7 +319,7 @@ def in_tax(value):
 # Out_Tax : 外税
 @register.filter("out_tax")
 def out_tax(value):
-	values = value * jtax
+	values = value * jtax8
 
 	d_point = len(str(values).split('.')[1])
 	ndigits = 0
@@ -1240,7 +1249,7 @@ def check_unit_tax(gcsc, amount):
 		uc = (value+tax) / (amount/100)
 
 		if uc.is_integer():
-			values = (value+tax) - ((value+tax)/(1+jtax))
+			values = (value+tax) - ((value+tax)/(1+jtax8))
 			d_point = len(str(values).split('.')[1])
 			if ndigits >= d_point:
 				return round(values, 0)
@@ -1248,7 +1257,7 @@ def check_unit_tax(gcsc, amount):
 			return round((values * c + 1) / c, 0)
 
 		else:
-			values = value - (value/(1+jtax))
+			values = value - (value/(1+jtax8))
 			d_point = len(str(values).split('.')[1])
 			if ndigits >= d_point:
 				return round(values, 0)
