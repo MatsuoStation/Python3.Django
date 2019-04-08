@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.31 Update:2019.04.08" |
+#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.32 Update:2019.04.08" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -170,7 +170,7 @@ class SxS_List(ListView):
 		try:
 			### 初期設定
 			dl = self.request.GET.get('dl', '')
-			dlt = datetime, strptime(dl, '%Y-%m-%d')
+			dlt = datetime.strptime(dl, '%Y-%m-%d')
 
 			### URL.期日
 			dd = dlt.day

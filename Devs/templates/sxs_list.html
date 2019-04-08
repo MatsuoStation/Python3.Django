@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.TLs.SxS_List.html - Ver.3.10.31 Update:2019.04.08" |
+#//|   "VsV.Py3.Dj.TLs.SxS_List.html - Ver.3.10.32 Update:2019.04.08" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -39,6 +39,35 @@
 
         <!-- ### 請求期間 ### -->
         <p>{{ dlb }} - {{ dla }}</p>
+
+        <!-- ### ページ表示 ### -->
+        <div class="pagination">
+        <span class="step-links">
+          {% if ivs.has_previous %}
+            <a href="?page=1&dl={{ deadlines }}">&laquo; 最初頁へ&nbsp;</a>
+            <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;前頁へ&nbsp;|&nbsp;</a>&nbsp;
+          {% endif %}
+
+          <span class="current">
+            Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+          </span>
+
+          {% if ivs.has_next %}
+            &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;次頁へ&nbsp;|</a>
+            <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;最終頁へ &raquo;</a>
+          {% endif %}
+        </span>
+        </div>
+
+        <!-- ### 請求月表示 -->
+        <p>{% if dlms %}
+          |
+              {% for dd in dds %}
+                &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|
+              <!-- &nbsp;&nbsp;<a href="?dl={{ dds }}"">{{ dds }}</a>&nbsp;&nbsp;| -->
+              {% endfor %}
+            {% endif %}
+        </p>
 
   </div>
 </main>
