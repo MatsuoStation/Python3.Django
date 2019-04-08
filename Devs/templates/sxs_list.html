@@ -1,0 +1,43 @@
+<!--
+#//+------------------------------------------------------------------+
+#//|               VerysVeryInc.Python3.Django.Templates.SS_List.html |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//|    "VsV.Py3.Dj.TLs.SS_List.html - Ver.3.10.30 Update:2019.04.08" |
+#//+------------------------------------------------------------------+
+-->
+{% extends "./base.html" %}
+
+{% block title %}SxS.Invoice | 請求書{% endblock title %}
+
+{% block content %}
+
+<main role="main" class="container">
+  <div class="starter-template">
+        <h1>SxS.Invoice / 請求書</h1>
+
+        <!-- ### Guest Search ### -->
+        <P>請求書作成</P>
+        <form action="" method="POST" class="form-horizontal" role="form">
+          {% csrf_token %}
+          <!-- {{ form.as_p }} -->
+          {{ form }}
+          <input type="submit" name="送信">
+        </form>
+
+        <!-- ### PDF ### -->
+        <p><br>
+          {% if fSS %}
+          {{ names }} : {{ gid }} / {{ fSS }} / <a href="{{ pLink }}?dl={{ dla|date:"Y-m-d" }}" target="_blank">PDF</a>
+          {% else %}
+          {{ names }} : {{ gid }} / {{ fSS }}
+          {% endif %}
+        </p>
+
+  </div>
+</main>
+
+{% endblock content %}

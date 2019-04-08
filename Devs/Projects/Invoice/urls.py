@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.urls.py - Ver.3.10.10 Update:2018.06.22" |
+#//| "VsV.Python3.Dj.Invoice.urls.py - Ver.3.10.30 Update:2019.04.08" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -45,4 +45,8 @@ urlpatterns = [
     # path('<int:nid>/page<int:page>dl<int:deadline>', views.Invoice_List.as_view(), name='inovice_list_paginated'),
     # path('<int:lastday>/page<int:page>', views.Invoice_List.as_view(), name='inovice_list_lastday_paginated'),
     # (NG) path('<int:nid>/page<int:page>', PaginatedView.as_view()),
+
+    ### New SS(SxS) Invoice ###
+    path('SxS/<int:nid>/', views.SxS_List.as_view(), name='sxs_list'),
+
 ]

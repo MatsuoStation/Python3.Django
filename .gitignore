@@ -117,7 +117,7 @@ Devs/Projects/Finance/models.py_*
 Devs/Projects/Finance/views_*.py
 db.sqlite3
 Devs/templates/list_*.html
-Devs/templates/base.html
+# Devs/templates/base.html
 Devs/templates/invoice00.html
 Devs/templates/list00.html
 Devs/templates/index00.html

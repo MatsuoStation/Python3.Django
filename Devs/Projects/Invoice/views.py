@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.25 Update:2018.10.27" |
+#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.30 Update:2019.04.08" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -135,6 +135,103 @@ def Toyu_Values(values):
 	notax_v = notax_v - tax_v
 
 	return sv, tax_v, notax_v
+
+### SxS_List ###
+class SxS_List(ListView):
+
+	model = Name_Test20
+	form_class = NameForm
+	template_name = 'sxs_list.html'
+	context_object_name = "nametb"
+	paginate_by = 30
+
+	def post(self, request, *args, **kwargs):
+		form = self.form_class(request.POST)
+		nid_post = request.POST['nid']
+
+		if form.is_valid():
+			return HttpResponseRedirect( '/Invoice/%s' % nid_post )
+
+		return render(request, self.template_name, {'form': form})
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		### Guest Search Form ###
+		context['form'] = NameForm()
+		gid = self.kwargs.get('nid')
+		context['gid'] = gid
+
+		### Total Value Cash ###
+
+
+		### DL : True ###
+		try:
+			### 初期設定
+			dl = self.request.GET.get('dl', '')
+			dlt = datetime, strptime(dl, '%Y-%m-%d')
+
+			### URL.期日
+			dd = dlt.day
+
+			### MySQL : データ取得
+			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+			### 顧客氏名 ###
+			for na in NAs:
+				names = na.name
+
+			### Bank.請求書フォーマット ###
+			for bf in BFs:
+				fSS = bf.s_format
+				context['fSS'] = fSS
+
+				# 請求書フォーマット:BackImage.Setup
+				if fSS == 0:
+					# fURL = "background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');"
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png"
+				if fSS == 10:
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_10_02.png"
+				context['fURL'] = fURL
+
+
+		### DL : False ###
+		except Exception as e:
+
+			### MySQL : データ取得
+			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+			### 顧客氏名 ###
+			for na in NAs:
+				names = na.name
+			
+			### Bank.請求書フォーマット ###
+			for bf in BFs:
+				fSS = bf.s_format
+				context['fSS'] = fSS
+
+				# 請求書フォーマット:BackImage.Setup
+				if fSS == 0:
+					# fURL = "background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');"
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png"
+				if fSS == 10:
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_10_02.png"
+				context['fURL'] = fURL
+
+			### PDF.リンク ###
+			PDF_Link = "../PDF/%s/" % gid
+			context['pLink'] = PDF_Link
+
+
+			### Error表示 ###
+			print(e, 'Invoice/Views - DL.False : error occured.')
+
+		### ALL.Context ###
+		context['names'] = names
+
+		return context
 
 
 ### SS_List ###
