@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.30 Update:2019.04.08" |
+#//|"VsV.Python3.Dj.Invoice.Views.py - Ver.3.10.31 Update:2019.04.08" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -163,6 +163,7 @@ class SxS_List(ListView):
 		context['gid'] = gid
 
 		### Total Value Cash ###
+		dd_list = list()
 
 
 		### DL : True ###
@@ -174,15 +175,88 @@ class SxS_List(ListView):
 			### URL.期日
 			dd = dlt.day
 
+			## dd : 20日締日 or 25日締日
+			if dd == 20 or dd == 25:
+				dld = dlt + timedelta(days=1) - relativedelta(months=1)
+				dlm = dlt + timedelta(days=1) - timedelta(microseconds=1)
+
+				bld = dld - relativedelta(months=1)
+				blm = dlm - relativedelta(months=1)
+
+			## dd : 末日締日
+			else:
+				dt = dlt - relativedelta(months=1)
+				dld = dt + relativedelta(months=1) - timedelta(days=dt.day) + timedelta(days=1)
+				dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
+
+				bld = dt - timedelta(days=dt.day) + timedelta(days=1)
+				blm = bld  + relativedelta(months=1) - timedelta(microseconds=1)
+
+
 			### MySQL : データ取得
 			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
 			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
 
-			### 顧客氏名 ###
+
+			### 請求書.日付順
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			### 締日.Check
+			try:
+				# MySQL.Bankデータ.有無
+				if BFs:
+					d_values = BFs
+
+				# Invoice.データ
+				for dlm in dlms:
+					# POS.取引日
+					dd = dlm.day
+
+					# MySQL.Bankデータ
+					for d in d_values:
+						# 顧客別.締切日
+						dv = d.check_day
+
+						# 取引日別.月期間
+						# 25日以降.取引日
+						if dv == 25:
+							if dd >=25:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						# 20日以降.取引日
+						elif dv == 20:
+							if dd >= 20:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						# 20日以前.取引日
+						else:
+							dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
+
+						# 月期間.リスト
+						dd_list.append(dls)
+						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+						context['dds'] = dds
+
+			### Error表示 : 締日.Check
+			except Exception as e:
+				print(e, 'DL.True - Invoice/views.dds : error occured.')
+
+
+			### 期間表示
+			dlb = dlt + timedelta(days=1) - relativedelta(months=1)
+			context['dlb'] = dlb
+			dla = dlt + timedelta(days=1) - timedelta(microseconds=1)
+			context['dla'] = dla
+
+			### 顧客氏名
 			for na in NAs:
 				names = na.name
 
-			### Bank.請求書フォーマット ###
+			### Bank.請求書フォーマット
 			for bf in BFs:
 				fSS = bf.s_format
 				context['fSS'] = fSS
@@ -194,6 +268,10 @@ class SxS_List(ListView):
 				if fSS == 10:
 					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_10_02.png"
 				context['fURL'] = fURL
+
+			### PDF.リンク
+			PDF_Link = "../PDF/%s/" % gid
+			context['pLink'] = PDF_Link
 
 
 		### DL : False ###
@@ -202,30 +280,59 @@ class SxS_List(ListView):
 			### MySQL : データ取得
 			NAs = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
 			BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+			lastmonths = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').values_list('m_datetime', flat=True).order_by('-m_datetime').distinct('m_datetime')
 
-			### 顧客氏名 ###
+			### 請求書.日付順
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			### 締日.Check
+			try:
+				# MySQL.Bankデータ.有無
+				if BFs:
+					d_values = BFs
+
+				# Invoice.データ
+				for dlm in dlms:
+					# POS.取引日
+					dd = dlm.day
+
+					# MySQL.Bankデータ
+					for d in d_values:
+						# 顧客別.締切日
+						dv = d.check_day
+
+						# 取引日別.月期間
+						# 25日以降.取引日
+						if dv == 25:
+							if dd >=25:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						# 20日以降.取引日
+						elif dv == 20:
+							if dd >= 20:
+								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
+							else:
+								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
+						# 20日以前.取引日
+						else:
+							dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(days=1)
+
+						# 月期間.リスト
+						dd_list.append(dls)
+						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+						context['dds'] = dds
+
+			### Error表示 : 締日.Check
+			except Exception as e:
+				print(e, 'DL.False - Invoice/views.dds : error occured.')
+
+			### 顧客氏名
 			for na in NAs:
 				names = na.name
-			
-			### Bank.請求書フォーマット ###
-			for bf in BFs:
-				fSS = bf.s_format
-				context['fSS'] = fSS
 
-				# 請求書フォーマット:BackImage.Setup
-				if fSS == 0:
-					# fURL = "background-image: url('https://dev.matsuostation.com/static/images/LPG/New_Seikyu_LPG_30_02.png');"
-					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png"
-				if fSS == 10:
-					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_10_02.png"
-				context['fURL'] = fURL
-
-			### PDF.リンク ###
-			PDF_Link = "../PDF/%s/" % gid
-			context['pLink'] = PDF_Link
-
-
-			### Error表示 ###
+			### Error表示 : DL.False ###
 			print(e, 'Invoice/Views - DL.False : error occured.')
 
 		### ALL.Context ###

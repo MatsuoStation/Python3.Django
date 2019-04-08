@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TLs.SS_List.html - Ver.3.10.30 Update:2019.04.08" |
+#//|   "VsV.Py3.Dj.TLs.SxS_List.html - Ver.3.10.31 Update:2019.04.08" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -19,7 +19,7 @@
   <div class="starter-template">
         <h1>SxS.Invoice / 請求書</h1>
 
-        <!-- ### Guest Search ### -->
+        <!-- ### 顧客検索 ### -->
         <P>請求書作成</P>
         <form action="" method="POST" class="form-horizontal" role="form">
           {% csrf_token %}
@@ -36,6 +36,9 @@
           {{ names }} : {{ gid }} / {{ fSS }}
           {% endif %}
         </p>
+
+        <!-- ### 請求期間 ### -->
+        <p>{{ dlb }} - {{ dla }}</p>
 
   </div>
 </main>
