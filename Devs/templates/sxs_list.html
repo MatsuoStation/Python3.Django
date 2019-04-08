@@ -6,10 +6,13 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.TLs.SxS_List.html - Ver.3.10.32 Update:2019.04.08" |
+#//|   "VsV.Py3.Dj.TLs.SxS_List.html - Ver.3.10.33 Update:2019.04.08" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
+{% load humanize %}
+{% load filter %}
+
 
 {% block title %}SxS.Invoice | 請求書{% endblock title %}
 
@@ -68,6 +71,166 @@
               {% endfor %}
             {% endif %}
         </p>
+
+        <!-- ### 請求書.Table ### -->
+        <div class="mx-auto">
+
+          <!-- ### 総計 ### -->
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <td>伝票枚数</td>
+                <td width="1"></td>
+                <td>前月ご請求額</td>
+                <td>当月ご入金額</td>
+                <td>手数料・調整</td>
+                <td>差引繰越額</td>
+                <td>当月お買上額</td>
+                <td width="1"></td>
+                <td>当月ご請求額</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td width="1"></td>
+                <td>{{ before_values|intcomma }}</td>
+                <td>{{ incash_values|intcomma }}</td>
+                <td></td>
+                <td></td>
+                <td>{{ total_values|intcomma }}</td>
+                <td width="1"></td>
+                <td>{{ all_total_values|intcomma }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- ### End.総計 ### -->
+
+          <!-- ### 請求書内訳 ### -->
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <td width="2">月</td>
+                <td width="2">日</td>
+                <td width="5">SS</td>
+                <td width="4">車番</td>
+                <td width="5">Scode</td>
+                <td>商品名</td>
+                <td>数量</td>
+                <td>単価</td>
+                <td>金額</td>
+                <td>税区分</td>
+                <!--td>車両別合計</td-->
+                <td>消費税</td>
+                <td>税込</td>
+                <td>備考</td>
+                <td>赤伝</td>
+                <td>時間</td>
+                <td>伝票番号</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <!-- 月 - 日 - 給油SS - 車番 -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+                <!-- 商品コード - 商品名 -->
+                <td></td>
+                <td></td>
+
+                <!-- 数量 -->
+                <td></td>
+
+                <!-- 単価 - 金額 -->
+                <td></td>
+                <td></td>
+
+                <!-- 税区分 - 消費税 - 税込 -->
+                <td></td>
+                <td></td>
+                <td></td>
+
+                <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- ### End.請求書内訳 ### -->
+
+          <!-- ### 商品合計 ### -->
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <td><主要商品合計></td>
+                <td width="1"></td>
+                <td>課税売上高</td>
+                <td>{{ notax_values|intcomma }}</td>
+                <td width="1"></td>
+                <td>消費税額</td>
+                <td>{{ tax_values|intcomma }}</td>
+                <td width="1"></td>
+                <td>軽油税</td>
+                <td>{{ ktax_values|intcomma }}</td>
+                <td width="1"></td>
+              </tr>
+            </thead>
+          </table>
+          <!-- ### End.商品合計 ### -->
+
+          <!-- ### 商品別合計 ### -->
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <td colspan="2">GP-1プラス</td>
+                <td colspan="2">レギュラー</td>
+                <td colspan="2">軽油</td>
+                <td colspan="2">灯油</td>
+                <td>その他金額</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ high_amounts|floatformat:2|intcomma }}</td>
+                <td>{{ high_values|intcomma }}</td>
+                <td>{{ reg_amounts|floatformat:2|intcomma }}</td>
+                <td>{{ reg_values|intcomma }}</td>
+                <td>{{ keiyu_amounts|floatformat:2|intcomma }}</td>
+                <td>{{ keiyu_values|intcomma }}</td>
+                <td>{{ toyu_amounts|floatformat:2|intcomma }}</td>
+                <td>{{ toyu_values|intcomma }}</td>
+                <td>{{ nonoil_values|intcomma }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- ### End.商品別合計 ### -->
+        </div>
+        <!-- ### End.請求書.Table ### -->
+
+        
+        <!-- ### ページ表示 ### -->
+        <div class="pagination">
+        <span class="step-links">
+          {% if ivs.has_previous %}
+            <a href="?page=1&dl={{ deadlines }}">&laquo; 最初頁へ&nbsp;</a>
+            <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;前頁へ&nbsp;|&nbsp;</a>&nbsp;
+          {% endif %}
+
+          <span class="current">
+            Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+          </span>
+
+          {% if ivs.has_next %}
+            &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;次頁へ&nbsp;|</a>
+            <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;最終頁へ &raquo;</a>
+          {% endif %}
+        </span>
+        </div>
 
   </div>
 </main>

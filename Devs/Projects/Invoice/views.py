@@ -163,7 +163,8 @@ class SxS_List(ListView):
 		context['gid'] = gid
 
 		### Total Value Cash ###
-		dd_list = list()
+		dd_list = list()		# 期日リスト
+		before_list = list()	# 先月リスト
 
 
 		### DL : True ###
