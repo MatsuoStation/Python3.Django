@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.urls.py - Ver.3.10.30 Update:2019.04.08" |
+#//|  "VsV.Python3.Dj.Invoice.urls.py - Ver.3.15.1 Update:2019.04.09" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -48,5 +48,8 @@ urlpatterns = [
 
     ### New SS(SxS) Invoice ###
     path('SxS/<int:nid>/', views.SxS_List.as_view(), name='sxs_list'),
+
+    ### Test.Freee.API ###
+    path('FreeeAPI/', views.Freee_API, name='freee_api'),
 
 ]
