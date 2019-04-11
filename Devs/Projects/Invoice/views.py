@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.15.2 Update:2019.04.10" |
+#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.15.3 Update:2019.04.10" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -143,9 +143,147 @@ def Toyu_Values(values):
 
 
 ### Freee_API ###
+def Get_A_Token(r_code, a_code):
+
+	# new_code = a_code
+
+	### (GET) FreeeConfig.Json
+	with open("../freeeconfig.json") as fc:
+		fc_data = json.load(fc)
+		
+	### Freee.API.Config
+	CLIENT_ID = fc_data['client_id']
+	CLIENT_SECRET = fc_data['client_secret']
+	REDIRECT_URI = fc_data['redirect_uri']
+
+	### Freee.API.URL
+	# 認証トークン.取得用API.URL
+	AUTHORIZE_API_URL = fc_data['authorize_api_url']
+
+	'''
+	# 事務所一覧.取得用API.URL
+	COMPANY_API_URL = fj_data['company_api_url']
+	# 取引先一覧.取得用API.URL
+	PARTNER_API_URL = fj_data['partner_api_url']
+	'''
+
+	### (GET) Access.Token
+	# Freee.OAuth.SetUp
+	FreeeOAuth = OAuth2Session()
+	FreeeOAuth.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+
+	### REFRESH_TOKEN.True
+	if r_code:
+
+		# Refresh.Params
+		params = {
+			'grant_type' : 'refresh_token',
+			'client_id' : CLIENT_ID,
+			'client_secret' : CLIENT_SECRET,
+			'refresh_token' : r_code
+		}
+
+		# FreeeAPI.OAuth2.POST
+		r = FreeeOAuth.post(AUTHORIZE_API_URL, params=params)
+
+		# 正常受信 : 200
+		if r.status_code == 200:
+			data = json.loads(r.text)
+
+			ACCESS_TOKEN = data['access_token']
+			REFRESH_TOKEN = data['refresh_token']
+
+			# (READ) FreeeToken.Json
+			R_Text = '{\n' + '"refresh_token" : "' + REFRESH_TOKEN + '",\n' + '"access_token" : "' + ACCESS_TOKEN + '"\n}'
+
+			### Refresh.Token.Write ###
+			fw = open('../freeetoken.json', 'w')
+			fw.write(R_Text)
+			fw.close()
+
+			return ACCESS_TOKEN
+
+		# 受信エラー : != 200
+		else:
+			return a_code
+
+	### REFRESH_TOKEN.False
+	else:
+		# 1st.Access.Params
+		params = {
+			'grant_type' : 'authorization_code',
+			'client_id' : CLIENT_ID,
+			'client_secret' : CLIENT_SECRET,
+			'code' : a_code,
+			'redirect_uri' : REDIRECT_URI
+		}
+
+		# FreeeAPI.OAuth2.POST
+		r = FreeeOAuth.post(AUTHORIZE_API_URL, params=params)
+
+		# 正常受信 : 200
+		if r.status_code == 200:
+			data = json.loads(r.text)
+
+			ACCESS_TOKEN = data['access_token']
+			REFRESH_TOKEN = data['refresh_token']
+
+			# (READ) FreeeToken.Json
+			R_Text = '{\n' + '"refresh_token" : "' + REFRESH_TOKEN + '",\n' + '"access_token" : "' + ACCESS_TOKEN + '"\n}'
+
+			### Refresh.Token.Write ###
+			fw = open('../freeetoken.json', 'w')
+			fw.write(R_Text)
+			fw.close()
+
+			return ACCESS_TOKEN
+
+		# 受信エラー : != 200
+		else:
+			return a_code
+
+
 def Freee_API(request):
 	# return HttpResponse("Freee API Page!! Welcome to Devs.MatsuoStation.Com!")
 
+	### Def.API.Authorization.Code
+	AUTHORIZATION_CODE = '67acccb6be0b84eb2e054e40fdd1f7e591e970f7972e81192aa51851d9f4f2ef'
+
+	### (GET) FreeeToken.Json
+	with open("../freeetoken.json") as fj:
+		fj_data = json.load(fj)
+
+	REFRESH_TOKEN = fj_data['refresh_token']
+	ACCESS_TOKEN = fj_data['access_token']
+
+	# REFRESH_TOKEN.True
+	if REFRESH_TOKEN:
+		NEW_A_TOKEN = Get_A_Token(REFRESH_TOKEN, ACCESS_TOKEN)
+
+		return render(request, 'freee_api.html', {
+	 				'R_Token'	: REFRESH_TOKEN,
+	 				'A_Token'	: NEW_A_TOKEN,
+	 				'Data'		: fj_data,
+	 			})
+
+	# REFRESH_TOKEN.False
+	else:
+		NEW_A_TOKEN = Get_A_Token("", AUTHORIZATION_CODE)
+
+		return render(request, 'freee_api.html', {
+	 				'A_Token'	: NEW_A_TOKEN,
+	 				'Data'		: fj_data,
+	 			})
+
+
+	### (Def) Get_A_Token ###
+	# ACCESS_TOKEN = Get_A_Token("a811c5f86d22cee5d4a973a55248ad71d6ec17c3e800cd1b2838161140ebf6e7")
+	
+	# return render(request, 'freee_api.html', {
+	# 			'A_Token'	: ACCESS_TOKEN,
+	# 		})
+
+	'''
 	### Freee.API.Info
 	CLIENT_ID = 'eb49d4914b507bad599241ea5299e2d7d48e2dcb9f6d2260f78f44ec1e6e3cb3'
 	CLIENT_SECRET = '5827f959407055068d6704b400966102b01c954ea6236547faf4d5c7745a1d8e'
@@ -274,7 +412,7 @@ def Freee_API(request):
 	#		'R_Token'	: REFRESH_TOKEN,
 	# })
 
-	'''
+	
 	FreeeOAuth = OAuth2Session()
 	FreeeOAuth.headers['Content-Type'] = 'application/x-www-form-urlencoded'	
 
