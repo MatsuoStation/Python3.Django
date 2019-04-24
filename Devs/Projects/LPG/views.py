@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.37 Update:2018.10.30" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.38 Update:2019.04.24" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -302,6 +302,7 @@ class PDF_List(ListView):
 						elif dm == dv+1: # 締め日.25日以外.次月
 							dlb = (dlt - timedelta(days=dd-1))
 							dla = dlt + timedelta(days=1) - timedelta(microseconds=1)
+							dld = dlt + timedelta(days=1)
 						elif dm == company_line:
 							dlb = dlt - relativedelta(months=1) + timedelta(days=1)
 							dla = (dlt - timedelta(days=dd-1)) + relativedelta(months=1) - timedelta(microseconds=1)
