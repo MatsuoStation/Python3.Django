@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.5 Update:2019.09.02" |
+#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.6 Update:2019.09.02" |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -63,5 +63,6 @@ def Uriage(request):
 	return render(request, 'uriage.html', {'form': form})
 
 
+### Index ###
 def index(request):
 	return HttpResponse("Hello Freee.Py3 You're at the Index.")
