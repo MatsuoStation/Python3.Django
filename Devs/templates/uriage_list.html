@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.6 Update:2019.09.02" |
+#//| "VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.7 Update:2019.09.03" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -23,7 +23,16 @@
         <h1>Uriage_List / 売上高.CSV</h1>
 
         <P>決算書：売上現金 & 売掛金 & 売掛CC</P>
-        {{ yid }}
+
+        <form action="" method="POST" class="form-horizontal" role="form">
+          {% csrf_token %}
+          <!-- {{ form.as_p }} -->
+          {{ form }}
+          <input type="submit" name="送信">
+        </form>
+
+        SHARP20_K_{{ yid }}
+        <!-- {{ sql }} -->
         <p></p>
 
         <div class="m-auto">
@@ -49,7 +58,28 @@
             </tr>
           </thead>
           <tbody>
+            {% for sql in sqls %}
             <tr>
+              <td>収支</td><!-- 収支区分 -->
+              <td>{{ sql.slip }}</td><!-- 管理番号 -->
+              <td>{{ sql.m_datetime|date:"Y-m-d" }}</td><!-- 発生日 -->
+              <td></td><!-- 決済期日 -->
+              <td>{{ sql.g_code }}</td><!-- 取引先 -->
+              <td>売上高</td><!-- 勘定科目 -->
+              <td>課税売上8%</td><!-- 税区分 -->
+              <td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td><!-- 金額 -->
+              <td>内税</td><!-- 税計算区分 -->
+              <td>{{ sql.tax|red_value:sql.red_code|intcomma }}</td><!-- 税額 -->
+              <td>{{ sql.m_datetime|date:"Y年m月d日現金売上" }}</td><!-- 備考 -->
+              <td>{{ sql.s_code }}</td><!-- 品目 -->
+              <td>SS関係</td><!-- 部門 -->
+              <td>{{ sql.m_datetime|date:"Y-m-d" }}</td><!-- 決済日 -->
+              <td>現金</td><!-- 決済口座 -->
+              <td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td><!-- 決済金額 -->
+            </tr>
+            {% endfor %}
+
+            <!--<tr>
               <td>収支</td>
               <td>123</td>
               <td>2018-12-31</td>
@@ -66,7 +96,7 @@
               <td>2019-01-01</td>
               <td>ゆうちょ(振替) 0125-8940-53412</td>
               <td>150000</td>
-            </tr>
+            </tr>-->
           </tbody>
         </table>
         </div>

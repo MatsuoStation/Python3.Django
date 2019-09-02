@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.6 Update:2019.09.02" |
+#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.7 Update:2019.09.03" |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -18,6 +18,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from Finance.models import Name_Test20
 from .forms import YearForm
+
+import pymysql.cursors
+
+### DictFetchAll ###
+def dictfetchall(cursor):
+	# "Return all rows from a cursor as a dict"
+	columns = [col[0] for col in cursor.description]
+	return [
+		dict(zip(columns, row))
+		for row in cursor.fetchall()
+	]
 
 ### Uriage_List ###
 class Uriage_List(ListView):
@@ -43,6 +54,24 @@ class Uriage_List(ListView):
 		context['form'] = YearForm()
 		yid = self.kwargs.get('yid')
 		context['yid'] = yid
+
+		### MySQL:Connection ###
+		conn = pymysql.connect(read_default_file='../../ssh/AWS_RDS_Dev.cnf')
+
+		try:
+			### MySQL:Session ###
+			with conn.cursor() as cursor:
+				sql = "SELECT * FROM SHARP20_K_2019 WHERE m_datetime < %s AND p_code = %s AND r_code IN (%s,%s)  ORDER BY m_datetime"
+				cursor.execute(sql,("2018-07-03","10","0","1",))
+				SQL_Data = dictfetchall(cursor)
+				context['sqls'] = SQL_Data
+
+				# result = cursor.fetchall()
+				# print(result)
+				# context['sqls'] = result
+
+		finally:
+			conn.close()
 
 		return context
 
