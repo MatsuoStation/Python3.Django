@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|        "VsV.Py3.Dj.Freee.urls.py - Ver.3.20.2 Update:2019.09.02" |
+#//|        "VsV.Py3.Dj.Freee.urls.py - Ver.3.20.3 Update:2019.09.02" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -34,5 +34,6 @@ urlpatterns = [
     path('', views.index, name='index'),
 
     ### 売上高 ###
-    path('Uriage', views.Uriage, name='uriage_list'),
+    path('Uriage', views.Uriage, name='uriage'),
+    path('Uriage/<int:yid>/', views.Uriage_List.as_view(), name='uriage_list'),
 ]
