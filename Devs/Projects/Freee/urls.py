@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Django.Index.urls.py - Ver.3.1.1 Update:2018.03.08" |
+#//|        "VsV.Py3.Dj.Freee.urls.py - Ver.3.20.2 Update:2019.09.02" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -27,7 +27,12 @@ from django.urls import path
 ### MatsuoStation.Com ###
 from . import views
 
+app_name = 'Freee'
+
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+
+    ### 売上高 ###
+    path('Uriage', views.Uriage, name='uriage_list'),
 ]
