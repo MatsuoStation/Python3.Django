@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.8 Update:2019.09.03" |
+#//| "VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.9 Update:2019.09.03" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -34,6 +34,25 @@
         {{ SHARP20_K }}
         <!-- {{ sql }} -->
         </p>
+
+        <div class="pagination">
+        <span class="step-links">
+          {% if sqls.has_previous %}
+            <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
+            <a href="?page={{ sqls.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Previous&nbsp;|&nbsp;</a>&nbsp;
+          {% endif %}
+          <span class="current">
+            Page {{ sqls.number }} of {{ sqls.paginator.num_pages }}.
+          </span>
+
+          {% if sqls.has_next %}
+            &nbsp;<a href="?page={{ sqls.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+            <a href="?page={{ sqls.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;Last &raquo;</a>
+          {% endif %}
+        </span>
+        </div>
+
+        <p></p>
 
         <div class="m-auto">
         <table class="table table-striped table-bordered">
@@ -99,6 +118,23 @@
             </tr>-->
           </tbody>
         </table>
+        </div>
+
+        <div class="pagination">
+        <span class="step-links">
+          {% if sqls.has_previous %}
+            <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
+            <a href="?page={{ sqls.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Previous&nbsp;|&nbsp;</a>&nbsp;
+          {% endif %}
+
+          <span class="current">
+            Page {{ sqls.number }} of {{ sqls.paginator.num_pages }}.
+          </span>
+          {% if sqls.has_next %}
+            &nbsp;<a href="?page={{ sqls.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+            <a href="?page={{ sqls.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;Last &raquo;</a>
+          {% endif %}
+        </span>
         </div>
 
   </div>
