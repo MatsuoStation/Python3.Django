@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.7 Update:2019.09.03" |
+#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.8 Update:2019.09.03" |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -54,6 +54,8 @@ class Uriage_List(ListView):
 		context['form'] = YearForm()
 		yid = self.kwargs.get('yid')
 		context['yid'] = yid
+		SHARP20_K = 'SHARP20_K_' + str(yid)
+		context['SHARP20_K'] = SHARP20_K
 
 		### MySQL:Connection ###
 		conn = pymysql.connect(read_default_file='../../ssh/AWS_RDS_Dev.cnf')
@@ -61,7 +63,9 @@ class Uriage_List(ListView):
 		try:
 			### MySQL:Session ###
 			with conn.cursor() as cursor:
-				sql = "SELECT * FROM SHARP20_K_2019 WHERE m_datetime < %s AND p_code = %s AND r_code IN (%s,%s)  ORDER BY m_datetime"
+				# sql = "SELECT * FROM SHARP20_K_2019 WHERE m_datetime < %s AND p_code = %s AND r_code IN (%s,%s)  ORDER BY m_datetime"
+				sql = "SELECT * FROM %s " % SHARP20_K + "WHERE m_datetime < %s AND p_code = %s AND r_code IN (%s,%s)  ORDER BY m_datetime"
+				# cursor.execute(sql,("2018-07-03","10","0","1",))
 				cursor.execute(sql,("2018-07-03","10","0","1",))
 				SQL_Data = dictfetchall(cursor)
 				context['sqls'] = SQL_Data
