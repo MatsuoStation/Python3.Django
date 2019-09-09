@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.11 Update:2019.09.04" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.10 Update:2019.09.03" |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -90,7 +90,7 @@ class Uriage_List(ListView):
 			conn.close()
 
 		### Pager ###
-		paginator = Paginator(SQL_Data, 10)
+		paginator = Paginator(SQL_Data, 5)
 		try:
 			page = int(self.request.GET.get('page'))
 		except:
