@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.20 Update:2019.09.14" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.21 Update:2019.09.14" |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -70,14 +70,16 @@ class Uriage_CSV(ListView):
 		ssl._create_default_https_context = ssl._create_unverified_context
 
 		# URL
-		html = urlopen("https://dev.matsuostation.com/Freee/Uriage/2019/")
+		html = urlopen("https://dev.matsuostation.com/Freee/Uriage/" + str(yid) + "/")
+		# html = urlopen("https://dev.matsuostation.com/Freee/Uriage/2019/")
 		bsObj = BeautifulSoup(html, "html.parser")
 
 		# Table
 		table = bsObj.findAll("table", {"class":"table"})[0]
 		rows = table.findAll("tr")
 
-		with open("SHARP/K/K_2019.csv", "w", encoding='utf-8') as file:
+		with open("SHARP/K/K_" + str(yid) + ".csv", "w", encoding='utf-8') as file:
+		# with open("SHARP/K/K_2019.csv", "w", encoding='utf-8') as file:
 			wr = csv.writer(file)
 			for row in rows:
 				csvRow = []
