@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.21 Update:2019.09.14" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.22 Update:2019.09.14" |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -27,6 +27,8 @@ import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import ssl
+
+import requests, re, time
 
 
 ### DictFetchAll ###
@@ -70,13 +72,39 @@ class Uriage_CSV(ListView):
 		ssl._create_default_https_context = ssl._create_unverified_context
 
 		# URL
-		html = urlopen("https://dev.matsuostation.com/Freee/Uriage/" + str(yid) + "/")
+		url = "https://dev.matsuostation.com/Freee/Uriage/" + str(yid) + "/"
+		html = urlopen(url)
+		# html = urlopen("https://dev.matsuostation.com/Freee/Uriage/" + str(yid) + "/")
 		# html = urlopen("https://dev.matsuostation.com/Freee/Uriage/2019/")
 		bsObj = BeautifulSoup(html, "html.parser")
 
 		# Table
 		table = bsObj.findAll("table", {"class":"table"})[0]
 		rows = table.findAll("tr")
+
+		# LastPage
+		# res = requests.get(url)
+		# res = requests.get(html, headers=Agent)
+		#  LastPage = int(re.findAll(r'page=([0-9]+)[^<]*LastPage',res.text)[0])
+		LastA = bsObj.findAll("div", {"class":"pagination"})[0]("a", {"class":"LastPage"})[0]["href"]
+		LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
+		# (OK) LastPage = re.findall('[0-9]+', LastA)[0]
+		# (OK) LastPage = re.findall('[0-9]+', LastA)
+
+		# LastPage = re.search('page=([0-9]+)[^?]*', LastA)
+		# lastPage = int(re.findall(r'pageNo=([0-9]+)[^<]*last page',res.text)[0])
+		# LastA = bsObj.findAll("pagination", {"class":"LastPage"})[0]["href"]
+		# LastPage = int(re.findAll("[0-9]+$",LastA)[0])
+
+		context['LastPage'] = LastPage
+
+		# if LastPage:
+			# context['LastPage'] = LastPage
+
+		# context['LastPage'] = print(LastPage)
+
+		# context['LastPage'] = LastA # ?pae=1093&dl=
+
 
 		with open("SHARP/K/K_" + str(yid) + ".csv", "w", encoding='utf-8') as file:
 		# with open("SHARP/K/K_2019.csv", "w", encoding='utf-8') as file:
