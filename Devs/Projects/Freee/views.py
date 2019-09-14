@@ -1,11 +1,11 @@
 #//+------------------------------------------------------------------+
-#//|                       VerysVeryInc.Python3.Django.Index.Views.py |
+#//|                       VerysVeryInc.Python3.Django.Freee.Views.py |
 #//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
 #//|                 https://github.com/MatsuoStation/Python3.Django/ |
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.11 Update:2019.09.04" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.20 Update:2019.09.14" |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -23,6 +23,11 @@ import pymysql.cursors
 
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 
+import csv
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import ssl
+
 
 ### DictFetchAll ###
 def dictfetchall(cursor):
@@ -32,6 +37,73 @@ def dictfetchall(cursor):
 		dict(zip(columns, row))
 		for row in cursor.fetchall()
 	]
+
+
+### Uriage_CSV ###
+class Uriage_CSV(ListView):
+
+	model = Name_Test20
+	form_class = YearForm
+	template_name = 'uriage_csv.html'
+	context_object_name = "nametb"
+
+	def post(self, request, *args, **kwargs):
+		form = self.form_class(request.POST)
+		yid_post = request.POST['yid']
+
+		if form.is_valid():
+			return HttpResponseRedirect( '/Freee/Uriage_CSV/%s' % yid_post )
+
+		return render(request, self.template_name, {'form': form})
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		context['form'] = YearForm()
+
+		yid = self.kwargs.get('yid')
+		SHARP20_K = 'SHARP20_K_' + str(yid)
+		context['SHARP20_K'] = SHARP20_K
+
+		### CSV ###
+		# SSL
+		ssl._create_default_https_context = ssl._create_unverified_context
+
+		# URL
+		html = urlopen("https://dev.matsuostation.com/Freee/Uriage/2019/")
+		bsObj = BeautifulSoup(html, "html.parser")
+
+		# Table
+		table = bsObj.findAll("table", {"class":"table"})[0]
+		rows = table.findAll("tr")
+
+		with open("SHARP/K/K_2019.csv", "w", encoding='utf-8') as file:
+			wr = csv.writer(file)
+			for row in rows:
+				csvRow = []
+				for cell in row.findAll(['td', 'th']):
+					csvRow.append(cell.get_text())
+				wr.writerow(csvRow)
+
+
+		return context
+
+
+### Uriage_Get ###
+def Uriage_Get(request):
+	# return HttpResponse("Hello Uriage.Py3 You're at the Uriage.")
+
+	if request.method == 'POST':
+		form = YearForm(request.POST)
+		yid_post = request.POST['yid']
+		if form.is_valid():
+			return HttpResponseRedirect('/Freee/Uriage_CSV/%s' % yid_post)
+
+	else:
+		form = YearForm()
+
+	return render(request, 'uriage_get.html', {'form': form})
+
 
 ### Uriage_List ###
 class Uriage_List(ListView):

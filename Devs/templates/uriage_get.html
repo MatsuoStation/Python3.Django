@@ -1,0 +1,36 @@
+<!--
+#//+------------------------------------------------------------------+
+#//|            VerysVeryInc.Python3.Django.Templates.Uriage_Get.html |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//| "VsV.Py3.Dj.TLs.Uriage_Get.html - Ver.3.20.20 Update:2019.09.14" |
+#//+------------------------------------------------------------------+
+-->
+{% extends "./base.html" %}
+{% load humanize %}
+{% load filter %}
+
+
+{% block title %}Uriage_CSV | 売上高.CSV{% endblock title %}
+
+{% block content %}
+
+<main role="main" class="container">
+  <div class="starter-template">
+        <h1>Uriage_CSV / 売上高.CSV</h1>
+
+        <P>決算書：売上高CSV</P>
+        <form action="" method="POST" class="form-horizontal" role="form">
+          {% csrf_token %}
+          <!-- {{ form.as_p }} -->
+          {{ form }}
+          <input type="submit" name="送信">
+        </form>
+
+  </div>
+</main>
+
+{% endblock content %}

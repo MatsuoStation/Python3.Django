@@ -1,11 +1,11 @@
 #//+------------------------------------------------------------------+
-#//|                        VerysVeryInc.Python3.Django.Index.urls.py |
+#//|                        VerysVeryInc.Python3.Django.Freee.urls.py |
 #//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
 #//|                 https://github.com/MatsuoStation/Python3.Django/ |
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|        "VsV.Py3.Dj.Freee.urls.py - Ver.3.20.7 Update:2019.09.03" |
+#//|       "VsV.Py3.Dj.Freee.urls.py - Ver.3.20.20 Update:2019.09.14" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -36,4 +36,6 @@ urlpatterns = [
     ### 売上高 ###
     path('Uriage/', views.Uriage, name='uriage'),
     path('Uriage/<int:yid>/', views.Uriage_List.as_view(), name='uriage_list'),
+    path('Uriage_CSV/', views.Uriage_Get, name='uriage_get'),
+    path('Uriage_CSV/<int:yid>/', views.Uriage_CSV.as_view(), name='uriage_csv'),
 ]
