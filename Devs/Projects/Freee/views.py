@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.31 Update:2019.09.16" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.32 Update:2019.09.16" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -30,6 +30,11 @@
 #//|            https://qiita.com/haru1977/items/53c582eb9e264ccf8574 |
 #//|                                                           @ysdyt |
 #//|               https://qiita.com/ysdyt/items/9ccca82fc5b504e7913a |
+#//|                                              * Pandas : Delete * |
+#//|          https://linus-mk.hatenablog.com/entry/2019/01/10/003349 |
+#//|                        https://note.nkmk.me/python-pandas-query/ |
+#//|                     https://pythondatascience.plavox.info/pandas |
+#//|          /%E8%A1%8C%E3%83%BB%E5%88%97%E3%82%92%E5%89%8A%E9%99%A4 |
 #//+------------------------------------------------------------------+
 #//|                                                        * toCSV * |
 #//|                    https://blog.imind.jp/entry/2019/04/12/224942 |
@@ -190,8 +195,34 @@ class Uriage_CSV(ListView):
 		if os.path.exists("SHARP/K/K_" + str(yid) + ".csv"):
 			context['CSV_Check'] = "True"
 
+			## RedCord_*.CSV : File_Check
 			if os.path.exists("SHARP/K/K_RedCode_" + str(yid) + ".csv"):
 				context['CSV_RedCord'] = "True"
+
+
+				## K_*.CSV : Delete RedCord_*.CSV
+				### Pandas : CSV.読み取り ###
+				# df = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'}, index_col=0)
+				df = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'})
+
+				### Pandas : 条件指定 ###
+				dfk = df.reset_index().query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"').index
+				# dfk = df.query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"')
+				# dfk = df
+
+				# dfd = df.drop(12)
+				dfd = df.drop(dfk)
+				dfd.to_csv("SHARP/K/K_R_" + str(yid) + ".csv", encoding='utf-8', index=0)
+				# dfd.to_csv("SHARP/K/K_R_" + str(yid) + ".csv", encoding='utf-8')
+				# dfk.to_csv("SHARP/K/K_R_" + str(yid) + ".csv", encoding='utf-8')
+
+
+				# print(df.reset_index().query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"').index[0])
+				# print(df.reset_index().query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"').index)
+				# print(dfk.reset_index())
+
+
+				context['dfk'] = dfk
 
 			else:
 				context['CSV_RedCord'] = "False"
