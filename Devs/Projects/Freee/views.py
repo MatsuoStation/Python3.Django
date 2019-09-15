@@ -5,10 +5,34 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.30 Update:2019.09.15" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.31 Update:2019.09.16" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
+#//+------------------------------------------------------------------+
+#//|                                     * Scraping : BeautifulSoup * |
+#//|                                                           @hujuu |
+#//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
+#//|                                                       @tomson784 |
+#//|           https://qiita.com/tomson784/items/88a3fd2398a41932762a |
+#//+------------------------------------------------------------------+
+#//|                                           * Regular Expression * |
+#//|                                https://www.sejuku.net/blog/23232 |
+#//+------------------------------------------------------------------+
+#//|                                                       * IsFile * |
+#//|                            https://techacademy.jp/magazine/18994 |
+#//+------------------------------------------------------------------+
+#//|                                                       * Pandas * |
+#//|                 https://note.nkmk.me/python-pandas-read-csv-tsv/ |
+#//|                 https://note.nkmk.me/python-pandas-dtype-astype/ |
+#//| https://www.soudegesu.com/post/python/pandas-preprocess-columns/ |
+#//|                                                        @haru1977 |
+#//|            https://qiita.com/haru1977/items/53c582eb9e264ccf8574 |
+#//|                                                           @ysdyt |
+#//|               https://qiita.com/ysdyt/items/9ccca82fc5b504e7913a |
+#//+------------------------------------------------------------------+
+#//|                                                        * toCSV * |
+#//|                    https://blog.imind.jp/entry/2019/04/12/224942 |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -74,6 +98,27 @@ def CSV_Write(file, LastPage, url):
 			for cell in row.findAll(['td', 'th']):
 				csvRow.append(cell.get_text())
 			wr.writerow(csvRow)
+
+### CSV.RedCord ###
+def CSV_RedCord(yid):
+
+	### Pandas : CSV.読み取り ###
+	df = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'}, index_col=0, encoding='utf-8')
+
+	## カラム : 型設定
+	df['管理番号'].astype('str').str.zfill(4)
+	df['C_No'].astype('str').str.zfill(4)
+
+	## 抽出
+	dfs = df[df['red_code'] == 8]
+
+	## toCSV
+	dfs.to_csv("SHARP/K/K_RedCode_" + str(yid) + ".csv", encoding='utf-8')
+
+	## df.型出力
+	print(df.dtypes)
+
+	return dfs
 
 
 ### Uriage_CSV ###
@@ -145,7 +190,17 @@ class Uriage_CSV(ListView):
 		if os.path.exists("SHARP/K/K_" + str(yid) + ".csv"):
 			context['CSV_Check'] = "True"
 
-			### Pandas : CSV.読み取り ###
+			if os.path.exists("SHARP/K/K_RedCode_" + str(yid) + ".csv"):
+				context['CSV_RedCord'] = "True"
+
+			else:
+				context['CSV_RedCord'] = "False"
+
+				### Pandas : CSV.RedCord ###
+				dfs = CSV_RedCord(yid)
+				context['dfs'] = dfs
+
+			''' (OK) Ver.3.20.30
 			df = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'}, index_col=0)
 			# dfr = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv").head(2)
 			# dfs = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", header=1).head(2)
@@ -164,12 +219,15 @@ class Uriage_CSV(ListView):
 			print(df.dtypes)
 
 			context['dfs'] = dfs
+			'''
 
 
 		else:
 			context['CSV_Check'] = "False"
 
 			with open("SHARP/K/K_" + str(yid) + ".csv", "w", encoding='utf-8') as file:
+				
+				### CSV.出力 ###
 				CSV_Write(file, LastPage, url)
 
 		# with open("SHARP/K/K_" + str(yid) + ".csv", "w", encoding='utf-8') as file:
