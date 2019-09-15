@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.24 Update:2019.09.15" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.30 Update:2019.09.15" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -32,6 +32,9 @@ from bs4 import BeautifulSoup
 import ssl
 
 import requests, re, time, os
+
+import pandas as pd
+import numpy as np
 
 
 ### DictFetchAll ###
@@ -119,9 +122,10 @@ class Uriage_CSV(ListView):
 		# res = requests.get(html, headers=Agent)
 
 		LastA = bsObj.findAll("div", {"class":"pagination"})[0]("a", {"class":"LastPage"})[0]["href"]
-		LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
+		# (Main) LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
 
-		# (Test) LastPage = int(3)
+		# (Test)
+		LastPage = int(3)
 		# (OK) LastPage = re.findall('[0-9]+', LastA)[0]
 		# (OK) LastPage = re.findall('[0-9]+', LastA)
 		# LastPage = int(re.findAll(r'page=([0-9]+)[^<]*LastPage',res.text)[0])
@@ -140,6 +144,27 @@ class Uriage_CSV(ListView):
 		## *.CSV : File_Check
 		if os.path.exists("SHARP/K/K_" + str(yid) + ".csv"):
 			context['CSV_Check'] = "True"
+
+			### Pandas : CSV.読み取り ###
+			df = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'}, index_col=0)
+			# dfr = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv").head(2)
+			# dfs = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", header=1).head(2)
+			# dfs = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", header=1).head(1)
+			# dfs = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", names=('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R'))
+
+			# dfs = df[['発生日','管理番号','red_code']].query('red_code == 8')
+			# dfs = dfr[['収支区分','管理番号']].head() # 任意の列のみ.取得
+
+			df['管理番号'].astype('str').str.zfill(4)
+			df['C_No'].astype('str').str.zfill(4)
+
+			dfs = df[df['red_code'] == 8]
+			dfs.to_csv("SHARP/K/K_Red_" + str(yid) + ".csv", encoding='utf-8')
+
+			print(df.dtypes)
+
+			context['dfs'] = dfs
+
 
 		else:
 			context['CSV_Check'] = "False"

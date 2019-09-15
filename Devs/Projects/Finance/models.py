@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.13.4 Update:2019.08.31" |
+#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.20.30 Update:2019.09.15" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -72,6 +72,7 @@ class SHARP20_K_2020(models.Model):
 	coupon	= models.IntegerField( verbose_name='クーポン割引区分', default=0 )			# max_length=1,
 	dis_unit= models.IntegerField( verbose_name='割引単価', default=0 )					# max_length=5,
 	d_value	= models.IntegerField( verbose_name='割引金額', default=0 )					# max_length=6,
+	# c_day 	= models.DateTimeField( verbose_name='伝票年月日(修正)' )						# 0000-00-00 00:00
 	c_day	= models.IntegerField( verbose_name='伝票年月日(修正)', default=0 )			# max_length=8,
 	c_no	= models.CharField( verbose_name='伝票No(修正)', default=None, max_length=4 )
 	sub_data= models.CharField( verbose_name='サブデータ(修正)', default=None, max_length=8 )
@@ -138,6 +139,7 @@ class SHARP20_K_2019(models.Model):
 	coupon	= models.IntegerField( verbose_name='クーポン割引区分', default=0 )			# max_length=1,
 	dis_unit= models.IntegerField( verbose_name='割引単価', default=0 )					# max_length=5,
 	d_value	= models.IntegerField( verbose_name='割引金額', default=0 )					# max_length=6,
+	# c_day 	= models.DateTimeField( verbose_name='伝票年月日(修正)' )						# 0000-00-00 00:00
 	c_day	= models.IntegerField( verbose_name='伝票年月日(修正)', default=0 )			# max_length=8,
 	c_no	= models.CharField( verbose_name='伝票No(修正)', default=None, max_length=4 )
 	sub_data= models.CharField( verbose_name='サブデータ(修正)', default=None, max_length=8 )
@@ -204,6 +206,7 @@ class SHARP20_K_2018(models.Model):
 	coupon	= models.IntegerField( verbose_name='クーポン割引区分', default=0 )			# max_length=1,
 	dis_unit= models.IntegerField( verbose_name='割引単価', default=0 )					# max_length=5,
 	d_value	= models.IntegerField( verbose_name='割引金額', default=0 )					# max_length=6,
+	# c_day 	= models.DateTimeField( verbose_name='伝票年月日(修正)' )						# 0000-00-00 00:00
 	c_day	= models.IntegerField( verbose_name='伝票年月日(修正)', default=0 )			# max_length=8,
 	c_no	= models.CharField( verbose_name='伝票No(修正)', default=None, max_length=4 )
 	sub_data= models.CharField( verbose_name='サブデータ(修正)', default=None, max_length=8 )
@@ -270,6 +273,7 @@ class SHARP20_K_2017(models.Model):
 	coupon	= models.IntegerField( verbose_name='クーポン割引区分', default=0 )			# max_length=1,
 	dis_unit= models.IntegerField( verbose_name='割引単価', default=0 )					# max_length=5,
 	d_value	= models.IntegerField( verbose_name='割引金額', default=0 )					# max_length=6,
+	# c_day 	= models.DateTimeField( verbose_name='伝票年月日(修正)' )						# 0000-00-00 00:00
 	c_day	= models.IntegerField( verbose_name='伝票年月日(修正)', default=0 )			# max_length=8,
 	c_no	= models.CharField( verbose_name='伝票No(修正)', default=None, max_length=4 )
 	sub_data= models.CharField( verbose_name='サブデータ(修正)', default=None, max_length=8 )
@@ -336,6 +340,7 @@ class SHARP20_K_2016(models.Model):
 	coupon	= models.IntegerField( verbose_name='クーポン割引区分', default=0 )			# max_length=1,
 	dis_unit= models.IntegerField( verbose_name='割引単価', default=0 )					# max_length=5,
 	d_value	= models.IntegerField( verbose_name='割引金額', default=0 )					# max_length=6,
+	# c_day 	= models.DateTimeField( verbose_name='伝票年月日(修正)' )						# 0000-00-00 00:00
 	c_day	= models.IntegerField( verbose_name='伝票年月日(修正)', default=0 )			# max_length=8,
 	c_no	= models.CharField( verbose_name='伝票No(修正)', default=None, max_length=4 )
 	sub_data= models.CharField( verbose_name='サブデータ(修正)', default=None, max_length=8 )

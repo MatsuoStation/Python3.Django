@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.26 Update:2019.02.18" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.20.30 Update:2019.09.15" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -21,6 +21,10 @@
 #//+------------------------------------------------------------------+
 #//|                                                    @beatdown0514 |
 #//|        https://qiita.com/beatdown0514/items/361d6c213c2a1f2f5767 |
+#//+------------------------------------------------------------------+
+#//|                                                       @StrToDate |
+#//|          https://qiita.com/motoki1990/items/8275dbe02d5fd5fa6d2d |
+#//|                    https://codeday.me/jp/qa/20190302/349263.html |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # from django.template.defaultfilters import register
@@ -45,6 +49,13 @@ ndigits = 0
 
 
 ### New ###
+# CDay_Int
+@register.filter("cday_date")
+def cday_date(value):
+	date_str = str(value)
+	c_date = datetime.strptime(date_str, '%Y%m%d')
+	return c_date
+
 # GC_SC
 @register.filter("gc_sc")
 def gc_sc(gc, sc):
