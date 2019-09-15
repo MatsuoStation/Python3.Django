@@ -5,7 +5,9 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.22 Update:2019.09.14" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.23 Update:2019.09.15" |
+#//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
+#//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -68,45 +70,69 @@ class Uriage_CSV(ListView):
 		context['SHARP20_K'] = SHARP20_K
 
 		### CSV ###
-		# SSL
+		## SSL
 		ssl._create_default_https_context = ssl._create_unverified_context
 
-		# URL
+		## URL
 		url = "https://dev.matsuostation.com/Freee/Uriage/" + str(yid) + "/"
 		html = urlopen(url)
 		# html = urlopen("https://dev.matsuostation.com/Freee/Uriage/" + str(yid) + "/")
 		# html = urlopen("https://dev.matsuostation.com/Freee/Uriage/2019/")
 		bsObj = BeautifulSoup(html, "html.parser")
 
-		# Table
-		table = bsObj.findAll("table", {"class":"table"})[0]
-		rows = table.findAll("tr")
+		## Table
+		# (OK) table = bsObj.findAll("table", {"class":"table"})[0]
+		# (OK) rows = table.findAll("tr")
 
-		# LastPage
+		## LastPage
 		# res = requests.get(url)
 		# res = requests.get(html, headers=Agent)
-		#  LastPage = int(re.findAll(r'page=([0-9]+)[^<]*LastPage',res.text)[0])
+
 		LastA = bsObj.findAll("div", {"class":"pagination"})[0]("a", {"class":"LastPage"})[0]["href"]
 		LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
+		# (Test) LastPage = int(3)
 		# (OK) LastPage = re.findall('[0-9]+', LastA)[0]
 		# (OK) LastPage = re.findall('[0-9]+', LastA)
-
+		# LastPage = int(re.findAll(r'page=([0-9]+)[^<]*LastPage',res.text)[0])
 		# LastPage = re.search('page=([0-9]+)[^?]*', LastA)
-		# lastPage = int(re.findall(r'pageNo=([0-9]+)[^<]*last page',res.text)[0])
 		# LastA = bsObj.findAll("pagination", {"class":"LastPage"})[0]["href"]
-		# LastPage = int(re.findAll("[0-9]+$",LastA)[0])
 
 		context['LastPage'] = LastPage
 
 		# if LastPage:
 			# context['LastPage'] = LastPage
-
 		# context['LastPage'] = print(LastPage)
-
 		# context['LastPage'] = LastA # ?pae=1093&dl=
 
 
+		## Scraping
 		with open("SHARP/K/K_" + str(yid) + ".csv", "w", encoding='utf-8') as file:
+			wr = csv.writer(file)
+
+			for page in range(1, LastPage+1):
+
+				## URL.ReSetup
+				urlPage = url + "?page=" + str(page)
+				time.sleep(1)
+				htmlPage = urlopen(urlPage)
+				bsObjPage = BeautifulSoup(htmlPage, "html.parser")
+
+				## Table
+				table = bsObjPage.findAll("table", {"class":"table"})[0]
+
+				if page == 1:
+					rows = table.findAll("tr")
+
+				else:
+					rows = table.findAll("tr")[1:]
+
+				for row in rows:
+					csvRow = []
+					for cell in row.findAll(['td', 'th']):
+						csvRow.append(cell.get_text())
+					wr.writerow(csvRow)
+
+		''' (OK) Ver.3.20.21
 		# with open("SHARP/K/K_2019.csv", "w", encoding='utf-8') as file:
 			wr = csv.writer(file)
 			for row in rows:
@@ -114,6 +140,7 @@ class Uriage_CSV(ListView):
 				for cell in row.findAll(['td', 'th']):
 					csvRow.append(cell.get_text())
 				wr.writerow(csvRow)
+		'''
 
 
 		return context
@@ -192,7 +219,7 @@ class Uriage_List(ListView):
 			conn.close()
 
 		### Pager ###
-		paginator = Paginator(SQL_Data, 10)
+		paginator = Paginator(SQL_Data, 60)
 		try:
 			page = int(self.request.GET.get('page'))
 		except:
