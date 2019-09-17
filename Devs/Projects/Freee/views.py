@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.32 Update:2019.09.16" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.33 Update:2019.09.17" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -74,7 +74,6 @@ def dictfetchall(cursor):
 		dict(zip(columns, row))
 		for row in cursor.fetchall()
 	]
-
 
 ### CSV.Write ###
 def CSV_Write(file, LastPage, url):
@@ -175,7 +174,7 @@ class Uriage_CSV(ListView):
 		# (Main) LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
 
 		# (Test)
-		LastPage = int(3)
+		LastPage = int(5)
 		# (OK) LastPage = re.findall('[0-9]+', LastA)[0]
 		# (OK) LastPage = re.findall('[0-9]+', LastA)
 		# LastPage = int(re.findAll(r'page=([0-9]+)[^<]*LastPage',res.text)[0])
@@ -206,13 +205,37 @@ class Uriage_CSV(ListView):
 				df = pd.read_csv("SHARP/K/K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'})
 
 				### Pandas : 条件指定 ###
+				dfr = pd.read_csv("SHARP/K/K_RedCode_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'}, encoding='utf-8')
+
 				dfk = df.reset_index().query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"').index
 				# dfk = df.query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"')
 				# dfk = df
 
+				## カラム : 型設定
+				# dfr['管理番号'].astype('str').str.zfill(4)
+				# dfr['C_No'].astype('str').str.zfill(4)
+
+				## 抽出
+				## (C_Day : True)
+				dfr_s = dfr[dfr['C_Day'] != ""]
+				context['dfr_s'] = dfr_s
+
+				dfr_i = df[df['C_Day'].astype('str').str.contains("201")].index
+				# dfr_i = dfr[dfr['C_Day'].astype('str').str.contains('201')].index
+				# dfr_i = dfr[dfr['C_Day'].astype('str').str.contains('201')]
+				# (OK) dfr_i = dfr[dfr['C_Day'] != ""].index
+				# dfr_i = dfr.reset_index().index
+				context['dfr_i'] = dfr_i
+
+				dfd = df.drop(dfr_i)
+				dfd.to_csv("SHARP/K/K_CNo_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
+
+				## (C_Day : False)
+
+
 				# dfd = df.drop(12)
-				dfd = df.drop(dfk)
-				dfd.to_csv("SHARP/K/K_R_" + str(yid) + ".csv", encoding='utf-8', index=0)
+				# (OK) dfd = df.drop(dfk)
+				# (OK) dfd.to_csv("SHARP/K/K_CNo_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
 				# dfd.to_csv("SHARP/K/K_R_" + str(yid) + ".csv", encoding='utf-8')
 				# dfk.to_csv("SHARP/K/K_R_" + str(yid) + ".csv", encoding='utf-8')
 
