@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.40 Update:2019.09.19" |
+#//|"VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.41 Update:2019.09.19" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -115,7 +115,7 @@
               <td>{{ sql.m_datetime|date:"Y年m月d日掛売上(CC)" }}</td><!-- 備考 -->
               <td>{{ sql.s_code }}</td><!-- 品目 -->
               <td>SS関係</td><!-- 部門 -->
-              <td>{{ sql.m_datetime|date:"Y-m-d" }}</td><!-- 決済日 -->
+              <td></td><!-- 決済日 -->
               <td></td><!-- 決済口座 -->
               <td></td><!-- 決済金額 -->
               <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 決済金額 -->
@@ -130,7 +130,7 @@
               <td>{{ sql.m_datetime|date:"Y年m月d日掛売上" }}</td><!-- 備考 -->
               <td>{{ sql.s_code }}</td><!-- 品目 -->
               <td>SS関係</td><!-- 部門 -->
-              <td>{{ sql.m_datetime|date:"Y-m-d" }}</td><!-- 決済日 -->
+              <td></td><!-- 決済日 -->
               <td></td><!-- 決済口座 -->
               <td></td><!-- 決済金額 -->
               <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 決済金額 -->
