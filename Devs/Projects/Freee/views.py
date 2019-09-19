@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.35 Update:2019.09.18" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.36 Update:2019.09.18" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -35,6 +35,10 @@
 #//|                        https://note.nkmk.me/python-pandas-query/ |
 #//|                     https://pythondatascience.plavox.info/pandas |
 #//|          /%E8%A1%8C%E3%83%BB%E5%88%97%E3%82%92%E5%89%8A%E9%99%A4 |
+#//|                                    * Pandas : read_cse.usecols * |
+#//|   http://starpentagon.net/analytics/python_csv_specific_columns/ |
+#//|                                          * Pandas : for x in a * |
+#//|                    https://ja.stackoverflow.com/questions/47331/ |
 #//+------------------------------------------------------------------+
 #//|                                                        * toCSV * |
 #//|                    https://blog.imind.jp/entry/2019/04/12/224942 |
@@ -215,45 +219,39 @@ class Uriage_CSV(ListView):
 
 				## RedCode.CSV : 抽出
 				df_r_target = df_r.query('C_Day.astype("str").str.contains("201")', engine='python')
-				df_r_target_l = len(df_r_target)
-
 				context['df_r_target'] = df_r_target
+
+				df_r_target_l = len(df_r_target)
 				context['df_r_target_len'] = df_r_target_l
 
-				# (NG)df_r_target['RC'] = pd.concat([df_r_target['C_Day'], df_r_target['C_No']])
-
-				# df_r_target_v = np.array(df_r_target['C_Day'].astype("str").str.split(','))
-				# df_r_target_v = np.append(df_r_target_v, [df_r_target['C_No']], axis=1)
-				# df_r_target['RC'] = df_r_target['C_Day'].astype("str").str.split(',')
-				# df_r_target['rCD'] = df_r_target["C_Day"].No.values.tolist()
-				# df_r_target['rCN'] = df_r_target["C_No"].values.tolist()
-				# df_r_target['rCD'] = list(df_r_target['C_Day'])
-				# df_r_target['rCN'] = list(df_r_target['C_No'])
-				# df_r_target['rCD'] = df_r_target['C_Day'].astype("str").str.split(',')
-				# df_r_target['rCN'] = df_r_target['C_No'].astype("str").str.split(',')
-				# df_r_target['RC'] = df_r_target['rCN']
-
-				# df_r_target['RC'] = df_r_target['RC'].extend(df_r_target['rCN'])
-
 				df_r_target_v = df_r_target.values.tolist()
-				# df_r_target_v = df_r_target.values
-				# df_r_target_v = np.array([range(df_r_list_v, df_r_list_v+2) for df_r_list_v])
-
-				# (OK) df_r_target_v = df_r_target['RC']
-				# df_r_target_v = df_r_target['C_Day'].apply(len)
-				# df_r_target_v = df_r_target['C_Day','C_No'].str.split(',')
-				# for row in df_r_target.itertuples():
-				#	df_r_target_v = [row[14]]
-				# for index, row in df_r_target.iterrows():
-				#	df_r_target_v = [row]
-				# for C_Day, C_No, 品目 in zip(df_r_target['C_Day'], df_r_target['C_No'], df_r_target['品目']):
-				# for C_Day in df_r_target['C_Day']:
-					# df_r_target_v = [C_Day,C_No,品目]
-
 				context['df_r_target_v'] = df_r_target_v
 
-				# (OK)
-				df_k_target_i = df_k.reset_index().query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"').index
+
+				df_k_target_i = []
+				# df_r_target_q = pd.DataFrame(df_r_target_v)
+				for x in df_r_target_v:
+					df_k_target_i.append(df_k.reset_index().query('発生日==@x[1] & 管理番号==@x[2] & 品目==@x[0]').index[0])
+
+				# dft = df_k.drop(df_k_target_i)
+				# dft.to_csv("SHARP/K/K_Target_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
+
+
+				# df_k_target_i = []
+				# for x in df_r_target_v:
+					# (OK) df_k_target_i.append(x[0])
+				#	df_k_target_i = df_k.query('発生日 == @df_k_target_i').index
+				# (OK) df_k_target_i = pd.DataFrame(df_r_target_v)
+				# df_k_target_q = pd.DataFrame(df_r_target_v)
+				# df_k_target_i = df_k_target_q()
+				# df_k_target_i = df_k.query("@df_r_target_v")
+				# df_k_target_i = df_k.reset_index().query('発生日 == ' + "2018-08-01" + ' & 管理番号 == ' + "0042" + ' & 品目 == ' + "10100").index
+				# df_k_target_i = df_k.reset_index(['C_Day','C_No']).index
+
+				# for tl in df_r_target_l:
+				#	df_k_target_i = df_r_target.values
+
+				# (OK) df_k_target_i = df_k.reset_index().query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"').index
 				# dfk = df.query('発生日 == "2018-08-01" & 管理番号 == "0042" & 品目 == "10100"')
 				# dfk = df
 
