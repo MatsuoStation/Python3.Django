@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.30 Update:2019.09.15" |
+#//|"VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.40 Update:2019.09.19" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -89,6 +89,9 @@
               <td>{{ sql.g_code }}</td><!-- 取引先 -->
               <td>売上高</td><!-- 勘定科目 -->
               <td>課税売上8%</td><!-- 税区分 -->
+
+              <!-- 現金売上 -->
+              {% if sql.r_code == 0 or sql.r_code == 1 %}
               <td>{{ sql.value|add:sql.tax|red_value:sql.red_code }}</td><!-- 金額 -->
               <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 金額 -->
               <td>内税</td><!-- 税計算区分 -->
@@ -101,14 +104,56 @@
               <td>現金</td><!-- 決済口座 -->
               <td>{{ sql.value|add:sql.tax|red_value:sql.red_code }}</td><!-- 決済金額 -->
               <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 決済金額 -->
+
+              <!-- 掛売上(CC) -->
+              {% elif sql.r_code == 2 %}
+              <td>{{ sql.value|add:sql.tax|red_value:sql.red_code }}</td><!-- 金額 -->
+              <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 金額 -->
+              <td>内税</td><!-- 税計算区分 -->
+              <td>{{ sql.tax|red_value:sql.red_code }}</td><!-- 税額 -->
+              <!--td>{{ sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 税額 -->
+              <td>{{ sql.m_datetime|date:"Y年m月d日掛売上(CC)" }}</td><!-- 備考 -->
+              <td>{{ sql.s_code }}</td><!-- 品目 -->
+              <td>SS関係</td><!-- 部門 -->
+              <td>{{ sql.m_datetime|date:"Y-m-d" }}</td><!-- 決済日 -->
+              <td></td><!-- 決済口座 -->
+              <td></td><!-- 決済金額 -->
+              <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 決済金額 -->
+
+              <!-- 掛売上 -->
+              {% else %}
+              <td>{{ sql.value|add:sql.tax|red_value:sql.red_code }}</td><!-- 金額 -->
+              <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 金額 -->
+              <td>内税</td><!-- 税計算区分 -->
+              <td>{{ sql.tax|red_value:sql.red_code }}</td><!-- 税額 -->
+              <!--td>{{ sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 税額 -->
+              <td>{{ sql.m_datetime|date:"Y年m月d日掛売上" }}</td><!-- 備考 -->
+              <td>{{ sql.s_code }}</td><!-- 品目 -->
+              <td>SS関係</td><!-- 部門 -->
+              <td>{{ sql.m_datetime|date:"Y-m-d" }}</td><!-- 決済日 -->
+              <td></td><!-- 決済口座 -->
+              <td></td><!-- 決済金額 -->
+              <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 決済金額 -->
+              {% endif %}
+
+              <!-- Red_Code.False -->
+              {% if sql.red_code == 0 %}
+              <td></td>
+              <!-- Red_Code.True -->
+              {% else %}
               <td>{{ sql.red_code }}</td><!-- 赤伝票 -->
+              {% endif %}
+
+              <!-- C_Day.False -->
               {% if sql.c_day == 0 %}
               <td></td>
               <td></td>
+              <!-- C_Day.True -->
               {% else %}
               <td>{{ sql.c_day|cday_date|date:"Y-m-d" }}</td>
               <td>{{ sql.c_no }}</td>
               {% endif %}
+
             </tr>
             {% endfor %}
 
