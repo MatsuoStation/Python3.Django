@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.42 Update:2019.09.20" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.43 Update:2019.09.20" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -118,15 +118,15 @@ def CSV_RedCord(yid):
 	df['C_No'].astype('str').str.zfill(4)
 
 	## 抽出
-	df_redcode = df[df['red_code'] == 8]
+	df_rc = df[df['red_code'] == 8]
 
 	## toCSV
-	df_redcode.to_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", encoding='utf-8')
+	df_rc.to_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", encoding='utf-8')
 
 	## df.型出力
 	print(df.dtypes)
 
-	return df_redcode
+	return df_rc
 
 
 ### Uriage_CSV ###
@@ -163,8 +163,9 @@ class Uriage_CSV(ListView):
 		LastA = bsObj.findAll("div", {"class":"pagination"})[0]("a", {"class":"LastPage"})[0]["href"]
 
 		## (Main)
-		LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
-		## (Test) LastPage = int(5)
+		# LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
+		## (Test)
+		LastPage = int(15)
 
 		context['LastPage'] = LastPage
 
@@ -184,8 +185,8 @@ class Uriage_CSV(ListView):
 				context['ALL_RedCord_Check'] = "False"
 
 				## ALL_RedCode_*.CSV 出力
-				df_redcode = CSV_RedCord(yid)
-				context['df_redcode']
+				df_rc = CSV_RedCord(yid)
+
 
 
 		## SHARP/K/ALL_K_*.CSV : False
