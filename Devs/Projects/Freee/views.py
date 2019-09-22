@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.44 Update:2019.09.21" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.45 Update:2019.09.22" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -180,10 +180,19 @@ class Uriage_CSV(ListView):
 				context['ALL_RedCord_Check'] = "True"
 
 				### Pandas : ALL_K_*.CSV - 読み取り
-				df_k = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'}, encoding='utf-8')
+				df_k = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object','取引先':'object','決済金額':'object'}, encoding='utf-8')
+				## カラム : 型設定
+				# df_k['管理番号'].astype('str').str.zfill(4)
+				# df_k['C_No'].astype('str').str.zfill(4)
+				# df_k['取引先'].astype('str').str.zfill(4)
+				# df_k['決済金額'].fillna(0.0).astype(int)
+				# df_k['決済金額'].astype(np.int)
+
+				## df.型出力
+				# print(df_k.dtypes)
 
 				### Pandas : ALL_RedCode_*.CSV - 読み取り
-				df_r = pd.read_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['C_Day','C_No','品目'], dtype={'管理番号':'object','C_No':'object'}, encoding='utf-8')
+				df_r = pd.read_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['C_Day','C_No','品目'], dtype={'管理番号':'object','取引先':'object','C_No':'object','決済金額':'object'}, encoding='utf-8')
 
 				### Pandas : 条件指定
 				## ALL :
@@ -222,6 +231,24 @@ class Uriage_CSV(ListView):
 				df_r_ct_mine_i = df_k[df_k['C_Day'].astype('str').str.contains("201")].index
 				context['df_r_ct_mine_i'] = df_r_ct_mine_i
 
+				## Target & Mine : Delete後 - CSV.出力
+				df_r_ct_t = df_k.drop(df_r_ct_target_i)
+				## カラム : 型設定
+				# df_r_ct_t['管理番号'].astype('str').str.zfill(4)
+				# df_r_ct_t['C_No'].astype('str').str.zfill(4)
+
+				df_r_ct_m = df_r_ct_t.drop(df_r_ct_mine_i)
+
+				## カラム : 型設定
+				# df_r_ct_m['管理番号'].astype('str').str.zfill(4)
+				# df_r_ct_m['C_No'].astype('str').str.zfill(4)
+				# df_r_ct_m['決済金額'].fillna(0.0).astype(int)
+				# df_r_ct_m['取引先'].astype('str').str.zfill(4)
+
+				## df.型出力
+				# print(df_r_ct_m.dtypes)
+
+				df_r_ct_m.to_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
 
 
 			## SHARP/K/RedCode.CSV : False
