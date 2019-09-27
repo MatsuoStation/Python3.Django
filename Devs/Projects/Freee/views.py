@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.47 Update:2019.09.24" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.50 Update:2019.09.27" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -249,6 +249,45 @@ class Uriage_CSV(ListView):
 					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 削除Index
 					df_r_cf_target_v = df_r_cf_target.values.tolist()
 					context['df_r_cf_target_v'] = df_r_cf_target_v
+
+
+					## RedCode : Missing - Cash(0,1) => CreditCard(2)
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 抽出
+					df_r_cf_c_target = df_r.query(\
+						'not C_Day.astype("str").str.contains("201") & r_code.astype("str").str.contains("0") | not C_Day.astype("str").str.contains("201") & r_code.astype("str").str.contains("1")', \
+						engine='python')
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 行数
+					df_r_cf_c_target_l = len(df_r_cf_c_target)
+					context['df_r_cf_c_target_len'] = df_r_cf_c_target_l
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 削除Index
+					df_r_cf_c_target_v = df_r_cf_c_target.values.tolist()
+					context['df_r_cf_c_target_v'] = df_r_cf_c_target_v
+
+
+					## RedCode : Missing - CreditCard(2) => Cash(0,1)
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 抽出
+					df_r_cf_cc_target = df_r.query(\
+						'not C_Day.astype("str").str.contains("201") & r_code.astype("str").str.contains("2")', \
+						engine='python')
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 行数
+					df_r_cf_cc_target_l = len(df_r_cf_cc_target)
+					context['df_r_cf_cc_target_len'] = df_r_cf_cc_target_l
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 削除Index
+					df_r_cf_cc_target_v = df_r_cf_cc_target.values.tolist()
+					context['df_r_cf_cc_target_v'] = df_r_cf_cc_target_v
+
+
+					## RedCode : Missing - Credit(9)
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 抽出
+					df_r_cf_9_target = df_r.query(\
+						'not C_Day.astype("str").str.contains("201") & r_code.astype("str").str.contains("9")', \
+						engine='python')
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 行数
+					df_r_cf_9_target_l = len(df_r_cf_9_target)
+					context['df_r_cf_9_target_len'] = df_r_cf_9_target_l
+					# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 削除Index
+					df_r_cf_9_target_v = df_r_cf_9_target.values.tolist()
+					context['df_r_cf_9_target_v'] = df_r_cf_9_target_v
 
 
 

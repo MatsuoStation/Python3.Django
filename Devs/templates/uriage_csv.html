@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TLs.Uriage_CSV.html - Ver.3.20.47 Update:2019.09.24" |
+#//| "VsV.Py3.Dj.TLs.Uriage_CSV.html - Ver.3.20.50 Update:2019.09.27" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -46,7 +46,17 @@
         <!--p>ALL_RedCode_CDay_True.Target = {{ df_r_ct_target }}</p-->
         <!-- p>K_RedCode_Target_Value = {{ df_r_target_v }}</p-->
         <p>ALL_RedCode_CDay_F.Target_Len = {{ df_r_cf_target_len }}</p>
-        <p>ALL_RedCode_CDay_F.Target_Value = {{ df_r_cf_target_v }}</p-->
+        <p>ALL_RedCode_CDay_F.Target_Value = {{ df_r_cf_target_v }}</p>
+
+        <!-- RedCode : Missing - Cash -->
+        <p>ALL_RedCode_CDay_F.Cash.Target_Len = {{ df_r_cf_c_target_len }}</p>
+        <p>ALL_RedCode_CDay_F.Cash.Target_Value = {{ df_r_cf_c_target_v }}</p>
+        <!-- RedCode : Missing - Cash -->
+        <p>ALL_RedCode_CDay_F.CC.Target_Len = {{ df_r_cf_cc_target_len }}</p>
+        <p>ALL_RedCode_CDay_F.CC.Target_Value = {{ df_r_cf_cc_target_v }}</p>
+        <!-- RedCode : Missing - 9 -->
+        <p>ALL_RedCode_CDay_F.9.Target_Len = {{ df_r_cf_9_target_len }}</p>
+        <p>ALL_RedCode_CDay_F.9.Target_Value = {{ df_r_cf_9_target_v }}</p>
 
         <!--p>ALL_RedCode_CDay_T.Mine_Len = {{ df_r_ct_mine_len }}</p>
         <p>ALL_RedCode_CDay_T.Mine_Index = {{ df_r_ct_mine_i }}</p-->
