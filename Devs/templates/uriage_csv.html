@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TLs.Uriage_CSV.html - Ver.3.20.50 Update:2019.09.27" |
+#//| "VsV.Py3.Dj.TLs.Uriage_CSV.html - Ver.3.20.51 Update:2019.09.27" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -49,8 +49,10 @@
         <p>ALL_RedCode_CDay_F.Target_Value = {{ df_r_cf_target_v }}</p>
 
         <!-- RedCode : Missing - Cash -->
-        <p>ALL_RedCode_CDay_F.Cash.Target_Len = {{ df_r_cf_c_target_len }}</p>
-        <p>ALL_RedCode_CDay_F.Cash.Target_Value = {{ df_r_cf_c_target_v }}</p>
+        <p>ALL_RC_CD_F.Cash.Target_Len = {{ df_r_cf_c_target_len }}</p>
+        <p>ALL_RC_CD_F.Cash.Target_Value = {{ df_r_cf_c_target_v }}</p>
+        <p>ALL_RC_CD_F.CC.Target_Index = {{ df_r_cf_c_target_2 }}</p>
+        <p>ALL_RC_CD_F.Cash.Target_Index = {{ df_r_cf_c_target_i }}</p>
         <!-- RedCode : Missing - Cash -->
         <p>ALL_RedCode_CDay_F.CC.Target_Len = {{ df_r_cf_cc_target_len }}</p>
         <p>ALL_RedCode_CDay_F.CC.Target_Value = {{ df_r_cf_cc_target_v }}</p>
