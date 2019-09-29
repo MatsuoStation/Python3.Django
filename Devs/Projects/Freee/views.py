@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.46 Update:2019.09.24" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.60 Update:2019.09.29" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -111,11 +111,11 @@ def CSV_Write(file, LastPage, url):
 def CSV_RedCord(yid):
 
 	### Pandas : ALL_K_*.CSV - 読み取り ###
-	df = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object'}, index_col=0, encoding='utf-8')
+	df = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','CNo':'object'}, index_col=0, encoding='utf-8')
 
 	## カラム : 型設定
 	df['管理番号'].astype('str').str.zfill(4)
-	df['C_No'].astype('str').str.zfill(4)
+	df['CNo'].astype('str').str.zfill(4)
 
 	## 抽出
 	df_rc = df[df['red_code'] == 8]
@@ -131,10 +131,10 @@ def CSV_RedCord(yid):
 ### CSV.ALL_Cday_True ###
 def CSV_ALL_CDay_True(yid):
 	### Pandas : ALL_K_*.CSV - 読み取り
-	df_k = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object','取引先':'object','決済金額':'object'}, encoding='utf-8')
+	df_k = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','CNo':'object','取引先':'object','決済金額':'object'}, encoding='utf-8')
 
 	### Pandas : ALL_RedCode_*.CSV - 読み取り
-	df_r = pd.read_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['C_Day','C_No','品目'], dtype={'管理番号':'object','取引先':'object','C_No':'object','決済金額':'object'}, encoding='utf-8')
+	df_r = pd.read_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['CDay','CNo','品目'], dtype={'管理番号':'object','取引先':'object','CNo':'object','決済金額':'object'}, encoding='utf-8')
 
 	### Pandas : 条件指定
 	## ALL :
@@ -145,7 +145,7 @@ def CSV_ALL_CDay_True(yid):
 	## C_Day : True
 	## Target :
 	# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 抽出
-	df_r_ct_target = df_r.query('C_Day.astype("str").str.contains("201")', engine='python')
+	df_r_ct_target = df_r.query('CDay.astype("str").str.contains("201")', engine='python')
 	# context['df_r_ct_target'] = df_r_ct_target
 
 	# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 行数
@@ -163,14 +163,14 @@ def CSV_ALL_CDay_True(yid):
 
 	## Mine :
 	# Mine : ALL_RedCode_*.CSV : 自リスト(Mine_List)) - 抽出
-	df_r_ct_mine = df_k[df_k['C_Day'].astype('str').str.contains("201")]
+	df_r_ct_mine = df_k[df_k['CDay'].astype('str').str.contains("201")]
 
 	# Mine : ALL_RedCode_*.CSV : 自リスト(Mine_List) - 行数
 	df_r_ct_mine_l = len(df_r_ct_mine)
 	# (OK) context['df_r_ct_mine_len'] = df_r_ct_mine_l
 
 	# Mine : ALL_RedCode_*.CSV : 自リスト(Mine_List) - 削除Index
-	df_r_ct_mine_i = df_k[df_k['C_Day'].astype('str').str.contains("201")].index
+	df_r_ct_mine_i = df_k[df_k['CDay'].astype('str').str.contains("201")].index
 	# (OK) context['df_r_ct_mine_i'] = df_r_ct_mine_i
 
 	## Target & Mine : Delete後 - CSV.出力
@@ -215,7 +215,7 @@ class Uriage_CSV(ListView):
 		## (Main)
 		# LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
 		## (Test)
-		LastPage = int(15)
+		LastPage = int(30)
 
 		context['LastPage'] = LastPage
 
@@ -238,79 +238,6 @@ class Uriage_CSV(ListView):
 
 					## ALL_CT_Del_*.CSV 出力
 					CSV_ALL_CDay_True(yid)
-
-				''' (OK) Ver.3.20.45
-				### Pandas : ALL_K_*.CSV - 読み取り
-				df_k = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','C_No':'object','取引先':'object','決済金額':'object'}, encoding='utf-8')
-				## カラム : 型設定
-				# df_k['管理番号'].astype('str').str.zfill(4)
-				# df_k['C_No'].astype('str').str.zfill(4)
-				# df_k['取引先'].astype('str').str.zfill(4)
-				# df_k['決済金額'].fillna(0.0).astype(int)
-				# df_k['決済金額'].astype(np.int)
-
-				## df.型出力
-				# print(df_k.dtypes)
-
-				### Pandas : ALL_RedCode_*.CSV - 読み取り
-				df_r = pd.read_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['C_Day','C_No','品目'], dtype={'管理番号':'object','取引先':'object','C_No':'object','決済金額':'object'}, encoding='utf-8')
-
-				### Pandas : 条件指定
-				## ALL :
-				# ALL_RedCode_*.CSV : ALL - 行数
-				df_r_all_list_len = len(df_r)
-				context['df_r_all_list_len'] = df_r_all_list_len
-
-				## ALL_RedCode : C_Day - True
-				## Target :
-				# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 抽出
-				df_r_ct_target = df_r.query('C_Day.astype("str").str.contains("201")', engine='python')
-				# context['df_r_ct_target'] = df_r_ct_target
-
-				# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 行数
-				df_r_ct_target_l = len(df_r_ct_target)
-				context['df_r_ct_target_len'] = df_r_ct_target_l
-
-				# Target : ALL_RedCode_*.CSV : 対象リスト(Target_List) - 削除Index
-				df_r_ct_target_v = df_r_ct_target.values.tolist()
-
-				df_r_ct_target_i = []
-				for x in df_r_ct_target_v:
-					df_r_ct_target_i.append(df_k.reset_index().query('発生日==@x[1] & 管理番号==@x[2] & 品目==@x[0]').index[0])
-				context['df_r_ct_target_i'] = df_r_ct_target_i
-
-				## Mine :
-				# Mine : ALL_RedCode_*.CSV : 自リスト(Mine_List)) - 抽出
-				df_r_ct_mine = df_k[df_k['C_Day'].astype('str').str.contains("201")]
-				# context['df_r_ct_mine'] = df_r_ct_mine
-
-				# Mine : ALL_RedCode_*.CSV : 自リスト(Mine_List) - 行数
-				df_r_ct_mine_l = len(df_r_ct_mine)
-				context['df_r_ct_mine_len'] = df_r_ct_mine_l
-
-				# Mine : ALL_RedCode_*.CSV : 自リスト(Mine_List) - 削除Index
-				df_r_ct_mine_i = df_k[df_k['C_Day'].astype('str').str.contains("201")].index
-				context['df_r_ct_mine_i'] = df_r_ct_mine_i
-
-				## Target & Mine : Delete後 - CSV.出力
-				df_r_ct_t = df_k.drop(df_r_ct_target_i)
-				## カラム : 型設定
-				# df_r_ct_t['管理番号'].astype('str').str.zfill(4)
-				# df_r_ct_t['C_No'].astype('str').str.zfill(4)
-
-				df_r_ct_m = df_r_ct_t.drop(df_r_ct_mine_i)
-
-				## カラム : 型設定
-				# df_r_ct_m['管理番号'].astype('str').str.zfill(4)
-				# df_r_ct_m['C_No'].astype('str').str.zfill(4)
-				# df_r_ct_m['決済金額'].fillna(0.0).astype(int)
-				# df_r_ct_m['取引先'].astype('str').str.zfill(4)
-
-				## df.型出力
-				# print(df_r_ct_m.dtypes)
-
-				df_r_ct_m.to_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
-				'''
 
 
 			## SHARP/K/RedCode.CSV : False
@@ -401,7 +328,7 @@ class Uriage_List(ListView):
 			conn.close()
 
 		### Pager ###
-		paginator = Paginator(SQL_Data, 50)
+		paginator = Paginator(SQL_Data, 40)
 		try:
 			page = int(self.request.GET.get('page'))
 		except:

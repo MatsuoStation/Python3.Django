@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.47 Update:2019.09.25" |
+#//|"VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.60 Update:2019.09.29" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -75,11 +75,11 @@
               <td>決済口座</td>
               <td>決済金額</td>
               <td>時刻</td>
-              <td>r_code</td>
-              <td>red_code</td>
-              <td>C_Day</td>
-              <td>C_No</td>
-              <td>g_code</td>
+              <td>gcode</td>
+              <td>rcode</td>
+              <td>red</td>
+              <td>CDay</td>
+              <td>CNo</td>
             </tr>
           </thead>
           <tbody>
@@ -108,6 +108,7 @@
               <td>{{ sql.value|add:sql.tax|red_value:sql.red_code }}</td><!-- 決済金額 -->
               <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 決済金額 -->
               <td>{{ sql.m_datetime|date:"H:i" }}</td><!-- 時刻 -->
+              <td>{{ sql.g_code }}</td><!-- g_code -->
               <td>{{ sql.r_code }}</td><!-- r_code -->
 
               <!-- 掛売上(CC) -->
@@ -125,6 +126,7 @@
               <td></td><!-- 決済金額 -->
               <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 決済金額 -->
               <td>{{ sql.m_datetime|date:"H:i" }}</td><!-- 時刻 -->
+              <td>{{ sql.g_code }}</td><!-- g_code -->
               <td>{{ sql.r_code }}</td><!-- r_code -->
 
               <!-- 掛売上 -->
@@ -142,6 +144,7 @@
               <td></td><!-- 決済金額 -->
               <!--td>{{ sql.value|add:sql.tax|red_value:sql.red_code|intcomma }}</td--><!-- 決済金額 -->
               <td>{{ sql.m_datetime|date:"H:i" }}</td><!-- 時刻 -->
+              <td>{{ sql.g_code }}</td><!-- g_code -->
               <td>{{ sql.r_code }}</td><!-- r_code -->
               {% endif %}
 
@@ -157,12 +160,10 @@
               {% if sql.c_day == 0 %}
               <td></td>
               <td></td>
-              <td>{{ sql.g_code }}</td><!-- g_code -->
               <!-- C_Day.True -->
               {% else %}
               <td>{{ sql.c_day|cday_date|date:"Y-m-d" }}</td>
               <td>{{ sql.c_no }}</td>
-              <td>{{ sql.g_code }}</td><!-- g_code -->
               {% endif %}
 
             </tr>
