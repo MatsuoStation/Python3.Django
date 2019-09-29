@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.60 Update:2019.09.29" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.61 Update:2019.09.29" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -69,6 +69,7 @@ import requests, re, time, os
 import pandas as pd
 import numpy as np
 
+from datetime import datetime, date
 
 ### DictFetchAll ###
 def dictfetchall(cursor):
@@ -118,7 +119,7 @@ def CSV_RedCord(yid):
 	df['CNo'].astype('str').str.zfill(4)
 
 	## 抽出
-	df_rc = df[df['red_code'] == 8]
+	df_rc = df[df['red'] == 8]
 
 	## toCSV
 	df_rc.to_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", encoding='utf-8')
@@ -233,6 +234,132 @@ class Uriage_CSV(ListView):
 				if os.path.exists("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv"):
 					context['ALL_Cday_True_Del'] = "True"
 
+					### 掛売上 :
+					## Value_Test30 : CSV.読み取り
+					df_cv = pd.read_csv("Guest/OLD_guestlist/Value_" + str(yid) + ".csv", sep=',', dtype={'s_code':'object'}, \
+						header=None, \
+						names=["id", "uid", "name", "lpg_code", "tax_code", "s_code", \
+						"m_datetime", "value", \
+						"date01", "value01", "date02", "value02", "date03", "value03", "date04", "value04", "date05", "value05", \
+						"date06", "value06", "date07", "value07", "date08", "value08", "date09", "value09", "date10", "value10", \
+						"date11", "value11", "date12", "value12", "date13", "value13", "date14", "value14", "date15", "value15", \
+						"date16", "value16", "date17", "value17", "date18", "value18", "date19", "value19", "date20", "value20", \
+						"date21", "value21", "date22", "value22", "date23", "value23", "date24", "value24", "date25", "value25", \
+						"date26", "value26", "date27", "value27"], encoding='utf-8')
+
+					## カラム : 型設定
+					# df_cv['uid'].astype('float').astype('int')
+					# df_cv['uid'].astype('str')
+					# df_cv['uid'].astype('float').astype('int').astype('str').str.zfill(4)
+
+					# (OK)
+					print(df_cv.dtypes)
+					# (OK)
+					# context['df_cv'] = df_cv
+
+					## 掛売上リスト : ALL_CT_Del_*.CSV - 読み取り
+					df_c = pd.read_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", sep=',', dtype={'取引先':'int', '品目':'object'}, usecols=['発生日','取引先','品目','rcode'], encoding='utf-8')
+
+					## カラム : 型設定
+					# df_c['取引先'].astype('float').astype('int').astype('str').str.zfill(4)
+					# df_c['取引先'].astype('str').str.zfill(4)
+
+					print(df_c.dtypes)
+					# (OK)
+					context['df_c'] = df_c
+
+					'''
+					(Main)
+					df_c_9 = df_c.query('rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10000") | \
+						rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10100") | \
+						rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10200") | \
+						rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10500")', engine='python')
+					'''
+					# (Test)
+					df_c_9 = df_c.query('rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10000") | \
+						rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10500")', engine='python')
+					print(df_c_9.dtypes)
+					# (OK) context['df_c_9'] = df_c_9
+
+					df_c_9_list = df_c_9.values.tolist()
+					# (OK)
+					context['df_c_9_list'] = df_c_9_list
+
+
+					df_c_9_v = []
+
+					try:
+						for x in df_c_9_list:
+							if len(df_cv.query('uid==@x[1] & s_code==@x[2] & m_datetime<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & m_datetime<=@x[0]').value.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date01<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date01<=@x[0]').value01.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date02<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date02<=@x[0]').value02.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date03<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date03<=@x[0]').value03.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date04<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date04<=@x[0]').value04.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date05<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date05<=@x[0]').value05.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date06<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date06<=@x[0]').value06.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date07<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date07<=@x[0]').value07.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date08<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date08<=@x[0]').value08.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date09<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date09<=@x[0]').value09.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date10<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date10<=@x[0]').value10.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date11<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date11<=@x[0]').value11.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date12<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date12<=@x[0]').value12.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date13<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date13<=@x[0]').value13.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date14<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date14<=@x[0]').value14.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date15<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date15<=@x[0]').value15.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date16<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date16<=@x[0]').value16.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date17<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date17<=@x[0]').value17.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date18<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date18<=@x[0]').value18.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date19<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date19<=@x[0]').value19.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date20<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date20<=@x[0]').value20.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date21<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date21<=@x[0]').value21.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date22<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date22<=@x[0]').value22.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date23<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date23<=@x[0]').value23.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date24<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date24<=@x[0]').value24.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date25<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date25<=@x[0]').value25.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date26<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date26<=@x[0]').value26.values)
+							elif len(df_cv.query('uid==@x[1] & s_code==@x[2] & date27<=@x[0]'))!=0:
+								df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date27<=@x[0]').value27.values)
+
+							else:
+								df_c_9_v.append("100:%s" % x[1] + "-%s" % x[2] + "-%s" % x[0])
+							# df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date11<=@x[0]').value)
+							# df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & m_datetime<="2019-08-01"').value)
+
+					except Exception as e:
+						print(e, 'DF_C.9.Value - Freee/Views.dds : error occured.')
+
+					context['df_c_9_v'] = df_c_9_v
+
+
+
+				## SHARP/K/ALL_CT_Del_*.CSV : False
 				else:
 					context['ALL_Cday_True_Del'] = "False"
 
