@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.62 Update:2019.09.30" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.63 Update:2019.10.01" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -43,6 +43,9 @@
 #//|                                                        * toCSV * |
 #//|                    https://blog.imind.jp/entry/2019/04/12/224942 |
 #//+------------------------------------------------------------------+
+#//|                                             * Decimal.quantize * |
+#//|              https://note.nkmk.me/python-round-decimal-quantize/ |
+#//+------------------------------------------------------------------+
 # rom django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
 
@@ -70,6 +73,7 @@ import pandas as pd
 import numpy as np
 
 from datetime import datetime, date
+from decimal import (Decimal, ROUND_DOWN, ROUND_HALF_UP)
 
 ### DictFetchAll ###
 def dictfetchall(cursor):
@@ -135,7 +139,7 @@ def CSV_ALL_CDay_True(yid):
 	df_k = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','CNo':'object','取引先':'object','決済金額':'object'}, encoding='utf-8')
 
 	### Pandas : ALL_RedCode_*.CSV - 読み取り
-	df_r = pd.read_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['CDay','CNo','品目'], dtype={'管理番号':'object','取引先':'object','CNo':'object','決済金額':'object'}, encoding='utf-8')
+	df_r = pd.read_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['管理番号','発生日','品目','CDay','CNo'], dtype={'管理番号':'object','取引先':'object','CNo':'object','決済金額':'object'}, encoding='utf-8')
 
 	### Pandas : 条件指定
 	## ALL :
@@ -158,8 +162,10 @@ def CSV_ALL_CDay_True(yid):
 
 	df_r_ct_target_i = []
 	for x in df_r_ct_target_v:
-		df_r_ct_target_i.append(df_k.reset_index().query('発生日==@x[1] & 管理番号==@x[2] & 品目==@x[0]').index[0])
+		df_r_ct_target_i.append(df_k.reset_index().query('発生日==@x[3] & 管理番号==@x[4] & 品目==@x[2]').index[0])
+	#	df_r_ct_target_i.append(df_k.reset_index().query('発生日==@x[1] & 管理番号==@x[2] & 品目==@x[0]').index[0])
 	# (OK) context['df_r_ct_target_i'] = df_r_ct_target_i
+	# (T.OK) return df_r_ct_target_i
 
 
 	## Mine :
@@ -171,13 +177,131 @@ def CSV_ALL_CDay_True(yid):
 	# (OK) context['df_r_ct_mine_len'] = df_r_ct_mine_l
 
 	# Mine : ALL_RedCode_*.CSV : 自リスト(Mine_List) - 削除Index
-	df_r_ct_mine_i = df_k[df_k['CDay'].astype('str').str.contains("201")].index
+	df_r_ct_mine_i = df_k[df_k['CDay'].astype('str').str.contains("201")].index.values
+	# df_r_ct_mine_i = df_k[df_k['CDay'].astype('str').str.contains("201")].index
 	# (OK) context['df_r_ct_mine_i'] = df_r_ct_mine_i
+	# (T.OK) return df_r_ct_mine_i
 
 	## Target & Mine : Delete後 - CSV.出力
-	df_r_ct_t = df_k.drop(df_r_ct_target_i)
-	df_r_ct_m = df_r_ct_t.drop(df_r_ct_mine_i)
-	df_r_ct_m.to_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
+	## List - Marge
+	df_r_ct_i = []
+	df_r_ct_i.extend(df_r_ct_target_i)
+	df_r_ct_i.extend(df_r_ct_mine_i)
+	df_r_ct_i.sort()
+	# (T.OK) return df_r_ct_i
+
+	df_r_ct_a = df_k.drop(df_r_ct_i)
+	df_r_ct_a.to_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
+	# df_r_ct_t = df_k.drop(df_r_ct_target_i)
+	# df_r_ct_m = df_r_ct_t.drop(df_r_ct_mine_i)
+	# df_r_ct_m.to_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
+
+### CSV.Value30.PULL ###
+def CSV_Value_Pull(yid):
+	## Value_Test30 : CSV.読み取り
+	df_cv = pd.read_csv("Guest/OLD_guestlist/Value_" + str(yid) + ".csv", sep=',', dtype={'s_code':'object'}, \
+		header=None, \
+		names=["id", "uid", "name", "lpg_code", "tax_code", "s_code", \
+		"m_datetime", "value", \
+		"date01", "value01", "date02", "value02", "date03", "value03", "date04", "value04", "date05", "value05", \
+		"date06", "value06", "date07", "value07", "date08", "value08", "date09", "value09", "date10", "value10", \
+		"date11", "value11", "date12", "value12", "date13", "value13", "date14", "value14", "date15", "value15", \
+		"date16", "value16", "date17", "value17", "date18", "value18", "date19", "value19", "date20", "value20", \
+		"date21", "value21", "date22", "value22", "date23", "value23", "date24", "value24", "date25", "value25", \
+		"date26", "value26", "date27", "value27"], encoding='utf-8')
+
+	## 掛売上リスト : ALL_CT_Del_*.CSV - 読み取り
+	df_c = pd.read_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv",\
+		sep=',',\
+		dtype={'取引先':'int', '品目':'object'},\
+		usecols=['発生日','取引先','金額','税額','品目','rcode','amount'],\
+		encoding='utf-8')
+
+
+	'''
+	# (Main)
+	df_c_9 = df_c.query('rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10000") | \
+		rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10100") | \
+		rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10200") | \
+		rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10500")', engine='python')
+	'''
+	# (Test)
+	df_c_9 = df_c.query('rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10000") | \
+		rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10500")', engine='python')
+
+	df_c_9_list = df_c_9.values.tolist()
+	# '''
+
+	df_c_9_v = []
+
+	try:
+		for x in df_c_9_list:
+			if len(df_cv.query('uid==@x[1] & s_code==@x[4] & m_datetime<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & m_datetime<=@x[0]').value.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date01<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date01<=@x[0]').value01.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date02<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date02<=@x[0]').value02.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date03<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date03<=@x[0]').value03.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date04<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date04<=@x[0]').value04.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date05<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date05<=@x[0]').value05.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date06<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date06<=@x[0]').value06.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date07<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date07<=@x[0]').value07.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date08<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date08<=@x[0]').value08.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date09<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date09<=@x[0]').value09.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date10<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date10<=@x[0]').value10.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date11<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date11<=@x[0]').value11.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date12<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date12<=@x[0]').value12.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date13<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date13<=@x[0]').value13.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date14<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date14<=@x[0]').value14.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date15<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date15<=@x[0]').value15.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date16<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date16<=@x[0]').value16.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date17<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date17<=@x[0]').value17.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date18<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date18<=@x[0]').value18.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date19<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date19<=@x[0]').value19.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date20<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date20<=@x[0]').value20.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date21<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date21<=@x[0]').value21.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date22<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date22<=@x[0]').value22.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date23<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date23<=@x[0]').value23.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date24<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date24<=@x[0]').value24.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date25<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date25<=@x[0]').value25.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date26<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date26<=@x[0]').value26.values)
+			elif len(df_cv.query('uid==@x[1] & s_code==@x[4] & date27<=@x[0]'))!=0:
+				df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[4] & date27<=@x[0]').value27.values)
+			else:
+				df_c_9_v.append(0)
+				# df_c_9_v.append("100:%s" % x[1] + "-%s" % x[4] + "-%s" % x[0])
+			# df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & date11<=@x[0]').value)
+			# df_c_9_v.append(df_cv.reset_index().query('uid==@x[1] & s_code==@x[2] & m_datetime<="2019-08-01"').value)
+
+	except Exception as e:
+		print(e, 'DF_C.9.Value - Freee/Views.dds : error occured.')
+
+	return df_c_9, df_c_9_v
 
 
 ### Uriage_CSV ###
@@ -216,7 +340,7 @@ class Uriage_CSV(ListView):
 		## (Main)
 		# LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
 		## (Test)
-		LastPage = int(30)
+		LastPage = int(70)
 
 		context['LastPage'] = LastPage
 
@@ -235,6 +359,16 @@ class Uriage_CSV(ListView):
 					context['ALL_Cday_True_Del'] = "True"
 
 					### 掛売上 :
+					df_c_9_v = []
+					df_c_9, df_c_9_v = CSV_Value_Pull(yid)
+
+					# (OK)
+					# (OK) context['df_c_9'] = df_c_9
+					# (OK) context['df_c_9_list'] = df_c_9.values.tolist()
+					context['df_c_9_v'] = df_c_9_v
+
+
+					''' (OK : Ver.3.20.63)
 					## Value_Test30 : CSV.読み取り
 					df_cv = pd.read_csv("Guest/OLD_guestlist/Value_" + str(yid) + ".csv", sep=',', dtype={'s_code':'object'}, \
 						header=None, \
@@ -258,7 +392,7 @@ class Uriage_CSV(ListView):
 					# context['df_cv'] = df_cv
 
 					## 掛売上リスト : ALL_CT_Del_*.CSV - 読み取り
-					df_c = pd.read_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", sep=',', dtype={'取引先':'int', '品目':'object'}, usecols=['発生日','取引先','金額','税額','品目','rcode'], encoding='utf-8')
+					df_c = pd.read_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", sep=',', dtype={'取引先':'int', '品目':'object'}, usecols=['発生日','取引先','金額','税額','品目','rcode','amount'], encoding='utf-8')
 
 					## カラム : 型設定
 					# df_c['取引先'].astype('float').astype('int').astype('str').str.zfill(4)
@@ -268,13 +402,11 @@ class Uriage_CSV(ListView):
 					# (OK)
 					context['df_c'] = df_c
 
-					'''
 					(Main)
 					df_c_9 = df_c.query('rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10000") | \
 						rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10100") | \
 						rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10200") | \
 						rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10500")', engine='python')
-					'''
 					# (Test)
 					df_c_9 = df_c.query('rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10000") | \
 						rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10500")', engine='python')
@@ -284,7 +416,6 @@ class Uriage_CSV(ListView):
 					df_c_9_list = df_c_9.values.tolist()
 					# (OK)
 					context['df_c_9_list'] = df_c_9_list
-
 
 					df_c_9_v = []
 
@@ -357,7 +488,7 @@ class Uriage_CSV(ListView):
 						print(e, 'DF_C.9.Value - Freee/Views.dds : error occured.')
 
 					context['df_c_9_v'] = df_c_9_v
-
+					'''
 
 					## 金額 : 更新
 					# df_c_9_vl = []
@@ -365,15 +496,21 @@ class Uriage_CSV(ListView):
 
 					try:
 						for i in df_c_9_vl.index:
-							df_c_9_vl.loc[i, "金額"] = df_c_9_v[i]
+							df_c_9_vl.loc[i, "金額"] = Decimal(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+							# df_c_9_vl.loc[i, "金額"] = df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100)
+							# df_c_9_vl.loc[i, "金額"] = round(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100))
+							# df_c_9_vl.loc[i, "金額"] = df_c_9_v[i] * 10
+							# (OK) df_c_9_vl.loc[i, "金額"] = df_c_9_v[i]
+							# Decimal(value).quantize(Decimal('.01'), rounding=ROUND_DOWN)
 
 					except Exception as e:
-						print(e, 'DF_C.9.Value.PUT - Freee/Views.dds : error occured.')
+						print(e, 'DF_C.9.Value.ReMake - Freee/Views.dds : error occured.')
 
 					context['df_c_9_vl'] = df_c_9_vl
 					# (OK) context['df_c_9_vl'] = df_c_9_v[0]
 
-
+					# df_c_9_v.tolist.to_csv("SHARP/K/ALL_V30_" + str(yid) + ".csv", encoding='utf-8', index=0)
+					df_c_9_vl.to_csv("SHARP/K/ALL_C9_Val_" + str(yid) + ".csv", encoding='utf-8', index=0)
 
 
 				## SHARP/K/ALL_CT_Del_*.CSV : False
@@ -381,7 +518,11 @@ class Uriage_CSV(ListView):
 					context['ALL_Cday_True_Del'] = "False"
 
 					## ALL_CT_Del_*.CSV 出力
+					# (OK)
 					CSV_ALL_CDay_True(yid)
+					# (T.OK) df_r_ct_target = CSV_ALL_CDay_True(yid)
+					# (T.OK) print(df_r_ct_target.dtypes)
+					# (T.OK) context['df_r_ct_target'] = df_r_ct_target
 
 
 			## SHARP/K/RedCode.CSV : False

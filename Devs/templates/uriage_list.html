@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.61 Update:2019.09.29" |
+#//|"VsV.Py3.Dj.TLs.Uriage_List.html - Ver.3.20.63 Update:2019.10.01" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -77,6 +77,9 @@
               <td>時刻</td>
               <td>rcode</td>
               <td>red</td>
+              <td>amount</td>
+              <td>value</td>
+              <td>tax</td>
               <td>CDay</td>
               <td>CNo</td>
             </tr>
@@ -147,9 +150,15 @@
               <!-- Red_Code.False -->
               {% if sql.red_code == 0 %}
               <td></td>
+              <td>{{ sql.amount|red_value:sql.red_code }}</td><!-- amount -->
+              <td>{{ sql.value|add:sql.tax|red_value:sql.red_code }}</td><!-- value -->
+              <td>{{ sql.tax|red_value:sql.red_code }}</td><!-- tax -->
               <!-- Red_Code.True -->
               {% else %}
               <td>{{ sql.red_code }}</td><!-- 赤伝票 -->
+              <td>{{ sql.amount|red_value:sql.red_code }}</td><!-- amount -->
+              <td>{{ sql.value|add:sql.tax|red_value:sql.red_code }}</td><!-- value -->
+              <td>{{ sql.tax|red_value:sql.red_code }}</td><!-- tax -->
               {% endif %}
 
               <!-- C_Day.False -->
