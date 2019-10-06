@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.65 Update:2019.10.02" |
+#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.66 Update:2019.10.02" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -202,7 +202,10 @@ def CSV_ALL_CDay_True(yid):
 ### CSV.Value30.PULL ###
 def CSV_Value_Pull(yid):
 	## Value_Test30 : CSV.読み取り
-	df_cv = pd.read_csv("Guest/OLD_guestlist/Value_" + str(yid) + ".csv", sep=',', dtype={'s_code':'object'}, \
+	df_cv = pd.read_csv("SHARP/K/Value_" + str(yid) + ".data", sep=',',\
+	# df_cv = pd.read_csv("SHARP/K/Value_" + str(yid) + ".csv", sep=',',\
+		dtype={'uid':'object','s_code':'object'},\
+	# df_cv = pd.read_csv("Guest/OLD_guestlist/Value_" + str(yid) + ".csv", sep=',', dtype={'s_code':'object'}, \
 		header=None, \
 		names=["id", "uid", "name", "lpg_code", "tax_code", "s_code", \
 		"m_datetime", "value", \
@@ -210,18 +213,52 @@ def CSV_Value_Pull(yid):
 		"date06", "value06", "date07", "value07", "date08", "value08", "date09", "value09", "date10", "value10", \
 		"date11", "value11", "date12", "value12", "date13", "value13", "date14", "value14", "date15", "value15", \
 		"date16", "value16", "date17", "value17", "date18", "value18", "date19", "value19", "date20", "value20", \
-		"date21", "value21", "date22", "value22", "date23", "value23", "date24", "value24", "date25", "value25", \
-		"date26", "value26", "date27", "value27"], encoding='utf-8')
+		"date21", "value21", "date22", "value22", "date23", "value23", "date24", "value24", "date25", "value25"], \
+		# "date21", "value21", "date22", "value22", "date23", "value23", "date24", "value24", "date25", "value25", \
+		# "date26", "value26", "date27", "value27"],\
+		encoding='utf-8')
+
+	## カラム : 型設定
+	df_cv['uid'].astype('str').str.zfill(4)
+
+	## Error : Float設定
+	df_cv['value'] = pd.to_numeric(df_cv['value'], errors='coerce')
+	df_cv['value01'] = pd.to_numeric(df_cv['value01'], errors='coerce')
+	df_cv['value02'] = pd.to_numeric(df_cv['value02'], errors='coerce')
+	df_cv['value03'] = pd.to_numeric(df_cv['value03'], errors='coerce')
+	df_cv['value04'] = pd.to_numeric(df_cv['value04'], errors='coerce')
+	df_cv['value05'] = pd.to_numeric(df_cv['value05'], errors='coerce')
+	df_cv['value06'] = pd.to_numeric(df_cv['value06'], errors='coerce')
+	df_cv['value07'] = pd.to_numeric(df_cv['value07'], errors='coerce')
+	df_cv['value08'] = pd.to_numeric(df_cv['value08'], errors='coerce')
+	df_cv['value09'] = pd.to_numeric(df_cv['value09'], errors='coerce')
+	df_cv['value10'] = pd.to_numeric(df_cv['value10'], errors='coerce')
+	df_cv['value11'] = pd.to_numeric(df_cv['value11'], errors='coerce')
+	df_cv['value12'] = pd.to_numeric(df_cv['value12'], errors='coerce')
+	df_cv['value13'] = pd.to_numeric(df_cv['value13'], errors='coerce')
+	df_cv['value14'] = pd.to_numeric(df_cv['value14'], errors='coerce')
+	df_cv['value15'] = pd.to_numeric(df_cv['value15'], errors='coerce')
+	df_cv['value16'] = pd.to_numeric(df_cv['value16'], errors='coerce')
+	df_cv['value17'] = pd.to_numeric(df_cv['value17'], errors='coerce')
+	df_cv['value18'] = pd.to_numeric(df_cv['value18'], errors='coerce')
+	df_cv['value19'] = pd.to_numeric(df_cv['value19'], errors='coerce')
+	df_cv['value20'] = pd.to_numeric(df_cv['value20'], errors='coerce')
+	df_cv['value21'] = pd.to_numeric(df_cv['value21'], errors='coerce')
+	df_cv['value22'] = pd.to_numeric(df_cv['value22'], errors='coerce')
+	df_cv['value23'] = pd.to_numeric(df_cv['value23'], errors='coerce')
+	df_cv['value24'] = pd.to_numeric(df_cv['value24'], errors='coerce')
+	df_cv['value25'] = pd.to_numeric(df_cv['value25'], errors='coerce')
 
 	## 掛売上リスト : ALL_CT_Del_*.CSV - 読み取り
 	df_c = pd.read_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv",\
 		sep=',',\
-		dtype={'取引先':'int', '品目':'object'},\
+		dtype={'取引先':'object', '品目':'object'},\
+		# dtype={'取引先':'int', '品目':'object'},\
 		# usecols=['発生日','取引先','金額','税額','品目','rcode','amount'],\
 		encoding='utf-8')
 
 
-	'''
+	#'''
 	# (Main)
 	df_c_9 = df_c.query('rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10000") | \
 		rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10100") | \
@@ -232,8 +269,9 @@ def CSV_Value_Pull(yid):
 	df_c_9 = df_c.query('rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10000") | \
 		rcode.astype("str").str.contains("9") & 品目.astype("str").str.contains("10500")', engine='python')
 
-	df_c_9_list = df_c_9.values.tolist()
 	# '''
+	df_c_9_list = df_c_9.values.tolist()
+
 
 	df_c_9_v = []
 
@@ -291,10 +329,10 @@ def CSV_Value_Pull(yid):
 				df_c_9_v.append(df_cv.reset_index().query('uid==@x[4] & s_code==@x[11] & date24<=@x[2]').value24.values)
 			elif len(df_cv.query('uid==@x[4] & s_code==@x[11] & date25<=@x[2]'))!=0:
 				df_c_9_v.append(df_cv.reset_index().query('uid==@x[4] & s_code==@x[11] & date25<=@x[2]').value25.values)
-			elif len(df_cv.query('uid==@x[4] & s_code==@x[11] & date26<=@x[2]'))!=0:
-				df_c_9_v.append(df_cv.reset_index().query('uid==@x[4] & s_code==@x[11] & date26<=@x[2]').value26.values)
-			elif len(df_cv.query('uid==@x[4] & s_code==@x[11] & date27<=@x[2]'))!=0:
-				df_c_9_v.append(df_cv.reset_index().query('uid==@x[4] & s_code==@x[11] & date27<=@x[2]').value27.values)
+			# elif len(df_cv.query('uid==@x[4] & s_code==@x[11] & date26<=@x[2]'))!=0:
+			#	df_c_9_v.append(df_cv.reset_index().query('uid==@x[4] & s_code==@x[11] & date26<=@x[2]').value26.values)
+			# elif len(df_cv.query('uid==@x[4] & s_code==@x[11] & date27<=@x[2]'))!=0:
+			#	df_c_9_v.append(df_cv.reset_index().query('uid==@x[4] & s_code==@x[11] & date27<=@x[2]').value27.values)
 			else:
 				df_c_9_v.append(0)
 				# df_c_9_v.append("100:%s" % x[1] + "-%s" % x[4] + "-%s" % x[0])
@@ -332,6 +370,42 @@ def out_tax(value):
 	return round((values * c + 1) / c, 0)
 
 
+### CSV.OIL ###
+def CSV_OIL(c9, c9v, yid):
+	# 金額 & Tax : 更新
+	df_c_9_vl = c9.reset_index().copy()
+
+	## 金額 & Tax : 更新
+	try:
+		for i in df_c_9_vl.index:
+			if df_c_9_vl.ix[i, "品目"] == "10500":
+				df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+			elif df_c_9_vl.ix[i, "品目"] == "10000":
+				df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+			elif df_c_9_vl.ix[i, "品目"] == "10100":
+				df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+			elif df_c_9_vl.ix[i, "品目"] == "10200":
+				df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float((c9v[i] - 32.1) * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+			else:
+				df_c_9_vl.loc[i, "税額"] = Decimal(out_tax(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP) + df_c_9_vl.ix[i, "税額"]
+
+	except Exception as e:
+		print(e, 'DF_C.9.Tax.ReMake - Freee/Views.dds : error occured.')
+
+
+	# context['df_c_9_vl'] = df_c_9_vl
+	# context['df_c_9_tax'] = df_c_9_vl['品目']
+
+	# (OK)
+	df_c_9_vl.to_csv("SHARP/K/ALL_C9_OIL_VLTax_" + str(yid) + ".csv", encoding='utf-8', index=0)
+
+
+
 ### Uriage_CSV ###
 class Uriage_CSV(ListView):
 
@@ -366,9 +440,9 @@ class Uriage_CSV(ListView):
 		LastA = bsObj.findAll("div", {"class":"pagination"})[0]("a", {"class":"LastPage"})[0]["href"]
 
 		## (Main)
-		# LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
+		LastPage = int(re.findall('page=([0-9]+)', LastA)[0])
 		## (Test)
-		LastPage = int(70)
+		# LastPage = int(30) # 135
 
 		context['LastPage'] = LastPage
 
@@ -386,6 +460,70 @@ class Uriage_CSV(ListView):
 				if os.path.exists("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv"):
 					context['ALL_Cday_True_Del'] = "True"
 
+					## SHARP/K/ALL_C9_OIL_VLTax_*.CSV : True
+					if os.path.exists("SHARP/K/ALL_C9_OIL_VLTax_" + str(yid) + ".csv"):
+						context['ALL_C9_OIL'] = "True"
+
+					### SHARP/K/ALL_C9_OIL_VLTax_*.CSV : False
+					else:
+						context['ALL_C9_OIL'] = "False"
+
+						### 掛売上 :
+						df_c_9_v = []
+						df_c_9, df_c_9_v = CSV_Value_Pull(yid)
+						# CSV_OIL(df_c_9, df_c_9_v, yid)
+
+						context['df_c_9_list'] = df_c_9.values.tolist()
+						context['df_c_9_v'] = df_c_9_v
+
+						### 掛売上 :
+						df_c_9_v = []
+						df_c_9, df_c_9_v = CSV_Value_Pull(yid)
+
+						# (OK)
+						# (OK) context['df_c_9'] = df_c_9
+						# (OK)
+						# context['df_c_9_list'] = df_c_9.values.tolist()
+						# context['df_c_9_v'] = df_c_9_v
+
+
+						## 金額 : 更新
+						# df_c_9_vl = []
+						df_c_9_vl = df_c_9.reset_index().copy()
+						print(df_c_9_vl.dtypes)
+
+						## 金額 & Tax : 更新
+						try:
+							for i in df_c_9_vl.index:
+								if df_c_9_vl.ix[i, "品目"] == "10500":
+									df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+									df_c_9_vl.loc[i, "金額"] = Decimal(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+								elif df_c_9_vl.ix[i, "品目"] == "10000":
+									df_c_9_vl.loc[i, "税額"] = Decimal(out_tax(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+									df_c_9_vl.loc[i, "金額"] = Decimal(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+								elif df_c_9_vl.ix[i, "品目"] == "10100":
+									df_c_9_vl.loc[i, "税額"] = Decimal(out_tax(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+									df_c_9_vl.loc[i, "金額"] = Decimal(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+								elif df_c_9_vl.ix[i, "品目"] == "10200":
+									df_c_9_vl.loc[i, "税額"] = Decimal(out_tax(float((df_c_9_v[i] - 32.1) * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+									df_c_9_vl.loc[i, "金額"] = Decimal(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+								else:
+									df_c_9_vl.loc[i, "税額"] = Decimal(out_tax(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+									df_c_9_vl.loc[i, "金額"] = Decimal(float(df_c_9_v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP) + df_c_9_vl.ix[i, "税額"]
+
+						except Exception as e:
+							print(e, 'DF_C.9.Tax.ReMake - Freee/Views.dds : error occured.')
+
+
+						context['df_c_9_vl'] = df_c_9_vl
+						# context['df_c_9_tax'] = df_c_9_vl['品目']
+
+						# (OK)
+						df_c_9_vl.to_csv("SHARP/K/ALL_C9_OIL_VLTax_" + str(yid) + ".csv", encoding='utf-8', index=0)
+
+
+
+					'''
 					### 掛売上 :
 					df_c_9_v = []
 					df_c_9, df_c_9_v = CSV_Value_Pull(yid)
@@ -423,6 +561,7 @@ class Uriage_CSV(ListView):
 
 					# (OK)
 					df_c_9_vl.to_csv("SHARP/K/ALL_C9_OIL_VLTax_" + str(yid) + ".csv", encoding='utf-8', index=0)
+					'''
 
 
 
