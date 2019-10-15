@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Freee.Views.py - Ver.3.20.66 Update:2019.10.02" |
+#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.30.1 Update:2019.10.15" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -76,6 +76,7 @@ from datetime import datetime, date
 from decimal import (Decimal, ROUND_DOWN, ROUND_HALF_UP)
 
 jtax8 = 0.08
+jtax10 = 0.1
 ndigits = 0
 
 ### DictFetchAll ###
@@ -119,7 +120,7 @@ def CSV_Write(file, LastPage, url):
 def CSV_RedCord(yid):
 
 	### Pandas : ALL_K_*.CSV - 読み取り ###
-	df = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','CNo':'object'}, index_col=0, encoding='utf-8')
+	df = pd.read_csv("SHARP/K/" + str(yid) + "/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','CNo':'object'}, index_col=0, encoding='utf-8')
 
 	## カラム : 型設定
 	df['管理番号'].astype('str').str.zfill(4)
@@ -129,7 +130,7 @@ def CSV_RedCord(yid):
 	df_rc = df[df['red'] == 8]
 
 	## toCSV
-	df_rc.to_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", encoding='utf-8')
+	df_rc.to_csv("SHARP/K/" + str(yid) + "/ALL_RedCode_" + str(yid) + ".csv", encoding='utf-8')
 
 	## df.型出力
 	print(df.dtypes)
@@ -139,10 +140,10 @@ def CSV_RedCord(yid):
 ### CSV.ALL_Cday_True ###
 def CSV_ALL_CDay_True(yid):
 	### Pandas : ALL_K_*.CSV - 読み取り
-	df_k = pd.read_csv("SHARP/K/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','CNo':'object','取引先':'object','決済金額':'object'}, encoding='utf-8')
+	df_k = pd.read_csv("SHARP/K/" + str(yid) + "/ALL_K_" + str(yid) + ".csv", sep=',', dtype={'管理番号':'object','CNo':'object','取引先':'object','決済金額':'object'}, encoding='utf-8')
 
 	### Pandas : ALL_RedCode_*.CSV - 読み取り
-	df_r = pd.read_csv("SHARP/K/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['管理番号','発生日','品目','CDay','CNo'], dtype={'管理番号':'object','取引先':'object','CNo':'object','決済金額':'object'}, encoding='utf-8')
+	df_r = pd.read_csv("SHARP/K/" + str(yid) + "/ALL_RedCode_" + str(yid) + ".csv", sep=',', usecols=['管理番号','発生日','品目','CDay','CNo'], dtype={'管理番号':'object','取引先':'object','CNo':'object','決済金額':'object'}, encoding='utf-8')
 
 	### Pandas : 条件指定
 	## ALL :
@@ -194,7 +195,7 @@ def CSV_ALL_CDay_True(yid):
 	# (T.OK) return df_r_ct_i
 
 	df_r_ct_a = df_k.drop(df_r_ct_i)
-	df_r_ct_a.to_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
+	df_r_ct_a.to_csv("SHARP/K/" + str(yid) + "/ALL_CT_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
 	# df_r_ct_t = df_k.drop(df_r_ct_target_i)
 	# df_r_ct_m = df_r_ct_t.drop(df_r_ct_mine_i)
 	# df_r_ct_m.to_csv("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv", encoding='utf-8', index=0)
@@ -370,40 +371,9 @@ def out_tax(value):
 	return round((values * c + 1) / c, 0)
 
 
-### CSV.OIL ###
-def CSV_OIL(c9, c9v, yid):
-	# 金額 & Tax : 更新
-	df_c_9_vl = c9.reset_index().copy()
-
-	## 金額 & Tax : 更新
-	try:
-		for i in df_c_9_vl.index:
-			if df_c_9_vl.ix[i, "品目"] == "10500":
-				df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-			elif df_c_9_vl.ix[i, "品目"] == "10000":
-				df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-			elif df_c_9_vl.ix[i, "品目"] == "10100":
-				df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-			elif df_c_9_vl.ix[i, "品目"] == "10200":
-				df_c_9_vl.loc[i, "税額"] = Decimal(in_tax(float((c9v[i] - 32.1) * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-			else:
-				df_c_9_vl.loc[i, "税額"] = Decimal(out_tax(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100)))).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-				df_c_9_vl.loc[i, "金額"] = Decimal(float(c9v[i] * (df_c_9_vl.loc[i, "amount"] / 100))).quantize(Decimal('0'), rounding=ROUND_HALF_UP) + df_c_9_vl.ix[i, "税額"]
-
-	except Exception as e:
-		print(e, 'DF_C.9.Tax.ReMake - Freee/Views.dds : error occured.')
-
-
-	# context['df_c_9_vl'] = df_c_9_vl
-	# context['df_c_9_tax'] = df_c_9_vl['品目']
-
-	# (OK)
-	df_c_9_vl.to_csv("SHARP/K/ALL_C9_OIL_VLTax_" + str(yid) + ".csv", encoding='utf-8', index=0)
-
+### CashUriage ###
+def CashUriage(request):
+	return HttpResponse("Hello CashUriage.Py3 You're at the CashUriage.")
 
 
 ### Uriage_CSV ###
@@ -449,19 +419,19 @@ class Uriage_CSV(ListView):
 
 		### *.CSV - File_Check ###
 		## SHARP/K/ALL_K_*.CSV : True
-		if os.path.exists("SHARP/K/ALL_K_" + str(yid) + ".csv"):
+		if os.path.exists("SHARP/K/" + str(yid) + "/ALL_K_" + str(yid) + ".csv"):
 			context['ALL_CSV_Check'] = "True"
 
 			## SHARP/K/ALL_RedCode_*.CSV : True
-			if os.path.exists("SHARP/K/ALL_RedCode_" + str(yid) + ".csv"):
+			if os.path.exists("SHARP/K/" + str(yid) + "/ALL_RedCode_" + str(yid) + ".csv"):
 				context['ALL_RedCord_Check'] = "True"
 
 				## SHARP/K/ALL_CT_Del_*.CSV : True
-				if os.path.exists("SHARP/K/ALL_CT_Del_" + str(yid) + ".csv"):
+				if os.path.exists("SHARP/K/" + str(yid) + "/ALL_CT_Del_" + str(yid) + ".csv"):
 					context['ALL_Cday_True_Del'] = "True"
 
 					## SHARP/K/ALL_C9_OIL_VLTax_*.CSV : True
-					if os.path.exists("SHARP/K/ALL_C9_OIL_VLTax_" + str(yid) + ".csv"):
+					if os.path.exists("SHARP/K/" + str(yid) + "/ALL_C9_OIL_VLTax_" + str(yid) + ".csv"):
 						context['ALL_C9_OIL'] = "True"
 
 					### SHARP/K/ALL_C9_OIL_VLTax_*.CSV : False
