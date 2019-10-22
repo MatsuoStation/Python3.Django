@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.30.1 Update:2019.10.15" |
+#//|       "VsV.Py3.Dj.Freee.Views.py - Ver.3.30.2 Update:2019.10.15" |
 #//|               https://qiita.com/hujuu/items/b0339404b8b0460087f9 |
 #//|                https://qiita.com/mazu/items/77db19ca2caf128cc062 |
 #//|                            https://techacademy.jp/magazine/18994 |
@@ -371,9 +371,74 @@ def out_tax(value):
 	return round((values * c + 1) / c, 0)
 
 
-### CashUriage ###
+
+### CashUriage_List ###
+class CashUriage_List(ListView):
+
+	model = Name_Test20
+	form_class = YearForm
+	template_name = 'cashuriage_list.html'
+	context_object_name = "nametb"
+	# paginate_by = 5
+
+	def post(self, request, *args, **kwargs):
+		form = self.form_class(request.POST)
+		yid_post = request.POST['yid']
+
+		if form.is_valid():
+			return HttpResponseRedirect( '/Freee/CashUriage/%s' % yid_post )
+
+		return render(request, self.template_name, {'form': form})
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		context['form'] = YearForm()
+		yid = self.kwargs.get('yid')
+		context['yid'] = yid
+
+		SHARP20_K = 'SHARP20_K_2016'
+
+
+		### MySQL:Connection ###
+		conn = pymysql.connect(read_default_file='../../ssh/AWS_RDS_Dev.cnf')
+
+		try:
+			### MySQL : Session ###
+			with conn.cursor() as cursor:
+				sql = "SELECT * FROM %s " % SHARP20_K + \
+					"WHERE p_code = %s " + \
+					"AND m_datetime > '2015-07-01' AND m_datetime < '2015-08-01' " + \
+					"ORDER BY s_code"
+
+				## 月末残量
+				cursor.execute(sql,("50"))
+
+				SQL_Data = dictfetchall(cursor)
+
+
+		finally:
+			conn.close()
+
+		context['sqls'] = SQL_Data
+
+		return context
+
+
+### Cash.Uriage ###
 def CashUriage(request):
-	return HttpResponse("Hello CashUriage.Py3 You're at the CashUriage.")
+	# return HttpResponse("Hello CashUriage.Py3 You're at the CashUriage.")
+
+	if request.method == 'POST':
+		form = YearForm(request.POST)
+		yid_post = request.POST['yid']
+		if form.is_valid():
+			return HttpResponseRedirect('/Freee/CashUriage/%s' % yid_post)
+
+	else:
+		form = YearForm()
+
+	return render(request, 'cashuriage.html', {'form': form})
 
 
 ### Uriage_CSV ###
