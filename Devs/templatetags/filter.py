@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.27 Update:2019.11.21" |
+#//|  "VsV.Py3.Dj.TempTags.Filter.py - Ver.3.10.28 Update:2019.11.21" |
 #//+------------------------------------------------------------------+
 #//|                                    rinne_grid (id:rinne_grid2_1) |
 #//|                 http://www.rinsymbol.net/entry/2015/04/30/095552 |
@@ -316,7 +316,7 @@ def chk_unit(gcsc, ivalue):
 # In_Tax : 内税
 @register.filter("in_tax")
 def in_tax(value):
-	values = value - (value / (1+jtax10))
+	values = value - (value / (1+jtax))
 	# values = value - (value / (1+jtax8))
 
 	d_point = len(str(values).split('.')[1])
@@ -331,7 +331,7 @@ def in_tax(value):
 # Out_Tax : 外税
 @register.filter("out_tax")
 def out_tax(value):
-	values = value * jtax10
+	values = value * jtax
 	# values = value * jtax8
 
 	d_point = len(str(values).split('.')[1])
@@ -1262,7 +1262,7 @@ def check_unit_tax(gcsc, amount):
 		uc = (value+tax) / (amount/100)
 
 		if uc.is_integer():
-			values = (value+tax) - ((value+tax)/(1+jtax10))
+			values = (value+tax) - ((value+tax)/(1+jtax))
 			# values = (value+tax) - ((value+tax)/(1+jtax8))
 			d_point = len(str(values).split('.')[1])
 			if ndigits >= d_point:
@@ -1271,7 +1271,7 @@ def check_unit_tax(gcsc, amount):
 			return round((values * c + 1) / c, 0)
 
 		else:
-			values = value - (value/(1+jtax10))
+			values = value - (value/(1+jtax))
 			# values = value - (value/(1+jtax8))
 			d_point = len(str(values).split('.')[1])
 			if ndigits >= d_point:
@@ -1332,7 +1332,8 @@ def intax(value, args):
 	else:
 		# values = -(-value * 0.08) + value
 		# values = round(value * 0.08, 0) + value
-		values = value * 0.08 + value
+		# values = value * 0.08 + value
+		values = value * jtax + value
 
 		d_point = len(str(values).split('.')[1])
 		ndigits = 0
@@ -1383,7 +1384,8 @@ def c_tax(value, args):
 	else:
 		# values = -(-value * 0.08)
 		# values = round(value * 0.08, 0)
-		values = value * 0.08
+		# values = value * 0.08
+		values = value * jtax
 
 		d_point = len(str(values).split('.')[1])
 		ndigits = 0
@@ -1409,7 +1411,8 @@ def o_tax(value, args):
 	else:
 		# values = -(-value * 0.08)
 		# values = round(value - (value / 1.08), 0)
-		values = value - (value / 1.08)
+		# values = value - (value / 1.08)
+		values = value - (value / (1+jtax))
 
 		d_point = len(str(values).split('.')[1])
 		ndigits = 0
