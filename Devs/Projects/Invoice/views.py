@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Python3.Dj.Invoice.Views.py - Ver.3.15.4 Update:2019.04.11" |
+#//|    "VsV.Py3.Dj.Invoice.Views.py - Ver.3.10.29 Update:2019.11.21" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -46,7 +46,9 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfgen import canvas
 
-jtax = 0.08
+jtax = 0.10
+jtax8 = 0.08
+jtax10 = 0.10
 ndigits = 0
 ktax = 32.1
 
