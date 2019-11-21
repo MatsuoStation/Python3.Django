@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.38 Update:2019.04.24" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.39 Update:2019.11.21" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -29,7 +29,9 @@ import os
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
-jtax = 0.08
+jtax = 0.10
+jtax8 = 0.08
+jtax10 = 0.10
 ndigits = 0
 company_line = 7
 cDatetime = datetime(2018,2,28,23,59,59)
