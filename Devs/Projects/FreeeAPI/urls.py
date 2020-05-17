@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.FreeeAPI.urls.py - Ver.3.50.1 Update:2020.05.17" |
+#//|     "VsV.Py3.Dj.FreeeAPI.urls.py - Ver.3.50.2 Update:2020.05.17" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -31,4 +31,7 @@ app_name = 'FreeeAPI'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+
+    ### Test.Freee.API ###
+    path('Test/', views.Test, name='test'),
 ]
