@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.FreeeAPI.Views.py - Ver.3.50.10 Update:2020.05.24" |
+#//|   "VsV.Py3.Dj.FreeeAPI.Views.py - Ver.3.50.11 Update:2020.05.24" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -25,7 +25,7 @@ def Test(request):
 	# return HttpResponse("Test.Freee.API Page!! Welcome to Devs.MatsuoStation.Com!")
 
 	### Def.API.Authorization.Code
-	AUTHORIZATION_CODE = 'cfdc32c24e00073bd7e06cb370ba1e47fa90a08ffb37c68ddfd7a70d789a09c9'
+	AUTHORIZATION_CODE = '8f8c96f948ebc0eb6882de4ba58aa1d4a1a1ef7611834cd2d131feb7a340a589'
 
 	### (GET) FreeeConfig.Json
 	with open("../freeeconfig.json") as fc:
@@ -43,7 +43,7 @@ def Test(request):
 	PARTNER_API_URL = fc_data['partner_api_url']
 
 	# 口座一覧.取得用API.URL
-	WALLETABLES = fc_data['walletables_api_url']
+	WALLETABLES_API_URL = fc_data['walletables_api_url']
 
 
 	### (GET) FreeeToken.Json
@@ -68,8 +68,12 @@ def Test(request):
 		FreeeOAuth.headers['Authorization'] = 'Bearer ' + NEW_A_TOKEN
 
 
-		## 取引先一覧 ##
+		## 事業所ID ##
 		Company_ID = GET_Data_CompanyID(FreeeOAuth, COMPANY_API_URL)
+
+		## 口座ID ##
+		Wallet_ID = GET_Data_WalletID(FreeeOAuth, WALLETABLES_API_URL)
+
 
 		'''
 		# Freee.Session.GET
@@ -141,6 +145,7 @@ def Test(request):
 					'A_Token'	: NEW_A_TOKEN,
 					'Data'		: fj_data,
 					'COMPANY_ID'	: Company_ID,
+					'WALLET_ID'	: Wallet_ID,
 				})
 
 	# REFRESH_TOKEN.False
@@ -151,6 +156,7 @@ def Test(request):
 					'A_Token'	: NEW_A_TOKEN,
 					'Data'		: fj_data,
 					'COMPANY_ID'	: Company_ID,
+					'WALLET_ID'	: Wallet_ID,
 				})
 
 
@@ -177,6 +183,25 @@ def GET_Data_CompanyID(FreeeOAuth, COMPANY_API_URL):
 		GET_Data = ErrorCode
 
 	# (Def) return 001
+	return GET_Data
+
+### GET_Data_WalletID ###
+def GET_Data_WalletID(FreeeOAuth, WALLETABLES_API_URL):
+	# Freee.Session.SetUp
+	rc = FreeeOAuth.get(WALLETABLES_API_URL)
+
+	# 正常受信 : 200
+	if rc.status_code == 200:
+		data = json.loads(rc.text)
+
+		WALLET_ID = data['walletables'][0]['id']
+		GET_Data = WALLET_ID
+
+	# 受信エラー : != 200
+	else:
+		ErrorCode = rp.status_code
+		GET_Data = ErrorCode
+
 	return GET_Data
 
 
