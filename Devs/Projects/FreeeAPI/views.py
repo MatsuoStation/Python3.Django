@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.FreeeAPI.Views.py - Ver.3.50.4 Update:2020.05.17" |
+#//|   "VsV.Py3.Dj.FreeeAPI.Views.py - Ver.3.50.10 Update:2020.05.24" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -25,7 +25,7 @@ def Test(request):
 	# return HttpResponse("Test.Freee.API Page!! Welcome to Devs.MatsuoStation.Com!")
 
 	### Def.API.Authorization.Code
-	AUTHORIZATION_CODE = '5d9326f7c26e1b924a3337f5fac1ffd00bec9fd7caf57acf89da64271fd8ff51'
+	AUTHORIZATION_CODE = 'cfdc32c24e00073bd7e06cb370ba1e47fa90a08ffb37c68ddfd7a70d789a09c9'
 
 	### (GET) FreeeConfig.Json
 	with open("../freeeconfig.json") as fc:
@@ -41,6 +41,9 @@ def Test(request):
 	COMPANY_API_URL = fc_data['company_api_url']
 	# 取引先一覧.取得用API.URL
 	PARTNER_API_URL = fc_data['partner_api_url']
+
+	# 口座一覧.取得用API.URL
+	WALLETABLES = fc_data['walletables_api_url']
 
 
 	### (GET) FreeeToken.Json
@@ -64,6 +67,11 @@ def Test(request):
 		# Freee.Session.SetUp
 		FreeeOAuth.headers['Authorization'] = 'Bearer ' + NEW_A_TOKEN
 
+
+		## 取引先一覧 ##
+		Company_ID = GET_Data_CompanyID(FreeeOAuth, COMPANY_API_URL)
+
+		'''
 		# Freee.Session.GET
 		rc = FreeeOAuth.get(COMPANY_API_URL)
 
@@ -74,7 +82,7 @@ def Test(request):
 			COMPANY_ID = data_company['companies'][0]['id']
 
 			## 取引先一覧.取得.Params
-			params = {
+			params_company = {
 				'company_id'	: COMPANY_ID,
 				'offset'		: 0,
 				'limit'			: 500,
@@ -82,7 +90,7 @@ def Test(request):
 			}
 
 			# Freee.Partner.Session.GET
-			rp = FreeeOAuth.get(PARTNER_API_URL, params=params)
+			rp = FreeeOAuth.get(PARTNER_API_URL, params=params_company)
 
 			# 正常受信 : 200
 			if rp.status_code == 200:
@@ -94,22 +102,22 @@ def Test(request):
 				P_List = list()
 				for item in Patners_List:
 					P_List.append(item['name'])
-				GET_Data = P_List
+				GET_Data_Company = P_List
 
 			# 受信エラー : != 200
 			else:
 				ErrorCode = rp.status_code
 
-				GET_Data = ErrorCode
+				GET_Data_Company = ErrorCode
 
 
 			return render(request, 'freee_api.html', {
-						'R_Token'	: REFRESH_TOKEN,
-						'A_Token'	: NEW_A_TOKEN,
+						'R_Token'		: REFRESH_TOKEN,
+						'A_Token'		: NEW_A_TOKEN,
 						# 'C_ID'		: CLIENT_ID,
 						# 'C_Sec'		: CLIENT_SECRET,
-						'COMPANY_ID': COMPANY_ID,
-						'Data'		: GET_Data,
+						'COMPANY_ID'	: COMPANY_ID,
+						'Company_Data'	: GET_Data_Company,
 					})
 
 
@@ -117,24 +125,23 @@ def Test(request):
 		else:
 			ErrorCode = rc.status_code
 
-			GET_Data = ErrorCode
+			GET_Data_Company = ErrorCode
 
 			return render(request, 'freee_api.html', {
-						'R_Token'	: REFRESH_TOKEN,
-						'A_Token'	: NEW_A_TOKEN,
-						'Data'		: GET_Data,
+						'R_Token'		: REFRESH_TOKEN,
+						'A_Token'		: NEW_A_TOKEN,
+						'Company_Data'	: GET_Data_Company,
 					})
-
-
-
+		## End of 取引先一覧 ##
 		'''
-		(Def)
+
+		# (Def)
 		return render(request, 'freee_api.html', {
 					'R_Token'	: REFRESH_TOKEN,
 					'A_Token'	: NEW_A_TOKEN,
 					'Data'		: fj_data,
+					'COMPANY_ID'	: Company_ID,
 				})
-		'''
 
 	# REFRESH_TOKEN.False
 	else:
@@ -143,7 +150,34 @@ def Test(request):
 		return render(request, 'freee_api.html', {
 					'A_Token'	: NEW_A_TOKEN,
 					'Data'		: fj_data,
+					'COMPANY_ID'	: Company_ID,
 				})
+
+
+
+### GET_Data_CompanyID ###
+def GET_Data_CompanyID(FreeeOAuth, COMPANY_API_URL):
+	# Freee.Session.SetUp
+	# FreeeOAuth = OAuth2Session()
+	# FreeeOAuth.headers['Content-Type'] = 'application/json'
+	# FreeeOAuth.headers['Authorization'] = 'Bearer ' + NEW_A_TOKEN
+
+	rc = FreeeOAuth.get(COMPANY_API_URL)
+
+	# 正常受信 : 200
+	if rc.status_code == 200:
+		data = json.loads(rc.text)
+
+		COMPANY_ID = data['companies'][0]['id']
+		GET_Data = COMPANY_ID
+
+	# 受信エラー : != 200
+	else:
+		ErrorCode = rp.status_code
+		GET_Data = ErrorCode
+
+	# (Def) return 001
+	return GET_Data
 
 
 ### Get_A_Token ###

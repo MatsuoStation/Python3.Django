@@ -1,0 +1,41 @@
+<!--
+#//+------------------------------------------------------------------+
+#//|             VerysVeryInc.Python3.Django.Templates.Freee_API.html |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//|  "VsV.Py3.Dj.TLs.Freee_API.html - Ver.3.50.10 Update:2020.05.24" |
+#//+------------------------------------------------------------------+
+-->
+{% extends "./base.html" %}
+{% load humanize %}
+{% load filter %}
+
+
+{% block title %}Freee_API | Freee & AWS{% endblock title %}
+
+{% block content %}
+
+<main role="main" class="container">
+  <div class="starter-template">
+        <h1>Freee_API / Freee & AWS</h1>
+
+        <p>CLIENT_ID = {{ C_ID }}</p>
+        <p>CLIENT_SECRET = {{ C_Sec }}</p>  
+        <p>ACCESS_TOKEN = {{ A_Token }}</p>
+        <p>REFRESH_TOKEN = {{ R_Token }}</p>
+        <p>Company_ID = {{ COMPANY_ID }}</p>
+        <p></p>
+        <p>WalletAbles = {{ WalletABL }}</p>
+        <p>Wallet_Txns_Date = {{ WT_Date }}</p>
+        <p>Compamy_Data =   {{ Company_Data }}</p>
+
+
+        
+
+  </div>
+</main>
+
+{% endblock content %}
