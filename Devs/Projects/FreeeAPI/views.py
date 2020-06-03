@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.FreeeAPI.Views.py - Ver.3.50.11 Update:2020.05.24" |
+#//|   "VsV.Py3.Dj.FreeeAPI.Views.py - Ver.3.50.12 Update:2020.05.25" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -73,6 +73,9 @@ def Test(request):
 
 		## 口座ID ##
 		Wallet_ID = GET_Data_WalletID(FreeeOAuth, WALLETABLES_API_URL)
+
+		## 口座一覧 ##
+		Wallet_ABL = GET_Data_WalletABL(FreeeOAuth, WALLETABLES_API_URL)
 
 
 		'''
@@ -145,7 +148,8 @@ def Test(request):
 					'A_Token'	: NEW_A_TOKEN,
 					'Data'		: fj_data,
 					'COMPANY_ID'	: Company_ID,
-					'WALLET_ID'	: Wallet_ID,
+					'WALLET_ID' 	: Wallet_ID,
+					'WALLET_ABL'	: Wallet_ABL,
 				})
 
 	# REFRESH_TOKEN.False
@@ -156,7 +160,8 @@ def Test(request):
 					'A_Token'	: NEW_A_TOKEN,
 					'Data'		: fj_data,
 					'COMPANY_ID'	: Company_ID,
-					'WALLET_ID'	: Wallet_ID,
+					'WALLET_ID' 	: Wallet_ID,
+					'WALLET_ABL'	: Wallet_ABL,
 				})
 
 
@@ -196,6 +201,26 @@ def GET_Data_WalletID(FreeeOAuth, WALLETABLES_API_URL):
 
 		WALLET_ID = data['walletables'][0]['id']
 		GET_Data = WALLET_ID
+
+	# 受信エラー : != 200
+	else:
+		ErrorCode = rp.status_code
+		GET_Data = ErrorCode
+
+	return GET_Data
+
+## GET_Data_WalletABL ##
+def GET_Data_WalletABL(FreeeOAuth, WALLETABLES_API_URL):
+	# Freee.Session.SetUp
+	rc = FreeeOAuth.get(WALLETABLES_API_URL)
+
+	# 正常受信 : 200
+	if rc.status_code == 200:
+		data = json.loads(rc.text)
+
+		WALLET_ABL = data['walletables']
+		# WALLET_ID = data['walletables'][0]['id']
+		GET_Data = WALLET_ABL
 
 	# 受信エラー : != 200
 	else:
