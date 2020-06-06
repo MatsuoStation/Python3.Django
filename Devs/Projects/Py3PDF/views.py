@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Py3PDF.Views.py - Ver.3.60.3 Update:2020.06.06" |
+#//|      "VsV.Py3.Dj.Py3PDF.Views.py - Ver.3.60.4 Update:2020.06.06" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -33,7 +33,12 @@ def Test(request):
 	scan_pdf_path = os.path.join(os.path.dirname(Main_Dir), 'Devs', 'ScanPDF')
 	# scan_pdf_path = Path(sys.exec_prefix)
 	# (OK) call([str(py_path), "-o" , str(scan_pdf_path)+"/simple1.txt", "-p 1", str(scan_pdf_path)+"/simple1.pdf"])
-	call([str(py_path), "-o" , str(scan_pdf_path)+"/simple1.txt", "-p 1", str(scan_pdf_path)+"/2020-06-06-09-50-00.pdf"])
+	# call([str(py_path), "-o" , str(scan_pdf_path)+"/simple1.txt", "-p 1", str(scan_pdf_path)+"/2020-06-06-09-50-00.pdf"])
+	# call([str(py_path), "-o" , str(scan_pdf_path)+"/simple1.txt", "-p 1", str(scan_pdf_path)+"/extract-sample.pdf"])
+	# call([str(py_path), "-o" , str(scan_pdf_path)+"/simple1.txt", "-p 1", str(scan_pdf_path)+"/20200606151704.pdf"])
+	# call([str(py_path), "-o" , str(scan_pdf_path)+"/simple1.txt", "-p 1", str(scan_pdf_path)+"/20200606151704_a.pdf"])
+	call([str(py_path), "-o" , str(scan_pdf_path)+"/simple1.txt", "-p 1", str(scan_pdf_path)+"/20200607073702_x.pdf"])
+
 	return HttpResponse(Main_Dir)
 
 
