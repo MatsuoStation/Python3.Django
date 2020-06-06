@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.Py3PDF.urls.py - Ver.3.60.1 Update:2020.06.06" |
+#//|       "VsV.Py3.Dj.Py3PDF.urls.py - Ver.3.60.2 Update:2020.06.06" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -31,4 +31,7 @@ app_name = 'Py3PDF'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+
+    ### Test.Py3PDF ###
+    path('Test/', views.Test, name='test'),
 ]

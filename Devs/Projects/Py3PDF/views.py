@@ -5,13 +5,16 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Py3PDF.Views.py - Ver.3.60.1 Update:2020.06.06" |
+#//|      "VsV.Py3.Dj.Py3PDF.Views.py - Ver.3.60.2 Update:2020.06.06" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
 # Create your views here.
 ### MatsuoStation.Com ###
 from django.http import HttpResponse
+
+def Test(request):
+	return HttpResponse("Test.Py3PDF.API Page!! Welcome to Devs.MatsuoStation.Com!")
 
 def index(request):
 	return HttpResponse("Hello Py3PDF.py. You're at the Index.")
