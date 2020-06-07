@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.Py3PDF.Views.py - Ver.3.60.5 Update:2020.06.06" |
+#//|     "VsV.Py3.Dj.Py3PDF.Views.py - Ver.3.60.10 Update:2020.06.07" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -22,6 +22,10 @@ from io import StringIO
 from glob import glob
 import os
 
+### PDFtoPNG(JPG) with Anaconda.Poppler ###
+from pathlib import Path
+from pdf2image import convert_from_path
+
 
 ''' (Ver.3.60.4)
 import sys
@@ -35,6 +39,20 @@ from subprocess import call
 def Test(request):
 	# return HttpResponse("Test.Py3PDF.API Page!! Welcome to Devs.MatsuoStation.Com!")
 
+	## ScanPDF_PATH
+	scan_pdf_path = os.path.join(os.path.dirname(os.getcwd()), 'Devs', 'ScanPDF')
+
+	## PDF_PATH
+	PDF_PATH = Path(str(scan_pdf_path)+'/20200606151704.pdf')
+
+	## PNG
+	image_png = convert_from_path(str(PDF_PATH), 300)		# 300dpi
+	image_png[0].save(Path(str(scan_pdf_path)+'/out.png'), 'png')
+
+	return HttpResponse(PDF_PATH)
+
+
+	''' (Ver.3.60.5)
 	scan_pdf_path = os.path.join(os.path.dirname(os.getcwd()), 'Devs', 'ScanPDF')
 	file_list = glob(str(scan_pdf_path)+'/20200606151704_x.pdf')
 	txt_file = str(scan_pdf_path)+'/pdf.txt'
@@ -52,6 +70,7 @@ def Test(request):
 	fp.close()
 
 	return HttpResponse(txt_file)
+	'''
 
 
 	''' (Ver.3.60.4)
