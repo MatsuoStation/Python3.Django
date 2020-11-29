@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.nIndex.Views.py - Ver.3.70.2 Update:2020.11.04" |
+#//|      "VsV.Py3.Dj.nIndex.Views.py - Ver.3.70.3 Update:2020.11.29" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -13,8 +13,25 @@ from django.shortcuts import render
 ### MatsuoStation.Com ###
 from django.http import HttpResponse
 
-def Oauth(request):
-	return HttpResponse("Hello Oauth.3.0")
+# Oauth #
+import urllib
+import json
+from oauthlib.oauth2 import WebApplicationClient
+
+
+def Web_Oauth(request):
+	# Freee API #
+	FREEE_API_CLIENT_ID = "110f1ecca3b4c84f437df9ea7c8370d3d4d6978195cc9a147803220e6c6f593e"
+	FREEE_API_CLIENT_SECRET = "070bc6225a4bf4b68a2256a0b8d056b70d713f8ebab3b99c10d9aecc6b4394cf"
+	FREEE_API_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob"
+
+	# Web_Oauth - Webアプリ認証用URL
+	Web_Oauth = WebApplicationClient(FREEE_API_CLIENT_ID)
+	Web_CodeURL, headers, body = Web_Oauth.prepare_authorization_request('https://accounts.secure.freee.co.jp/public_api/authorize', redirect_url = FREEE_API_REDIRECT_URL)
+
+	return HttpResponse(Web_CodeURL)
+	# return HttpResponse("Hello Oauth.3.0")
+
 
 def index(request):
 	return HttpResponse("Hello nIndex.py. You're at the nIndex.")
