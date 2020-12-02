@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.nIndex.urls.py - Ver.3.70.2 Update:2020.11.04" |
+#//|       "VsV.Py3.Dj.nIndex.urls.py - Ver.3.70.4 Update:2020.12.02" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -28,8 +28,12 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-	### oauth ###
-    path('Oauth/', views.Oauth, name='oauth'),
+	### WebOauth ###
+    path('WebOauth/', views.Web_Oauth, name='weboauth'),
+
+    ###  FreeeAPI ###
+    path('FreeeAPI/', views.FreeeAPI, name='freeeapi'),
+
 
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),

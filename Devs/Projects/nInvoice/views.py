@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.nIndex.Views.py - Ver.3.70.3 Update:2020.11.29" |
+#//|      "VsV.Py3.Dj.nIndex.Views.py - Ver.3.70.4 Update:2020.12.02" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -18,6 +18,43 @@ import urllib
 import json
 from oauthlib.oauth2 import WebApplicationClient
 
+# FreeeClient
+from .freee_api import Freee 
+
+
+def FreeeAPI(request):
+
+	### (GET) FreeeConfig.Json
+	with open("../freeeconfig.json") as fc:
+		fc_data = json.load(fc)
+
+	## Freee.API.Config
+	client_id = fc_data['client_id']
+	client_secret = fc_data['client_secret']
+	company_id = fc_data['company_id']
+	authorize_code = fc_data['authorize_code']
+	token_filename = "../token.json"
+
+	### OK.Test ###
+	# freee = Freee()
+	# freee.setInfo("Ayano", 32)
+	# print(freee.getInfo())
+	# del freee
+	### End OK.Test ###
+
+	freee = Freee(client_id, client_secret, company_id, token_filename)
+	freee.get_access_token(authorize_code)
+
+
+
+
+	# freee = freee_api.Freee()
+	# freee = freee_api.Freee(client_id, client_secret, company_id, token_filename)
+	# freee.get_access_token(authorize_code)
+
+
+
+	return HttpResponse(token_filename)
 
 def Web_Oauth(request):
 	# Freee API #

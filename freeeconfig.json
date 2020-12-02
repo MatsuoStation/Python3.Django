@@ -3,6 +3,7 @@
 "client_secret" : "070bc6225a4bf4b68a2256a0b8d056b70d713f8ebab3b99c10d9aecc6b4394cf",
 "redirect_uri" : "urn:ietf:wg:oauth:2.0:oob",
 "authorize_api_url" : "https://api.freee.co.jp/oauth/token",
+"authorize_code" : "b45d92d68f190a1dbbfbd520925dc246d01eaa14b738da817c93137e2672213e",
 "company_api_url" : "https://api.freee.co.jp/api/1/companies",
 "company_id" : "2509142",
 "wallet_id"	:"1767560",
