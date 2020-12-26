@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.vIndex.urls.py - Ver.3.80.1 Update:2020.12.26" |
+#//|       "VsV.Py3.Dj.vIndex.urls.py - Ver.3.80.2 Update:2020.12.26" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -29,5 +29,12 @@ from . import views
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
+
+    ### /vInovice/ ###
     path('', views.index, name='index'),
+
+    ### /vInvoice/xxx/ ###
+    path('<int:nid>/', views.vInvoice_List.as_view(), name='vinvoice_list'),
+
+
 ]
