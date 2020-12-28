@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.5 Update:2020.12.27" |
+#//|    "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.6 Update:2020.12.28" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -13,12 +13,13 @@ from django.shortcuts import render
 ### MatsuoStation.Com ###
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 from .forms import NameForm
-from .deadline import DeadLine
+from .deadline import DeadLine, DeadLine_List
 from .db_vinvoice import DB_vInvoice
-from Finance.models import Invoice_Test20, Name_Test20
+from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20
 
 
 ### vInvoice_List ###
@@ -52,29 +53,60 @@ class vInvoice_List(ListView):
 			dlstr = datetime.strptime(dl, '%Y-%m-%d')
 
 			dd = dlstr.day 		# DeadLine : Day
-			dld, dlm = DeadLine(dd, dlstr)
-
-			'''
-			if dd == 20 or dd == 25:
-				dld = dlstr + timedelta(days=1) - relativedelta(months=1)
-				dlm = dlstr + timedelta(days=1) - timedelta(microseconds=1)
-				bld = dld - relativedelta(months=1)
-				blm = dlm - relativedelta(months=1)
-			else:
-				dt = dlstr - relativedelta(months=1)
-				dld = dt + relativedelta(months=1) - timedelta(days=dt.day) + timedelta(days=1)
-				dlm = dld + relativedelta(months=1) - timedelta(microseconds=1)
-				bld = dt - timedelta(days=dt.day) + timedelta(days=1)
-				blm = bld + relativedelta(months=1) - timedelta(microseconds=1)
-			'''
+			dld, dlm, dlb, dla = DeadLine(dd, dlstr)
 
 			## DB : Setup ##
-			names, IVs = DB_vInvoice(self, dld, dlm)
+			names, IVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm)
+
+			## DeadLine : Month & Secconde
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			## LastDay : Check (dl = True) ##
+			try:
+				if BFs:
+					d_values = BFs
+				'''
+				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
+					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+				'''
+				for dmm in dlms:
+					for d in d_values:
+						dls = DeadLine_List(d, dd, dmm)
+						'''
+						dv = d.check_day
+
+						if dv == 25:
+							if dd >= 25:
+								dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
+							else:
+								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+						elif dv == 20:
+							if dd >= 20:
+								dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
+							else:
+								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+						else:
+							dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) - timedelta(days=1)
+						'''
+
+						dd_list.append(dls)
+						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+						context['dds'] = dds
+			except Exception as e:
+				print("Exception - views.py/ dl=True /LastDay.Check : %s" % e)
+
+			context['deadlines'] = dl
+			context['dlb'] = dlb
+			context['dla'] = dla
 
 			'''
-			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
-			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
+			dlb = dlstr + timedelta(days=1) - relativedelta(months=1)
+			context['dlb'] = dlb
+			dla = dlstr + timedelta(days=1) - timedelta(microseconds=1)
+			context['dla'] = dla
 			'''
+			## End of LastDay : Check (dl = True) ##
 
 			## Cash Income : Total ##
 			incash_list = list()
@@ -89,15 +121,50 @@ class vInvoice_List(ListView):
 			print("Exception : %s" % e)
 
 			## DB : Setup ##
-			dld = 'null'
-			dlm = 'null'
-			names, IVs = DB_vInvoice(self, dld, dlm)
+			names, IVs, lastmonths, BFs = DB_vInvoice(self, "", "")
 
-			'''
-			IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
-			names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
-			'''
+			## DeadLine : Month & Secconde
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
 
+			## LastDay : Check (dl = False) ##
+			try:
+				if BFs:
+					d_values = BFs
+				'''
+				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
+					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+				'''
+				for dmm in dlms:
+					for d in d_values:
+						dls = DeadLine_List(d, dd, dmm)
+						'''
+						dv = d.check_day
+
+						if dv == 25:
+							if dd >= 25:
+								dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
+							else:
+								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+						elif dv == 20:
+							if dd >= 20:
+								dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
+							else:
+								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+						else:
+							dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) - timedelta(days=1)
+						'''
+
+						dd_list.append(dls)
+						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+						context['dds'] = dds
+			except Exception as e:
+				print("Exception - views.py/ dl=False /LastDay.Check : %s" % e)
+
+			context['deadlines'] = dl
+			## End of LastDay : Check (dl = False) ##
+
+		## name : Setup ##
 		for name in names:
 			context['names'] = name.g_code.name
 
