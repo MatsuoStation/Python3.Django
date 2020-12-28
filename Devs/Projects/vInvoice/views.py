@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.6 Update:2020.12.28" |
+#//|    "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.7 Update:2020.12.28" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -19,6 +19,7 @@ from dateutil.relativedelta import relativedelta
 from .forms import NameForm
 from .deadline import DeadLine, DeadLine_List
 from .db_vinvoice import DB_vInvoice
+from .pdf import fPDF_SS_BackImage
 from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20
 
 
@@ -66,29 +67,9 @@ class vInvoice_List(ListView):
 			try:
 				if BFs:
 					d_values = BFs
-				'''
-				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
-					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
-				'''
 				for dmm in dlms:
 					for d in d_values:
 						dls = DeadLine_List(d, dd, dmm)
-						'''
-						dv = d.check_day
-
-						if dv == 25:
-							if dd >= 25:
-								dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
-							else:
-								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
-						elif dv == 20:
-							if dd >= 20:
-								dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
-							else:
-								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
-						else:
-							dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) - timedelta(days=1)
-						'''
 
 						dd_list.append(dls)
 						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
@@ -99,14 +80,25 @@ class vInvoice_List(ListView):
 			context['deadlines'] = dl
 			context['dlb'] = dlb
 			context['dla'] = dla
-
-			'''
-			dlb = dlstr + timedelta(days=1) - relativedelta(months=1)
-			context['dlb'] = dlb
-			dla = dlstr + timedelta(days=1) - timedelta(microseconds=1)
-			context['dla'] = dla
-			'''
 			## End of LastDay : Check (dl = True) ##
+
+			## BANK : Invoice.Format ##
+			for bf in BFs:
+				fPDF = bf.s_format
+				context['fPDF'] = fPDF
+
+				## Invoice.Format : Back.Image - Setup
+				fURL = fPDF_SS_BackImage(fPDF)
+				'''
+				if fPDF == 0:
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png"
+				if fLPG == 10:
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_10_02.png"
+				if fLPG == 20:
+					fURL = "https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_20_02.png"
+				'''
+				context['fURL'] = fURL
+			## End of BANK : Invoice.Format ##
 
 			## Cash Income : Total ##
 			incash_list = list()
@@ -131,29 +123,9 @@ class vInvoice_List(ListView):
 			try:
 				if BFs:
 					d_values = BFs
-				'''
-				if Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid')):
-					d_values = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
-				'''
 				for dmm in dlms:
 					for d in d_values:
 						dls = DeadLine_List(d, dd, dmm)
-						'''
-						dv = d.check_day
-
-						if dv == 25:
-							if dd >= 25:
-								dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
-							else:
-								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
-						elif dv == 20:
-							if dd >= 20:
-								dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
-							else:
-								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
-						else:
-							dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) - timedelta(days=1)
-						'''
 
 						dd_list.append(dls)
 						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)

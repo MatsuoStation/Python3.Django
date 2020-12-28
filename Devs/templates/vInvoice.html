@@ -23,15 +23,18 @@
     <main role="main" class="container">
 
       <div class="starter-template">
-        <h1>vInvoice / 請求書</h1>
+          <h1>vInvoice / 請求書</h1>
 
-        <P>請求書作成</P>
-        <form action="" method="POST" class="form-horizontal" role="form">
-          {% csrf_token %}
-          <!-- {{ form.as_p }} -->
-          {{ form }}
-          <input type="submit" name="送信">
-        </form>
+          <P>請求書作成</P>
+          <form action="" method="POST" class="form-horizontal" role="form">
+              {% csrf_token %}
+              <!-- {{ form.as_p }} -->
+              {{ form }}
+              <input type="submit" name="送信">
+          </form>
+          <p><br>{{ names }} : {{ gid }} / {{ fPDF }}</p>
+          <p>{{ dlb }} - {{ dla }}</p>
+      </div>
     </main><!-- /.container -->
 
 {% endblock content %}
