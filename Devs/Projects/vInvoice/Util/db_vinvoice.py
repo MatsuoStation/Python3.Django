@@ -1,11 +1,11 @@
 #//+------------------------------------------------------------------+
-#//|              VerysVeryInc.Python3.Django.vInvoice.DB_vInvoice.py |
+#//|         VerysVeryInc.Python3.Django.vInvoice.Util.DB_vInvoice.py |
 #//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
 #//|                 https://github.com/MatsuoStation/Python3.Django/ |
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.DB.vInvoice.py - Ver.3.80.6 Update:2020.12.28" |
+#//|  "VsV.Py3.Dj.DB.Util.vInvoice.py - Ver.3.80.9 Update:2020.12.29" |
 #//+------------------------------------------------------------------+
 from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20
 
