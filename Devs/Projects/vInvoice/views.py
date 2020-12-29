@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.9 Update:2020.12.29" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.10 Update:2020.12.29" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -96,6 +96,31 @@ class vInvoice_List(ListView):
 					incash_list.append(iv.value)
 					incash_values = sum(incash_list)
 					context['incash_values'] = incash_values
+
+			## Cash Value : Total ##
+			total_list = list()
+
+			## Caluculate ##
+			try:
+				## Select Month ##
+				for iv in IVs:
+					# 現金関係 or 振込関係
+					if iv.s_code.uid == "00000" or iv.s_code.uid == "00002":
+						sv = 0
+						total_list.append(sv)
+					else:
+						sv = 0
+						total_list.append(sv)
+
+				## Value : Sum ##
+				total_values = sum(total_list)
+
+				## Value : Context ##
+				context['total_values'] = total_values
+
+			except Exception as e:
+				print("Exception - views.py / dl=True / Caluculate  : %s" % e)
+			## End of Caluculate ##
 
 		## * end try: * dl = False ##
 		except Exception as e:
