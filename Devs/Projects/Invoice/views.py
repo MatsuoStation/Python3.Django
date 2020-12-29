@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Invoice.Views.py - Ver.3.10.29 Update:2019.11.21" |
+#//|    "VsV.Py3.Dj.Invoice.Views.py - Ver.3.10.30 Update:2020.12.29" |
 #//+------------------------------------------------------------------+
 #//|                                                            @dgel |
 #//|                     https://stackoverflow.com/questions/12518517 |
@@ -4187,12 +4187,16 @@ class Invoice_List(ListView):
 						dv = d.check_day
 
 						if dv == 25:
-							if dd >=25:
+							if dd == 25:
+								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+							if dd > 25:
 								dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
 							else:
 								dls = (dmm - timedelta(days=dd-1)) + timedelta(days=dv-1)
 						elif dv == 20:
-							if dd >= 20:
+							if dd == 20:
+								dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+							if dd > 20:
 								dls = (dmm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
 							else:
 								dls = (dmm - timedelta(days=dd-1)) + timedelta(days=dv-1)
@@ -4292,12 +4296,16 @@ class Invoice_List(ListView):
 						dv = d.check_day
 
 						if dv == 25:
-							if dd >=25:
+							if dd == 25:
+								dls = (dlm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+							if dd > 25:
 								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
 							else:
 								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
 						elif dv == 20:
-							if dd >= 20:
+							if dd == 20:
+								dls = (dlm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+							if dd > 20:
 								dls = (dlm - timedelta(days=dd-1)) + relativedelta(months=1) + timedelta(days=dv-1)
 							else:
 								dls = (dlm - timedelta(days=dd-1)) + timedelta(days=dv-1)
