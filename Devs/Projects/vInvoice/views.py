@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.7 Update:2020.12.28" |
+#//|    "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.8 Update:2020.12.29" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -17,10 +17,11 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from .forms import NameForm
-from .deadline import DeadLine, DeadLine_List
+# from .deadline import DeadLine, DeadLine_List, DeadLine_List_Def
+from .Util.deadline import DeadLine, DeadLine_List
 from .db_vinvoice import DB_vInvoice
 from .pdf import fPDF_SS_BackImage
-from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20
+from Finance.models import Name_Test20
 
 
 ### vInvoice_List ###
@@ -67,15 +68,28 @@ class vInvoice_List(ListView):
 			try:
 				if BFs:
 					d_values = BFs
-				for dmm in dlms:
+				dd_list = DeadLine_List(dlms, d_values)
+				dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+				context['dds'] = dds
+
+			except Exception as e:
+				print("Exception - views.py / dl=True / LastDay.Check : %s" % e)
+
+			'''
+			try:
+				if BFs:
+					d_values = BFs
+				for dlm in dlms:
 					for d in d_values:
-						dls = DeadLine_List(d, dd, dmm)
+						dls = DeadLine_List_Def(d, dd, dlm)
 
 						dd_list.append(dls)
 						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
 						context['dds'] = dds
+
 			except Exception as e:
-				print("Exception - views.py/ dl=True /LastDay.Check : %s" % e)
+				print("Exception - views.py / dl=True / LastDay.Check : %s" % e)
+			'''
 
 			context['deadlines'] = dl
 			context['dlb'] = dlb
@@ -110,7 +124,7 @@ class vInvoice_List(ListView):
 
 		## * end try: * dl = False ##
 		except Exception as e:
-			print("Exception : %s" % e)
+			print("Exception - views.py / dl=False  : %s" % e)
 
 			## DB : Setup ##
 			names, IVs, lastmonths, BFs = DB_vInvoice(self, "", "")
@@ -123,15 +137,26 @@ class vInvoice_List(ListView):
 			try:
 				if BFs:
 					d_values = BFs
-				for dmm in dlms:
+				dd_list = DeadLine_List(dlms, d_values)
+				dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+				context['dds'] = dds
+			except Exception as e:
+				print("Exception - views.py / dl=False / LastDay.Check : %s" % e)
+
+			'''
+			try:
+				if BFs:
+					d_values = BFs
+				for dlm in dlms:
 					for d in d_values:
-						dls = DeadLine_List(d, dd, dmm)
+						dls = DeadLine_List(d, dd, dlm)
 
 						dd_list.append(dls)
 						dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
 						context['dds'] = dds
 			except Exception as e:
-				print("Exception - views.py/ dl=False /LastDay.Check : %s" % e)
+				print("Exception - views.py / dl=False / LastDay.Check : %s" % e)
+			'''
 
 			context['deadlines'] = dl
 			## End of LastDay : Check (dl = False) ##

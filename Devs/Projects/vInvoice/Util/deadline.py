@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.vInvoice.DeadLine.py - Ver.3.80.6 Update:2020.12.28" |
+#//| "VsV.Py3.Dj.vInvoice.DeadLine.py - Ver.3.80.8 Update:2020.12.29" |
 #//+------------------------------------------------------------------+
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
@@ -28,20 +28,29 @@ def DeadLine(dd, dlstr):
 
     return dld, dlm, dlb, dla
 
-def DeadLine_List(d, dd, dmm):
-    dv = d.check_day
 
-    if dv == 25:
-        if dd >= 25:
-            dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
-        else:
-            dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
-    elif dv == 20:
-        if dd >= 20:
-            dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
-        else:
-            dls = (dmm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
-    else:
-        dls = (dmm - timedelta(days=dd - 1)) + relativedelta(months=1) - timedelta(days=1)
+def DeadLine_List(dlms, d_value):
+    dd_list = list()
+    for dlm in dlms:
+        dd = dlm.day
 
-    return dls
+        for d in d_value:
+            dv = d.check_day
+
+            if dv == 25:
+                if dd >= 25:
+                    dls = (dlm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
+                else:
+                    dls = (dlm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+            elif dv == 20:
+                if dd >= 20:
+                    dls = (dlm - timedelta(days=dd - 1)) + relativedelta(months=1) + timedelta(days=dv - 1)
+                else:
+                    dls = (dlm - timedelta(days=dd - 1)) + timedelta(days=dv - 1)
+            else:
+                dls = (dlm - timedelta(days=dd - 1)) + relativedelta(months=1) - timedelta(days=1)
+
+            dd_list.append(dls)
+    # print(dd_list)
+    return dd_list
+

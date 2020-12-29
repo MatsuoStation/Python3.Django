@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.5 Update:2020.12.27" |
+#//|       "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.8 Update:2020.12.29" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -35,6 +35,13 @@
           <p><br>{{ names }} : {{ gid }} / {{ fPDF }}</p>
           <p>{{ dlb }} - {{ dla }}</p>
           <!--p>{{ fURL }}</p-->
+          <p>
+          {% if dlms %}
+              {% for dd in dds %}
+                &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|
+              {% endfor %}
+          {% endif %}
+          </p>
 
           <table class="table table-striped table-bordered">
               <thead>
