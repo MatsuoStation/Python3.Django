@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.10 Update:2020.12.29" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.11 Update:2020.12.30" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -15,6 +15,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from decimal import *
 
 from .forms import NameForm
 from .Util.deadline import DeadLine, DeadLine_List
@@ -22,6 +23,9 @@ from .Util.deadline import DeadLine, DeadLine_List
 from .Util.db_vinvoice import DB_vInvoice
 from .pdf import fPDF_SS_BackImage
 from Finance.models import Name_Test20
+
+jtax10 = 0.10
+jtax8 = 0.08
 
 
 ### vInvoice_List ###
@@ -59,6 +63,7 @@ class vInvoice_List(ListView):
 
 			## DB : Setup ##
 			names, IVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm)
+			context['ivs'] = IVs
 
 			## DeadLine : Month & Secconde
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
@@ -104,10 +109,40 @@ class vInvoice_List(ListView):
 			try:
 				## Select Month ##
 				for iv in IVs:
-					# 現金関係 or 振込関係
-					if iv.s_code.uid == "00000" or iv.s_code.uid == "00002":
+					# 消費税率 : 設定
+					if iv.m_datetime >= datetime.strptime("2019-10-01", '%Y-%m-%d'):
+						jtax = jtax10
+					else:
+						jtax = jtax8
+
+					# 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
+					if iv.s_code.uid == "00000" or iv.s_code.uid == "00001" or \
+							iv.s_code.uid == "00002" or iv.s_code.uid == "00003" or iv.s_code.uid == "01100":
 						sv = 0
 						total_list.append(sv)
+
+					# OIL以外
+					elif iv.s_code.uid != "10000" or iv.s_code.uid != "10100" or iv.s_code.uid != "10200" or \
+						iv.s_code.uid != "10300" or iv.s_code.uid != "10500" or iv.s_code.uid != "10600":
+						# 消費税 : True
+						if iv.tax != 0:
+							# 消費税 : == 四捨五入(税別価格 * 消費税率)
+							if iv.tax == Decimal(iv.value * jtax).quantize(Decimal('1'), rounding=ROUND_HALF_UP):
+								sv = iv.value + iv.tax
+								# 赤伝票 : True
+								if iv.red_code:
+									sv = -(sv)
+								total_list.append(sv)
+							# 消費税 : Diff
+							else:
+								sv = 10000000000000
+								total_list.append(sv)
+
+							''' (OK)
+							sv = iv.value + iv.tax
+							total_list.append(sv)
+							'''
+					# その他 : OIL & OIL以外
 					else:
 						sv = 0
 						total_list.append(sv)

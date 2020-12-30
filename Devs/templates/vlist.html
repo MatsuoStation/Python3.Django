@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.8 Update:2020.12.29" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.11 Update:2020.12.30" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -14,7 +14,7 @@
 {% load sass_tags %}
 {% load humanize %}
 {% load static %}
-{% load filter %}
+{% load vfilter %}
 
 
 {% block title %}vInvoice : 請求書{% endblock title %}
@@ -71,6 +71,59 @@
                 </tr>
               </thead>
           </table>
+          <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td width="2">月</td>
+                    <td width="2">日</td>
+                    <td width="4">車番</td>
+                    <td width="5">SCode</td>
+                    <td>商品名</td>
+                    <td>数量</td>
+                    <td>単価</td>
+                    <td>金額</td>
+                    <td>税区分</td>
+                    <!--td>車両別合計</td-->
+                    <td>消費税</td>
+                    <td>税込</td>
+                    <td>備考</td>
+                    <td>赤伝</td>
+                    <td>時間</td>
+                    <td>伝票番号</td>
+                </tr>
+          </thead>
+          <thead>
+            {% for iv in ivs %}
+                <tr>
+                    <!-- 月 - 日 - 車番 -->
+                    <td>{{ iv.m_datetime.date.month }}</td>
+                    <td>{{ iv.m_datetime.date.day }}</td>
+                    <td>{{ iv.car_code }}</td>
+                    <!-- 商品コード - 商品名 -->
+                    <td>{{ iv.s_code  }}</td>
+                    <td>{{ iv.s_code.h_name }}</td>
+                    <!-- 数量 -->
+                    <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <!-- 単価 - 金額 -->
+                    <td>{{ iv.unit }}</td>
+                    <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
+                    <!-- 税区分 - 消費税 - 税込 -->
+                    <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                    <!--td>{{ iv.s_code.uid|s_tax:iv.tax }}</td-->
+                    <td>{{ iv.tax|one_two:iv.m_datetime|one_two:iv.s_code.uid|check_tax:iv.value|red_value:iv.red_code|intcomma }}</td>
+                    <td>{{ iv.value|add:iv.tax|red_value:iv.red_code|intcomma }}</td>
+                    <!-- 備考 - 赤伝 - 担当者 -->
+                    <td><!-- {{ iv.g_code.uid }} --></td>
+                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
+                    <td>{{ iv.red_code }}</td>
+                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
+                    <td>{{ iv.slip }}</td>
+                </tr>
+            {% endfor %}
+          </thead>
+
+          </table>
+
       </div>
 
     </main><!-- /.container -->
