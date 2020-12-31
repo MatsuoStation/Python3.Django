@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.12 Update:2020.12.31" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.14 Update:2020.12.31" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -36,6 +36,23 @@
           <p>{{ dlb }} - {{ dla }}</p>
           <!--p>{{ fURL }}</p-->
           <p>
+
+          <div class="pagination">
+            <span class="step-links">
+                {% if ivs.has_previous %}
+                    <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
+                    <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                {% endif %}
+                <span class="current">
+                    Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+                </span>
+                {% if ivs.has_next %}
+                    &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% endif %}
+            </span>
+          </div>
+
           {% if dlms %}
               {% for dd in dds %}
                 &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|
@@ -121,8 +138,23 @@
                 </tr>
             {% endfor %}
           </thead>
-
           </table>
+
+          <div class="pagination">
+            <span class="step-links">
+                {% if ivs.has_previous %}
+                    <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
+                    <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                {% endif %}
+                <span class="current">
+                    Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+                </span>
+                {% if ivs.has_next %}
+                    &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% endif %}
+            </span>
+          </div>
 
       </div>
 

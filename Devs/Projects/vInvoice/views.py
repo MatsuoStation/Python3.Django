@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.13 Update:2020.12.31" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.14 Update:2020.12.31" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -13,6 +13,7 @@ from django.shortcuts import render
 ### MatsuoStation.Com ###
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from decimal import *
@@ -61,7 +62,6 @@ class vInvoice_List(ListView):
 
 			## DB : Setup ##
 			names, IVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm)
-			context['ivs'] = IVs
 
 			## DeadLine : Month & Secconde
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
@@ -99,12 +99,7 @@ class vInvoice_List(ListView):
 					sv = InCash_Cal(iv.s_code.uid, iv.value)
 					incash_list.append(sv)
 
-				#if iv.s_code.uid == "00000":
-				#	incash_list.append(iv.value)
-				#	incash_values = sum(incash_list)
-				#	context['incash_values'] = incash_values
-
-			## Cash Value : Total ##
+			## Uriage Value : Total ##
 			total_list = list()
 
 			## Caluculate ##
@@ -171,6 +166,18 @@ class vInvoice_List(ListView):
 		## name : Setup ##
 		for name in names:
 			context['names'] = name.g_code.name
+
+		## Paginator : Setup ##
+		paginator = Paginator(IVs, 30)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+		try:
+			IVs = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			IVs = paginator.page(1)
+		context['ivs'] = IVs
 
 		return context
 
