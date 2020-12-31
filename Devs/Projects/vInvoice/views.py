@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.12 Update:2020.12.31" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.13 Update:2020.12.31" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -23,10 +23,7 @@ from .Util.deadline import DeadLine, DeadLine_List
 from .Util.db_vinvoice import DB_vInvoice
 from .pdf import fPDF_SS_BackImage
 from Finance.models import Name_Test20
-from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal
-
-# jtax10 = 0.10
-# jtax8 = 0.08
+from Finance.templatetags.caluculate import jTax, SC_Check, InCash_Cal, Cash_Cal, OIL_Cal, nOIL_Cal
 
 
 ### vInvoice_List ###
@@ -98,10 +95,14 @@ class vInvoice_List(ListView):
 			## Cash Income : Total ##
 			incash_list = list()
 			for iv in IVs:
-				if iv.s_code.uid == "00000":
-					incash_list.append(iv.value)
-					incash_values = sum(incash_list)
-					context['incash_values'] = incash_values
+				if SC_Check(iv.s_code.uid) == "Cash":
+					sv = InCash_Cal(iv.s_code.uid, iv.value)
+					incash_list.append(sv)
+
+				#if iv.s_code.uid == "00000":
+				#	incash_list.append(iv.value)
+				#	incash_values = sum(incash_list)
+				#	context['incash_values'] = incash_values
 
 			## Cash Value : Total ##
 			total_list = list()
@@ -110,67 +111,33 @@ class vInvoice_List(ListView):
 			try:
 				## Select Month ##
 				for iv in IVs:
+					# 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
 					jtax = jTax(iv.m_datetime)
-
-					'''
-					# 消費税率 : 設定
-					if iv.m_datetime >= datetime.strptime("2019-10-01", '%Y-%m-%d'):
-						jtax = jtax10
-					else:
-						jtax = jtax8
-					'''
 
 					# 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
 					if SC_Check(iv.s_code.uid) == "Cash":
 						sv, cTax = Cash_Cal(iv.s_code.uid)
 						total_list.append(sv)
-
-					#if iv.s_code.uid == "00000" or iv.s_code.uid == "00001" or \
-					#		iv.s_code.uid == "00002" or iv.s_code.uid == "00003" or iv.s_code.uid == "01100":
-					#	sv = 0
-					#	total_list.append(sv)
-
 					# OIL
 					elif SC_Check(iv.s_code.uid) == "OIL":
 						sv, cTax = OIL_Cal(iv.s_code.uid)
 						total_list.append(sv)
-
 					# OIL以外
 					elif SC_Check(iv.s_code.uid) == "nOIL":
 						sv, cTax = nOIL_Cal(iv.s_code.uid, iv.value, iv.tax, jtax, iv.red_code)
 						# nOIL_Cal(sc,value,tax,jtax,red_code):
 						total_list.append(sv)
-
-					#elif iv.s_code.uid != "10000" or iv.s_code.uid != "10100" or iv.s_code.uid != "10200" or \
-					#	iv.s_code.uid != "10300" or iv.s_code.uid != "10500" or iv.s_code.uid != "10600":
-						# 消費税 : True
-					#	if iv.tax != 0:
-							# 消費税 : == 四捨五入(税別価格 * 消費税率)
-					#		if iv.tax == Decimal(iv.value * jtax).quantize(Decimal('1'), rounding=ROUND_HALF_UP):
-					#			sv = iv.value + iv.tax
-								# 赤伝票 : True
-					#			if iv.red_code:
-					#				sv = -(sv)
-					#			total_list.append(sv)
-							# 消費税 : Diff
-					#		else:
-					#			sv = 10000000000000
-					#			total_list.append(sv)
-
-							#''' (OK)
-							#sv = iv.value + iv.tax
-							#total_list.append(sv)
-							#'''
-
 					# その他 : 現金 & OIL & OIL以外
 					else:
 						sv = 0
 						total_list.append(sv)
 
 				## Value : Sum ##
+				incash_values = sum(incash_list)
 				total_values = sum(total_list)
 
 				## Value : Context ##
+				context['incash_values'] = incash_values
 				context['total_values'] = total_values
 
 			except Exception as e:
