@@ -5,9 +5,9 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.DB.Util.vInvoice.py - Ver.3.80.10 Update:2020.12.29" |
+#//|"VsV.Py3.Dj.Util.DB.vInvoice.py - Ver.3.80.20  Update:2021.01.01" |
 #//+------------------------------------------------------------------+
-from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20
+from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30
 
 def DB_vInvoice(self, dld, dlm):
 
@@ -23,7 +23,17 @@ def DB_vInvoice(self, dld, dlm):
     ## BFs ##
     BFs = Bank_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
 
+    ## VLs ##
+    VLs = Value_Test30.objects.filter(uid=self.kwargs.get('nid')).order_by('s_code')
+
     ## names ##
     names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
 
-    return names, IVs, lastmonths, BFs
+    return names, IVs, lastmonths, BFs, VLs
+    # return names, IVs, lastmonths, BFs
+
+
+def DB_vValue(self, sc, m_datetime):
+    if Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=sc, m_datetime__lte=m_datetime):
+        v_values = Value_Test30.objects.all().filter(uid=self.kwargs.get('nid'), s_code=sc, m_datetime__lte=m_datetime)
+    return v_values

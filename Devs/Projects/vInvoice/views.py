@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.14 Update:2020.12.31" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.20 Update:2021.01.01" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -21,7 +21,7 @@ from decimal import *
 from .forms import NameForm
 from .Util.deadline import DeadLine, DeadLine_List
 # from .db_vinvoice import DB_vInvoice
-from .Util.db_vinvoice import DB_vInvoice
+from .Util.db_vinvoice import DB_vInvoice, DB_vValue
 from .pdf import fPDF_SS_BackImage
 from Finance.models import Name_Test20
 from Finance.templatetags.caluculate import jTax, SC_Check, InCash_Cal, Cash_Cal, OIL_Cal, nOIL_Cal
@@ -61,7 +61,8 @@ class vInvoice_List(ListView):
 			dld, dlm, dlb, dla = DeadLine(dd, dlstr)
 
 			## DB : Setup ##
-			names, IVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm)
+			# names, IVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm)
+			names, IVs, lastmonths, BFs, VLs = DB_vInvoice(self, dld, dlm)
 
 			## DeadLine : Month & Secconde
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
@@ -144,7 +145,8 @@ class vInvoice_List(ListView):
 			print("Exception - views.py / dl=False  : %s" % e)
 
 			## DB : Setup ##
-			names, IVs, lastmonths, BFs = DB_vInvoice(self, "", "")
+			# names, IVs, lastmonths, BFs = DB_vInvoice(self, "", "")
+			names, IVs, lastmonths, BFs, VLs = DB_vInvoice(self, "", "")
 
 			## DeadLine : Month & Secconde
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
@@ -178,6 +180,7 @@ class vInvoice_List(ListView):
 		except(EmptyPage, InvalidPage):
 			IVs = paginator.page(1)
 		context['ivs'] = IVs
+		context['vls'] = VLs
 
 		return context
 

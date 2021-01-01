@@ -5,13 +5,22 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.13 Update:2020.12.31" |
+#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.20 Update:2021.01.01" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
 
 jtax10 = 0.10
 jtax8 = 0.08
+
+
+### 単価 : Setup　###
+def Unit_Cal(v_values):
+    un = 10
+
+    return un
+
+
 
 ### 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
 def jTax(m_datetime):

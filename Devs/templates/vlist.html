@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.14 Update:2020.12.31" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.20 Update:2021.01.01" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -61,7 +61,7 @@
           </p>
 
           <table class="table table-striped table-bordered">
-              <thead>
+            <thead>
                 <tr>
                     <td>伝票枚数</td>
                     <td width="1"></td>
@@ -73,8 +73,8 @@
                     <td width="1"></td>
                     <td>当月ご請求額</td>
                 </tr>
-              </thead>
-              <thead>
+            </thead>
+            <thead>
                 <tr>
                     <td></td>
                     <td width="1"></td>
@@ -86,7 +86,7 @@
                     <td width="1"></td>
                     <td>{{ all_total_values|intcomma }}</td>
                 </tr>
-              </thead>
+            </thead>
           </table>
           <table class="table table-striped table-bordered">
             <thead>
@@ -108,9 +108,9 @@
                     <td>時間</td>
                     <td>伝票番号</td>
                 </tr>
-          </thead>
-          <thead>
-            {% for iv in ivs %}
+            </thead>
+            <thead>
+                {% for iv in ivs %}
                 <tr>
                     <!-- 月 - 日 - 車番 -->
                     <td>{{ iv.m_datetime.date.month }}</td>
@@ -122,12 +122,12 @@
                     <!-- 数量 -->
                     <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
                     <!-- 単価 - 金額 -->
-                    <td>{{ iv.unit }}</td>
+                    <td>{{ iv.s_code.uid|check_unit:vls|floatformat:2 }}</td>
                     <td>{{ iv.value|red_value:iv.red_code|intcomma }}</td>
                     <!-- 税区分 - 消費税 - 税込 -->
                     <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
                     <!--td>{{ iv.s_code.uid|s_tax:iv.tax }}</td-->
-                    <td>{{ iv.tax|one_two:iv.m_datetime|one_two:iv.s_code.uid|one_two:iv.red_code|check_tax:iv.value|red_value:iv.red_code|intcomma }}</td>
+                    <td>{{ iv.tax|one_two:iv.m_datetime|one_two:iv.s_code.uid|one_two:iv.red_code|one_two:vls|check_tax:iv.value|red_value:iv.red_code|intcomma }}</td>
                     <td>{{ iv.value|add:iv.tax|red_value:iv.red_code|intcomma }}</td>
                     <!-- 備考 - 赤伝 - 担当者 -->
                     <td><!-- {{ iv.g_code.uid }} --></td>
@@ -136,8 +136,49 @@
                     <td>{{ iv.m_datetime|date:"H:i" }}</td>
                     <td>{{ iv.slip }}</td>
                 </tr>
-            {% endfor %}
-          </thead>
+                {% endfor %}
+            </thead>
+          </table>
+
+          <table class="table table-striped table-bordered">
+          <thead>
+                <tr>
+                    <td><主要商品合計></td>
+                    <td width="1"></td>
+                    <td>課税売上高</td>
+                    <td>{{ notax_values|intcomma }}</td>
+                    <td width="1"></td>
+                    <td>消費税額</td>
+                    <td>{{ tax_values|intcomma }}</td>
+                    <td width="1"></td>
+                    <td>軽油税</td>
+                    <td>{{ ktax_values|intcomma }}</td>
+                    <td width="1"></td>
+                </tr>
+            </thead>
+          </table>
+
+          <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td colspan="2">GP-1プラス</td>
+                    <td colspan="2">レギュラー</td>
+                    <td colspan="2">軽油</td>
+                    <td colspan="2">灯油</td>
+                    <td>その他金額</td>
+                </tr>
+                <tr>
+                    <td>{{ high_amounts|floatformat:2|intcomma }}</td>
+                    <td>{{ high_values|intcomma }}</td>
+                    <td>{{ reg_amounts|floatformat:2|intcomma }}</td>
+                    <td>{{ reg_values|intcomma }}</td>
+                    <td>{{ keiyu_amounts|floatformat:2|intcomma }}</td>
+                    <td>{{ keiyu_values|intcomma }}</td>
+                    <td>{{ toyu_amounts|floatformat:2|intcomma }}</td>
+                    <td>{{ toyu_values|intcomma }}</td>
+                    <td>{{ nonoil_values|intcomma }}</td>
+                </tr>
+            </thead>
           </table>
 
           <div class="pagination">
