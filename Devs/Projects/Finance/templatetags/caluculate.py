@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.24 Update:2021.01.02" |
+#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.25 Update:2021.01.03" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
@@ -15,6 +15,27 @@ from Finance.models import Value_Test30
 
 jtax10 = 0.10
 jtax8 = 0.08
+
+
+### 金額 : Setup　###
+def Vl_Cal(sc, gc, am, vl, tax, red, md):
+    # 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
+    jtax = jTax(md)
+    # 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
+    if SC_Check(sc) == "Cash":
+        sv, cTax = Cash_Cal(sc)
+        vc = sv
+    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300) : 灯油特別(10500)
+    elif SC_Check(sc) == "OIL" or (vl == 0 and sc == "10500"):
+        uc = Unit_Cal(sc, gc, am, vl, tax, red, md)
+        vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+    # 油以外 : 灯油(10500) or 重油(10600)含む
+    elif SC_Check(sc) == "nOIL":
+        sv, cTax = nOIL_Cal(sc, vl, tax, jtax, red)
+        vc = sv - cTax
+    else:
+        vc = sc
+    return vc
 
 
 ### 単価 : Setup　###

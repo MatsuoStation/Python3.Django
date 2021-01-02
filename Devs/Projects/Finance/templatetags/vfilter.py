@@ -5,12 +5,12 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.22 Update:2021.01.02" |
+#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.25 Update:2021.01.03" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
 from decimal import *
-from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal
+from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal
 
 register = template.Library()
 
@@ -21,7 +21,18 @@ def one_two(one, two):
     return one, two
 
 
-# check_unit -
+# check_value - (OK)
+@register.filter("check_value")
+def check_value(sc_gc_am_vl_tax_red, md):
+    sc_gc_am_vl_tax, red = sc_gc_am_vl_tax_red
+    sc_gc_am_vl, tax = sc_gc_am_vl_tax
+    sc_gc_am, vl = sc_gc_am_vl
+    sc_gc, am = sc_gc_am
+    sc, gc = sc_gc
+    vc = Vl_Cal(sc, gc, am, vl, tax, red, md)
+    return vc
+
+# check_unit - (OK)
 @register.filter("check_unit")
 def check_unit(sc_gc_am_vl_tax_red, md):
     sc_gc_am_vl_tax, red = sc_gc_am_vl_tax_red
