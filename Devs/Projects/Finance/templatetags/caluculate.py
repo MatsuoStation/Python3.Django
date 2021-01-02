@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.25 Update:2021.01.03" |
+#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.26 Update:2021.01.03" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
@@ -29,14 +29,17 @@ def Vl_Cal(sc, gc, am, vl, tax, red, md):
     elif SC_Check(sc) == "OIL" or (vl == 0 and sc == "10500"):
         uc = Unit_Cal(sc, gc, am, vl, tax, red, md)
         vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+        if red:
+            vc = -(vc)
     # 油以外 : 灯油(10500) or 重油(10600)含む
     elif SC_Check(sc) == "nOIL":
         sv, cTax = nOIL_Cal(sc, vl, tax, jtax, red)
         vc = sv - cTax
+        if red:
+            vc = -(vc)
     else:
         vc = sc
     return vc
-
 
 ### 単価 : Setup　###
 def Unit_Cal(sc, gc, am, vl, tax, red, md):
@@ -113,7 +116,6 @@ def Unit_Cal(sc, gc, am, vl, tax, red, md):
     # uc = sc
     return uc
 
-
 ### 単価 : SS.History ###
 def Unit_His(v30, hv):
     v_values = v30
@@ -157,6 +159,11 @@ def jTax(m_datetime):
         jtax = jtax8
     return jtax
 
+### 消費税計算 ###
+def Tax_Cal(vl, tax, jtax):
+    tc = (vl + tax) - Decimal((vl + tax)/(1+jtax)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+    return tc
+
 ### S_Code : Check
 def SC_Check(sc):
     # 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
@@ -189,6 +196,7 @@ def Cash_Cal(sc):
     return sv, cTax
 
 ### 売上高 : ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300) ###
+# def OIL_Cal(sc, gc, am, vl, tax, red, md):
 def OIL_Cal(sc):
     if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300":
         sv = 0
@@ -196,20 +204,21 @@ def OIL_Cal(sc):
     return sv, cTax
 
 ### 売上高 : 油以外 - 灯油(10500) or 重油(10600)含む ###
-def nOIL_Cal(sc,value,tax,jtax,red_code):
+def nOIL_Cal(sc,vl,tax,jtax,red):
     if sc != "10000" or sc != "10100" or sc != "10200" or sc != "10300":
 
         # 消費税 : True
         if tax != 0:
             # 消費税 : == (税込金額:value + tax) - (四捨五入:(税込金額:value + tax）/ (1 + jTax))
-            if tax == (value + tax) - Decimal((value + tax)/(1+jtax)).quantize(Decimal('1'), rounding=ROUND_HALF_UP):
+            if tax == Tax_Cal(vl, tax, jtax):
+            # if tax == (value + tax) - Decimal((value + tax)/(1+jtax)).quantize(Decimal('1'), rounding=ROUND_HALF_UP):
             # 消費税 : == 四捨五入（税別価格 * 消費税率）
             # if tax == Decimal(value * jtax).quantize(Decimal('1'), rounding=ROUND_HALF_UP):
-                sv = value + tax
+                sv = vl + tax
                 cTax = tax
                 # 赤伝票 : True
-                if red_code:
-                    sv = -(sv)
+                # if red:
+                #    sv = -(vl-tax)
             # 消費税 : 不一致 - 計算間違い・POS記載
             else:
                 sv = 10000000000000

@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.25 Update:2021.01.03" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.26 Update:2021.01.03" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -122,12 +122,12 @@
                     <!-- 数量 -->
                     <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
                     <!-- 単価 - 金額 -->
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2 }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
                     <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
                     <!-- 税区分 - 消費税 - 税込 -->
                     <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
                     <!--td>{{ iv.s_code.uid|s_tax:iv.tax }}</td-->
-                    <td>{{ iv.tax|one_two:iv.m_datetime|one_two:iv.s_code.uid|one_two:iv.red_code|check_tax:iv.value|red_value:iv.red_code|intcomma }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
                     <td>{{ iv.value|add:iv.tax|red_value:iv.red_code|intcomma }}</td>
                     <!-- 備考 - 赤伝 - 担当者 -->
                     <td><!-- {{ iv.g_code.uid }} --></td>
