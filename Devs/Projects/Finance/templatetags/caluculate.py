@@ -5,22 +5,62 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.20 Update:2021.01.01" |
+#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.21 Update:2021.01.02" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
+from datetime import datetime
+
+from Finance.models import Value_Test30
 
 jtax10 = 0.10
 jtax8 = 0.08
 
 
 ### 単価 : Setup　###
-def Unit_Cal(v_values):
-    un = 10
+def Unit_Cal(sc, gc, am, vl, tax, red, md):
+    uc = sc
+    return uc
 
-    return un
+    '''
+    # uc = Unit_His(sc, gc, md)
+    if Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
+        uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md), "now")
+        #v_values = Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md)
+        #for v in v_values:
+        #    uc = v.value
+    elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
+        uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md), "date01")
+    elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
+        uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md), "date02")
+    else:
+        # 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
+        if SC_Check(sc) == "Cash":
+            sv, cTax = Cash_Cal(sc)
+            uc = sv
+        else:
+            uc = sc
+        # OIL以外
+        #elif SC_Check(sc) == "nOIL":
+        #    jtax = jTax(md)
+        #    sv, cTax = nOIL_Cal(sc, vl, tax, jtax, red)
+        #    uc = Decimal(sv / (am / 100)).quantize(Decimal('1'), rounding=ROUND_DOWN)
+    return uc
+    '''
 
-
+### 単価 : SS.History ###
+def Unit_His(v30, hv):
+    v_values = v30
+    for v in v_values:
+        if hv == "now":
+            uh = v.value
+        elif hv == "date01":
+            uh = v.value01
+        elif hv == "date02":
+            uh = v.value02
+        else:
+            uh = 9999999
+    return uh
 
 ### 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
 def jTax(m_datetime):

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.20 Update:2021.01.01" |
+#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.21 Update:2021.01.02" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
@@ -23,16 +23,20 @@ def one_two(one, two):
 
 # check_unit -
 @register.filter("check_unit")
-def check_unit(sc, v_values):
-    un = Unit_Cal(v_values)
-
+def check_unit(sc_gc_am_vl_tax_red, md):
+    sc_gc_am_vl_tax, red = sc_gc_am_vl_tax_red
+    sc_gc_am_vl, tax = sc_gc_am_vl_tax
+    sc_gc_am, vl = sc_gc_am_vl
+    sc_gc, am = sc_gc_am
+    sc, gc = sc_gc
+    un = Unit_Cal(sc, gc, am, vl, tax, red, md)
     return un
 
 # check_tax - (OK)
 @register.filter("check_tax")
-def check_tax(tax_date_sc_red_vls, value):
-# def check_tax(tax_date_sc_red, value):
-    tax_date_sc_red, vls = tax_date_sc_red_vls
+# def check_tax(tax_date_sc_red_vls, value):
+def check_tax(tax_date_sc_red, value):
+    # tax_date_sc_red, vls = tax_date_sc_red_vls
     tax_date_sc, red_code = tax_date_sc_red
     tax_date, sc = tax_date_sc
     tax_value, m_datetime = tax_date
