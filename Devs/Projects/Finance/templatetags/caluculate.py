@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.23 Update:2021.01.02" |
+#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.24 Update:2021.01.02" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
@@ -26,8 +26,8 @@ def Unit_Cal(sc, gc, am, vl, tax, red, md):
     if SC_Check(sc) == "Cash":
         sv, cTax = Cash_Cal(sc)
         uc = sv
-    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300)
-    elif SC_Check(sc) == "OIL":
+    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300) : 灯油特別(10500)
+    elif SC_Check(sc) == "OIL" or (vl == 0 and sc == "10500"):
         if Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md), 0)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
@@ -180,8 +180,10 @@ def nOIL_Cal(sc,value,tax,jtax,red_code):
 
         # 消費税 : True
         if tax != 0:
+            # 消費税 : == (税込金額:value + tax) - (四捨五入:(税込金額:value + tax）/ (1 + jTax))
+            if tax == (value + tax) - Decimal((value + tax)/(1+jtax)).quantize(Decimal('1'), rounding=ROUND_HALF_UP):
             # 消費税 : == 四捨五入（税別価格 * 消費税率）
-            if tax == Decimal(value * jtax).quantize(Decimal('1'), rounding=ROUND_HALF_UP):
+            # if tax == Decimal(value * jtax).quantize(Decimal('1'), rounding=ROUND_HALF_UP):
                 sv = value + tax
                 cTax = tax
                 # 赤伝票 : True
@@ -190,6 +192,18 @@ def nOIL_Cal(sc,value,tax,jtax,red_code):
             # 消費税 : 不一致 - 計算間違い・POS記載
             else:
                 sv = 10000000000000
+                cTax = 10000000000000
+
+        # 消費税 : False - 灯油
+        elif tax == 0 and sc == "10500":
+            # 灯油(10500)
+            sv = 0      # OIL_Calと連動
+            cTax = 0    # OIL_Calと連動
+
+        # 消費税 : False - その他
+        else:
+            sv = 99999999
+            cTax = 99999999
 
     return sv, cTax
 
