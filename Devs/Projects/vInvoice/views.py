@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.22 Update:2021.01.01" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.27 Update:2021.01.03" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -116,11 +116,15 @@ class vInvoice_List(ListView):
 						total_list.append(sv)
 					# OIL
 					elif SC_Check(iv.s_code.uid) == "OIL":
-						sv, cTax = OIL_Cal(iv.s_code.uid)
+						sv, cTax = OIL_Cal(iv.s_code.uid, iv.g_code.uid, iv.amount, iv.value, iv.tax, jtax, iv.red_code, iv.m_datetime)
+						# sv, cTax = OIL_Cal(iv.s_code.uid)
+						# OIL_Cal(sc, gc, am, vl, tax, red, md):
 						total_list.append(sv)
 					# OIL以外(10500 & 10600含む)
 					elif SC_Check(iv.s_code.uid) == "nOIL":
-						sv, cTax = nOIL_Cal(iv.s_code.uid, iv.value, iv.tax, jtax, iv.red_code)
+						sv, cTax = nOIL_Cal(iv.s_code.uid, iv.g_code.uid, iv.amount, iv.value, iv.tax, jtax, iv.red_code, iv.m_datetime)
+						# nOIL_Cal(sc, gc, am, vl, tax, jtax, red, md):
+						# sv, cTax = nOIL_Cal(iv.s_code.uid, iv.value, iv.tax, jtax, iv.red_code)
 						# nOIL_Cal(sc,value,tax,jtax,red_code):
 						total_list.append(sv)
 					# その他 : 現金 & OIL & OIL以外(10500 & 10600含む)
