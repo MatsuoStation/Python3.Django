@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.26 Update:2021.01.03" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.28 Update:2021.01.03" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -128,7 +128,7 @@
                     <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
                     <!--td>{{ iv.s_code.uid|s_tax:iv.tax }}</td-->
                     <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
-                    <td>{{ iv.value|add:iv.tax|red_value:iv.red_code|intcomma }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_invalue:iv.m_datetime|intcomma }}</td>
                     <!-- 備考 - 赤伝 - 担当者 -->
                     <td><!-- {{ iv.g_code.uid }} --></td>
                     <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->

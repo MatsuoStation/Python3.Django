@@ -5,12 +5,12 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.27 Update:2021.01.03" |
+#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.28 Update:2021.01.03" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
 from decimal import *
-from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal
+from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal
 
 register = template.Library()
 
@@ -19,6 +19,18 @@ register = template.Library()
 @register.filter("one_two")
 def one_two(one, two):
     return one, two
+
+# check_invalue - (OK)
+@register.filter("check_invalue")
+def check_invalue(sc_gc_am_vl_tax_red, md):
+    sc_gc_am_vl_tax, red = sc_gc_am_vl_tax_red
+    sc_gc_am_vl, tax = sc_gc_am_vl_tax
+    sc_gc_am, vl = sc_gc_am_vl
+    sc_gc, am = sc_gc_am
+    sc, gc = sc_gc
+    sv = inVl_Cal(sc, gc, am, vl, tax, red, md)
+    return sv
+
 
 
 # check_value - (OK)
@@ -51,20 +63,12 @@ def check_tax(sc_gc_am_vl_tax_red, md):
     sc_gc_am, vl = sc_gc_am_vl
     sc_gc, am = sc_gc_am
     sc, gc = sc_gc
-
-## def check_tax(tax_date_sc_red_vls, value):
-# def check_tax(tax_date_sc_red, value):
-    ## tax_date_sc_red, vls = tax_date_sc_red_vls
-    # tax_date_sc, red_code = tax_date_sc_red
-    # tax_date, sc = tax_date_sc
-    #tax_value, m_datetime = tax_date
-
     # 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
     jtax = jTax(md)
 
     # 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
     if SC_Check(sc) == "Cash":
-        sv, cTax = Cash_Cal(sc)
+        sv, cTax = Cash_Cal(sc, vl)
     # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300)
     elif SC_Check(sc) == "OIL":
         sv, cTax = OIL_Cal(sc, gc, am, vl, tax, jtax, red, md)

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.27 Update:2021.01.03" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.28 Update:2021.01.03" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -112,7 +112,7 @@ class vInvoice_List(ListView):
 
 					# 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
 					if SC_Check(iv.s_code.uid) == "Cash":
-						sv, cTax = Cash_Cal(iv.s_code.uid)
+						sv, cTax = Cash_Cal(iv.s_code.uid, iv.value)
 						total_list.append(sv)
 					# OIL
 					elif SC_Check(iv.s_code.uid) == "OIL":
