@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.30 Update:2021.01.04" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.31 Update:2021.01.04" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -84,7 +84,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>{{ total_values|intcomma }}</td>
+                    <td>{{ total_vl|intcomma }}</td>
                     <td width="1"></td>
                     <td>{{ all_total_values|intcomma }}</td>
                 </tr>
@@ -203,7 +203,7 @@
                     <td><主要商品合計></td>
                     <td width="1"></td>
                     <td>課税売上高</td>
-                    <td>{{ notax_values|intcomma }}</td>
+                    <td>{{ ntax_vl|intcomma }}</td>
                     <td width="1"></td>
                     <td>消費税額</td>
                     <td>{{ tax_vl|intcomma }}</td>
@@ -231,9 +231,9 @@
                     <td>{{ reg_vl|intcomma }}</td>
                     <td>{{ ku_am|floatformat:2|intcomma }}</td>
                     <td>{{ ku_vl|intcomma }}</td>
-                    <td>{{ toyu_amounts|floatformat:2|intcomma }}</td>
-                    <td>{{ toyu_values|intcomma }}</td>
-                    <td>{{ nonoil_values|intcomma }}</td>
+                    <td>{{ tu_am|floatformat:2|intcomma }}</td>
+                    <td>{{ tu_vl|intcomma }}</td>
+                    <td>{{ no_oil|intcomma }}</td>
                 </tr>
             </thead>
           </table>

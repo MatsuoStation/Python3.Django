@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.30 Update:2021.01.04" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.31 Update:2021.01.04" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -24,7 +24,7 @@ from .Util.deadline import DeadLine, DeadLine_List
 from .Util.db_vinvoice import DB_vInvoice
 from .pdf import fPDF_SS_BackImage
 from Finance.models import Name_Test20
-from Finance.templatetags.caluculate import jTax, SC_Check, InCash_Cal, Cash_Cal, OIL_Cal, nOIL_Cal, kTax_Cal
+from Finance.templatetags.caluculate import jTax, SC_Check, InCash_Cal, Cash_Cal, OIL_Cal, nOIL_Cal, kTax_Cal, inVl_Cal
 
 
 ### vInvoice_List ###
@@ -102,6 +102,7 @@ class vInvoice_List(ListView):
 
 			## Uriage Value : Total ##
 			total_list = list()
+			ntax_list = list()
 			tax_list = list()
 
 			high_am_list = list()
@@ -111,6 +112,10 @@ class vInvoice_List(ListView):
 			ku_am_list = list()
 			ku_list = list()
 			ku_tx_list = list()
+			tu_am_list = list()
+			tu_list = list()
+
+			noil_list = list()
 
 			## Caluculate ##
 			try:
@@ -122,13 +127,15 @@ class vInvoice_List(ListView):
 					# 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
 					if SC_Check(iv.s_code.uid) == "Cash":
 						sv, cTax = Cash_Cal(iv.s_code.uid, iv.value)
-						total_list.append(sv)
+						# total_list.append(sv)
+
 					# OIL
 					elif SC_Check(iv.s_code.uid) == "OIL":
 						sv, cTax, cAm = OIL_Cal(iv.s_code.uid, iv.g_code.uid, iv.amount, iv.value, iv.tax, jtax, iv.red_code, iv.m_datetime)
 						# sv, cTax = OIL_Cal(iv.s_code.uid)
 						# OIL_Cal(sc, gc, am, vl, tax, red, md):
-						total_list.append(sv)
+						# total_list.append(sv+cTax)
+						ntax_list.append(sv)
 						tax_list.append(cTax)
 
 						if iv.s_code.uid == "10000":
@@ -145,22 +152,37 @@ class vInvoice_List(ListView):
 
 					# OIL以外(10500 & 10600含む)
 					elif SC_Check(iv.s_code.uid) == "nOIL":
-						sv, cTax = nOIL_Cal(iv.s_code.uid, iv.g_code.uid, iv.amount, iv.value, iv.tax, jtax, iv.red_code, iv.m_datetime)
+						sv, cTax, cAm = nOIL_Cal(iv.s_code.uid, iv.g_code.uid, iv.amount, iv.value, iv.tax, jtax, iv.red_code, iv.m_datetime)
 						# nOIL_Cal(sc, gc, am, vl, tax, jtax, red, md):
 						# sv, cTax = nOIL_Cal(iv.s_code.uid, iv.value, iv.tax, jtax, iv.red_code)
 						# nOIL_Cal(sc,value,tax,jtax,red_code):
-						total_list.append(sv)
-						# tax_list.append(cTax)
+						# total_list.append(sv)
+						tax_list.append(cTax)
+
+						if iv.value == 0 and iv.s_code.uid == "10500":
+							tu_am_list.append(cAm/100)
+							# inVl_Cal(sc, gc, am, vl, tax, red, md):
+							tu_list.append(sv-cTax)
+							ntax_list.append(sv - cTax)
+						elif iv.s_code.uid == "10500":
+							tu_am_list.append(cAm/100)
+							tu_list.append(sv-cTax)
+							ntax_list.append(sv - cTax)
+						else:
+							ntax_list.append(sv-cTax)
+							noil_list.append(sv-cTax)
 
 					# その他 : 現金 & OIL & OIL以外(10500 & 10600含む)
 					else:
 						sv = 0
-						total_list.append(sv)
+						# total_list.append(sv)
 						# tax_list.append(cTax)
+						# noil_list.append(sv)
 
 				## Value : Sum ##
 				incash_values = sum(incash_list)
-				total_values = sum(total_list)
+				# total_values = sum(total_list)
+				ntax_vl = sum(ntax_list)
 				tax_vl = sum(tax_list)
 
 				high_am = sum(high_am_list)
@@ -171,9 +193,18 @@ class vInvoice_List(ListView):
 				ku_vl = sum(ku_list)
 				ku_tx = sum(ku_tx_list)
 
+				tu_am = sum(tu_am_list)
+				tu_vl = sum(tu_list)
+
+				no_oil = sum(noil_list)
+
+				total_vl = ntax_vl + tax_vl + ku_tx
+
 				## Value : Context ##
 				context['incash_values'] = incash_values
-				context['total_values'] = total_values
+				# context['total_values'] = total_values
+				context['total_vl'] = total_vl
+				context['ntax_vl'] = ntax_vl
 				context['tax_vl'] = tax_vl
 
 				context['high_am'] = high_am
@@ -183,6 +214,11 @@ class vInvoice_List(ListView):
 				context['ku_am'] = ku_am
 				context['ku_vl'] = ku_vl
 				context['ku_tx'] = ku_tx
+
+				context['tu_am'] = tu_am
+				context['tu_vl'] = tu_vl
+
+				context['no_oil'] = no_oil
 
 			except Exception as e:
 				print("Exception - views.py / dl=True / Caluculate  : %s" % e)
