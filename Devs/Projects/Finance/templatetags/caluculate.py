@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.29 Update:2021.01.04" |
+#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.30 Update:2021.01.04" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
@@ -278,11 +278,13 @@ def OIL_Cal(sc, gc, am, vl, tax, jtax, red, md):
         vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
         if red:
             vc = -(vc)
-        sv = 0
+            am = -(am)
+        sv = vc
         tc = Tax_Cal(vc, tax, jtax, "OIL")
         cTax = tc
         # cTax = 0
-    return sv, cTax
+        cAm = am
+    return sv, cTax, cAm
 
 ### 売上高 : 油以外 - 灯油(10500) or 重油(10600)含む ###
 def nOIL_Cal(sc, gc, am, vl, tax, jtax, red, md):

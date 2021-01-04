@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.29 Update:2021.01.04" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.30 Update:2021.01.04" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -206,10 +206,10 @@
                     <td>{{ notax_values|intcomma }}</td>
                     <td width="1"></td>
                     <td>消費税額</td>
-                    <td>{{ tax_values|intcomma }}</td>
+                    <td>{{ tax_vl|intcomma }}</td>
                     <td width="1"></td>
                     <td>軽油税</td>
-                    <td>{{ ktax_values|intcomma }}</td>
+                    <td>{{ ku_tx|intcomma }}</td>
                     <td width="1"></td>
                 </tr>
             </thead>
@@ -225,12 +225,12 @@
                     <td>その他金額</td>
                 </tr>
                 <tr>
-                    <td>{{ high_amounts|floatformat:2|intcomma }}</td>
-                    <td>{{ high_values|intcomma }}</td>
-                    <td>{{ reg_amounts|floatformat:2|intcomma }}</td>
-                    <td>{{ reg_values|intcomma }}</td>
-                    <td>{{ keiyu_amounts|floatformat:2|intcomma }}</td>
-                    <td>{{ keiyu_values|intcomma }}</td>
+                    <td>{{ high_am|floatformat:2|intcomma }}</td>
+                    <td>{{ high_vl|intcomma }}</td>
+                    <td>{{ reg_am|floatformat:2|intcomma }}</td>
+                    <td>{{ reg_vl|intcomma }}</td>
+                    <td>{{ ku_am|floatformat:2|intcomma }}</td>
+                    <td>{{ ku_vl|intcomma }}</td>
                     <td>{{ toyu_amounts|floatformat:2|intcomma }}</td>
                     <td>{{ toyu_values|intcomma }}</td>
                     <td>{{ nonoil_values|intcomma }}</td>
