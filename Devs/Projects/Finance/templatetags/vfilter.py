@@ -5,12 +5,12 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.28 Update:2021.01.03" |
+#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.29 Update:2021.01.04" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
 from decimal import *
-from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal
+from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal
 
 register = template.Library()
 
@@ -31,8 +31,6 @@ def check_invalue(sc_gc_am_vl_tax_red, md):
     sv = inVl_Cal(sc, gc, am, vl, tax, red, md)
     return sv
 
-
-
 # check_value - (OK)
 @register.filter("check_value")
 def check_value(sc_gc_am_vl_tax_red, md):
@@ -43,6 +41,22 @@ def check_value(sc_gc_am_vl_tax_red, md):
     sc, gc = sc_gc
     vc = Vl_Cal(sc, gc, am, vl, tax, red, md)
     return vc
+
+# check_ktax - (OK)
+@register.filter("check_ktax")
+def check_ktax(sc, am):
+    vc = kTax_Cal(sc, am)
+    return vc
+'''
+def check_ktax(sc_gc_am_vl_tax_red, md):
+    sc_gc_am_vl_tax, red = sc_gc_am_vl_tax_red
+    sc_gc_am_vl, tax = sc_gc_am_vl_tax
+    sc_gc_am, vl = sc_gc_am_vl
+    sc_gc, am = sc_gc_am
+    sc, gc = sc_gc
+    vc = kTax_Cal(sc, gc, am, vl, tax, red, md)
+    return vc
+'''
 
 # check_unit - (OK)
 @register.filter("check_unit")
@@ -98,14 +112,19 @@ def red_value(value, rv):
 
 # s_tax - (OK)
 @register.filter("s_tax")
-def s_tax(sc, tax_value):
+def s_tax(sc, vl):
     # if OIL.SC >= 10000 AND OIL.SC <= 10600:
+    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300)
     if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300":
+    # if sc == "10000" or sc == "10100" or sc == "10300":
     # if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300" or sc == "10500" or sc == "10600":
-        return str("【OIL】")
-    elif sc == "10500" or sc == "10600":
-        return str("（TJ）")
-    elif tax_value > 0:
+        return str("")
+    # elif sc == "10200":
+    #    return str("【OIL】")
+    # 油以外 : 灯油(10500) or 重油(10600)含む
+    # elif sc == "10500" or sc == "10600":
+    #    return str("（TJ）")
+    elif vl > 0:
         return str("")
     else:
         return str("内")

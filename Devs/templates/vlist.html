@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.28 Update:2021.01.03" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.29 Update:2021.01.04" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -67,7 +67,8 @@
                     <td width="1"></td>
                     <td>前月ご請求額</td>
                     <td>当月ご入金額</td>
-                    <td>手数料・調整</td>
+                    <td>銀行手数料</td>
+                    <td>差額<br>（銀行手数料除く）</td>
                     <td>差引繰越額</td>
                     <td>当月お買上額</td>
                     <td width="1"></td>
@@ -80,6 +81,7 @@
                     <td width="1"></td>
                     <td>{{ before_values|intcomma }}</td>
                     <td>{{ incash_values|intcomma }}</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>{{ total_values|intcomma }}</td>
@@ -111,6 +113,8 @@
             </thead>
             <thead>
                 {% for iv in ivs %}
+                <!-- 軽油 : True -->
+                {% if iv.s_code.uid == "10200" %}
                 <tr>
                     <!-- 月 - 日 - 車番 -->
                     <td>{{ iv.m_datetime.date.month }}</td>
@@ -126,7 +130,7 @@
                     <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
                     <!-- 税区分 - 消費税 - 税込 -->
                     <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
-                    <!--td>{{ iv.s_code.uid|s_tax:iv.tax }}</td-->
+                    <!--td>{{ iv.s_code.uid|s_tax:iv.value }}</td-->
                     <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
                     <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_invalue:iv.m_datetime|intcomma }}</td>
                     <!-- 備考 - 赤伝 - 担当者 -->
@@ -136,6 +140,59 @@
                     <td>{{ iv.m_datetime|date:"H:i" }}</td>
                     <td>{{ iv.slip }}</td>
                 </tr>
+                <!-- 軽油税記載 -->
+                <tr>
+                    <!-- 月 - 日 - 車番 -->
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <!-- 商品コード - 商品名 -->
+                    <td></td>
+                    <td>軽油税</td>
+                    <!-- 数量 -->
+                    <td></td>
+                    <!-- 単価 - 金額 -->
+                    <td></td>
+                    <td>{{ iv.s_code.uid|check_ktax:iv.amount|intcomma }}</td>
+                    <!-- 税区分 - 消費税 - 税込 -->
+                    <td>内</td>
+                    <td></td>
+                    <td>{{ iv.s_code.uid|check_ktax:iv.amount|intcomma }}</td>
+                    <!-- 備考 - 赤伝 - 担当者 -->
+                    <td><!-- {{ iv.g_code.uid }} --></td>
+                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
+                    <td>{{ iv.red_code }}</td>
+                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
+                    <td>{{ iv.slip }}</td>
+                </tr>
+                <!-- 軽油以外 : False -->
+                {% else %}
+                <tr>
+                    <!-- 月 - 日 - 車番 -->
+                    <td>{{ iv.m_datetime.date.month }}</td>
+                    <td>{{ iv.m_datetime.date.day }}</td>
+                    <td>{{ iv.car_code }}</td>
+                    <!-- 商品コード - 商品名 -->
+                    <td>{{ iv.s_code  }}</td>
+                    <td>{{ iv.s_code.h_name }}</td>
+                    <!-- 数量 -->
+                    <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <!-- 単価 - 金額 -->
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <!-- 税区分 - 消費税 - 税込 -->
+                    <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                    <!--td>{{ iv.s_code.uid|s_tax:iv.value }}</td-->
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_invalue:iv.m_datetime|intcomma }}</td>
+                    <!-- 備考 - 赤伝 - 担当者 -->
+                    <td><!-- {{ iv.g_code.uid }} --></td>
+                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
+                    <td>{{ iv.red_code }}</td>
+                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
+                    <td>{{ iv.slip }}</td>
+                </tr>
+                {% endif %}
                 {% endfor %}
             </thead>
           </table>

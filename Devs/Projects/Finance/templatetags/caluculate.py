@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.28 Update:2021.01.03" |
+#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.29 Update:2021.01.04" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
@@ -50,8 +50,6 @@ def inVl_Cal(sc, gc, am, vl, tax, red, md):
         vc = sc
     return vc
 
-
-
 ### 金額 : Setup　###
 def Vl_Cal(sc, gc, am, vl, tax, red, md):
     # 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
@@ -76,6 +74,12 @@ def Vl_Cal(sc, gc, am, vl, tax, red, md):
         vc = sc
     return vc
 
+### 軽油税 : Setup　###
+def kTax_Cal(sc, am):
+# def kTax_Cal(sc, gc, am, vl, tax, red, md):
+    kt = Decimal(float(32.1) * (am / 100)).quantize(Decimal('1'), rounding=ROUND_DOWN)
+    return kt
+
 ### 単価 : Setup　###
 def Unit_Cal(sc, gc, am, vl, tax, red, md):
     # 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
@@ -89,56 +93,82 @@ def Unit_Cal(sc, gc, am, vl, tax, red, md):
     elif SC_Check(sc) == "OIL" or (vl == 0 and sc == "10500"):
         if Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md), 0)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date01__lte=md), 1)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date02__lte=md), 2)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date03__lte=md), 3)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date04__lte=md), 4)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date05__lte=md), 5)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date06__lte=md), 6)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date07__lte=md), 7)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date08__lte=md), 8)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date09__lte=md), 9)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date10__lte=md), 10)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date11__lte=md), 11)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date12__lte=md), 12)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date13__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date13__lte=md), 13)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date14__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date14__lte=md), 14)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date15__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date15__lte=md), 15)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date16__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date16__lte=md), 16)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date17__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date17__lte=md), 17)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date18__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date18__lte=md), 18)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date19__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date19__lte=md), 19)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date20__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date20__lte=md), 20)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date21__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date21__lte=md), 21)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date22__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date22__lte=md), 22)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date23__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date23__lte=md), 23)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date24__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date24__lte=md), 24)
+            uc = k_tax(sc, uc)
         elif Value_Test30.objects.all().filter(uid=gc, s_code=sc, date25__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, date25__lte=md), 25)
+            uc = k_tax(sc, uc)
         # None OIL Value
         else:
             uc = sc
@@ -302,4 +332,12 @@ def uOIL_Cal(sc, gc, am, vl, tax, jtax, red, md):
         cTax = tc
         # cTax = 0
     return sv, cTax
+
+### 軽油税 : 設定 ###
+def k_tax(sc, ut):
+    if sc == "10200":
+        kt = ut - 32.1
+    else:
+        kt = ut
+    return kt
 
