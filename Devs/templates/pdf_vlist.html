@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.40 Update:2021.01.05" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.41 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -17,11 +17,50 @@
 <!doctype html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="https://fonts.googleapis.com/earlyaccess/sawarabimincho.css" rel="stylesheet" />
+        <link href="{% sass_src 'sass/custom.sass' %}" rel="stylesheet" />
+
+        <style type="text/css">
+        @font-face {
+            font-family: "japanese";
+            src: url("https://dev.matsuostation.com/static/fonts/msmincho.ttf");
+        }
+        @page {
+            size: A4 portrait;
+            font-family: "japanese";
+            margin: 1cm;
+            /*background-image: url('https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png');*/
+            background-image: url('{{ fURL }}');
+
+            @frame addredd_frame {
+                -pdf-frame-content: address_frame;
+                left: 80pt; top: 50pt; height: 120pt; width: 200pt;
+                font-size: 18px;
+            }
+        }
+        html, body {
+            font-family: "japanese";
+            font-size: 12px;
+        }
+        </style>
 
     </head>
     <body>
-        <div>
-            PDF_vList.HTML
+        <div id="address_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td>{{ zipcode }}</td>
+                </tr>
+                <tr>
+                    <td>{{ address }}</td>
+                </tr>
+                <tr>
+                    <td>{{ names }} 様</td>
+                </tr>
+                </thead>
+            </table>
         </div>
     </body>
 </html>

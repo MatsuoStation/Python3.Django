@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.40 Update:2021.01.05" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.41 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -22,14 +22,16 @@ from .forms import NameForm
 from .Util.deadline import DeadLine, DeadLine_List
 # from .db_vinvoice import DB_vInvoice
 from .Util.db_vinvoice import DB_vInvoice
-from .pdf import fPDF_SS_BackImage
+from .Util.pdf import  fPDF_SS_BackImage
 from Finance.models import Name_Test20
 from Finance.templatetags.caluculate import jTax, SC_Check, InCash_Cal, Cash_Cal, OIL_Cal, nOIL_Cal, kTax_Cal, inVl_Cal
 
 ## PDF ##
+from django.template.loader import get_template
+import io
+from xhtml2pdf import pisa
 
-
-### vInvoice_List ###
+### PDF_List ###
 class PDF_List(ListView):
 	model = Name_Test20
 	template_name = 'pdf_vlist.html'
@@ -37,7 +39,37 @@ class PDF_List(ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
+		## * try: * dl = Ture ##
+		try:
+			dl = self.request.GET.get('dl', '')
+			dlstr = datetime.strptime(dl, '%Y-%m-%d')
+
+			## Invoice.Format : Back.Image - Setup
+			fPDF = self.request.GET.get('fm')
+			fPDF = int(fPDF)
+			fURL = fPDF_SS_BackImage(fPDF)
+			context['fURL'] = fURL
+
+		## * end try: * dl = False ##
+		except Exception as e:
+			print("Exception - views.py - PDF / dl=False  : %s" % e)
+
+
 		return context
+
+	def render_to_response(self, context):
+		html = get_template(self.template_name).render(self.get_context_data())
+		result = io.BytesIO()
+
+		pdf = pisa.pisaDocument(
+			io.BytesIO(html.encode("UTF-8")),
+			result,
+			encoding='utf-8',
+		)
+
+		if not pdf.err:
+			return HttpResponse(result.getvalue(), content_type='application/pdf')
+		return None
 
 ### vInvoice_List ###
 class vInvoice_List(ListView):
@@ -82,7 +114,6 @@ class vInvoice_List(ListView):
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
 			context['dlms'] = dlms
 
-			## LastDay : Check (dl = True) ##
 			try:
 				if BFs:
 					d_values = BFs
@@ -148,7 +179,6 @@ class vInvoice_List(ListView):
 					# 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
 					if SC_Check(iv.s_code.uid) == "Cash":
 						sv, cTax = Cash_Cal(iv.s_code.uid, iv.value)
-						# total_list.append(sv)
 
 					# OIL
 					elif SC_Check(iv.s_code.uid) == "OIL":
@@ -196,9 +226,6 @@ class vInvoice_List(ListView):
 					# その他 : 現金 & OIL & OIL以外(10500 & 10600含む)
 					else:
 						sv = 0
-						# total_list.append(sv)
-						# tax_list.append(cTax)
-						# noil_list.append(sv)
 
 				## Prev Month ##
 				for biv in bIVs:
@@ -233,7 +260,6 @@ class vInvoice_List(ListView):
 
 				## Value : Sum ##
 				incash_values = sum(incash_list)
-				# total_values = sum(total_list)
 				ntax_vl = sum(ntax_list)
 				tax_vl = sum(tax_list)
 
@@ -259,7 +285,6 @@ class vInvoice_List(ListView):
 
 				## Value : Context ##
 				context['incash_values'] = incash_values
-				# context['total_values'] = total_values
 				context['total_vl'] = total_vl
 				context['ntax_vl'] = ntax_vl
 				context['tax_vl'] = tax_vl

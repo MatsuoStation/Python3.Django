@@ -1,11 +1,11 @@
 #//+------------------------------------------------------------------+
-#//|                      VerysVeryInc.Python3.Django.vInvoice.PDF.py |
+#//|                 VerysVeryInc.Python3.Django.vInvoice.Util.PDF.py |
 #//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
 #//|                 https://github.com/MatsuoStation/Python3.Django/ |
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.vInvoice.PDF.py - Ver.3.80.7 Update:2020.12.28" |
+#//|"VsV.Py3.Dj.vInvoice.Util.PDF.py - Ver.3.80.41 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 
 def fPDF_SS_BackImage(fPDF):
