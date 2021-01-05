@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.vInv.Util.DeadLine.py-Ver.3.80.10 Update:2020.12.29" |
+#//| "VsV.Py3.Dj.vInv.Util.DeadLine.py-Ver.3.80.32 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
@@ -26,7 +26,8 @@ def DeadLine(dd, dlstr):
     dlb = dlstr + timedelta(days=1) - relativedelta(months=1)
     dla = dlstr + timedelta(days=1) - timedelta(microseconds=1)
 
-    return dld, dlm, dlb, dla
+    # return dld, dlm, dlb, dla
+    return dld, dlm, dlb, dla, bld, blm
 
 
 def DeadLine_List(dlms, d_value):

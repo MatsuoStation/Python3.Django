@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.31 Update:2021.01.04" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.32 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -58,10 +58,12 @@ class vInvoice_List(ListView):
 			dlstr = datetime.strptime(dl, '%Y-%m-%d')
 
 			dd = dlstr.day 		# DeadLine : Day
-			dld, dlm, dlb, dla = DeadLine(dd, dlstr)
+			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
+			# dld, dlm, dlb, dla = DeadLine(dd, dlstr)
 
 			## DB : Setup ##
-			names, IVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm)
+			names, IVs, bIVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm, bld, blm)
+			# names, IVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm)
 			# names, IVs, lastmonths, BFs, VLs = DB_vInvoice(self, dld, dlm)
 
 			## DeadLine : Month & Secconde
@@ -101,9 +103,13 @@ class vInvoice_List(ListView):
 					incash_list.append(sv)
 
 			## Uriage Value : Total ##
-			total_list = list()
+			# total_list = list()
 			ntax_list = list()
 			tax_list = list()
+
+			bntax_list = list()
+			btax_list = list()
+			bku_tx_list = list()
 
 			high_am_list = list()
 			high_list = list()
@@ -179,11 +185,46 @@ class vInvoice_List(ListView):
 						# tax_list.append(cTax)
 						# noil_list.append(sv)
 
+				## Prev Month ##
+				for biv in bIVs:
+					# 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
+					jtax = jTax(biv.m_datetime)
+
+					# OIL
+					if SC_Check(biv.s_code.uid) == "OIL":
+						sv, cTax, cAm = OIL_Cal(biv.s_code.uid, biv.g_code.uid, biv.amount, biv.value, biv.tax, jtax, biv.red_code, biv.m_datetime)
+						bntax_list.append(sv)
+						btax_list.append(cTax)
+
+						if biv.s_code.uid == "10200":
+							kc_tax = kTax_Cal(biv.s_code.uid, cAm)
+							bku_tx_list.append(kc_tax)
+
+					# OIL以外(10500 & 10600含む)
+					elif SC_Check(biv.s_code.uid) == "nOIL":
+						sv, cTax, cAm = nOIL_Cal(biv.s_code.uid, biv.g_code.uid, biv.amount, biv.value, biv.tax, jtax, biv.red_code, biv.m_datetime)
+						btax_list.append(cTax)
+
+						if biv.value == 0 and biv.s_code.uid == "10500":
+							bntax_list.append(sv - cTax)
+						elif biv.s_code.uid == "10500":
+							bntax_list.append(sv - cTax)
+						else:
+							bntax_list.append(sv-cTax)
+
+					# その他 : 現金 & OIL & OIL以外(10500 & 10600含む)
+					else:
+						sv = 0
+
 				## Value : Sum ##
 				incash_values = sum(incash_list)
 				# total_values = sum(total_list)
 				ntax_vl = sum(ntax_list)
 				tax_vl = sum(tax_list)
+
+				bntax_vl = sum(bntax_list)
+				btax_vl = sum(btax_list)
+				bku_tx = sum(bku_tx_list)
 
 				high_am = sum(high_am_list)
 				high_vl = sum(high_list)
@@ -199,6 +240,7 @@ class vInvoice_List(ListView):
 				no_oil = sum(noil_list)
 
 				total_vl = ntax_vl + tax_vl + ku_tx
+				btotal_vl = bntax_vl + btax_vl + bku_tx
 
 				## Value : Context ##
 				context['incash_values'] = incash_values
@@ -206,6 +248,8 @@ class vInvoice_List(ListView):
 				context['total_vl'] = total_vl
 				context['ntax_vl'] = ntax_vl
 				context['tax_vl'] = tax_vl
+
+				context['btotal_vl'] = btotal_vl
 
 				context['high_am'] = high_am
 				context['high_vl'] = high_vl
@@ -229,7 +273,8 @@ class vInvoice_List(ListView):
 			print("Exception - views.py / dl=False  : %s" % e)
 
 			## DB : Setup ##
-			names, IVs, lastmonths, BFs = DB_vInvoice(self, "", "")
+			names, IVs, bIVs, lastmonths, BFs = DB_vInvoice(self, "", "", "", "")
+			# names, IVs, bIVs, lastmonths, BFs = DB_vInvoice(self, "", "")
 			# names, IVs, lastmonths, BFs, VLs = DB_vInvoice(self, "", "")
 
 			## DeadLine : Month & Secconde
