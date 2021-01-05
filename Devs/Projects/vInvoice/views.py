@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.41 Update:2021.01.05" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.42 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -31,6 +31,7 @@ from django.template.loader import get_template
 import io
 from xhtml2pdf import pisa
 
+
 ### PDF_List ###
 class PDF_List(ListView):
 	model = Name_Test20
@@ -39,20 +40,112 @@ class PDF_List(ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
+		## Names ##
+		names = self.request.GET.get('names')
+		context['names'] = names
+		gid = self.kwargs.get('nid')
+		context['gid'] = gid
+
+		## Cash Income : Total ##
+		incash_vl = self.request.GET.get('incash')
+		## Before : Total ##
+		btotal_vl = self.request.GET.get('btotal')
+		## Total : Uriage ##
+		total_vl = self.request.GET.get('total')
+
+
 		## * try: * dl = Ture ##
 		try:
-			dl = self.request.GET.get('dl', '')
-			dlstr = datetime.strptime(dl, '%Y-%m-%d')
-
 			## Invoice.Format : Back.Image - Setup
 			fPDF = self.request.GET.get('fm')
 			fPDF = int(fPDF)
 			fURL = fPDF_SS_BackImage(fPDF)
 			context['fURL'] = fURL
 
+			## vInvoice_List ##
+			dl = self.request.GET.get('dl', '')
+			dlstr = datetime.strptime(dl, '%Y-%m-%d')
+
+			dd = dlstr.day  # DeadLine : Day
+			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
+			dlaa = dla + timedelta(days=1)
+			dldd = dld + timedelta(days=1)
+
+			mSS = datetime.strftime(dlaa, '%-m')
+			dSS = datetime.strftime(dla, '%-d')
+			deSS = datetime.strftime(dld, '%-d')
+			context['mSS'] = mSS
+			context['dSS'] = dSS
+			context['deSS'] = deSS
+			context['dlaa'] = dlaa
+
+			## DB : Setup ##
+			names, IVs, bIVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm, bld, blm)
+
+			## DeadLine : Month & Secconde
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			try:
+				if BFs:
+					d_values = BFs
+				dd_list = DeadLine_List(dlms, d_values)
+				dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+				context['dds'] = dds
+			except Exception as e:
+				print("Exception - views.py / dl=True / LastDay.Check : %s" % e)
+
+			context['deadlines'] = dl
+			context['dlb'] = dlb
+			context['dla'] = dla
+			## End of LastDay : Check (dl = True) ##
+
+			## Cash Income : Total ##
+			# incash_vl = self.request.GET.get('incash')
+
+			# incash_list = list()
+			# for iv in IVs:
+			#	if SC_Check(iv.s_code.uid) == "Cash":
+			#		sv = InCash_Cal(iv.s_code.uid, iv.value)
+			#		incash_list.append(sv)
+
+			## Uriage Value : Total ##
+
+
+			## Caluculate ##
+			try:
+				## Select Month ##
+				for iv in IVs:
+					# 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
+					jtax = jTax(iv.m_datetime)
+
+				## Value : Sum ##
+				# incash_vl = sum(incash_list)
+
+				## Value : Context ##
+				context['incash_vl'] = incash_vl
+				context['btotal_vl'] = btotal_vl
+				context['total_vl'] = total_vl
+
+			except Exception as e:
+				print("Exception - views.py - PDF / dl=True / Caluculate  : %s" % e)
+			## End of Caluculate ##
+
 		## * end try: * dl = False ##
 		except Exception as e:
 			print("Exception - views.py - PDF / dl=False  : %s" % e)
+
+		## Paginator : Setup ##
+		paginator = Paginator(IVs, 30)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+		try:
+			IVs = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			IVs = paginator.page(1)
+		context['ivs'] = IVs
 
 
 		return context
@@ -61,6 +154,11 @@ class PDF_List(ListView):
 		html = get_template(self.template_name).render(self.get_context_data())
 		result = io.BytesIO()
 
+		## vInvoice_List ##
+		gid = self.kwargs.get('nid')
+		dl = self.request.GET.get('dl', '')
+		dlstr = datetime.strptime(dl, "%Y-%m-%d").date()
+
 		pdf = pisa.pisaDocument(
 			io.BytesIO(html.encode("UTF-8")),
 			result,
@@ -68,7 +166,10 @@ class PDF_List(ListView):
 		)
 
 		if not pdf.err:
-			return HttpResponse(result.getvalue(), content_type='application/pdf')
+			response = HttpResponse(result.getvalue(), content_type='application/pdf')
+			response['Content-Disposition'] = "inline; filename=%s_%s.pdf" % (gid, dlstr)
+			return response
+			# return HttpResponse(result.getvalue(), content_type='application/pdf')
 		return None
 
 ### vInvoice_List ###
@@ -259,7 +360,8 @@ class vInvoice_List(ListView):
 						sv = 0
 
 				## Value : Sum ##
-				incash_values = sum(incash_list)
+				incash_vl = sum(incash_list)
+				# incash_values = sum(incash_list)
 				ntax_vl = sum(ntax_list)
 				tax_vl = sum(tax_list)
 
@@ -284,7 +386,8 @@ class vInvoice_List(ListView):
 				btotal_vl = bntax_vl + btax_vl + bku_tx
 
 				## Value : Context ##
-				context['incash_values'] = incash_values
+				context['incash_vl'] = incash_vl
+				# context['incash_values'] = incash_values
 				context['total_vl'] = total_vl
 				context['ntax_vl'] = ntax_vl
 				context['tax_vl'] = tax_vl

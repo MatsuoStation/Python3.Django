@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.41 Update:2021.01.05" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.42 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -38,6 +38,31 @@
                 left: 80pt; top: 50pt; height: 120pt; width: 200pt;
                 font-size: 18px;
             }
+
+            @frame gid_frame {
+                -pdf-frame-content: gid_frame;
+                left: 139pt; top: 130pt; height: 40pt; width: 100pt;
+                font-size: 9px;
+            }
+
+            @frame deadline_frame {
+                -pdf-frame-content: deadline_frame;
+                left: 62pt; top: 215.5pt; height: 40pt; width: 102pt;
+                font-size: 10px;
+            }
+
+            @frame page_frame {
+                -pdf-frame-content: page_frame;
+                left: 31pt; top: 264pt; width: 532pt; height: 50px;
+                font-size: 39px;
+            }
+
+            @frame total_frame {
+                -pdf-frame-content: total_frame;
+                left: 31pt; top: 296.9pt; width: 532pt; height: 50px;
+                font-size: 39px;
+            }
+
         }
         html, body {
             font-family: "japanese";
@@ -62,5 +87,67 @@
                 </thead>
             </table>
         </div>
+
+        <div id="gid_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td>{{ gid }}</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="deadline_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td>{{ dlaa|date:"Y" }}</td>
+                    <td style="text-align: center;">{{ mSS }}</td>
+                    <td style="text-align: center;">{{ deSS }}</td>
+                    <td style="text-align: center;">&nbsp;&nbsp;{{ dSS }}</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="page_frame">
+            <table>
+                <thead>
+                <tr style="vertical-align: bottom;">
+                    <td style="text-align: center; width: 88%;"></td>
+                    <td style="text-align: center; width: 3.8%;"></td>
+                    {% if ivs.paginator.num_pages == 1 %}
+                    <td style="text-align: center; width: 8.2%;">{{ ivs.number }}</td>
+                    {% else %}
+                    <td style="text-align: center; width: 8.2%;">{{ ivs.number }} / {{ ivs.paginator.num_pages }}</td>
+                    {% endif %}
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="total_frame">
+            <table>
+                <thead>
+                <tr style="vertical-align: bottom;">
+                    <td style="text-align: center; width: 6.58%;"></td>
+                    <td style="text-align: center; width: 1.32%;"></td>
+                    <td style="text-align: center; width: 12.4%;">{{ btotal_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 12.4%;">{{ incash_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 10.71%;"></td>
+                    <td style="text-align: center; width: 12.59%;"></td>
+                    <td style="text-align: center; width: 12.78%;">{{ total_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 0.94%;"></td>
+                    <td style="text-align: center; width: 18.04%;">{{ all_total_values|intcomma }}</td>
+                    <td style="text-align: center; width: 2.44%;"></td>
+                    <td style="text-align: center; width: 9.8%;"></td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+
+
     </body>
 </html>
