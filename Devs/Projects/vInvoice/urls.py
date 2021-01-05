@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.vIndex.urls.py - Ver.3.80.3 Update:2020.12.26" |
+#//|      "VsV.Py3.Dj.vIndex.urls.py - Ver.3.80.40 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -36,6 +36,8 @@ urlpatterns = [
 
     ### /vInvoice/xxx/ ###
     path('<int:nid>/', views.vInvoice_List.as_view(), name='vinvoice_list'),
+    ### /vInvoice/PDF/xxx/ ###
+    path('PDF/<int:nid>/', views.PDF_List.as_view(), name='pdf_list'),
 
 
 ]
