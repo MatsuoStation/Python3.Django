@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.44 Update:2021.01.05" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.45 Update:2021.01.05" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -61,6 +61,18 @@
                 -pdf-frame-content: total_frame;
                 left: 31pt; top: 296.9pt; width: 532pt; height: 50px;
                 font-size: 39px;
+            }
+
+            @frame main_frame {
+                -pdf-frame-content: lpgmain_frame;
+                left: 31pt; top: 369pt; width: 532pt;
+                font-size: 10px;
+            }
+
+            @frame subtotal_frame {
+                -pdf-frame-content: subtotal_frame;
+                left: 161pt; top: 753.8pt; width: 402pt; height: 50px;
+                font-size: 30px;
             }
 
         }
@@ -146,6 +158,30 @@
                 </thead>
             </table>
         </div>
+
+        <!-- ハイオク(10000) -->
+        <div id="main_frame">
+        </div>
+        <!-- レギュラー(10100) -->
+        <!-- 軽油(10200) -->
+        <!-- 灯油(10500)  -->
+        <!-- 免税軽油(10300) or 重油(10600) or 油以外 -->
+
+        <div id="subtotal_frame">
+            <table>
+                <thead>
+                <tr style="vertical-align: bottom;">
+                    <td style="text-align: center; width: 10%;"></td>
+                    <td style="text-align: center; width: 5%;">{{ ntax_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 25%;"></td>
+                    <td style="text-align: center; width: 5%;">{{ tax_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 1%;"></td>
+                    <td style="text-align: center; width: 54%;">{{ ku_tx|intcomma }}</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
 
 
 

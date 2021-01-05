@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.44 Update:2021.01.06" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.45 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -54,6 +54,12 @@ class PDF_List(ListView):
 		total_vl = self.request.GET.get('total')
 		## Slip : Total ##
 		slip_vl = self.request.GET.get('slip')
+		## nTax : Total ##
+		ntax_vl = self.request.GET.get('ntax')
+		## Tax : Total ##
+		tax_vl = self.request.GET.get('tax')
+		## Ku_Tax : Total ##
+		ku_tx = self.request.GET.get('ktax')
 
 
 		## * try: * dl = Ture ##
@@ -137,6 +143,9 @@ class PDF_List(ListView):
 				context['btotal_vl'] = btotal_vl
 				context['total_vl'] = total_vl
 				context['slip_vl'] = slip_vl
+				context['ntax_vl'] = ntax_vl
+				context['tax_vl'] = tax_vl
+				context['ku_tx'] = ku_tx
 
 			except Exception as e:
 				print("Exception - views.py - PDF / dl=True / Caluculate  : %s" % e)
