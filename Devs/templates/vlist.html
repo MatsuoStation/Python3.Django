@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.42 Update:2021.01.05" |
+#//|      "VsV.Py3.Dj.TLs.vList.html - Ver.3.80.44 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -34,7 +34,7 @@
           </form>
           <p><br>
               {% if pLink %}
-                {{ names }} : {{ gid }} / {{ fPDF }} / <a href="{{ pLink }}?dl={{ dla|date:"Y-m-d" }}&fm={{ fPDF }}&names={{ names }}&btotal={{ btotal_vl }}&incash={{ incash_vl }}&total={{ total_vl }}" target="_blank">PDF</a>
+                {{ names }} : {{ gid }} / {{ fPDF }} / <a href="{{ pLink }}?dl={{ dla|date:"Y-m-d" }}&fm={{ fPDF }}&names={{ names }}&btotal={{ btotal_vl }}&incash={{ incash_vl }}&total={{ total_vl }}&slip={{ slip_vl }}" target="_blank">PDF</a>
               {% else %}
                 {{ names }} : {{ gid }}
               {% endif %}
@@ -84,7 +84,7 @@
             </thead>
             <thead>
                 <tr>
-                    <td></td>
+                    <td>{{ slip_vl|intcomma }}</td>
                     <td width="1"></td>
                     <td>{{ btotal_vl|intcomma }}</td>
                     <td>{{ incash_vl|intcomma }}</td>

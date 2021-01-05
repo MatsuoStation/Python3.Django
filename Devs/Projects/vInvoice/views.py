@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.43 Update:2021.01.06" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.44 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -52,6 +52,8 @@ class PDF_List(ListView):
 		btotal_vl = self.request.GET.get('btotal')
 		## Total : Uriage ##
 		total_vl = self.request.GET.get('total')
+		## Slip : Total ##
+		slip_vl = self.request.GET.get('slip')
 
 
 		## * try: * dl = Ture ##
@@ -134,6 +136,7 @@ class PDF_List(ListView):
 				context['incash_vl'] = incash_vl
 				context['btotal_vl'] = btotal_vl
 				context['total_vl'] = total_vl
+				context['slip_vl'] = slip_vl
 
 			except Exception as e:
 				print("Exception - views.py - PDF / dl=True / Caluculate  : %s" % e)
@@ -258,7 +261,7 @@ class vInvoice_List(ListView):
 					incash_list.append(sv)
 
 			## Uriage Value : Total ##
-			# total_list = list()
+			slip_list = list()
 			ntax_list = list()
 			tax_list = list()
 
@@ -288,6 +291,8 @@ class vInvoice_List(ListView):
 					# 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
 					if SC_Check(iv.s_code.uid) == "Cash":
 						sv, cTax = Cash_Cal(iv.s_code.uid, iv.value)
+						if sv:
+							slip_list.append(0)
 
 					# OIL
 					elif SC_Check(iv.s_code.uid) == "OIL":
@@ -301,14 +306,26 @@ class vInvoice_List(ListView):
 						if iv.s_code.uid == "10000":
 							high_am_list.append(cAm/100)
 							high_list.append(sv)
+							if iv.red_code:
+								slip_list.append(-1)
+							else:
+								slip_list.append(1)
 						elif iv.s_code.uid == "10100":
 							reg_am_list.append(cAm/100)
 							reg_list.append(sv)
+							if iv.red_code:
+								slip_list.append(-1)
+							else:
+								slip_list.append(1)
 						elif iv.s_code.uid == "10200":
 							ku_am_list.append(cAm/100)
 							ku_list.append(sv)
 							kc_tax = kTax_Cal(iv.s_code.uid, cAm)
 							ku_tx_list.append(kc_tax)
+							if iv.red_code:
+								slip_list.append(-1)
+							else:
+								slip_list.append(1)
 
 					# OIL以外(10500 & 10600含む)
 					elif SC_Check(iv.s_code.uid) == "nOIL":
@@ -323,14 +340,26 @@ class vInvoice_List(ListView):
 							tu_am_list.append(cAm/100)
 							# inVl_Cal(sc, gc, am, vl, tax, red, md):
 							tu_list.append(sv-cTax)
-							ntax_list.append(sv - cTax)
+							ntax_list.append(sv-cTax)
+							if iv.red_code:
+								slip_list.append(-1)
+							else:
+								slip_list.append(1)
 						elif iv.s_code.uid == "10500":
 							tu_am_list.append(cAm/100)
 							tu_list.append(sv-cTax)
-							ntax_list.append(sv - cTax)
+							ntax_list.append(sv-cTax)
+							if iv.red_code:
+								slip_list.append(-1)
+							else:
+								slip_list.append(1)
 						else:
 							ntax_list.append(sv-cTax)
 							noil_list.append(sv-cTax)
+							if iv.red_code:
+								slip_list.append(-1)
+							else:
+								slip_list.append(1)
 
 					# その他 : 現金 & OIL & OIL以外(10500 & 10600含む)
 					else:
@@ -369,7 +398,7 @@ class vInvoice_List(ListView):
 
 				## Value : Sum ##
 				incash_vl = sum(incash_list)
-				# incash_values = sum(incash_list)
+				slip_vl = sum(slip_list)
 				ntax_vl = sum(ntax_list)
 				tax_vl = sum(tax_list)
 
@@ -395,7 +424,7 @@ class vInvoice_List(ListView):
 
 				## Value : Context ##
 				context['incash_vl'] = incash_vl
-				# context['incash_values'] = incash_values
+				context['slip_vl'] = slip_vl
 				context['total_vl'] = total_vl
 				context['ntax_vl'] = ntax_vl
 				context['tax_vl'] = tax_vl
