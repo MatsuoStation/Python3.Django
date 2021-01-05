@@ -5,13 +5,13 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.Util.DB.vInvoice.py - Ver.3.80.32  Update:2021.01.05" |
+#//|"VsV.Py3.Dj.Util.DB.vInvoice.py - Ver.3.80.43  Update:2021.01.06" |
 #//+------------------------------------------------------------------+
-from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30
+from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30, Add_Test20
 
+## DB_vInvoice ##
 def DB_vInvoice(self, dld, dlm, bld, blm):
 # def DB_vInvoice(self, dld, dlm):
-
 
     ## IVs ##
     if dld:
@@ -40,6 +40,14 @@ def DB_vInvoice(self, dld, dlm, bld, blm):
     # return names, IVs, lastmonths, BFs, VLs
     # return names, IVs, lastmonths, BFs
     return names, IVs, bIVs, lastmonths, BFs
+
+## DB_Address ##
+def DB_Address(self):
+
+    ## ADs ##
+    ADs = Add_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
+
+    return ADs
 
 '''
 def DB_vValue(self, sc, m_datetime):

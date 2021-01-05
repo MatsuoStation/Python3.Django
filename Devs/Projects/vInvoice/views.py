@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.42 Update:2021.01.05" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.43 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -21,7 +21,7 @@ from decimal import *
 from .forms import NameForm
 from .Util.deadline import DeadLine, DeadLine_List
 # from .db_vinvoice import DB_vInvoice
-from .Util.db_vinvoice import DB_vInvoice
+from .Util.db_vinvoice import DB_vInvoice, DB_Address
 from .Util.pdf import  fPDF_SS_BackImage
 from Finance.models import Name_Test20
 from Finance.templatetags.caluculate import jTax, SC_Check, InCash_Cal, Cash_Cal, OIL_Cal, nOIL_Cal, kTax_Cal, inVl_Cal
@@ -81,6 +81,14 @@ class PDF_List(ListView):
 
 			## DB : Setup ##
 			names, IVs, bIVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm, bld, blm)
+			ADs = DB_Address(self)
+
+			## Address : Setup ##
+			for ad in ADs:
+				zipcode = ad.postal_code
+				address = ad.address
+				context['zipcode'] = zipcode
+				context['address'] = address
 
 			## DeadLine : Month & Secconde
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
