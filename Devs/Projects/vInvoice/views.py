@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.45 Update:2021.01.06" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.47 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -60,6 +60,22 @@ class PDF_List(ListView):
 		tax_vl = self.request.GET.get('tax')
 		## Ku_Tax : Total ##
 		ku_tx = self.request.GET.get('ktax')
+
+		## High : amount & value ##
+		hi_am = self.request.GET.get('hi_am')
+		hi_vl = self.request.GET.get('hi_vl')
+		## Reg : amount & value ##
+		rg_am = self.request.GET.get('rg_am')
+		rg_vl = self.request.GET.get('rg_vl')
+		## Ku : amount & value ##
+		k_am = self.request.GET.get('k_am')
+		k_vl = self.request.GET.get('k_vl')
+		## Tu : amount & value ##
+		t_am = self.request.GET.get('t_am')
+		t_vl = self.request.GET.get('t_vl')
+
+		## No-Oil : Total ##
+		n_oil = self.request.GET.get('n_oil')
 
 
 		## * try: * dl = Ture ##
@@ -146,6 +162,17 @@ class PDF_List(ListView):
 				context['ntax_vl'] = ntax_vl
 				context['tax_vl'] = tax_vl
 				context['ku_tx'] = ku_tx
+
+				context['hi_am'] = hi_am
+				context['hi_vl'] = hi_vl
+				context['rg_am'] = rg_am
+				context['rg_vl'] = rg_vl
+				context['k_am'] = k_am
+				context['k_vl'] = k_vl
+				context['t_am'] = t_am
+				context['t_vl'] = t_vl
+
+				context['n_oil'] = n_oil
 
 			except Exception as e:
 				print("Exception - views.py - PDF / dl=True / Caluculate  : %s" % e)

@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.46 Update:2021.01.06" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.47 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -72,6 +72,12 @@
             @frame subtotal_frame {
                 -pdf-frame-content: subtotal_frame;
                 left: 161pt; top: 740.5pt; width: 402pt; height: 50px;
+                font-size: 30px;
+            }
+
+            @frame bumon_frame {
+                -pdf-frame-content: bumon_frame;
+                left: 42pt; top: 773pt; width: 521pt; height: 50px;
                 font-size: 30px;
             }
 
@@ -183,8 +189,23 @@
             </table>
         </div>
 
-
-
+        <div id="bumon_frame">
+            <table>
+                <thead>
+                <tr style="vertical-align: bottom;">
+                    <td style="text-align: center; width: 10%;">{{ hi_am|floatformat:2|intcomma }}</td>
+                    <td style="text-align: center; width: 12%;">{{ hi_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 10%;">{{ rg_am|floatformat:2|intcomma }}</td>
+                    <td style="text-align: center; width: 11.5%;">{{ rg_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 10.5%;">{{ k_am|floatformat:2|intcomma }}</td>
+                    <td style="text-align: center; width: 11.8%;">{{ k_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 10%;">{{ t_am|floatformat:2|intcomma }}</td>
+                    <td style="text-align: center; width: 12%;">{{ t_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 10.5%;">{{ n_oil|intcomma }}</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
 
     </body>
 </html>
