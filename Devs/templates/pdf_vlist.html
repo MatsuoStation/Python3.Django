@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.50 Update:2021.01.06" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.51 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -249,8 +249,7 @@
             {% endif %}
         {% endfor %}
         <!-- 軽油税 -->
-        {% for iv in ivs %}
-            {% if iv.s_code.uid == "10200" %}
+        {% if k_tx %}
             <thead>
             <tr style="height: 15.5px; vertical-align: bottom;">
                 <td style="text-align: center; width: 3.8%;"></td>
@@ -260,14 +259,13 @@
                 <td style="text-align: center; width: 21.4%;">軽油税</td>
                 <td style="text-align: center; width: 4.7%;"></td>
                 <td style="text-align: center; width: 9.1%;"></td>
-                <td style="text-align: center; width: 14.3%;">{{ ku_tx|intcomma }}</td>
+                <td style="text-align: center; width: 14.3%;">{{ k_tx|intcomma }}</td>
                 <td style="text-align: center; width: 4.4%;"></td>
                 <td style="text-align: center; width: 8.7%;"></td>
                 <td style="text-align: center; width: 12.8%;"></td>
             </tr>
-            </thead>
-            {% endif %}
-        {% endfor %}
+        </thead>
+        {% endif %}
         <!-- 灯油(10500)  -->
         {% for iv in ivs %}
             {% if iv.s_code.uid == "10500" %}
@@ -290,7 +288,7 @@
         {% endfor %}
         <!-- 免税軽油(10300) or 重油(10600) or 油以外 -->
         {% for iv in ivs %}
-            {% if iv.s_code.uid == "10500" %}
+            {% if iv.s_code.uid == "10300" or iv.s_code.uid == "10600" or iv.s_code.uid >= "20000" %}
             <thead>
             <tr style="height: 15.5px; vertical-align: bottom;">
                 <td style="text-align: center; width: 3.8%;">{{ iv.m_datetime.date.month }}</td>
@@ -315,14 +313,25 @@
         <div id="subtotal_frame">
             <table>
                 <thead>
+                {% if k_tx %}
                 <tr style="vertical-align: bottom;">
                     <td style="text-align: center; width: 10%;"></td>
                     <td style="text-align: center; width: 5%;">{{ ntax_vl|intcomma }}</td>
                     <td style="text-align: center; width: 25%;"></td>
                     <td style="text-align: center; width: 5%;">{{ tax_vl|intcomma }}</td>
                     <td style="text-align: center; width: 1%;"></td>
-                    <td style="text-align: center; width: 54%;">{{ ku_tx|intcomma }}</td>
+                    <td style="text-align: center; width: 54%;">{{ k_tx|intcomma }}</td>
                 </tr>
+                {% else %}
+                <tr style="vertical-align: bottom;">
+                    <td style="text-align: center; width: 10%;"></td>
+                    <td style="text-align: center; width: 5%;">{{ ntax_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 25%;"></td>
+                    <td style="text-align: center; width: 5%;">{{ tax_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 1%;"></td>
+                    <td style="text-align: center; width: 54%;"></td>
+                </tr>
+                {% endif %}
                 </thead>
             </table>
         </div>

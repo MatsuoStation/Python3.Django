@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.50 Update:2021.01.06" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.51 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -59,7 +59,7 @@ class PDF_List(ListView):
 		## Tax : Total ##
 		tax_vl = self.request.GET.get('tax')
 		## Ku_Tax : Total ##
-		ku_tx = self.request.GET.get('ktax')
+		k_tx = self.request.GET.get('ktax')
 
 		## High : amount & value ##
 		hi_am = self.request.GET.get('hi_am')
@@ -132,40 +132,25 @@ class PDF_List(ListView):
 			context['dla'] = dla
 			## End of LastDay : Check (dl = True) ##
 
+			## Value : Context ##
+			context['incash_vl'] = incash_vl
+			context['btotal_vl'] = btotal_vl
+			context['total_vl'] = total_vl
+			context['slip_vl'] = slip_vl
+			context['ntax_vl'] = ntax_vl
+			context['tax_vl'] = tax_vl
+			context['k_tx'] = k_tx
 
-			## Caluculate ##
-			try:
-				## Select Month ##
-				for iv in IVs:
-					# 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
-					jtax = jTax(iv.m_datetime)
+			context['hi_am'] = hi_am
+			context['hi_vl'] = hi_vl
+			context['rg_am'] = rg_am
+			context['rg_vl'] = rg_vl
+			context['k_am'] = k_am
+			context['k_vl'] = k_vl
+			context['t_am'] = t_am
+			context['t_vl'] = t_vl
 
-				## Value : Sum ##
-				# incash_vl = sum(incash_list)
-
-				## Value : Context ##
-				context['incash_vl'] = incash_vl
-				context['btotal_vl'] = btotal_vl
-				context['total_vl'] = total_vl
-				context['slip_vl'] = slip_vl
-				context['ntax_vl'] = ntax_vl
-				context['tax_vl'] = tax_vl
-				context['ku_tx'] = ku_tx
-
-				context['hi_am'] = hi_am
-				context['hi_vl'] = hi_vl
-				context['rg_am'] = rg_am
-				context['rg_vl'] = rg_vl
-				context['k_am'] = k_am
-				context['k_vl'] = k_vl
-				context['t_am'] = t_am
-				context['t_vl'] = t_vl
-
-				context['n_oil'] = n_oil
-
-			except Exception as e:
-				print("Exception - views.py - PDF / dl=True / Caluculate  : %s" % e)
-			## End of Caluculate ##
+			context['n_oil'] = n_oil
 
 		## * end try: * dl = False ##
 		except Exception as e:
