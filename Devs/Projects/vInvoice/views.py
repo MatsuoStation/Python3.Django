@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.47 Update:2021.01.06" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.50 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -131,17 +131,6 @@ class PDF_List(ListView):
 			context['dlb'] = dlb
 			context['dla'] = dla
 			## End of LastDay : Check (dl = True) ##
-
-			## Cash Income : Total ##
-			# incash_vl = self.request.GET.get('incash')
-
-			# incash_list = list()
-			# for iv in IVs:
-			#	if SC_Check(iv.s_code.uid) == "Cash":
-			#		sv = InCash_Cal(iv.s_code.uid, iv.value)
-			#		incash_list.append(sv)
-
-			## Uriage Value : Total ##
 
 
 			## Caluculate ##

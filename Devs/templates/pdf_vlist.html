@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.47 Update:2021.01.06" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.50 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -63,9 +63,9 @@
                 font-size: 39px;
             }
 
-            @frame main_frame {
-                -pdf-frame-content: lpgmain_frame;
-                left: 31pt; top: 369pt; width: 532pt;
+            @frame db_main_frame {
+                -pdf-frame-content: db_main_frame;
+                left: 38pt; top: 368pt; width: 532pt;
                 font-size: 10px;
             }
 
@@ -85,6 +85,25 @@
         html, body {
             font-family: "japanese";
             font-size: 12px;
+        }
+
+        .dbmain {
+            table-layout: fixed;
+            width: 533px;
+        }
+
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            background-color: #fff;
+            position: relative;
+            margin-top: 10cm;
+        }
+
+        .table .gid {
+            position: absolute;
+            top: 100px;
         }
         </style>
 
@@ -166,13 +185,132 @@
             </table>
         </div>
 
+        <div id="db_main_frame">
+        <table class="dbmain">
         <!-- ハイオク(10000) -->
-        <div id="main_frame">
-        </div>
+        {% for iv in ivs %}
+            {% if iv.s_code.uid == "10000" %}
+            <thead>
+            <tr style="height: 15.5px; vertical-align: bottom;">
+                <td style="text-align: center; width: 3.8%;">{{ iv.m_datetime.date.month }}</td>
+                <td style="text-align: center; width: 3.7%;">{{ iv.m_datetime.date.day }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.car_code }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.s_code  }}</td>
+                <td style="text-align: center; width: 21.4%;">{{ iv.s_code.h_name }}</td>
+                <td style="text-align: center; width: 4.7%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                <td style="text-align: center; width: 9.1%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                <td style="text-align: center; width: 14.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 4.4%;">{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                <td style="text-align: center; width: 8.7%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 12.8%;"></td>
+            </tr>
+            </thead>
+            {% endif %}
+        {% endfor %}
+
         <!-- レギュラー(10100) -->
+        {% for iv in ivs %}
+            {% if iv.s_code.uid == "10100" %}
+            <thead>
+            <tr style="height: 15.5px; vertical-align: bottom;">
+                <td style="text-align: center; width: 3.8%;">{{ iv.m_datetime.date.month }}</td>
+                <td style="text-align: center; width: 3.7%;">{{ iv.m_datetime.date.day }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.car_code }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.s_code  }}</td>
+                <td style="text-align: center; width: 21.4%;">{{ iv.s_code.h_name }}</td>
+                <td style="text-align: center; width: 4.7%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                <td style="text-align: center; width: 9.1%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                <td style="text-align: center; width: 14.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 4.4%;">{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                <td style="text-align: center; width: 8.7%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 12.8%;"></td>
+            </tr>
+            </thead>
+            {% endif %}
+        {% endfor %}
         <!-- 軽油(10200) -->
+        {% for iv in ivs %}
+            {% if iv.s_code.uid == "10200" %}
+            <thead>
+            <tr style="height: 15.5px; vertical-align: bottom;">
+                <td style="text-align: center; width: 3.8%;">{{ iv.m_datetime.date.month }}</td>
+                <td style="text-align: center; width: 3.7%;">{{ iv.m_datetime.date.day }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.car_code }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.s_code  }}</td>
+                <td style="text-align: center; width: 21.4%;">{{ iv.s_code.h_name }}</td>
+                <td style="text-align: center; width: 4.7%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                <td style="text-align: center; width: 9.1%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                <td style="text-align: center; width: 14.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 4.4%;">{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                <td style="text-align: center; width: 8.7%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 12.8%;"></td>
+            </tr>
+            </thead>
+            {% endif %}
+        {% endfor %}
+        <!-- 軽油税 -->
+        {% for iv in ivs %}
+            {% if iv.s_code.uid == "10200" %}
+            <thead>
+            <tr style="height: 15.5px; vertical-align: bottom;">
+                <td style="text-align: center; width: 3.8%;"></td>
+                <td style="text-align: center; width: 3.7%;"></td>
+                <td style="text-align: center; width: 6.7%;"></td>
+                <td style="text-align: center; width: 6.7%;"></td>
+                <td style="text-align: center; width: 21.4%;">軽油税</td>
+                <td style="text-align: center; width: 4.7%;"></td>
+                <td style="text-align: center; width: 9.1%;"></td>
+                <td style="text-align: center; width: 14.3%;">{{ ku_tx|intcomma }}</td>
+                <td style="text-align: center; width: 4.4%;"></td>
+                <td style="text-align: center; width: 8.7%;"></td>
+                <td style="text-align: center; width: 12.8%;"></td>
+            </tr>
+            </thead>
+            {% endif %}
+        {% endfor %}
         <!-- 灯油(10500)  -->
+        {% for iv in ivs %}
+            {% if iv.s_code.uid == "10500" %}
+            <thead>
+            <tr style="height: 15.5px; vertical-align: bottom;">
+                <td style="text-align: center; width: 3.8%;">{{ iv.m_datetime.date.month }}</td>
+                <td style="text-align: center; width: 3.7%;">{{ iv.m_datetime.date.day }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.car_code }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.s_code  }}</td>
+                <td style="text-align: center; width: 21.4%;">{{ iv.s_code.h_name }}</td>
+                <td style="text-align: center; width: 4.7%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                <td style="text-align: center; width: 9.1%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                <td style="text-align: center; width: 14.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 4.4%;">{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                <td style="text-align: center; width: 8.7%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 12.8%;"></td>
+            </tr>
+            </thead>
+            {% endif %}
+        {% endfor %}
         <!-- 免税軽油(10300) or 重油(10600) or 油以外 -->
+        {% for iv in ivs %}
+            {% if iv.s_code.uid == "10500" %}
+            <thead>
+            <tr style="height: 15.5px; vertical-align: bottom;">
+                <td style="text-align: center; width: 3.8%;">{{ iv.m_datetime.date.month }}</td>
+                <td style="text-align: center; width: 3.7%;">{{ iv.m_datetime.date.day }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.car_code }}</td>
+                <td style="text-align: center; width: 6.7%;">{{ iv.s_code  }}</td>
+                <td style="text-align: center; width: 21.4%;">{{ iv.s_code.h_name }}</td>
+                <td style="text-align: center; width: 4.7%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                <td style="text-align: center; width: 9.1%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                <td style="text-align: center; width: 14.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 4.4%;">{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                <td style="text-align: center; width: 8.7%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                <td style="text-align: center; width: 12.8%;"></td>
+            </tr>
+            </thead>
+            {% endif %}
+        {% endfor %}
+
+        </table>
+        </div>
 
         <div id="subtotal_frame">
             <table>
