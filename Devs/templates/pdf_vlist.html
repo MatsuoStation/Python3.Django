@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.45 Update:2021.01.05" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.46 Update:2021.01.06" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -41,25 +41,25 @@
 
             @frame gid_frame {
                 -pdf-frame-content: gid_frame;
-                left: 139pt; top: 130pt; height: 40pt; width: 100pt;
+                left: 145pt; top: 134.4pt; height: 40pt; width: 100pt;
                 font-size: 9px;
             }
 
             @frame deadline_frame {
                 -pdf-frame-content: deadline_frame;
-                left: 62pt; top: 215.5pt; height: 40pt; width: 102pt;
+                left: 66.5pt; top: 217.5pt; height: 40pt; width: 102pt;
                 font-size: 10px;
             }
 
             @frame page_frame {
                 -pdf-frame-content: page_frame;
-                left: 31pt; top: 264pt; width: 532pt; height: 50px;
+                left: 25pt; top: 264pt; width: 532pt; height: 50px;
                 font-size: 39px;
             }
 
             @frame total_frame {
                 -pdf-frame-content: total_frame;
-                left: 31pt; top: 296.9pt; width: 532pt; height: 50px;
+                left: 34.5pt; top: 296pt; width: 532pt; height: 50px;
                 font-size: 39px;
             }
 
@@ -71,7 +71,7 @@
 
             @frame subtotal_frame {
                 -pdf-frame-content: subtotal_frame;
-                left: 161pt; top: 753.8pt; width: 402pt; height: 50px;
+                left: 161pt; top: 740.5pt; width: 402pt; height: 50px;
                 font-size: 30px;
             }
 
@@ -143,17 +143,18 @@
             <table>
                 <thead>
                 <tr style="vertical-align: bottom;">
-                    <td style="text-align: center; width: 6.58%;">{{ slip_vl|intcomma }}</td>
-                    <td style="text-align: center; width: 1.32%;"></td>
-                    <td style="text-align: center; width: 12.4%;">{{ btotal_vl|intcomma }}</td>
-                    <td style="text-align: center; width: 12.4%;">{{ incash_vl|intcomma }}</td>
-                    <td style="text-align: center; width: 10.71%;"></td>
-                    <td style="text-align: center; width: 12.59%;"></td>
-                    <td style="text-align: center; width: 12.78%;">{{ total_vl|intcomma }}</td>
-                    <td style="text-align: center; width: 0.94%;"></td>
-                    <td style="text-align: center; width: 18.04%;">{{ all_total_values|intcomma }}</td>
-                    <td style="text-align: center; width: 2.44%;"></td>
-                    <td style="text-align: center; width: 9.8%;"></td>
+                    <td style="text-align: center; width: 6.9%;">{{ slip_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 1.1%;"></td>
+                    <td style="text-align: center; width: 8.9%;">{{ btotal_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 13%;">{{ incash_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 6.2%;">0</td>
+                    <td style="text-align: center; width: 12.8%;">0</td>
+                    <td style="text-align: center; width: 8.8%;">0</td>
+                    <td style="text-align: center; width: 12.8%;">{{ total_vl|intcomma }}</td>
+                    <!--td style="text-align: center; width: 12.8%;">0</td-->
+                    <td style="text-align: center; width: 15.5%;">{{ all_total_values|intcomma }}</td>
+                    <!--td style="text-align: center; width: 15.5%;">0</td-->
+                    <td style="text-align: center; width: 14%;"></td>
                 </tr>
                 </thead>
             </table>

@@ -141,6 +141,8 @@ Devs/Projects/Freee/migrations*/
 Devs/templatetags/old/*
 Devs/templates/old/*
 
+Devs/static/*
+
 Freee_Django_AWS_Setup*
 Devs01/
 Django_Setup_001.txt
