@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.51 Update:2021.01.06" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.60 Update:2021.01.07" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -31,6 +31,38 @@ from django.template.loader import get_template
 import io
 from xhtml2pdf import pisa
 
+### PDF20_List ###
+class PDF20_List(ListView):
+	model = Name_Test20
+	template_name = 'pdf20_vlist.html'
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		return context
+	'''
+	def render_to_response(self, context):
+		html = get_template(self.template_name).render(self.get_context_data())
+		result = io.BytesIO()
+
+		## vInvoice_List ##
+		gid = self.kwargs.get('nid')
+		dl = self.request.GET.get('dl', '')
+		dlstr = datetime.strptime(dl, "%Y-%m-%d").date()
+
+		pdf = pisa.pisaDocument(
+			io.BytesIO(html.encode("UTF-8")),
+			result,
+			encoding='utf-8',
+		)
+
+		if not pdf.err:
+			response = HttpResponse(result.getvalue(), content_type='application/pdf')
+			# response['Content-Disposition'] = "inline; filename=%s_%s.pdf" % (gid, dlstr)
+			# return response
+			return HttpResponse(result.getvalue(), content_type='application/pdf')
+		return None
+	'''
 
 ### PDF_List ###
 class PDF_List(ListView):

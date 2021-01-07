@@ -1,0 +1,114 @@
+<!--
+#//+------------------------------------------------------------------+
+#//|          VerysVeryInc.Python3.Django.Templates.PDF.20.vList.html |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.60 Update:2021.01.07" |
+#//+------------------------------------------------------------------+
+-->
+{% load sass_tags %}
+{% load humanize %}
+{% load static %}
+{% load vfilter %}
+
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="https://fonts.googleapis.com/earlyaccess/sawarabimincho.css" rel="stylesheet" />
+        <link href="{% sass_src 'sass/custom.sass' %}" rel="stylesheet" />
+
+        <style type="text/css">
+        @font-face {
+            font-family: "japanese";
+            src: url("https://dev.matsuostation.com/static/fonts/msmincho.ttf");
+        }
+        @page {
+            size: A4 portrait;
+            font-family: "japanese";
+            margin: 1cm;
+            /*background-image: url('https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png');*/
+            background-image: url('{{ fURL }}');
+
+            @frame addredd_frame {
+                -pdf-frame-content: address_frame;
+                left: 80pt; top: 50pt; height: 120pt; width: 200pt;
+                font-size: 18px;
+            }
+
+            @frame gid_frame {
+                -pdf-frame-content: gid_frame;
+                left: 145pt; top: 134.4pt; height: 40pt; width: 100pt;
+                font-size: 9px;
+            }
+
+            @frame deadline_frame {
+                -pdf-frame-content: deadline_frame;
+                left: 66.5pt; top: 217.5pt; height: 40pt; width: 102pt;
+                font-size: 10px;
+            }
+
+            @frame page_frame {
+                -pdf-frame-content: page_frame;
+                left: 25pt; top: 264pt; width: 532pt; height: 50px;
+                font-size: 39px;
+            }
+
+            @frame total_frame {
+                -pdf-frame-content: total_frame;
+                left: 34.5pt; top: 296pt; width: 532pt; height: 50px;
+                font-size: 39px;
+            }
+
+            @frame db_main_frame {
+                -pdf-frame-content: db_main_frame;
+                left: 38pt; top: 368pt; width: 532pt;
+                font-size: 10px;
+            }
+
+            @frame subtotal_frame {
+                -pdf-frame-content: subtotal_frame;
+                left: 161pt; top: 740.5pt; width: 402pt; height: 50px;
+                font-size: 30px;
+            }
+
+            @frame bumon_frame {
+                -pdf-frame-content: bumon_frame;
+                left: 42pt; top: 773pt; width: 521pt; height: 50px;
+                font-size: 30px;
+            }
+
+        }
+        html, body {
+            font-family: "japanese";
+            font-size: 12px;
+        }
+
+        .dbmain {
+            table-layout: fixed;
+            width: 533px;
+        }
+
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            background-color: #fff;
+            position: relative;
+            margin-top: 10cm;
+        }
+
+        .table .gid {
+            position: absolute;
+            top: 100px;
+        }
+        </style>
+
+    </head>
+    <body>
+        PDF20_vList.html
+    </body>
+</html>
