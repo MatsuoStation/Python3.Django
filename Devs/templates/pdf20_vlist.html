@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.60 Update:2021.01.07" |
+#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.61 Update:2021.01.08" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -30,61 +30,61 @@
             size: A4 portrait;
             font-family: "japanese";
             margin: 1cm;
-            /*background-image: url('https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_0_02.png');*/
-            background-image: url('{{ fURL }}');
+            background-image: url('https://dev.matsuostation.com/static/images/Invoice/New_Seikyu_SS_20_03.png');
+            /* background-image: url('{{ fURL }}'); */
 
-            @frame addredd_frame {
-                -pdf-frame-content: address_frame;
-                left: 80pt; top: 50pt; height: 120pt; width: 200pt;
-                font-size: 18px;
+            @frame name_frame {
+                -pdf-frame-content: name_frame;
+                left: 125pt; top: 130pt; height: 120pt; width: 200pt;
+                /*font-size: 20px;*/
             }
 
-            @frame gid_frame {
-                -pdf-frame-content: gid_frame;
-                left: 145pt; top: 134.4pt; height: 40pt; width: 100pt;
-                font-size: 9px;
+            @frame bank_name_frame {
+                -pdf-frame-content: bank_name_frame;
+                left: 122.5pt; top: 166.5pt; height: 120pt; width: 200pt;
+                /*font-size: 20px;*/
+            }
+
+            @frame bank_number_frame {
+                -pdf-frame-content: bank_number_frame;
+                left: 427.4pt; top: 153pt; height: 120pt; width: 200pt;
+                /*font-size: 20px;*/
+            }
+
+            @frame bank_koza_frame {
+                -pdf-frame-content: bank_koza_frame;
+                left: 356.5pt; top: 178.6pt; height: 120pt; width: 200pt;
+                /*font-size: 20px;*/
             }
 
             @frame deadline_frame {
                 -pdf-frame-content: deadline_frame;
-                left: 66.5pt; top: 217.5pt; height: 40pt; width: 102pt;
+                left: 390.5pt; top: 226.5pt; height: 40pt; width: 102pt;
                 font-size: 10px;
             }
 
-            @frame page_frame {
-                -pdf-frame-content: page_frame;
-                left: 25pt; top: 264pt; width: 532pt; height: 50px;
-                font-size: 39px;
-            }
-
-            @frame total_frame {
-                -pdf-frame-content: total_frame;
-                left: 34.5pt; top: 296pt; width: 532pt; height: 50px;
-                font-size: 39px;
-            }
-
-            @frame db_main_frame {
-                -pdf-frame-content: db_main_frame;
-                left: 38pt; top: 368pt; width: 532pt;
-                font-size: 10px;
-            }
-
-            @frame subtotal_frame {
-                -pdf-frame-content: subtotal_frame;
-                left: 161pt; top: 740.5pt; width: 402pt; height: 50px;
-                font-size: 30px;
-            }
-
-            @frame bumon_frame {
-                -pdf-frame-content: bumon_frame;
-                left: 42pt; top: 773pt; width: 521pt; height: 50px;
-                font-size: 30px;
+            @frame matsuo_address_frame {
+                -pdf-frame-content: matsuo_address_frame;
+                left: 342pt; top: 275pt; height: 120pt; width: 200pt;
+                /*font-size: 20px;*/
             }
 
         }
         html, body {
             font-family: "japanese";
-            font-size: 12px;
+            /*font-size: 20px;*/
+        }
+
+        .name_frame {
+            font-size: 20px;
+        }
+
+        .bank_frame {
+            font-size: 15px;
+        }
+
+        .text-narrow {
+            transform: scale(0.8, 1);
         }
 
         .dbmain {
@@ -109,6 +109,75 @@
 
     </head>
     <body>
-        PDF20_vList.html
+        <div id="name_frame" class="name_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td>{{ names }}</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="bank_name_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td style="font-size:18px; text-align: center; width: 8%;">中国</td>
+                    <td style="font-size:17.5px; letter-spacing: -3px; text-align: center; width: 58%;">西大寺支</td>
+                    <td style="font-size:15px; text-align: center; width: 34%;"></td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="bank_number_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td style="font-size:26px; letter-spacing: 16.5px; text-align: center; width: 8%;">834882</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="bank_koza_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td style="font-size:15px; text-align: left; width: 100%;">ﾕ)ﾏﾂｵｼｮｳﾃﾝ ﾀﾞｲﾋｮｳﾄﾘｼﾏﾘﾔｸ ｶﾜｲﾖﾘｺ</td>
+                </tr>
+                <tr>
+                    <td style="font-size:15px; line-height: 0.5px; text-align: left; height: 3px"></td>
+                </tr>
+                <tr>
+                    <td style="font-size:15px; line-height: 0.5px; text-align: left;">有限会社 松尾商店<br>&nbsp;&nbsp;&nbsp;代表取締役 河合順子</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="deadline_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td style="font-size:18px; ">{{ dla|date:"Y" }}</td>
+                    <td style="font-size:18px; text-align: center;">&nbsp;&nbsp;{{ dla|date:"m" }}</td>
+                    <td style="font-size:18px; text-align: center;">&nbsp;&nbsp;&nbsp;{{ dla|date:"d" }}</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="matsuo_address_frame">
+            <table>
+                <thead>
+                <tr>
+                    <td style="font-size:17.5px; line-height: 36px; text-align: left; width: 100%;">岡山市東区西大寺中2丁目17-17<br>有限会社 松尾商店<br>代表取締役 河合順子</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
     </body>
 </html>

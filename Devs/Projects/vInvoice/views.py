@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.60 Update:2021.01.07" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.61 Update:2021.01.08" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -39,8 +39,29 @@ class PDF20_List(ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
+		## Names ##
+		names = self.request.GET.get('names')
+		context['names'] = names
+		gid = self.kwargs.get('nid')
+		context['gid'] = gid
+
+		## * try: * dl = Ture ##
+		try:
+			## vInvoice_List ##
+			dl = self.request.GET.get('dl', '')
+			dlstr = datetime.strptime(dl, '%Y-%m-%d')
+
+			dd = dlstr.day  # DeadLine : Day
+			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
+			context['dla'] = dla
+
+
+		## * end try: * dl = False ##
+		except Exception as e:
+			print("Exception - views.py - PDF / dl=False  : %s" % e)
+
 		return context
-	'''
+
 	def render_to_response(self, context):
 		html = get_template(self.template_name).render(self.get_context_data())
 		result = io.BytesIO()
@@ -58,11 +79,10 @@ class PDF20_List(ListView):
 
 		if not pdf.err:
 			response = HttpResponse(result.getvalue(), content_type='application/pdf')
-			# response['Content-Disposition'] = "inline; filename=%s_%s.pdf" % (gid, dlstr)
-			# return response
-			return HttpResponse(result.getvalue(), content_type='application/pdf')
+			response['Content-Disposition'] = "inline; filename=%s_%s.pdf" % (gid, dlstr)
+			return response
+			# return HttpResponse(result.getvalue(), content_type='application/pdf')
 		return None
-	'''
 
 ### PDF_List ###
 class PDF_List(ListView):
@@ -292,7 +312,10 @@ class vInvoice_List(ListView):
 				context['fURL'] = fURL
 
 			### PDF : Link ##
-			PDF_Link = "../PDF/%s/" % self.kwargs.get('nid')
+			if fPDF == 20:
+				PDF_Link = "../PDF20/%s/" % self.kwargs.get('nid')
+			else:
+				PDF_Link = "../PDF/%s/" % self.kwargs.get('nid')
 			context['pLink'] = PDF_Link
 
 			## Cash Income : Total ##
