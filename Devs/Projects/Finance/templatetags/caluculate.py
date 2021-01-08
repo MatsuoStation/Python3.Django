@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.31 Update:2021.01.04" |
+#//|     "VsV.Py3.Dj.TempTags.Cal.py - Ver.3.80.53 Update:2021.01.08" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
@@ -25,7 +25,7 @@ def inVl_Cal(sc, gc, am, vl, tax, red, md):
     if SC_Check(sc) == "Cash":
         sv, cTax = Cash_Cal(sc, vl)
         vc = sv
-    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300)
+    # ハイオク(10000) or レギュラー(10100) or 軽油(10200)
     # elif SC_Check(sc) == "OIL" or (vl == 0 and sc == "10500"):
     elif SC_Check(sc) == "OIL":
         uc = Unit_Cal(sc, gc, am, vl, tax, red, md)
@@ -40,7 +40,7 @@ def inVl_Cal(sc, gc, am, vl, tax, red, md):
         vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
         if red:
             vc = -(vc)
-    # 油以外 : 灯油(10500) or 重油(10600)含む
+    # 油以外 : 免税軽油(10300) or 灯油(10500) or 重油(10600)含む
     elif SC_Check(sc) == "nOIL":
         sv, cTax, cAm = nOIL_Cal(sc, gc, am, vl, tax, jtax, red, md)
         vc = sv
@@ -58,13 +58,13 @@ def Vl_Cal(sc, gc, am, vl, tax, red, md):
     if SC_Check(sc) == "Cash":
         sv, cTax = Cash_Cal(sc, vl)
         vc = sv
-    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300) : 灯油特別(10500)
+    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) : 灯油特別(10500)
     elif SC_Check(sc) == "OIL" or (vl == 0 and sc == "10500"):
         uc = Unit_Cal(sc, gc, am, vl, tax, red, md)
         vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
         if red:
             vc = -(vc)
-    # 油以外 : 灯油(10500) or 重油(10600)含む
+    # 油以外 : 免税軽油(10300) or 灯油(10500) or 重油(10600)含む
     elif SC_Check(sc) == "nOIL":
         sv, cTax, cAm = nOIL_Cal(sc, gc, am, vl, tax, jtax, red, md)
         vc = sv - cTax
@@ -89,7 +89,7 @@ def Unit_Cal(sc, gc, am, vl, tax, red, md):
     if SC_Check(sc) == "Cash":
         sv, cTax = Cash_Cal(sc, vl)
         uc = 0
-    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300) : 灯油特別(10500)
+    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) : 灯油特別(10500)
     elif SC_Check(sc) == "OIL" or (vl == 0 and sc == "10500"):
         if Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md):
             uc = Unit_His(Value_Test30.objects.all().filter(uid=gc, s_code=sc, m_datetime__lte=md), 0)
@@ -172,11 +172,11 @@ def Unit_Cal(sc, gc, am, vl, tax, red, md):
         # None OIL Value
         else:
             uc = sc
-    # 油以外 : 灯油(10500) or 重油(10600)含む
+    # 油以外 : 免税軽油(10300) or 灯油(10500) or 重油(10600)含む
     elif SC_Check(sc) == "nOIL":
         sv, cTax, cAm = nOIL_Cal(sc, gc, am, vl, tax, jtax, red, md)
         # sv, cTax = nOIL_Cal(sc, vl, tax, jtax, red)
-        uc = Decimal(sv/(am/100)).quantize(Decimal('1'), rounding=ROUND_DOWN)
+        uc = Decimal(sv/(am/100)).quantize(Decimal('0.1'), rounding=ROUND_DOWN)
     else:
         uc = sc
     # uc = sc
@@ -243,13 +243,11 @@ def SC_Check(sc):
     # 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
     if sc == "00000" or sc == "00001" or sc == "00002" or sc == "00003" or sc == "01100":
         scc = "Cash"
-    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300)
-    elif sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300":
-    # elif sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300" or sc == "10500" or sc == "10600":
+    # ハイオク(10000) or レギュラー(10100) or 軽油(10200)
+    elif sc == "10000" or sc == "10100" or sc == "10200":
         scc = "OIL"
-    # 油以外 - 灯油(10500) or 重油(10600)含む
-    elif sc != "10000" or sc != "10100" or sc != "10200" or sc != "10300":
-    # elif sc != "10000" or sc != "10100" or sc != "10200" or sc != "10300" or sc != "10500" or sc != "10600":
+    # 油以外 - 免税軽油(10300) or 灯油(10500) or 重油(10600)含む
+    elif sc != "10000" or sc != "10100" or sc != "10200":
         scc = "nOIL"
     # その他
     else:
@@ -269,11 +267,10 @@ def Cash_Cal(sc, vl):
         cTax = 0
     return sv, cTax
 
-### 売上高 : ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300) : 灯油特別(10500) ###
+### 売上高 : ハイオク(10000) or レギュラー(10100) or 軽油(10200) : 灯油特別(10500) ###
 def OIL_Cal(sc, gc, am, vl, tax, jtax, red, md):
 # def OIL_Cal(sc):
-    if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300" or (vl == 0 and sc == "10500"):
-    # if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300":
+    if sc == "10000" or sc == "10100" or sc == "10200" or (vl == 0 and sc == "10500"):
         uc = Unit_Cal(sc, gc, am, vl, tax, red, md)
         vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
         if red:
@@ -286,10 +283,10 @@ def OIL_Cal(sc, gc, am, vl, tax, jtax, red, md):
         cAm = am
     return sv, cTax, cAm
 
-### 売上高 : 油以外 - 灯油(10500) or 重油(10600)含む ###
+### 売上高 : 油以外 - 免税軽油(10300) or 灯油(10500) or 重油(10600)含む ###
 def nOIL_Cal(sc, gc, am, vl, tax, jtax, red, md):
 # def nOIL_Cal(sc, vl, tax, jtax, red):
-    if sc != "10000" or sc != "10100" or sc != "10200" or sc != "10300":
+    if sc != "10000" or sc != "10100" or sc != "10200":
 
         # 消費税 : True
         if tax != 0:
