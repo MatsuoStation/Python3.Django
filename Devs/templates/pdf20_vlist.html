@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.61 Update:2021.01.08" |
+#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.62 Update:2021.01.08" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -36,37 +36,36 @@
             @frame name_frame {
                 -pdf-frame-content: name_frame;
                 left: 125pt; top: 130pt; height: 120pt; width: 200pt;
-                /*font-size: 20px;*/
             }
 
             @frame bank_name_frame {
                 -pdf-frame-content: bank_name_frame;
                 left: 122.5pt; top: 166.5pt; height: 120pt; width: 200pt;
-                /*font-size: 20px;*/
             }
 
             @frame bank_number_frame {
                 -pdf-frame-content: bank_number_frame;
                 left: 427.4pt; top: 153pt; height: 120pt; width: 200pt;
-                /*font-size: 20px;*/
             }
 
             @frame bank_koza_frame {
                 -pdf-frame-content: bank_koza_frame;
                 left: 356.5pt; top: 178.6pt; height: 120pt; width: 200pt;
-                /*font-size: 20px;*/
             }
 
             @frame deadline_frame {
                 -pdf-frame-content: deadline_frame;
                 left: 390.5pt; top: 226.5pt; height: 40pt; width: 102pt;
-                font-size: 10px;
             }
 
             @frame matsuo_address_frame {
                 -pdf-frame-content: matsuo_address_frame;
                 left: 342pt; top: 275pt; height: 120pt; width: 200pt;
-                /*font-size: 20px;*/
+            }
+
+            @frame total_frame {
+                -pdf-frame-content: total_frame;
+                left: 317.5pt; top: 396pt; width: 532pt; height: 50px;
             }
 
         }
@@ -174,6 +173,25 @@
                 <thead>
                 <tr>
                     <td style="font-size:17.5px; line-height: 36px; text-align: left; width: 100%;">岡山市東区西大寺中2丁目17-17<br>有限会社 松尾商店<br>代表取締役 河合順子</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="total_frame">
+            <table>
+                <thead>
+                <tr style="vertical-align: bottom;">
+                    <td style="text-align: center; width: 2%; font-size: 30px">{{ total_vl_09 }}</td>
+                    <td style="text-align: center; width: 6.3%; font-size: 30px">{{ total_vl_08 }}</td>
+                    <td style="text-align: center; width: 1.8%; font-size: 30px">{{ total_vl_07 }}</td>
+                    <td style="text-align: center; width: 6.5%; font-size: 30px">{{ total_vl_06 }}</td>
+                    <td style="text-align: center; width: 2%; font-size: 30px">{{ total_vl_05 }}</td>
+                    <td style="text-align: center; width: 6.4%; font-size: 30px">{{ total_vl_04 }}</td>
+                    <td style="text-align: center; width: 1.8%; font-size: 30px">{{ total_vl_03 }}</td>
+                    <td style="text-align: center; width: 6.4%; font-size: 30px">{{ total_vl_02 }}</td>
+                    <td style="text-align: center; width: 2%; font-size: 30px">{{ total_vl_01 }}</td>
+                    <td style="text-align: center; width: 64.8%;"></td>
                 </tr>
                 </thead>
             </table>

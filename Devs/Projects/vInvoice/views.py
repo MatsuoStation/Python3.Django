@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.61 Update:2021.01.08" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.62 Update:2021.01.08" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -45,6 +45,9 @@ class PDF20_List(ListView):
 		gid = self.kwargs.get('nid')
 		context['gid'] = gid
 
+		## Total : Uriage ##
+		total_vl = self.request.GET.get('total')
+
 		## * try: * dl = Ture ##
 		try:
 			## vInvoice_List ##
@@ -55,6 +58,16 @@ class PDF20_List(ListView):
 			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
 			context['dla'] = dla
 
+			## Value : Context ##
+			context['total_vl_01'] = total_vl[-1]
+			context['total_vl_02'] = total_vl[-2]
+			context['total_vl_03'] = total_vl[-3]
+			context['total_vl_04'] = total_vl[-4]
+			context['total_vl_05'] = total_vl[-5]
+			context['total_vl_06'] = total_vl[-6]
+			context['total_vl_07'] = total_vl[-7]
+			context['total_vl_08'] = total_vl[-8]
+			context['total_vl_09'] = total_vl[-9]
 
 		## * end try: * dl = False ##
 		except Exception as e:
