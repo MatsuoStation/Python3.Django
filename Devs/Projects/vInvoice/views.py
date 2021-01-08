@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.62 Update:2021.01.08" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.63 Update:2021.01.09" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -48,6 +48,11 @@ class PDF20_List(ListView):
 		## Total : Uriage ##
 		total_vl = self.request.GET.get('total')
 
+		## Ku_Tax : Total ##
+		k_tx = self.request.GET.get('ktax')
+		## Ku : amount & value ##
+		k_am = self.request.GET.get('k_am')
+
 		## * try: * dl = Ture ##
 		try:
 			## vInvoice_List ##
@@ -58,7 +63,13 @@ class PDF20_List(ListView):
 			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
 			context['dla'] = dla
 
+			## DB : Setup ##
+			names, IVs, bIVs, lastmonths, BFs = DB_vInvoice(self, dld, dlm, bld, blm)
+
 			## Value : Context ##
+			context['k_tx'] = k_tx
+			context['k_am'] = k_am
+
 			context['total_vl_01'] = total_vl[-1]
 			context['total_vl_02'] = total_vl[-2]
 			context['total_vl_03'] = total_vl[-3]
@@ -72,6 +83,18 @@ class PDF20_List(ListView):
 		## * end try: * dl = False ##
 		except Exception as e:
 			print("Exception - views.py - PDF / dl=False  : %s" % e)
+
+		## Paginator : Setup ##
+		paginator = Paginator(IVs, 30)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+		try:
+			IVs = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			IVs = paginator.page(1)
+		context['ivs'] = IVs
 
 		return context
 

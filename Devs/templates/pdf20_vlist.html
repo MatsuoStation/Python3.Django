@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.62 Update:2021.01.08" |
+#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.63 Update:2021.01.09" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -68,6 +68,16 @@
                 left: 317.5pt; top: 396pt; width: 532pt; height: 50px;
             }
 
+            @frame db_main_frame {
+                -pdf-frame-content: db_main_frame;
+                left: 54.4pt; top: 473pt; width: 532pt;
+            }
+
+            @frame memo_frame {
+                -pdf-frame-content: memo_frame;
+                left: 45pt; top: 752pt; width: 532pt;
+            }
+
         }
         html, body {
             font-family: "japanese";
@@ -78,12 +88,9 @@
             font-size: 20px;
         }
 
-        .bank_frame {
-            font-size: 15px;
-        }
-
-        .text-narrow {
-            transform: scale(0.8, 1);
+        .dbmain {
+            table-layout: fixed;
+            width: 533px;
         }
 
         .dbmain {
@@ -192,6 +199,168 @@
                     <td style="text-align: center; width: 6.4%; font-size: 30px">{{ total_vl_02 }}</td>
                     <td style="text-align: center; width: 2%; font-size: 30px">{{ total_vl_01 }}</td>
                     <td style="text-align: center; width: 64.8%;"></td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="db_main_frame">
+            <table class="dbmain">
+            <!-- ハイオク(10000) -->
+            {% for iv in ivs %}
+                {% if iv.s_code.uid == "10000" %}
+                <thead>
+                <tr style="height: 15.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">{{ iv.s_code.h_name }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                <!-- 消費税 -->
+                <tr style="height: 44.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;"></td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">消費税</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                </thead>
+                {% endif %}
+            {% endfor %}
+            <!-- レギュラー(10100) -->
+            {% for iv in ivs %}
+                {% if iv.s_code.uid == "10100" %}
+                <thead>
+                <tr style="height: 15.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">{{ iv.s_code.h_name }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                <!-- 消費税 -->
+                <tr style="height: 44.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;"></td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">消費税</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                </thead>
+                {% endif %}
+            {% endfor %}
+            <!-- 軽油(10200) -->
+            {% for iv in ivs %}
+                {% if iv.s_code.uid == "10200" %}
+                <thead>
+                <tr style="height: 15.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">{{ iv.s_code.h_name }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                <!-- 消費税 -->
+                <tr style="height: 44.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;"></td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">消費税</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                </thead>
+                {% endif %}
+            {% endfor %}
+            <!-- 軽油税 -->
+            {% if k_tx %}
+                <thead>
+                <tr style="height: 14.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;"></td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">軽油税</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;">{{ k_am }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;">32.10</td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ k_tx|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                </thead>
+            {% endif %}
+            <!-- 灯油(10500)  -->
+            {% for iv in ivs %}
+                {% if iv.s_code.uid == "10500" %}
+                <thead>
+                <tr style="height: 15.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">{{ iv.s_code.h_name }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                <!-- 消費税 -->
+                <tr style="height: 44.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;"></td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">消費税</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                </thead>
+                {% endif %}
+            {% endfor %}
+            <!-- 免税軽油(10300) or 重油(10600) or 油以外 -->
+            {% for iv in ivs %}
+                {% if iv.s_code.uid == "10300" or iv.s_code.uid == "10600" or iv.s_code.uid >= "20000" %}
+                <thead>
+                <tr style="height: 15.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">{{ iv.s_code.h_name }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;">{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                <!-- 消費税 -->
+                <tr style="height: 44.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;"></td>
+                    <td style="font-size: 18px; text-align: left; width: 32%;">消費税</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;">{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                </thead>
+                {% endif %}
+            {% endfor %}
+
+            </table>
+        </div>
+
+        <div id="memo_frame">
+            <table>
+                <thead>
+                <tr style="height: 14.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;"></td>
+                    <td style="font-size: 13px; text-align: left; width: 32%;">※商品・消費税は、小数点以下を四捨五入して、計算しております。</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
+                </tr>
+                <tr style="height: 14.5px; vertical-align: bottom;">
+                    <td style="font-size: 18px; text-align: center; width: 12%;"></td>
+                    <td style="font-size: 13px; text-align: left; width: 32%;">※軽油税は、小数点以下を切り捨てして、計算しております。</td>
+                    <td style="font-size: 18px; text-align: center; width: 5.1%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 12.8%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 16.3%;"></td>
+                    <td style="font-size: 18px; text-align: center; width: 13%;"></td>
                 </tr>
                 </thead>
             </table>
