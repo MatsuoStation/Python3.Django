@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.63 Update:2021.01.09" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.71 Update:2021.01.09" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -171,6 +171,14 @@ class PDF_List(ListView):
 			## Invoice.Format : Back.Image - Setup
 			fPDF = self.request.GET.get('fm')
 			fPDF = int(fPDF)
+
+			## Page ##
+			nPage = self.request.GET.get('page')
+			# fPDF = fPDF + 2
+			if nPage == "1":
+				fPDF = fPDF + 1
+			else:
+				fPDF = fPDF + 2
 			fURL = fPDF_SS_BackImage(fPDF)
 			context['fURL'] = fURL
 
@@ -344,8 +352,8 @@ class vInvoice_List(ListView):
 				context['fPDF'] = fPDF
 
 				## Invoice.Format : Back.Image - Setup
-				fURL = fPDF_SS_BackImage(fPDF)
-				context['fURL'] = fURL
+				# fURL = fPDF_SS_BackImage(fPDF)
+				# context['fURL'] = fURL
 
 			### PDF : Link ##
 			if fPDF == 20:
