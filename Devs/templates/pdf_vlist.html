@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.53 Update:2021.01.08" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.70 Update:2021.01.10" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -178,7 +178,7 @@
                     <td style="text-align: center; width: 12.8%;">{{ total_vl|intcomma }}</td>
                     <!--td style="text-align: center; width: 12.8%;">0</td-->
                     <!--td style="text-align: center; width: 15.5%;">{{ all_total_values|intcomma }}</td-->
-                    <td style="text-align: center; width: 15.5%;">0</td>
+                    <td style="text-align: center; width: 15.5%;">{{ ivs.number }} of {{ ivs.paginator.num_pages }}</td>
                     <td style="text-align: center; width: 14%;"></td>
                 </tr>
                 </thead>
