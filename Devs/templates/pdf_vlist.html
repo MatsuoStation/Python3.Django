@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.70 Update:2021.01.10" |
+#//|  "VsV.Py3.Dj.TLs.PDF_vList.html - Ver.3.80.72 Update:2021.01.10" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -164,6 +164,7 @@
             </table>
         </div>
 
+        {% if ivs.number == 1  %}
         <div id="total_frame">
             <table>
                 <thead>
@@ -177,13 +178,34 @@
                     <td style="text-align: center; width: 8.8%;">0</td>
                     <td style="text-align: center; width: 12.8%;">{{ total_vl|intcomma }}</td>
                     <!--td style="text-align: center; width: 12.8%;">0</td-->
+                    <td style="text-align: center; width: 15.5%;">0</td>
                     <!--td style="text-align: center; width: 15.5%;">{{ all_total_values|intcomma }}</td-->
-                    <td style="text-align: center; width: 15.5%;">{{ ivs.number }} of {{ ivs.paginator.num_pages }}</td>
+                    <!--td style="text-align: center; width: 15.5%;">{{ ivs.number }} of {{ ivs.paginator.num_pages }}</td-->
                     <td style="text-align: center; width: 14%;"></td>
                 </tr>
                 </thead>
             </table>
         </div>
+        {% else %}
+        <div id="total_frame">
+            <table>
+                <thead>
+                <tr style="vertical-align: bottom;">
+                    <td style="text-align: center; width: 6.9%;">{{ slip_vl|intcomma }}</td>
+                    <td style="text-align: center; width: 1.1%;"></td>
+                    <td style="text-align: center; width: 8.9%;"></td>
+                    <td style="text-align: center; width: 13%;"></td>
+                    <td style="text-align: center; width: 6.2%;"></td>
+                    <td style="text-align: center; width: 12.8%;"></td>
+                    <td style="text-align: center; width: 8.8%;"></td>
+                    <td style="text-align: center; width: 12.8%;"></td>
+                    <td style="text-align: center; width: 15.5%;"></td>
+                    <td style="text-align: center; width: 14%;"></td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        {% endif %}
 
         <div id="db_main_frame">
         <table class="dbmain">
@@ -249,7 +271,7 @@
             {% endif %}
         {% endfor %}
         <!-- 軽油税 -->
-        {% if k_tx %}
+        {% if k_tx and ivs.number == ivs.paginator.num_pages %}
             <thead>
             <tr style="height: 15.5px; vertical-align: bottom;">
                 <td style="text-align: center; width: 3.8%;"></td>
@@ -310,6 +332,7 @@
         </table>
         </div>
 
+        {% if ivs.number == 1  %}
         <div id="subtotal_frame">
             <table>
                 <thead>
@@ -353,6 +376,7 @@
                 </thead>
             </table>
         </div>
+        {% endif %}
 
     </body>
 </html>
