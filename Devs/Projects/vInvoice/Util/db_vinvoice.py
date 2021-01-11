@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.Util.DB.vInvoice.py - Ver.3.80.43  Update:2021.01.06" |
+#//|"VsV.Py3.Dj.Util.DB.vInvoice.py - Ver.3.80.73  Update:2021.01.11" |
 #//+------------------------------------------------------------------+
 from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30, Add_Test20
 
@@ -15,9 +15,9 @@ def DB_vInvoice(self, dld, dlm, bld, blm):
 
     ## IVs ##
     if dld:
-        IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+        IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('s_code', 'car_code', 'm_datetime')
     else:
-        IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('car_code', 'm_datetime')
+        IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('s_code', 'car_code', 'm_datetime')
 
     ## bIVs ##
     if bld:
