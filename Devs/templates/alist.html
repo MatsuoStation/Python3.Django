@@ -1,0 +1,282 @@
+<!--
+#//+------------------------------------------------------------------+
+#//|                 VerysVeryInc.Python3.Django.Templates.aList.html |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//|       "VsV.Py3.Dj.TLs.aList.html - Ver.3.90.3 Update:2021.01.14" |
+#//+------------------------------------------------------------------+
+-->
+{% extends "./base.html" %}
+
+{% load sass_tags %}
+{% load humanize %}
+{% load static %}
+{% load vfilter %}
+
+
+{% block title %}aInvoice : 請求書{% endblock title %}
+{% block content %}
+
+    <main role="main" class="container">
+
+      <div class="starter-template">
+          <h1>aInvoice / 請求書</h1>
+
+          <P>請求書作成</P>
+          <form action="" method="POST" class="form-horizontal" role="form">
+              {% csrf_token %}
+              <!-- {{ form.as_p }} -->
+              {{ form }}
+              <input type="submit" name="送信">
+          </form>
+          <p><br>
+              {% if pLink and ku_tx != 0 %}
+                {{ names }} : {{ gid }} / {{ fPDF }} / <a href="{{ pLink }}?page={{ ivs.number }}&apage={{ ivs.paginator.num_pages }}&dl={{ dla|date:"Y-m-d" }}&fm={{ fPDF }}
+                    &names={{ names }}&btotal={{ btotal_vl }}&incash={{ incash_vl }}&total={{ total_vl }}&slip={{ slip_vl }}
+                    &ntax={{ ntax_vl }}&tax={{ tax_vl }}&ktax={{ ku_tx }}
+                    &hi_am={{ high_am|floatformat:2|intcomma }}&hi_vl={{ high_vl|intcomma }}
+                    &rg_am={{ reg_am|floatformat:2|intcomma }}&rg_vl={{ reg_vl|intcomma }}
+                    &k_am={{ ku_am|floatformat:2|intcomma }}&k_vl={{ ku_vl|intcomma }}
+                    &t_am={{ tu_am|floatformat:2|intcomma }}&t_vl={{ tu_vl|intcomma }}&n_oil={{ no_oil|intcomma }}" target="_blank">PDF</a>
+              {% elif pLink and ku_tx == 0 %}
+                {{ names }} : {{ gid }} / {{ fPDF }} / <a href="{{ pLink }}?page={{ ivs.number }}&apage={{ ivs.paginator.num_pages }}&dl={{ dla|date:"Y-m-d" }}&fm={{ fPDF }}
+                    &names={{ names }}&btotal={{ btotal_vl }}&incash={{ incash_vl }}&total={{ total_vl }}&slip={{ slip_vl }}
+                    &ntax={{ ntax_vl }}&tax={{ tax_vl }}
+                    &hi_am={{ high_am|floatformat:2|intcomma }}&hi_vl={{ high_vl|intcomma }}
+                    &rg_am={{ reg_am|floatformat:2|intcomma }}&rg_vl={{ reg_vl|intcomma }}
+                    &k_am={{ ku_am|floatformat:2|intcomma }}&k_vl={{ ku_vl|intcomma }}
+                    &t_am={{ tu_am|floatformat:2|intcomma }}&t_vl={{ tu_vl|intcomma }}&n_oil={{ no_oil|intcomma }}" target="_blank">PDF</a>
+              {% else %}
+                {{ names }} : {{ gid }}
+              {% endif %}
+          </p>
+
+          <p>{{ dlb }} - {{ dla }}</p>
+          <!--p>{{ fURL }}</p-->
+          <p>
+
+          <div class="pagination">
+            <span class="step-links">
+                {% if ivs.has_previous %}
+                    <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
+                    <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                {% endif %}
+                <span class="current">
+                    Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+                </span>
+                {% if ivs.has_next %}
+                    &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% endif %}
+            </span>
+          </div>
+
+          {% if dlms %}
+              {% for dd in dds %}
+                &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|
+              {% endfor %}
+          {% endif %}
+          </p>
+
+          <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td>伝票枚数</td>
+                    <td width="1"></td>
+                    <td>前月ご請求額</td>
+                    <td>当月ご入金額</td>
+                    <td>銀行手数料</td>
+                    <td>差額<br>（銀行手数料除く）</td>
+                    <td>差引繰越額</td>
+                    <td>当月お買上額</td>
+                    <td width="1"></td>
+                    <td>当月ご請求額</td>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <td>{{ slip_vl|intcomma }}</td>
+                    <td width="1"></td>
+                    <td>{{ btotal_vl|intcomma }}</td>
+                    <td>{{ incash_vl|intcomma }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ total_vl|intcomma }}</td>
+                    <td width="1"></td>
+                    <td>{{ all_total_values|intcomma }}</td>
+                </tr>
+            </thead>
+          </table>
+          <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td width="2">月</td>
+                    <td width="2">日</td>
+                    <td width="4">車番</td>
+                    <td width="5">SCode</td>
+                    <td>商品名</td>
+                    <td>数量</td>
+                    <td>単価</td>
+                    <td>金額</td>
+                    <td>税区分</td>
+                    <!--td>車両別合計</td-->
+                    <td>消費税</td>
+                    <td>税込</td>
+                    <td>備考</td>
+                    <td>赤伝</td>
+                    <td>時間</td>
+                    <td>伝票番号</td>
+                </tr>
+            </thead>
+            <thead>
+                {% for iv in ivs %}
+                <!-- 軽油 : True -->
+                {% if iv.s_code.uid == "10200" %}
+                <tr>
+                    <!-- 月 - 日 - 車番 -->
+                    <td>{{ iv.m_datetime.date.month }}</td>
+                    <td>{{ iv.m_datetime.date.day }}</td>
+                    <td>{{ iv.car_code }}</td>
+                    <!-- 商品コード - 商品名 -->
+                    <td>{{ iv.s_code  }}</td>
+                    <td>{{ iv.s_code.h_name }}</td>
+                    <!-- 数量 -->
+                    <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <!-- 単価 - 金額 -->
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <!-- 税区分 - 消費税 - 税込 -->
+                    <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                    <!--td>{{ iv.s_code.uid|s_tax:iv.value }}</td-->
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_invalue:iv.m_datetime|intcomma }}</td>
+                    <!-- 備考 - 赤伝 - 担当者 -->
+                    <td><!-- {{ iv.g_code.uid }} --></td>
+                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
+                    <td>{{ iv.red_code }}</td>
+                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
+                    <td>{{ iv.slip }}</td>
+                </tr>
+                <!-- 軽油税記載 -->
+                <tr>
+                    <!-- 月 - 日 - 車番 -->
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <!-- 商品コード - 商品名 -->
+                    <td></td>
+                    <td>軽油税</td>
+                    <!-- 数量 -->
+                    <td></td>
+                    <!-- 単価 - 金額 -->
+                    <td></td>
+                    <td>{{ iv.s_code.uid|check_ktax:iv.amount|intcomma }}</td>
+                    <!-- 税区分 - 消費税 - 税込 -->
+                    <td>内</td>
+                    <td></td>
+                    <td>{{ iv.s_code.uid|check_ktax:iv.amount|intcomma }}</td>
+                    <!-- 備考 - 赤伝 - 担当者 -->
+                    <td><!-- {{ iv.g_code.uid }} --></td>
+                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
+                    <td>{{ iv.red_code }}</td>
+                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
+                    <td>{{ iv.slip }}</td>
+                </tr>
+                <!-- 軽油以外 : False -->
+                {% else %}
+                <tr>
+                    <!-- 月 - 日 - 車番 -->
+                    <td>{{ iv.m_datetime.date.month }}</td>
+                    <td>{{ iv.m_datetime.date.day }}</td>
+                    <td>{{ iv.car_code }}</td>
+                    <!-- 商品コード - 商品名 -->
+                    <td>{{ iv.s_code  }}</td>
+                    <td>{{ iv.s_code.h_name }}</td>
+                    <!-- 数量 -->
+                    <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <!-- 単価 - 金額 -->
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <!-- 税区分 - 消費税 - 税込 -->
+                    <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
+                    <!--td>{{ iv.s_code.uid|s_tax:iv.value }}</td-->
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
+                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_invalue:iv.m_datetime|intcomma }}</td>
+                    <!-- 備考 - 赤伝 - 担当者 -->
+                    <td><!-- {{ iv.g_code.uid }} --></td>
+                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
+                    <td>{{ iv.red_code }}</td>
+                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
+                    <td>{{ iv.slip }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </thead>
+          </table>
+
+          <table class="table table-striped table-bordered">
+          <thead>
+                <tr>
+                    <td><主要商品合計></td>
+                    <td width="1"></td>
+                    <td>課税売上高</td>
+                    <td>{{ ntax_vl|intcomma }}</td>
+                    <td width="1"></td>
+                    <td>消費税額</td>
+                    <td>{{ tax_vl|intcomma }}</td>
+                    <td width="1"></td>
+                    <td>軽油税</td>
+                    <td>{{ ku_tx|intcomma }}</td>
+                    <td width="1"></td>
+                </tr>
+            </thead>
+          </table>
+
+          <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td colspan="2">GP-1プラス</td>
+                    <td colspan="2">レギュラー</td>
+                    <td colspan="2">軽油</td>
+                    <td colspan="2">灯油</td>
+                    <td>その他金額</td>
+                </tr>
+                <tr>
+                    <td>{{ high_am|floatformat:2|intcomma }}</td>
+                    <td>{{ high_vl|intcomma }}</td>
+                    <td>{{ reg_am|floatformat:2|intcomma }}</td>
+                    <td>{{ reg_vl|intcomma }}</td>
+                    <td>{{ ku_am|floatformat:2|intcomma }}</td>
+                    <td>{{ ku_vl|intcomma }}</td>
+                    <td>{{ tu_am|floatformat:2|intcomma }}</td>
+                    <td>{{ tu_vl|intcomma }}</td>
+                    <td>{{ no_oil|intcomma }}</td>
+                </tr>
+            </thead>
+          </table>
+
+          <div class="pagination">
+            <span class="step-links">
+                {% if ivs.has_previous %}
+                    <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
+                    <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                {% endif %}
+                <span class="current">
+                    Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+                </span>
+                {% if ivs.has_next %}
+                    &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% endif %}
+            </span>
+          </div>
+
+      </div>
+
+    </main><!-- /.container -->
+
+{% endblock content %}
