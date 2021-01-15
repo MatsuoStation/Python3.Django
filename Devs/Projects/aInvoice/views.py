@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.90.4 Update:2021.01.14" |
+#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.90.5 Update:2021.01.15" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -13,6 +13,7 @@ from django.shortcuts import render
 ### MatsuoStation.Com ###
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 from .forms import NameForm
 from Finance.models import Name_Test20
@@ -53,18 +54,30 @@ class aInvoice_List(ListView):
 			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
 
 			## DB : Setup ##
-			names = DB_vInvoice(self, dld, dlm, bld, blm)
+			names, SnP = DB_vInvoice(self, dld, dlm, bld, blm)
 
 		## * end try: * dl = False ##
 		except Exception as e:
 			print("Exception - views.py / dl=False  : %s" % e)
 
 			## DB : Setup ##
-			names = DB_aInvoice(self, "", "", "", "")
+			names, SnP = DB_aInvoice(self, "", "", "", "")
 
 		## name : Setup ##
 		for n in names:
 			context['names'] = n.name
+
+		## Paginator : Setup ##
+		paginator = Paginator(SnP, 30)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+		try:
+			SnP = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			SnP = paginator.page(1)
+		context['snp'] = SnP
 
 		return context
 

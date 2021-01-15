@@ -5,13 +5,19 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.Util.DB.aInvoice.py - Ver.3.90.4  Update:2021.01.14" |
+#//| "VsV.Py3.Dj.Util.DB.aInvoice.py - Ver.3.90.5  Update:2021.01.15" |
 #//+------------------------------------------------------------------+
 from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30, Add_Test20
 from Finance.models import SHARPnPOS
 
 ## DB_aInvoice ##
 def DB_aInvoice(self, dld, dlm, bld, blm):
+
+    ## SnP ##
+    if dld:
+        SnP = SHARPnPOS.objects.all().filter(g_code=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).order_by('s_code', 'car_code', 'm_datetime')
+    else:
+        SnP = SHARPnPOS.objects.all().filter(g_code=self.kwargs.get('nid')).order_by('s_code', 'car_code', 'm_datetime')
 
     ## IVs ##
     # if dld:
@@ -38,7 +44,7 @@ def DB_aInvoice(self, dld, dlm, bld, blm):
     names = Name_Test20.objects.all().filter(uid=self.kwargs.get('nid'))
     # names = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code')
 
-    return names
+    return names, SnP
     # return names, IVs, lastmonths, BFs, VLs
     # return names, IVs, lastmonths, BFs
     # return names, IVs, bIVs, lastmonths, BFs

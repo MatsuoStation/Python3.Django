@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.TLs.aList.html - Ver.3.90.3 Update:2021.01.14" |
+#//|       "VsV.Py3.Dj.TLs.aList.html - Ver.3.90.5 Update:2021.01.15" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -14,7 +14,7 @@
 {% load sass_tags %}
 {% load humanize %}
 {% load static %}
-{% load vfilter %}
+{% load afilter %}
 
 
 {% block title %}aInvoice : 請求書{% endblock title %}
@@ -60,16 +60,16 @@
 
           <div class="pagination">
             <span class="step-links">
-                {% if ivs.has_previous %}
+                {% if snp.has_previous %}
                     <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
-                    <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                    <a href="?page={{ snp.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
                 {% endif %}
                 <span class="current">
-                    Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+                    Page {{ snp.number }} of {{ snp.paginator.num_pages }}.
                 </span>
-                {% if ivs.has_next %}
-                    &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
-                    <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% if snp.has_next %}
+                    &nbsp;<a href="?page={{ snp.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ snp.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
                 {% endif %}
             </span>
           </div>
@@ -133,87 +133,30 @@
                 </tr>
             </thead>
             <thead>
-                {% for iv in ivs %}
-                <!-- 軽油 : True -->
-                {% if iv.s_code.uid == "10200" %}
+                {% for s in snp %}
                 <tr>
                     <!-- 月 - 日 - 車番 -->
-                    <td>{{ iv.m_datetime.date.month }}</td>
-                    <td>{{ iv.m_datetime.date.day }}</td>
-                    <td>{{ iv.car_code }}</td>
+                    <td>{{ s.m_datetime.date.month }}</td>
+                    <td>{{ s.m_datetime.date.day }}</td>
+                    <td>{{ s.car_code }}</td>
                     <!-- 商品コード - 商品名 -->
-                    <td>{{ iv.s_code  }}</td>
-                    <td>{{ iv.s_code.h_name }}</td>
+                    <td>{{ s.s_code }}</td>
+                    <td></td>
                     <!-- 数量 -->
-                    <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
+                    <td>{{ s.amount|divistion:100|floatformat:2 }}</td>
                     <!-- 単価 - 金額 -->
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
+                    <td>{{ s.unit }}</td>
+                    <td>{{ s.value }}</td>
                     <!-- 税区分 - 消費税 - 税込 -->
-                    <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
-                    <!--td>{{ iv.s_code.uid|s_tax:iv.value }}</td-->
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_invalue:iv.m_datetime|intcomma }}</td>
-                    <!-- 備考 - 赤伝 - 担当者 -->
-                    <td><!-- {{ iv.g_code.uid }} --></td>
-                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
-                    <td>{{ iv.red_code }}</td>
-                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
-                    <td>{{ iv.slip }}</td>
+                    <td>{{ s.tax_code }}</td>
+                    <td>{{ s.tax }}</td>
+                    <td></td>
+                    <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->
+                    <td>{{ s.m_datetime.date.year }}</td>
+                    <td>{{ s.red_code }}</td>
+                    <td>{{ s.m_datetime|date:"H:i" }}</td>
+                    <td>{{ s.slip }}</td>
                 </tr>
-                <!-- 軽油税記載 -->
-                <tr>
-                    <!-- 月 - 日 - 車番 -->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <!-- 商品コード - 商品名 -->
-                    <td></td>
-                    <td>軽油税</td>
-                    <!-- 数量 -->
-                    <td></td>
-                    <!-- 単価 - 金額 -->
-                    <td></td>
-                    <td>{{ iv.s_code.uid|check_ktax:iv.amount|intcomma }}</td>
-                    <!-- 税区分 - 消費税 - 税込 -->
-                    <td>内</td>
-                    <td></td>
-                    <td>{{ iv.s_code.uid|check_ktax:iv.amount|intcomma }}</td>
-                    <!-- 備考 - 赤伝 - 担当者 -->
-                    <td><!-- {{ iv.g_code.uid }} --></td>
-                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
-                    <td>{{ iv.red_code }}</td>
-                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
-                    <td>{{ iv.slip }}</td>
-                </tr>
-                <!-- 軽油以外 : False -->
-                {% else %}
-                <tr>
-                    <!-- 月 - 日 - 車番 -->
-                    <td>{{ iv.m_datetime.date.month }}</td>
-                    <td>{{ iv.m_datetime.date.day }}</td>
-                    <td>{{ iv.car_code }}</td>
-                    <!-- 商品コード - 商品名 -->
-                    <td>{{ iv.s_code  }}</td>
-                    <td>{{ iv.s_code.h_name }}</td>
-                    <!-- 数量 -->
-                    <td>{{ iv.amount|divistion:100|floatformat:2 }}</td>
-                    <!-- 単価 - 金額 -->
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_unit:iv.m_datetime|floatformat:2|intcomma }}</td>
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_value:iv.m_datetime|intcomma }}</td>
-                    <!-- 税区分 - 消費税 - 税込 -->
-                    <td>{{ iv.s_code.uid|s_tax:iv.tax }}</td>
-                    <!--td>{{ iv.s_code.uid|s_tax:iv.value }}</td-->
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_tax:iv.m_datetime|intcomma }}</td>
-                    <td>{{ iv.s_code.uid|one_two:iv.g_code.uid|one_two:iv.amount|one_two:iv.value|one_two:iv.tax|one_two:iv.red_code|check_invalue:iv.m_datetime|intcomma }}</td>
-                    <!-- 備考 - 赤伝 - 担当者 -->
-                    <td><!-- {{ iv.g_code.uid }} --></td>
-                    <!-- td>{{ iv.g_code.uid }} / {{ iv.g_code.name }}</td -->
-                    <td>{{ iv.red_code }}</td>
-                    <td>{{ iv.m_datetime|date:"H:i" }}</td>
-                    <td>{{ iv.slip }}</td>
-                </tr>
-                {% endif %}
                 {% endfor %}
             </thead>
           </table>
@@ -261,16 +204,16 @@
 
           <div class="pagination">
             <span class="step-links">
-                {% if ivs.has_previous %}
+                {% if snp.has_previous %}
                     <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
-                    <a href="?page={{ ivs.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                    <a href="?page={{ snp.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
                 {% endif %}
                 <span class="current">
-                    Page {{ ivs.number }} of {{ ivs.paginator.num_pages }}.
+                    Page {{ snp.number }} of {{ snp.paginator.num_pages }}.
                 </span>
-                {% if ivs.has_next %}
-                    &nbsp;<a href="?page={{ ivs.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
-                    <a href="?page={{ ivs.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% if snp.has_next %}
+                    &nbsp;<a href="?page={{ snp.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ snp.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
                 {% endif %}
             </span>
           </div>
