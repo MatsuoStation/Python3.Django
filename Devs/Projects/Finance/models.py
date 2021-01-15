@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.70.5 Update:2020.12.09" |
+#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.90.6 Update:2021.01.16" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -16,8 +16,36 @@ from django.conf import settings
 
 # settings.DATETIME_FORMAT
 
+###* aValue *### ( m_datetime : DateTimeField )
+class aValue(models.Model):
+	class Meta:
+		db_table = 'aValue'
+		verbose_name = 'aValue'
+		verbose_name_plural = verbose_name
+		ordering = ['id']
+	id = models.IntegerField(verbose_name='id', unique=True, primary_key=True)  # max_length=4
+	m_datetime = models.DateTimeField(verbose_name='発表日時')  # 0000-00-00 00:00
+	high_zenkoku = models.FloatField(verbose_name='ハイオク_全国', default=0)  # max_length=8
+	high_okayama = models.FloatField(verbose_name='ハイオク_岡山', default=0)  # max_length=8
+	high_tax = models.FloatField(verbose_name='ハイオク_ガソリン税', default=0)  # max_length=8
+	reg_zenkoku = models.FloatField(verbose_name='レギュラー_全国', default=0)  # max_length=8
+	reg_okayama = models.FloatField(verbose_name='レギュラー_岡山', default=0)  # max_length=8
+	reg_tax = models.FloatField(verbose_name='レギュラー_ガソリン税', default=0)  # max_length=8
+	ku_zenkoku = models.FloatField(verbose_name='軽油_全国', default=0)  # max_length=8
+	ku_okayama = models.FloatField(verbose_name='軽油_岡山', default=0)  # max_length=8
+	ku_tax = models.FloatField(verbose_name='軽油_軽油税', default=0)  # max_length=8
+	tut_zenkoku = models.FloatField(verbose_name='灯油店頭_全国', default=0)  # max_length=8
+	tut_okayama = models.FloatField(verbose_name='灯油店頭_岡山', default=0)  # max_length=8
+	tuh_zenkoku = models.FloatField(verbose_name='灯油配達_全国', default=0)  # max_length=8
+	tuh_okayama = models.FloatField(verbose_name='灯油配達_岡山', default=0)  # max_length=8
+	tu_tax = models.FloatField(verbose_name='灯油_灯油税', default=0)  # max_length=8
+	tax = models.FloatField(verbose_name='消費税', default=0)  # max_length=8
 
-###* SHARPnPOS *###  ( m_datetime : DateTimeField, g_code : ForeignKeyField, s_code : ForeignKeyField )
+	def __str__(self):
+		return self.id
+
+
+###* SHARPnPOS *###  ( m_datetime : DateTimeField )
 class SHARPnPOS(models.Model):
 	class Meta:
 		db_table = 'SHARPnPOS'
