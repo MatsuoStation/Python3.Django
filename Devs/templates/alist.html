@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.TLs.aList.html - Ver.3.90.5 Update:2021.01.15" |
+#//|       "VsV.Py3.Dj.TLs.aList.html - Ver.3.90.7 Update:2021.01.17" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -34,7 +34,7 @@
           </form>
           <p><br>
               {% if pLink and ku_tx != 0 %}
-                {{ names }} : {{ gid }} / {{ fPDF }} / <a href="{{ pLink }}?page={{ ivs.number }}&apage={{ ivs.paginator.num_pages }}&dl={{ dla|date:"Y-m-d" }}&fm={{ fPDF }}
+                {{ names }} : {{ gid }} : {{ dv }}日〆 / {{ fPDF }} / <a href="{{ pLink }}?page={{ ivs.number }}&apage={{ ivs.paginator.num_pages }}&dl={{ dla|date:"Y-m-d" }}&fm={{ fPDF }}
                     &names={{ names }}&btotal={{ btotal_vl }}&incash={{ incash_vl }}&total={{ total_vl }}&slip={{ slip_vl }}
                     &ntax={{ ntax_vl }}&tax={{ tax_vl }}&ktax={{ ku_tx }}
                     &hi_am={{ high_am|floatformat:2|intcomma }}&hi_vl={{ high_vl|intcomma }}
@@ -42,7 +42,7 @@
                     &k_am={{ ku_am|floatformat:2|intcomma }}&k_vl={{ ku_vl|intcomma }}
                     &t_am={{ tu_am|floatformat:2|intcomma }}&t_vl={{ tu_vl|intcomma }}&n_oil={{ no_oil|intcomma }}" target="_blank">PDF</a>
               {% elif pLink and ku_tx == 0 %}
-                {{ names }} : {{ gid }} / {{ fPDF }} / <a href="{{ pLink }}?page={{ ivs.number }}&apage={{ ivs.paginator.num_pages }}&dl={{ dla|date:"Y-m-d" }}&fm={{ fPDF }}
+                {{ names }} : {{ gid }} : {{ dv }}日〆 / {{ fPDF }} / <a href="{{ pLink }}?page={{ ivs.number }}&apage={{ ivs.paginator.num_pages }}&dl={{ dla|date:"Y-m-d" }}&fm={{ fPDF }}
                     &names={{ names }}&btotal={{ btotal_vl }}&incash={{ incash_vl }}&total={{ total_vl }}&slip={{ slip_vl }}
                     &ntax={{ ntax_vl }}&tax={{ tax_vl }}
                     &hi_am={{ high_am|floatformat:2|intcomma }}&hi_vl={{ high_vl|intcomma }}
@@ -50,7 +50,7 @@
                     &k_am={{ ku_am|floatformat:2|intcomma }}&k_vl={{ ku_vl|intcomma }}
                     &t_am={{ tu_am|floatformat:2|intcomma }}&t_vl={{ tu_vl|intcomma }}&n_oil={{ no_oil|intcomma }}" target="_blank">PDF</a>
               {% else %}
-                {{ names }} : {{ gid }}
+                {{ names }} : {{ gid }} : {{ dv }}日〆
               {% endif %}
           </p>
 
@@ -76,7 +76,8 @@
 
           {% if dlms %}
               {% for dd in dds %}
-                &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|
+                  &nbsp;&nbsp;<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m" }}</a>&nbsp;&nbsp;|
+                  <!--<a href="?dl={{ dd|date:"Y-m-d" }}"">{{ dd|date:"Y-m-d" }}</a>&nbsp;&nbsp;|-->
               {% endfor %}
           {% endif %}
           </p>

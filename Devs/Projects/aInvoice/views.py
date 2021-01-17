@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.90.5 Update:2021.01.15" |
+#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.90.7 Update:2021.01.17" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -14,10 +14,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
+from datetime import datetime, timedelta
 
 from .forms import NameForm
 from Finance.models import Name_Test20
 from .Util.db_ainvoice import DB_aInvoice
+from .Util.deadline import DeadLine, DeadLine_List
 
 
 ### aInvoice_List ###
@@ -43,7 +45,7 @@ class aInvoice_List(ListView):
 		context['gid'] = self.kwargs.get('nid')
 
 		## DeadLine : Setup ##
-		dd_list = list()
+		# dd_list = list()
 
 		## * try: * dl = Ture ##
 		try:
@@ -54,14 +56,51 @@ class aInvoice_List(ListView):
 			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
 
 			## DB : Setup ##
-			names, SnP = DB_vInvoice(self, dld, dlm, bld, blm)
+			names, SnP, lastmonths, BFs = DB_aInvoice(self, dld, dlm, bld, blm)
 
-		## * end try: * dl = False ##
+			## DeadLine : Month & Secconde
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			try:
+				if BFs:
+					d_values = BFs
+				dd_list, dv = DeadLine_List(dlms, d_values)
+				dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+				context['dds'] = dds
+				context['dv'] = dv
+			except Exception as e:
+				print("Exception - views.py / dl=True / LastDay.Check : %s" % e)
+
+			context['deadlines'] = dl
+			context['dlb'] = dlb
+			context['dla'] = dla
+			## End of LastDay : Check (dl = True) ##
+
+		## * try: * dl = False ##
 		except Exception as e:
 			print("Exception - views.py / dl=False  : %s" % e)
 
 			## DB : Setup ##
-			names, SnP = DB_aInvoice(self, "", "", "", "")
+			names, SnP, lastmonths, BFs = DB_aInvoice(self, "", "", "", "")
+
+			## DeadLine : Month & Secconde
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			## LastDay : Check (dl = False) ##
+			try:
+				if BFs:
+					d_values = BFs
+				dd_list, dv = DeadLine_List(dlms, d_values)
+				dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+				context['dds'] = dds
+				context['dv'] = dv
+			except Exception as e:
+				print("Exception - views.py / dl=False / LastDay.Check : %s" % e)
+
+			context['deadlines'] = dl
+			## End of LastDay : Check (dl = False) ##
 
 		## name : Setup ##
 		for n in names:
