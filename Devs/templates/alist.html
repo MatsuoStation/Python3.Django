@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.TLs.aList.html - Ver.3.90.7 Update:2021.01.17" |
+#//|       "VsV.Py3.Dj.TLs.aList.html - Ver.3.90.8 Update:2021.01.19" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -142,14 +142,15 @@
                     <td>{{ s.car_code }}</td>
                     <!-- 商品コード - 商品名 -->
                     <td>{{ s.s_code }}</td>
-                    <td></td>
+                    <td>{{ s.s_code|s_code_name }}</td>
                     <!-- 数量 -->
                     <td>{{ s.amount|divistion:100|floatformat:2 }}</td>
                     <!-- 単価 - 金額 -->
                     <td>{{ s.unit }}</td>
                     <td>{{ s.value }}</td>
                     <!-- 税区分 - 消費税 - 税込 -->
-                    <td>{{ s.tax_code }}</td>
+                    <td>{{ s.s_code|s_tax:s.tax }}</td>
+                    <!--td>{{ s.tax_code }}</td-->
                     <td>{{ s.tax }}</td>
                     <td></td>
                     <!-- 備考 - 赤伝 - 時間 - 伝票番号 -->

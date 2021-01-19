@@ -5,12 +5,14 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.aFilter.py - Ver.3.90.5 Update:2021.01.15" |
+#//|  "VsV.Py3.Dj.TempTags.aFilter.py - Ver.3.90.8 Update:2021.01.19" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
 from decimal import *
-from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal
+from Finance.templatetags.aCaluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal, ITm_sc_name
+# from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal
+
 
 register = template.Library()
 
@@ -128,3 +130,20 @@ def s_tax(sc, vl):
         return str("")
     else:
         return str("内")
+
+# s_code_name - (OK)
+@register.filter("s_code_name")
+def s_code_name(sc):
+
+    sc_name = ITm_sc_name(sc)
+    # sc_name = "レギュラー"
+
+    return sc_name
+
+    '''
+    <--{% for i in its %}
+    {% if s.s_code == i.uid %}
+     <td>{{ i.h_name }}</td>
+     {% endif %}
+     {% endfor %}-->
+    '''
