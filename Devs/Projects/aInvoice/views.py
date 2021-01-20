@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.90.7 Update:2021.01.17" |
+#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.1 Update:2021.01.20" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -20,6 +20,21 @@ from .forms import NameForm
 from Finance.models import Name_Test20
 from .Util.db_ainvoice import DB_aInvoice
 from .Util.deadline import DeadLine, DeadLine_List
+
+
+### Freee_API ###
+## bFreee_List ##
+class bFreee_List(ListView):
+	model = Name_Test20
+	form_class = NameForm
+	template_name = 'blist.html'
+	context_object_name = "nametb"
+	paginate_by = 30
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		return context
 
 
 ### aInvoice_List ###
