@@ -5,16 +5,19 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.aInvoice.Forms.py - Ver.3.90.2 Update:2021.01.14" |
+#//|    "VsV.Py3.Dj.aInvoice.Forms.py - Ver.3.91.2 Update:2021.01.20" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 from django import forms
 from django.forms import ModelForm
-from Finance.models import Name_Test
+from Finance.models import Name_Test, Bank_Test20
 
 
 # Create your tests here.
 ### MatsuoStation.Com ###
+class BankForm(forms.Form):
+	bid = forms.CharField(max_length=5, required=False, label='銀行名')
+
 class NameForm(forms.Form):
 # class NameForm(ModelForm):
 	nid = forms.CharField(max_length=5, required=False, label='顧客番号')

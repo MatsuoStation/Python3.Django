@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.1 Update:2021.01.20" |
+#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.2 Update:2021.01.20" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -16,23 +16,48 @@ from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from datetime import datetime, timedelta
 
-from .forms import NameForm
-from Finance.models import Name_Test20
+from .forms import NameForm, BankForm
+from Finance.models import Name_Test20, Bank_Test20
 from .Util.db_ainvoice import DB_aInvoice
 from .Util.deadline import DeadLine, DeadLine_List
 
 
 ### Freee_API ###
+
+
+## bFreee ##
+def bFreee(request):
+	if request.method == 'POST':
+		form = BankForm(request.POST)
+		bid_post = request.POST['bid']
+		if form.is_valid():
+			return HttpResponseRedirect('/aInvoice/bFreee/%s' % bid_post)
+	else:
+		form = BankForm()
+	return render(request, 'blist.html', {'form': form})
+
+
 ## bFreee_List ##
 class bFreee_List(ListView):
-	model = Name_Test20
-	form_class = NameForm
+	model = Bank_Test20
+	form_class = BankForm
 	template_name = 'blist.html'
-	context_object_name = "nametb"
+	context_object_name = "banktb"
 	paginate_by = 30
+
+	def post(self, request, *args, **kwargs):
+		form = self.form_class(request.POST)
+		bid_post = request.POST['bid']
+		if form.is_valid():
+			return HttpResponseRedirect('/aInvoice/bFreee/%s' % bid_post)
+		return render(request, self.template_name, {'form': form})
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
+
+		## Serch : Bank_Code ##
+		context['form'] = BankForm()
+		context['bid'] = self.kwargs.get('bid')
 
 		return context
 
