@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.2 Update:2021.01.20" |
+#//|       "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.3 Update:2021.01.21" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -57,7 +57,10 @@
                     &k_am={{ ku_am|floatformat:2|intcomma }}&k_vl={{ ku_vl|intcomma }}
                     &t_am={{ tu_am|floatformat:2|intcomma }}&t_vl={{ tu_vl|intcomma }}&n_oil={{ no_oil|intcomma }}" target="_blank">PDF</a>
               {% else %}
-                {{ names }} : {{ gid }} : {{ dv }}日〆
+                {{ names }} : {{ gid }} : {{ dv }}日〆<br>
+                access_code = {{ a_code }}<br>
+                refresh_code = {{ r_code }}<br>
+                Company_id = {{ company_id }}
               {% endif %}
           </p>
 
