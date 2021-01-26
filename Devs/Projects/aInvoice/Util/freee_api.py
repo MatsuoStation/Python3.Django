@@ -5,7 +5,7 @@
 #//|                                                   Since:2018.03.05 |
 #//|                                  Released under the Apache license |
 #//|                         https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.3 Update:2021.01.21" |
+#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.4 Update:2021.01.26" |
 #//+--------------------------------------------------------------------+
 # Freee_API
 from requests_oauthlib import OAuth2Session
@@ -14,10 +14,84 @@ import json
 
 
 ### Freee_API ###
+## Wallet Txns ###
+def Wallet_Txns(self):
+
+    ### Def.API.Authorization.Code ###
+    AUTH_CODE = '621d534b60c04e941486a56685cffa07811a2cf4ae83a668f5bb39cb38ad672e'
+
+    # 明細一覧.取得用API.URL
+    with open("../plusfreee_config.json") as fc:
+        fc_data = json.load(fc)
+    WALLET_TXNS_URL = fc_data['wallet_txns_url']
+    company_id = fc_data['company_id']
+
+    ### (GET) PlusFreee_Token.Json
+    with open("../plusfreee_token.json") as ft:
+        ft_data = json.load(ft)
+
+    REFRESH_TOKEN = ft_data['refresh_token']
+    ACCESS_TOKEN = ft_data['access_token']
+
+    ## (GET) PlusFreee.Connect
+    # Freee.Session.Setup
+    FreeeOAuth = OAuth2Session()
+    FreeeOAuth.headers['accept'] = 'application/json'
+
+    ## REFRESH_TOKEN : True
+    if REFRESH_TOKEN:
+        r_code, a_code = Get_A_Token(REFRESH_TOKEN, ACCESS_TOKEN)
+    ## REFRESH_TOKEN : False
+    else:
+        r_code, a_code = Get_A_Token("", AUTH_CODE)
+
+    ## (GET) PlusFreee.Connect
+    # Freee.Session.Setup
+    FreeeOAuth = OAuth2Session()
+    FreeeOAuth.headers['accept'] = 'application/json'
+
+    # Freee.Session : Headers
+    FreeeOAuth.headers['Authorization'] = 'Bearer ' + a_code
+    FreeeOAuth.headers['X-Api-Version'] = '2020-06-15'
+
+    # 明細一覧.取得.Params
+    params = {
+        'company_id': company_id,
+        'offset': 0,
+        'limit': 100,
+    }
+
+    # Freee.Session : Wallet_Txns
+    rw = FreeeOAuth.get(WALLET_TXNS_URL, params=params)
+
+    # 正常受信 : 200
+    if rw.status_code == 200:
+        data_wallet_txns = json.loads(rw.text)
+        Wallet_Txns_List = data_wallet_txns['wallet_txns']
+
+        # WT_List = list()
+        # for i in Wallet_Txns_List:
+        #     WT_List.append(i['id'])
+        # wTxns = WT_List
+        wTxns = Wallet_Txns_List
+
+    # 受信エラー : != 200
+    else:
+        ErrorCode = rw.status_code
+        GET_Data = ErrorCode
+
+        wTxns = str(GET_Data) + " - "
+
+    # wTxns = company_id
+
+    return a_code, r_code, company_id, wTxns
+
+
+## Freee_Account ##
 def Freee_Account(self):
 
     ### Def.API.Authorization.Code
-    AUTH_CODE = 'f0e1b5ace7ecc8d60f720aac89de95c7a7bde2a9b6fd86a992ed95f21c6438b7'
+    AUTH_CODE = '621d534b60c04e941486a56685cffa07811a2cf4ae83a668f5bb39cb38ad672e'
     JS_TOKEN = '4f5fe0f08401d42493eca89a00d8b2809efef8147226102af82b4f8e571521c4'
 
     ### (GET) PlusFreee_Config.Json

@@ -5,17 +5,29 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.bFilter.py - Ver.3.90.8 Update:2021.01.20" |
+#//|  "VsV.Py3.Dj.TempTags.bFilter.py - Ver.3.91.4 Update:2021.01.26" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
 from decimal import *
-from Finance.templatetags.aCaluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal, ITm_sc_name
+from Finance.templatetags.bCaluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal, ITm_sc_name,\
+    Income_Cal, Expense_Cal
 # from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal
 
 
 register = template.Library()
 
+
+# check_income_expense
+@register.filter("check_income")
+def check_income(entry, am):
+    amount = Income_Cal(entry, am)
+    return amount
+
+@register.filter("check_expense")
+def check_expense(entry, am):
+    amount = Expense_Cal(entry, am)
+    return amount
 
 # one_two - (OK)
 @register.filter("one_two")

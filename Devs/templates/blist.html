@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.3 Update:2021.01.21" |
+#//|       "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.4 Update:2021.01.26" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -95,6 +95,7 @@
           <table class="table table-striped table-bordered">
             <thead>
                 <tr>
+                    <td>取引ID</td>
                     <td>銀行口座名</td>
                     <td>取引日</td>
                     <td>取引内容</td>
@@ -104,14 +105,17 @@
                 </tr>
             </thead>
             <thead>
+                {% for wt in wTxns %}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ wt.id }}</td>
+                    <td>{{ wt.walletable_id }}</td>
+                    <td>{{ wt.date }}</td>
+                    <td>{{ wt.description }}</td>
+                    <td>{{ wt.entry_side|check_income:wt.amount|intcomma }}</td>
+                    <td>{{ wt.entry_side|check_expense:wt.amount|intcomma }}</td>
+                    <td>{{ wt.balance|intcomma }}</td>
                 </tr>
+                {% endfor %}
             </thead>
           </table>
 
