@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.4 Update:2021.01.26" |
+#//|       "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.5 Update:2021.01.26" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -70,16 +70,16 @@
 
           <div class="pagination">
             <span class="step-links">
-                {% if snp.has_previous %}
+                {% if wTxns.has_previous %}
                     <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
-                    <a href="?page={{ snp.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                    <a href="?page={{ wTxns.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
                 {% endif %}
                 <span class="current">
-                    Page {{ snp.number }} of {{ snp.paginator.num_pages }}.
+                    Page {{ wTxns.number }} of {{ wTxns.paginator.num_pages }}.
                 </span>
-                {% if snp.has_next %}
-                    &nbsp;<a href="?page={{ snp.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
-                    <a href="?page={{ snp.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% if wTxns.has_next %}
+                    &nbsp;<a href="?page={{ wTxns.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ wTxns.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
                 {% endif %}
             </span>
           </div>
@@ -121,16 +121,16 @@
 
           <div class="pagination">
             <span class="step-links">
-                {% if snp.has_previous %}
+                {% if wTxns.has_previous %}
                     <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
-                    <a href="?page={{ snp.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                    <a href="?page={{ wTxns.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
                 {% endif %}
                 <span class="current">
-                    Page {{ snp.number }} of {{ snp.paginator.num_pages }}.
+                    Page {{ wTxns.number }} of {{ wTxns.paginator.num_pages }}.
                 </span>
-                {% if snp.has_next %}
-                    &nbsp;<a href="?page={{ snp.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
-                    <a href="?page={{ snp.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% if wTxns.has_next %}
+                    &nbsp;<a href="?page={{ wTxns.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ wTxns.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
                 {% endif %}
             </span>
           </div>

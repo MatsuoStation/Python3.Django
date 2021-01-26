@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.4 Update:2021.01.26" |
+#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.5 Update:2021.01.26" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -66,6 +66,16 @@ class bFreee_List(ListView):
 		context['r_code'] = r_code
 		context['company_id'] = company_id
 
+		## Paginator : Setup ##
+		paginator = Paginator(wTxns, 30)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+		try:
+			wTxns = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			wTxns = paginator.page(1)
 		context['wTxns'] = wTxns
 
 		return context

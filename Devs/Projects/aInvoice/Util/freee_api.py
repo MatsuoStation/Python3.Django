@@ -5,7 +5,7 @@
 #//|                                                   Since:2018.03.05 |
 #//|                                  Released under the Apache license |
 #//|                         https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.4 Update:2021.01.26" |
+#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.5 Update:2021.01.26" |
 #//+--------------------------------------------------------------------+
 # Freee_API
 from requests_oauthlib import OAuth2Session
@@ -55,9 +55,10 @@ def Wallet_Txns(self):
     FreeeOAuth.headers['X-Api-Version'] = '2020-06-15'
 
     # 明細一覧.取得.Params
+    offset = 0
     params = {
         'company_id': company_id,
-        'offset': 0,
+        'offset': offset,
         'limit': 100,
     }
 
