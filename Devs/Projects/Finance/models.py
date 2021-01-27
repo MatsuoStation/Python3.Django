@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.90.6 Update:2021.01.16" |
+#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.6 Update:2021.01.27" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -15,6 +15,26 @@ from django.conf import settings
 
 
 # settings.DATETIME_FORMAT
+
+
+###* PlusFreee_wTxns *### ( m_datetime : DateTimeField )
+class PlusFreee_wTxns(models.Model):
+	class Meta:
+		db_table = 'PlusFreee_wTxns'
+		verbose_name = 'PlusFreee_wTxns'
+		verbose_name_plural = verbose_name
+		ordering = ['id']
+	id = models.IntegerField(verbose_name='id', unique=True, primary_key=True)  # max_length=4
+	m_datetime = models.DateTimeField(verbose_name='取引日時')  # 0000-00-00 00:00
+	wallet_id = models.IntegerField(verbose_name='銀行/口座コード', default=0)  	# max_length=1,
+	description = models.CharField( verbose_name='取引詳細', default=None, max_length=128 )
+	entry_side = models.CharField( verbose_name='入出金', default=None, max_length=8 )
+	amount = models.IntegerField( verbose_name='取引金額', default=0 )			# max_length=9,
+	balance = models.IntegerField( verbose_name='残高金額', default=0 )			# max_length=9,
+
+	def __str__(self):
+		return self.id
+
 
 ###* aValue *### ( m_datetime : DateTimeField )
 class aValue(models.Model):

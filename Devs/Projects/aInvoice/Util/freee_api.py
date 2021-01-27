@@ -5,12 +5,17 @@
 #//|                                                   Since:2018.03.05 |
 #//|                                  Released under the Apache license |
 #//|                         https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.5 Update:2021.01.26" |
+#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.6 Update:2021.01.27" |
 #//+--------------------------------------------------------------------+
 # Freee_API
 from requests_oauthlib import OAuth2Session
 import requests
 import json
+import collections as cl
+# import pandas as pd
+# from pandas.io.json import json_normalize
+import csv
+from datetime import datetime
 
 
 ### Freee_API ###
@@ -18,7 +23,7 @@ import json
 def Wallet_Txns(self):
 
     ### Def.API.Authorization.Code ###
-    AUTH_CODE = '621d534b60c04e941486a56685cffa07811a2cf4ae83a668f5bb39cb38ad672e'
+    AUTH_CODE = '175a5f4b9994560e73f32cb19b451c99aed60e2c464b704ed028880d546d7b15'
 
     # 明細一覧.取得用API.URL
     with open("../plusfreee_config.json") as fc:
@@ -56,6 +61,7 @@ def Wallet_Txns(self):
 
     # 明細一覧.取得.Params
     offset = 0
+
     params = {
         'company_id': company_id,
         'offset': offset,
@@ -68,13 +74,88 @@ def Wallet_Txns(self):
     # 正常受信 : 200
     if rw.status_code == 200:
         data_wallet_txns = json.loads(rw.text)
+
+        # Json : 再構築
+        wTxns_Json = {}
+        wTxns_Data = []
+
+        # wTxns_Json = cl.OrderedDict()
+
         Wallet_Txns_List = data_wallet_txns['wallet_txns']
+        for w in Wallet_Txns_List:
+            del w['company_id']
+            del w['due_amount']
+            print(Wallet_Txns_List)
+
+            # CSV : 出力
+            # wTxns_id = w['id']
+            # wTxns_des = w['description']
+            # wTxns_Json.update({'id': wTxns_id, 'description': wTxns_des})
+            # print(wTxns_Json)
+
+            wt_id = w['id']
+            wt_date = datetime.strptime(w['date'], "%Y-%m-%d")
+            wt_wl = w['walletable_id']
+            wt_des = w['description']
+            wt_en = w['entry_side']
+            wt_am = w['amount']
+            wt_bl = w['balance']
+            wTxns_Data.append([wt_id, wt_date, wt_wl, wt_des, wt_en, wt_am, wt_bl])
+
+            with open('PlusFreee_CSV/' + str(offset) + '.csv', 'w', newline='') as csvFile:
+            # with open('20210127.csv', 'w', newline='') as csvFile:
+                out_csv = csv.writer(csvFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+                # out_csv.writerow(['id'])
+                for d in wTxns_Data:
+                    out_csv.writerow(d)
+
+            # with open('20210127.csv', 'w', newline='') as csvFile:
+            #    csv_write = csv.DictWriter(csvFile, fi)
+
+
+                # print(wTxns_Json)
+                # csv_write = csv.writer(csvFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+                # csv_write.writerow(['id', 'description'])
+
+                # for wt in wTxns_Json:
+                #    csv_write.writerow(wt)
+
+
+
+        # df_json = json_normalize(Wallet_Txns_List)
+        # df_json.to_csv("2021.csv", encoding='utf-8')
+
+
+
+        # df = pd.read_json(Wallet_Txns_List)
+        # df.to_csv("PlusFreee_CSV/" + offset + ".csv")
+
+
+        # Wallet_Txns_List = Wallet_Txns_List.pop('due_amount')
+        # del Wallet_Txns_List['due_amount']
+        # print(Wallet_Txns_List)
+
+        # wTxns_Json = Wallet_Txns_List
+        # for i in wTxns_Json:
+        #    del i['id']
+
+        # wTxns_Json = json.dumps(wTxns_Json)
+
+        # for i in Wallet_Txns_List:
+        #     wTxns_Json.update(['id']) = i['id']
+        # print(wTxns_Json)
+
+
+
+
 
         # WT_List = list()
         # for i in Wallet_Txns_List:
         #     WT_List.append(i['id'])
         # wTxns = WT_List
+
         wTxns = Wallet_Txns_List
+        # wTxns = wTxns_Json
 
     # 受信エラー : != 200
     else:
