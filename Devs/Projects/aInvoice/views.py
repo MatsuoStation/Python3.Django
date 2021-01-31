@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.5 Update:2021.01.26" |
+#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.8 Update:2021.01.31" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -20,7 +20,7 @@ from .forms import NameForm, BankForm
 from Finance.models import Name_Test20, Bank_Test20
 from .Util.db_ainvoice import DB_aInvoice
 from .Util.deadline import DeadLine, DeadLine_List
-from .Util.freee_api import Get_A_Token, Freee_Account, Wallet_Txns
+from .Util.freee_api import Get_A_Token, Freee_Account, Wallet_Txns, Wallet_Txns_Json
 
 
 ### Freee_API ###
@@ -59,7 +59,8 @@ class bFreee_List(ListView):
 		context['bid'] = self.kwargs.get('bid')
 
 		## PlusFree.API : Setup ##
-		a_code, r_code, company_id, wTxns = Wallet_Txns(self)
+		a_code, r_code, company_id, wTxns = Wallet_Txns_Json(self)
+		# (CSV) a_code, r_code, company_id, wTxns = Wallet_Txns(self)
 		# a_code, r_code, company_id = Freee_Account(self)
 		# a_code, r_code = Get_A_Token("", "4d853fec089e8717efef31f9f60261707dcefbc7ef065c40c495b548b680d61c")
 		context['a_code'] = a_code
