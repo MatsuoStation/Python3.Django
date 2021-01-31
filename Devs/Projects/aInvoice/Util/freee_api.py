@@ -5,7 +5,7 @@
 #//|                                                   Since:2018.03.05 |
 #//|                                  Released under the Apache license |
 #//|                         https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.6 Update:2021.01.27" |
+#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.7 Update:2021.01.31" |
 #//+--------------------------------------------------------------------+
 # Freee_API
 from requests_oauthlib import OAuth2Session
@@ -85,7 +85,7 @@ def Wallet_Txns(self):
         for w in Wallet_Txns_List:
             del w['company_id']
             del w['due_amount']
-            print(Wallet_Txns_List)
+            # print(Wallet_Txns_List)
 
             # CSV : 出力
             # wTxns_id = w['id']

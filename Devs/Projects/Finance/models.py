@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.6 Update:2021.01.27" |
+#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.7 Update:2021.01.31" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -30,7 +30,9 @@ class PlusFreee_wTxns(models.Model):
 	description = models.CharField( verbose_name='取引詳細', default=None, max_length=128 )
 	entry_side = models.CharField( verbose_name='入出金', default=None, max_length=8 )
 	amount = models.IntegerField( verbose_name='取引金額', default=0 )			# max_length=9,
+	# balance = models.CharField(verbose_name='残高金額', default=None, max_length=16)
 	balance = models.IntegerField( verbose_name='残高金額', default=0 )			# max_length=9,
+	wallet_type = models.CharField(verbose_name='銀行/口座タイプ', default=None, max_length=16, null=True)
 
 	def __str__(self):
 		return self.id
