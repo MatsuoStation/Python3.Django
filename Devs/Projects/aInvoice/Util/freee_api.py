@@ -5,7 +5,7 @@
 #//|                                                   Since:2018.03.05 |
 #//|                                  Released under the Apache license |
 #//|                         https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.8 Update:2021.01.31" |
+#//| "VsV.Py3.Dj.aInv.Util.Freee_API.py - Ver.3.91.9 Update:2021.02.08" |
 #//+--------------------------------------------------------------------+
 # Freee_API
 from requests_oauthlib import OAuth2Session
@@ -16,13 +16,38 @@ import collections as cl
 # from pandas.io.json import json_normalize
 import csv
 from datetime import datetime
+import mysql.connector as mConn
+
+from ..AWS import mysql as rdsSession
+
+
+### AWS.MySQL.Session : Setup ###
+ENDPOINT = rdsSession.ENDPOINT
+USER = rdsSession.USR
+PW = rdsSession.PW
+PORT = rdsSession.PORT
+DBNAME = rdsSession.DBNAME
+
+### AWS.MySQL.DB : Connect ###
+'''try:
+    conn = mConn.connect(host=ENDPOINT, user=USER, passwd=PW, port=PORT, database=DBNAME)
+    cur = conn.cursor()
+    cur.execute("""SELECT now()""")
+    query_results = cur.fetchall()
+    print(query_results)
+
+except Exception as e:
+    print("Database Connection Failed due to {}".format(e))
+'''
+
+
 
 
 ### Freee_API ###
 ## Wallet_Txns.Json ##
 def Wallet_Txns_Json(self):
     ### Def.API.Authorization.Code ###
-    AUTH_CODE = '175a5f4b9994560e73f32cb19b451c99aed60e2c464b704ed028880d546d7b15'
+    AUTH_CODE = 'e8359697eca39fffd5d58bc916a178efbf09552ec37f43450af4615e0201b8dd'
 
     # 明細一覧.取得用API.URL
     with open("../plusfreee_config.json") as fc:
@@ -76,6 +101,8 @@ def Wallet_Txns_Json(self):
 
         # Json : 再構築
         wTxns_Json = {}
+        # List : 再構築
+        wTxns_Data = []
 
         Wallet_Txns_List = data_wallet_txns['wallet_txns']
         for w in Wallet_Txns_List:
@@ -91,9 +118,112 @@ def Wallet_Txns_Json(self):
             wj_am = w['amount']
             wj_bl = w['balance']
             wj_wt = w['walletable_type']
-            wTxns_Json.update({'id': wj_id, 'm_datetime': wj_date, 'wallet_id': wj_wl, 'description': wj_des, 'entry_side': wj_en, \
-                               'amount': wj_am, 'balance': wj_bl, 'wallet_type': wj_wt})
-            print(wTxns_Json)
+            wTxns_Json.update(
+                {"id": wj_id, "m_datetime": wj_date, "wallet_id": wj_wl, "description": wj_des, "entry_side": wj_en, \
+                 "amount": wj_am, "balance": wj_bl, "wallet_type": wj_wt})
+            # wTxns_Json.update({'id': wj_id, 'm_datetime': wj_date, 'wallet_id': wj_wl, 'description': wj_des, 'entry_side': wj_en, \
+            #                   'amount': wj_am, 'balance': wj_bl, 'wallet_type': wj_wt})
+            # print(wTxns_Json)
+
+            # List : 出力
+            wt_id = w['id']
+            wt_date = datetime.strptime(w['date'], "%Y-%m-%d")
+            wt_wl = w['walletable_id']
+            wt_des = w['description']
+            wt_en = w['entry_side']
+            wt_am = w['amount']
+            wt_bl = w['balance']
+            wt_wt = w['walletable_type']
+            wTxns_Data.append([wt_id, wt_date, wt_wl, wt_des, wt_en, wt_am, wt_bl, wt_wt])
+
+        ### JSON to MySQL : INSERT INTO ###
+        try:
+            cnx = mConn.connect(host=ENDPOINT, user=USER, passwd=PW, port=PORT, database=DBNAME)
+            cur = cnx.cursor(buffered=True, dictionary=True)
+            # cur = conn.cursor()
+
+
+            # sql = "SELECT now();"
+            sql = ("""INSERT INTO DevDB.PlusFreee_wJson VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""")
+            # sql = ("""INSERT INTO PlusFreee_wJson VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""")
+            # sql = ("INSERT INTO PlusFreee_wJson VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
+            # sql = 'INSERT INTO PlusFreee_wJson VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+            # sql = 'INSERT INTO DevDB.PlusFreee_wJson VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+            # sql = 'INSERT INTO DevDB.PlusFreee_wJson VALUES ("121", "2021-02-01", "121", "Test", "income", 1200, 0, "bank_account");'
+
+            # cur.execute(sql, ("125", "2021-02-01", 125, "Test", "income", 1200, 500, "bank_account")).fetchone()
+            # cur.execute(sql, ("125", "2021-02-01", "125", "Test", "income", "1200", "500", "bank_account"))
+            # cur.fetchone()
+            # cur.fetchall()
+            # wj_data = (wj_id, wj_date, wj_wl, wj_des, wj_en, wj_am, wj_bl, wj_wt)
+            # cur.execute(sql, wj_data)
+            # cur.fetchone()
+
+            # cur.execute(sql, (json.dumps(wTxns_Json)))
+            # sql_params = [dict({'id': j_id, 'm_datetime': j_date, 'wallet_id': j_wl, 'description': j_des, 'entry_side': j_en, 'amount': j_am, 'balance': j_bl, 'wallet_type': j_wt}) for j_id, j_date, j_wl, j_des, j_en, j_am, j_bl, j_wt in wTxns_Json.items()]
+            # sql_data = [tuple(e.items() for e in wTxns_Json)]
+            # sql_data = [tuple(e.values() for e in wTxns_Json)]
+            # sql_data = [json.loads(t[0]) for t in wTxns_Json]
+            # sql_data = [json.loads(wTxns_Json.read())]
+            # print(sql_data)
+            # for j in wTxns_Json:
+            #    sql_data = (j['id'], j['m_datetime'], j['wallet_id'], j['description'], j['entry_side'], j['amount'], j['balance'], j['wallet_type'])
+                # sql_data = [tuple(j['id'], j['m_datetime'], j['wallet_id'], j['description'], j['entry_side'], j['amount'], j['balance'], j['wallet_type'])]
+                # cur.executemany(sql, sql_data)
+
+            # cur.executemany(sql, (wTxns_Json,))
+
+            cur.executemany(sql, wTxns_Data)
+
+
+
+            # cur.executemany(sql, sql_data)
+
+            # json_obj = wTxns_Json.json()
+            # for j in wTxns_Json:
+            #    wj_data = (j['id'], j['m_datetime'], j['wallet_id'], j['description'], j['entry_side'], j['amount'], j['balance'], j['wallet_type'])
+            #    cur.execute(sql, wj_data)
+
+            cnx.commit()
+
+            cur.close()
+            cnx.close()
+
+
+            # row = cur.fetchone()
+            # while row is None:
+            #    break
+
+            # while True:
+            #    row = cur.fetchall()
+                # row = cur.fetchone()
+            #    if row is None:
+            #        break
+
+
+            # query_results = cur.fetchall
+            # print(query_results)
+            # cur.close()
+            # conn.commit()
+            # conn.close()
+
+
+            # cur.execute("""SELECT now()""")
+            # query_results = cur.fetchall()
+            # print(query_results)
+
+            # sql = """INSERT INTO DevDB.PlusFreee_wJson VALUES ('121', '2021-02-01', '121', 'Test', 'income', '1200', '0', 'bank_account')"""
+            # sql = "INSERT INTO DevDB.PlusFreee_wJson (id, m_datetime, wallet_id, description, entry_side, amount, balance, wallet_type) VALUES (121, '2021-02-01', 121, 'Test', 'income', 1200, 0, 'bank_account');"
+            # cur.execute(sql)
+            # query_results = cur.fetchall()
+            # print(query_results)
+            # cur.executemany(sql)
+
+        except Exception as e:
+            print("Wallet_Txns_Json Database MySQL Table Connection Failed due to {}".format(e))
+
+        # cur.executemany("INSERT INTO PlusFreee_wJson (id, m_datetime, wallet_id, description, entry_side, amount, balance, wallet_type) VALUES (121, '2021-02-01', 121, 'income', 1200, 0, 'bank_account')")
+        # print(ENDPOINT, USER, PW, PORT, DBNAME)
 
         wTxns = Wallet_Txns_List
 
