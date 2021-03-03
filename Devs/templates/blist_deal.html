@@ -1,0 +1,33 @@
+<!--
+#//+------------------------------------------------------------------+
+#//|                 VerysVeryInc.Python3.Django.Templates.bList.html |
+#//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
+#//|                 https://github.com/MatsuoStation/Python3.Django/ |
+#//|                                                 Since:2018.03.05 |
+#//|                                Released under the Apache license |
+#//|                       https://opensource.org/licenses/Apache-2.0 |
+#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.10 Update:2021.02.13" |
+#//+------------------------------------------------------------------+
+-->
+{% extends "./base.html" %}
+
+{% load sass_tags %}
+{% load humanize %}
+{% load static %}
+{% load bfilter %}
+
+
+{% block title %}bFreee : +ALLFreee_Deal{% endblock title %}
+{% block content %}
+
+    <main role="main" class="container">
+        <div class="starter-template">
+            <h1>Bootstrap starter template</h1>
+            <p class="lead">ALLFreee_Deal</p>
+            <p>access_code = {{ a_code }}</p>
+            <p>refresh_code = {{ r_code }}</p>
+        </div>
+
+    </main><!-- /.container -->
+
+{% endblock content %}

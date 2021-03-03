@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.8 Update:2021.01.31" |
+#//|   "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.10 Update:2021.02.13" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -81,6 +81,23 @@ class bFreee_List(ListView):
 
 		return context
 
+## bFreee_Deal ##
+class bFreee_Deal_List(ListView):
+	model = Bank_Test20
+	template_name = 'blist_deal.html'
+	context_object_name = "banktb"
+	paginate_by = 30
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		## PlusFree.API : Setup ##
+		a_code, r_code, company_id, wTxns = Wallet_Txns_Json(self)
+
+		context['a_code'] = a_code
+		context['r_code'] = r_code
+
+		return context
 
 ### aInvoice_List ###
 class aInvoice_List(ListView):

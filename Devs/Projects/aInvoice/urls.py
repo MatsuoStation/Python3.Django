@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.aInvoice.urls.py - Ver.3.91.2 Update:2021.01.14" |
+#//|    "VsV.Py3.Dj.aInvoice.urls.py - Ver.3.91.10 Update:2021.02.13" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -40,4 +40,6 @@ urlpatterns = [
     ### /aInvoice/bFreee/ ###
     path('bFreee/', views.bFreee, name='bfreee'),
     path('bFreee/<int:bid>/', views.bFreee_List.as_view(), name='bfreee_list'),
+    path('bFreee/Deal/', views.bFreee_Deal_List.as_view(), name='bfreee_deal_list'),
+
 ]
