@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.10 Update:2021.02.13" |
+#//|   "VsV.Py3.Dj.aInvoice.Views.py - Ver.3.91.11 Update:2021.03.05" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -19,6 +19,7 @@ from datetime import datetime, timedelta
 from .forms import NameForm, BankForm
 from Finance.models import Name_Test20, Bank_Test20
 from .Util.db_ainvoice import DB_aInvoice
+from .Util.db_binvoice import DB_bInvoice
 from .Util.deadline import DeadLine, DeadLine_List
 from .Util.freee_api import Get_A_Token, Freee_Account, Wallet_Txns, Wallet_Txns_Json
 
@@ -88,6 +89,13 @@ class bFreee_Deal_List(ListView):
 	context_object_name = "banktb"
 	paginate_by = 30
 
+	def post(self, request, *args, **kwargs):
+		form = self.form_class(request.POST)
+		did_post = request.POST['did']
+		if form.is_valid():
+			return HttpResponseRedirect('/aInvoice/bFreee/Deal/%s' % did_post)
+		return render(request, self.template_name, {'form': form})
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
@@ -96,6 +104,21 @@ class bFreee_Deal_List(ListView):
 
 		context['a_code'] = a_code
 		context['r_code'] = r_code
+
+		## DB : Setup ##
+		SnP = DB_bInvoice(self, "", "", "", "")
+
+		## Paginator : Setup ##
+		paginator = Paginator(SnP, 30)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+		try:
+			SnP = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			SnP = paginator.page(1)
+		context['snp'] = SnP
 
 		return context
 

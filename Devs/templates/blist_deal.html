@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.10 Update:2021.02.13" |
+#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.11 Update:2021.03.05" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -20,12 +20,87 @@
 {% block title %}bFreee : +ALLFreee_Deal{% endblock title %}
 {% block content %}
 
-    <main role="main" class="container">
+    <main role="main" class="container" xmlns="http://www.w3.org/1999/html">
         <div class="starter-template">
-            <h1>Bootstrap starter template</h1>
-            <p class="lead">ALLFreee_Deal</p>
-            <p>access_code = {{ a_code }}</p>
-            <p>refresh_code = {{ r_code }}</p>
+            <h1>bFreee : +ALLFreee_Deal</h1>
+            <p class="lead">ALLFreee_Deal_SS : UriageDaka</p>
+
+
+
+            <p>
+                access_code = {{ a_code }}<br/>
+                refresh_code = {{ r_code }}
+            </p>
+
+            <p>
+            <div class="pagination">
+            <span class="step-links">
+                {% if snp.has_previous %}
+                    <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
+                    <a href="?page={{ snp.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                {% endif %}
+                <span class="current">
+                    Page {{ snp.number }} of {{ snp.paginator.num_pages }}.
+                </span>
+                {% if snp.has_next %}
+                    <a href="?page={{ snp.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ snp.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% endif %}
+            </span>
+            </div>
+            </p>
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <td>日付</td>
+                        <td>支出</td>
+                        <td>会社ID</td>
+                        <td>決済日</td>
+                        <td>取引先ID</td>
+                        <td>レシート番号</td>
+                        <td>勘定科目</td>
+                        <td>品目</td>
+                        <td>部門</td>
+                        <td>税額</td>
+                        <td>税区分</td>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <td>issue_date</td>
+                        <td>type</td>
+                        <td>2509142</td>
+                        <td>due_date</td>
+                        <td>partner_id</td>
+                        <td>ref_number</td>
+                        <td>account_item_id</td>
+                        <td>item_id</td>
+                        <td>section_id</td>
+                        <td>vat</td>
+                        <td>tax_code</td>
+                    </tr>
+                </thead>
+            </table>
+
+            <p>
+            <div class="pagination">
+            <span class="step-links">
+                {% if snp.has_previous %}
+                    <a href="?page=1&dl={{ deadlines }}">&laquo; Top&nbsp;</a>
+                    <a href="?page={{ snp.previous_page_number }}&dl={{ deadlines }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                {% endif %}
+                <span class="current">
+                    Page {{ snp.number }} of {{ snp.paginator.num_pages }}.
+                </span>
+                {% if snp.has_next %}
+                    <a href="?page={{ snp.next_page_number }}&dl={{ deadlines }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?page={{ snp.paginator.num_pages }}&dl={{ deadlines }}">&nbsp;&nbsp;Last &raquo;</a>
+                {% endif %}
+            </span>
+            </div>
+            </p>
+
         </div>
 
     </main><!-- /.container -->
