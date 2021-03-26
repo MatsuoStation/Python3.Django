@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.7 Update:2021.01.31" |
+#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.12 Update:2021.03.06" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -15,6 +15,22 @@ from django.conf import settings
 
 
 # settings.DATETIME_FORMAT
+
+###* ALLFreee_Partner *### ( m_datetime : DateTimeField )
+class ALLFreee_Partners(models.Model):
+	class Meta:
+		db_table = 'ALLFreee_Partners'
+		verbose_name = 'ALLFreee_Partners'
+		verbose_name_plural = verbose_name
+		ordering = ['id']
+	id = models.IntegerField(verbose_name='id', unique=True, primary_key=True)  # max_length=4
+	name = models.CharField("顧客名（通称）", default=None, max_length=255)
+	n_code = models.CharField("取引先コード", default=None, max_length=255)
+	g_code = models.IntegerField(verbose_name='顧客コード', default=None)
+	f_code = models.IntegerField(verbose_name='FreeeAPIコード', default=None)
+
+	def __str__(self):
+		return self.id
 
 
 ###* PlusFreee_wTxns *### ( m_datetime : DateTimeField )

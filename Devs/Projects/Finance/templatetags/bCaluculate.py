@@ -5,17 +5,44 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.6 Update:2021.01.26" |
+#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.12 Update:2021.03.08" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
 from datetime import datetime
 
 from Finance.models import Value_Test30, Items_Test10
+from Finance.models import ALLFreee_Partners
 
 jtax10 = 0.10
 jtax8 = 0.08
 
+### ALLFreee : 取引先名.Setup　###
+def aPartner_gc_name(gc):
+    ## 取引先DB ##
+    aPa = ALLFreee_Partners.objects.all().filter(g_code=gc).order_by('g_code')
+
+    for ap in aPa:
+        if gc == ap.g_code:
+            gp_code = ap.n_code
+        else:
+            gp_code = "No_Partners_DB"
+    # gc_code = "Thank you"
+
+    return gp_code
+
+def aPartner_fc_id(gc):
+    ## 取引先_FreeeAPI_ID ##
+    aPa = ALLFreee_Partners.objects.all().filter(g_code=gc).order_by('g_code')
+
+    for ap in aPa:
+        if gc == ap.g_code:
+            fc_id = ap.f_code
+        else:
+            fc_id = "No_Partners_DB"
+    # fc_id = "Thank you"
+
+    return fc_id
 
 ### PlusFreee : Setup ###
 def Income_Cal(entry, am):

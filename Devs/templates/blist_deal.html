@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.11 Update:2021.03.05" |
+#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.12 Update:2021.03.06" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -54,32 +54,55 @@
                 <thead>
                     <tr>
                         <td>日付</td>
-                        <td>支出</td>
-                        <td>会社ID</td>
-                        <td>決済日</td>
+                        <!--td>支出</td-->
+                        <!--td>会社ID</td-->
+                        <!--td>決済日</td-->
+                        <td>gc</td>
+                        <td>取引先名</td>
                         <td>取引先ID</td>
-                        <td>レシート番号</td>
-                        <td>勘定科目</td>
-                        <td>品目</td>
-                        <td>部門</td>
+                        <td>伝票No</td>
+                        <!--td>勘定科目</td-->
+                        <td>勘定科目ID</td>
+                        <td>金額</td>
+                        <td>s_code</td>
+                        <td>品目ID</td>
+                        <!--td>部門</td-->
+                        <td>部門ID</td>
                         <td>税額</td>
-                        <td>税区分</td>
+                        <!--td>P税額</td-->
+                        <!--td>a税額</td-->
+                        <td>税区</td>
+                        <td>税区ID</td>
+                        <td width="1"></td>
+                        <td>Push</td>
                     </tr>
                 </thead>
                 <thead>
+                {% for s in snp %}
                     <tr>
-                        <td>issue_date</td>
-                        <td>type</td>
-                        <td>2509142</td>
-                        <td>due_date</td>
-                        <td>partner_id</td>
-                        <td>ref_number</td>
+                        <td>{{ s.m_datetime.year }}-{{ s.m_datetime.month }}-{{ s.m_datetime.day }}</td>
+                        <!--td>income</td-->
+                        <!--td>2509142</td-->
+                        <!--td></td-->
+                        <td>{{ s.g_code }}</td>
+                        <td>{{ s.g_code|g_code_name }}</td>
+                        <td>{{ s.g_code|f_code_id }}</td>
+                        <td>{{ s.slip }}</td>
+                        <!--td>売上高</td-->
                         <td>account_item_id</td>
+                        <td>{{ s.value }}</td>
+                        <td>{{ s.s_code }}</td>
                         <td>item_id</td>
-                        <td>section_id</td>
+                        <!--td>SS関係</td-->
+                        <td>1070823</td>
+                        <!--td>{{ s.tax }}</td-->
                         <td>vat</td>
+                        <td>課税売上8%</td>
                         <td>tax_code</td>
+                        <td></td>
+                        <td>Send</td>
                     </tr>
+                {% endfor %}
                 </thead>
             </table>
 

@@ -14,10 +14,26 @@ from Finance.templatetags.bCaluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, 
     Income_Cal, Expense_Cal
 # from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal
 
+from Finance.templatetags.bCaluculate import aPartner_gc_name, aPartner_fc_id
+
 
 register = template.Library()
 
+### ALLFreee : Setup ###
+@register.filter("g_code_name")
+def g_code_name(gc):
+    gc_name = aPartner_gc_name(gc)
+    # gc_name = "レギュラー"
+    return gc_name
 
+@register.filter("f_code_id")
+def f_code_id(gc):
+    fc_id = aPartner_fc_id(gc)
+    # fc_id = "99999999999"
+    return fc_id
+
+
+### Def : Setup ###
 # check_income_expense
 @register.filter("check_income")
 def check_income(entry, am):
