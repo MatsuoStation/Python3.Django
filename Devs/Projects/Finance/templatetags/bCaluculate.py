@@ -5,14 +5,14 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.13 Update:2021.03.26" |
+#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.14 Update:2021.03.27" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
 from datetime import datetime
 
 from Finance.models import Value_Test30, Items_Test10
-from Finance.models import ALLFreee_Partners, ALLFreee_Account_Items
+from Finance.models import ALLFreee_Partners, ALLFreee_Account_Items, ALLFreee_Items
 
 jtax10 = 0.10
 jtax8 = 0.08
@@ -59,6 +59,20 @@ def aAccount_item_id(ac):
     # ac_id = ac
 
     return ac_id
+
+## 品目_FreeeAPI_ID ##
+def aItems_id(sc):
+    ## 品目DB ##
+    aIc = ALLFreee_Items.objects.all().filter(s_code=sc).order_by('s_code')
+
+    for ap in aIc:
+        if sc == ap.s_code:
+            item_id = ap.f_code
+        else:
+            item_id = "No_Items_DB"
+    #item_id = sc
+
+    return item_id
 
 
 ### PlusFreee : Setup ###

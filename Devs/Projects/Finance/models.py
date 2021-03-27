@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.13 Update:2021.03.26" |
+#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.14 Update:2021.03.27" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -32,6 +32,7 @@ class ALLFreee_Partners(models.Model):
 	def __str__(self):
 		return self.id
 
+###* ALLFreee_Account_Items *### ( Kanjyo : CharField )
 class ALLFreee_Account_Items(models.Model):
 	class Meta:
 		db_table = 'ALLFreee_Account_Items'
@@ -43,6 +44,21 @@ class ALLFreee_Account_Items(models.Model):
 	name = models.CharField("表示名（決算書）", default=None, max_length=255)
 	income = models.CharField("収入取引勘定科目", default=None, max_length=255)
 	expense = models.CharField("支出取引勘定科目", default=None, max_length=255)
+	f_code = models.IntegerField(verbose_name='FreeeAPIコード', default=None)
+
+	def __str__(self):
+		return self.id
+
+###* ALLFreee_Items *### ( Hinmoku : CharField )
+class ALLFreee_Items(models.Model):
+	class Meta:
+		db_table = 'ALLFreee_Items'
+		verbose_name = 'ALLFreee_Items'
+		verbose_name_plural = verbose_name
+		ordering = ['id']
+	id = models.IntegerField(verbose_name='id', unique=True, primary_key=True)  # max_length=4
+	hinmoku = models.CharField("品目名", default=None, max_length=255)
+	s_code = models.CharField(verbose_name='商品コード', default=None, max_length=11)
 	f_code = models.IntegerField(verbose_name='FreeeAPIコード', default=None)
 
 	def __str__(self):
