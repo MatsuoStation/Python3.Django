@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.12 Update:2021.03.06" |
+#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.13 Update:2021.03.26" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -89,7 +89,8 @@
                         <td>{{ s.g_code|f_code_id }}</td>
                         <td>{{ s.slip }}</td>
                         <!--td>売上高</td-->
-                        <td>account_item_id</td>
+                        <!--td>account_item_id</td-->
+                        <td>{{ "売上高"|a_item_id }}</td>
                         <td>{{ s.value }}</td>
                         <td>{{ s.s_code }}</td>
                         <td>item_id</td>

@@ -5,19 +5,20 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.12 Update:2021.03.08" |
+#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.13 Update:2021.03.26" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
 from datetime import datetime
 
 from Finance.models import Value_Test30, Items_Test10
-from Finance.models import ALLFreee_Partners
+from Finance.models import ALLFreee_Partners, ALLFreee_Account_Items
 
 jtax10 = 0.10
 jtax8 = 0.08
 
-### ALLFreee : 取引先名.Setup　###
+### ALLFreee : Setup　###
+## 取引先名　##
 def aPartner_gc_name(gc):
     ## 取引先DB ##
     aPa = ALLFreee_Partners.objects.all().filter(g_code=gc).order_by('g_code')
@@ -31,8 +32,9 @@ def aPartner_gc_name(gc):
 
     return gp_code
 
+## 取引先_FreeeAPI_ID ##
 def aPartner_fc_id(gc):
-    ## 取引先_FreeeAPI_ID ##
+    ## 取引先DB ##
     aPa = ALLFreee_Partners.objects.all().filter(g_code=gc).order_by('g_code')
 
     for ap in aPa:
@@ -43,6 +45,21 @@ def aPartner_fc_id(gc):
     # fc_id = "Thank you"
 
     return fc_id
+
+## 勘定科目_FreeeAPI_ID ##
+def aAccount_item_id(ac):
+    ## 勘定科目DB ##
+    aAc = ALLFreee_Account_Items.objects.all().filter(kanjyo=ac).order_by('id')
+
+    for ap in aAc:
+        if ac == ap.kanjyo:
+            ac_id = ap.f_code
+        else:
+            ac_id = "No_Account_Items_DB"
+    # ac_id = ac
+
+    return ac_id
+
 
 ### PlusFreee : Setup ###
 def Income_Cal(entry, am):

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Py3.Dj.TempTags.bFilter.py - Ver.3.91.4 Update:2021.01.26" |
+#//| "VsV.Py3.Dj.TempTags.bFilter.py - Ver.3.91.13 Update:2021.03.26" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
@@ -14,7 +14,7 @@ from Finance.templatetags.bCaluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, 
     Income_Cal, Expense_Cal
 # from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal
 
-from Finance.templatetags.bCaluculate import aPartner_gc_name, aPartner_fc_id
+from Finance.templatetags.bCaluculate import aPartner_gc_name, aPartner_fc_id, aAccount_item_id
 
 
 register = template.Library()
@@ -31,6 +31,13 @@ def f_code_id(gc):
     fc_id = aPartner_fc_id(gc)
     # fc_id = "99999999999"
     return fc_id
+
+@register.filter("a_item_id")
+def a_item_id(ac):
+    ac_id = aAccount_item_id(ac)
+    # fc_id = aPartner_fc_id(gc)
+    # ac_id = "400267943"
+    return ac_id
 
 
 ### Def : Setup ###
