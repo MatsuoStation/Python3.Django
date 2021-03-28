@@ -5,14 +5,14 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.14 Update:2021.03.27" |
+#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.15 Update:2021.03.27" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
 from datetime import datetime
 
 from Finance.models import Value_Test30, Items_Test10
-from Finance.models import ALLFreee_Partners, ALLFreee_Account_Items, ALLFreee_Items
+from Finance.models import ALLFreee_Partners, ALLFreee_Account_Items, ALLFreee_Items, ALLFreee_Bumon
 
 jtax10 = 0.10
 jtax8 = 0.08
@@ -73,6 +73,20 @@ def aItems_id(sc):
     #item_id = sc
 
     return item_id
+
+## 部門_FreeeAPI_ID ##
+def aBumon_id(gc):
+    ## 部門DB ##
+    # aBc = ALLFreee_Bumon.objects.all()
+
+    if len(str(gc)) <= 4:
+        b_id = 1070823
+    elif len(str(gc)) >= 5 & len(str(gc)) < 6:
+        b_id = 1070824
+    else:
+        b_id = "No_Bumon_ID"
+    # b_id = len(str(gc))
+    return b_id
 
 
 ### PlusFreee : Setup ###

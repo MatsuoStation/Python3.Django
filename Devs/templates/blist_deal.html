@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.14 Update:2021.03.27" |
+#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.15 Update:2021.03.27" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -95,7 +95,7 @@
                         <td>{{ s.s_code }}</td>
                         <td>{{ s.s_code|item_id }}</td>
                         <!--td>SS関係</td-->
-                        <td>1070823</td>
+                        <td>{{ s.g_code|bumon_id }}</td>
                         <!--td>{{ s.tax }}</td-->
                         <td>vat</td>
                         <td>課税売上8%</td>
