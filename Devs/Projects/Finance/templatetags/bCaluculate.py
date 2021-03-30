@@ -5,14 +5,14 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.15 Update:2021.03.27" |
+#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.16 Update:2021.03.30" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
-from datetime import datetime
 
 from Finance.models import Value_Test30, Items_Test10
-from Finance.models import ALLFreee_Partners, ALLFreee_Account_Items, ALLFreee_Items, ALLFreee_Bumon
+from Finance.models import ALLFreee_Partners, ALLFreee_Account_Items, ALLFreee_Items, ALLFreee_Bumon, ALLFreee_Tax
+from Finance.models import aValue
 
 jtax10 = 0.10
 jtax8 = 0.08
@@ -87,6 +87,45 @@ def aBumon_id(gc):
         b_id = "No_Bumon_ID"
     # b_id = len(str(gc))
     return b_id
+
+## 税区分_FreeeAPI_Name ##
+def aTax_name(dt):
+    ## aValue_DB ##
+    dlm = datetime.strftime(dt, '%Y-%m-%d')
+    aVc = aValue.objects.all().filter(m_datetime__lte=dlm).order_by('id')
+
+    for ap in aVc:
+        if ap:
+            if ap.tax == 0.08:
+                t_name = "課税売上8%"
+            elif ap.tax == 0.1:
+                t_name = "課税売上10%"
+            else:
+                t_name = "課税売上"
+            # t_name = ap.tax
+            # t_name = ap.id
+            # t_name = ap.id - int(1)
+        else:
+            t_name = "No_aValue_DB"
+    # t_name = datetime.strftime(dt, '%Y-%m')
+
+    return t_name
+
+## 税区分_FreeeAPI_ID ##
+def aTax_id(dt):
+    t_name = aTax_name(dt)
+
+    ## 税区分DB ##
+    aTc = ALLFreee_Tax.objects.all().filter(tax_jp=t_name)
+
+    for ap in aTc:
+        if ap:
+            t_id = ap.id
+        else:
+            t_id = "No_aTax_DB"
+    # t_id = t_name
+
+    return t_id
 
 
 ### PlusFreee : Setup ###

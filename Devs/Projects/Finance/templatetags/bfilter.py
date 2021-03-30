@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TempTags.bFilter.py - Ver.3.91.15 Update:2021.03.27" |
+#//| "VsV.Py3.Dj.TempTags.bFilter.py - Ver.3.91.16 Update:2021.03.30" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
@@ -14,7 +14,7 @@ from Finance.templatetags.bCaluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, 
     Income_Cal, Expense_Cal
 # from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal
 
-from Finance.templatetags.bCaluculate import aPartner_gc_name, aPartner_fc_id, aAccount_item_id, aItems_id, aBumon_id
+from Finance.templatetags.bCaluculate import aPartner_gc_name, aPartner_fc_id, aAccount_item_id, aItems_id, aBumon_id, aTax_name, aTax_id
 
 
 register = template.Library()
@@ -49,6 +49,18 @@ def bumon_id(gc):
     b_id = aBumon_id(gc)
     # b_id = gc
     return b_id
+
+@register.filter("tax_name")
+def tax_name(dt):
+    t_name = aTax_name(dt)
+    # t_name = datetime.strftime(dt, '%Y-%m-%d')
+    return t_name
+
+@register.filter("tax_id")
+def tax_id(dt):
+    t_id = aTax_id(dt)
+    # t_id = datetime.strftime(dt, '%Y-%m-%d')
+    return t_id
 
 
 ### Def : Setup ###

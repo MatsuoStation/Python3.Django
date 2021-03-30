@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.15 Update:2021.03.27" |
+#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.16 Update:2021.03.30" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -74,6 +74,20 @@ class ALLFreee_Bumon(models.Model):
 	id = models.IntegerField(verbose_name='id', unique=True, primary_key=True)  # max_length=4
 	bumon = models.CharField("部門名", default=None, max_length=255)
 	f_code = models.IntegerField(verbose_name='FreeeAPIコード', default=None)
+
+	def __str__(self):
+		return self.id
+
+###* ALLFreee_Tax *### ( Tax : CharField )
+class ALLFreee_Tax(models.Model):
+	class Meta:
+		db_table = 'ALLFreee_Tax'
+		verbose_name = 'ALLFreee_Tax'
+		verbose_name_plural = verbose_name
+		ordering = ['id']
+	id = models.IntegerField(verbose_name='id', unique=True, primary_key=True)  # max_length=4
+	tax_name = models.CharField("税金名", default=None, max_length=255)
+	tax_jp = models.CharField("税金名（日本語）", default=None, max_length=255)
 
 	def __str__(self):
 		return self.id
