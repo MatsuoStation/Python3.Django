@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.16 Update:2021.03.30" |
+#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.20 Update:2021.03.30" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
@@ -127,6 +127,12 @@ def aTax_id(dt):
 
     return t_id
 
+
+### ALLFreee : 計算式 ###
+## 旧.現金売上（合計） - POSデータ ##
+def O_Cash_Cal(vl, tax):
+    o_vl = vl + tax
+    return o_vl
 
 ### PlusFreee : Setup ###
 def Income_Cal(entry, am):

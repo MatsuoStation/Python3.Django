@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.16 Update:2021.03.30" |
+#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.20 Update:2021.03.30" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -74,7 +74,11 @@
                         <td>税区</td>
                         <td>税区ID</td>
                         <td width="1"></td>
-                        <td>Push</td>
+
+                        <!--td>Push</td-->
+                        <td>pc / rc</td>
+                        <td>OLD.Value</td>
+                        <td>a.Value</td>
                     </tr>
                 </thead>
                 <thead>
@@ -96,13 +100,17 @@
                         <td>{{ s.s_code|item_id }}</td>
                         <!--td>SS関係</td-->
                         <td>{{ s.g_code|bumon_id }}</td>
-                        <!--td>{{ s.tax }}</td-->
-                        <td>vat</td>
+                        <!--td>{{ vat }}</td-->
+                        <td>{{ s.tax }}</td>
                         <!--td>課税売上8%</td-->
                         <td>{{ s.m_datetime|tax_name }}</td>
                         <td>{{ s.m_datetime|tax_id }}</td>
                         <td></td>
-                        <td>Send</td>
+
+                        <!--td>Send</td-->
+                        <td>{{ s.p_code }} / {{ s.r_code }}</td>
+                        <td>{{ s.value|one_two:s.tax|one_two:s.red_code|oCheck_value:s.s_code|intcomma }}</td>
+                        <td></td>
                     </tr>
                 {% endfor %}
                 </thead>
