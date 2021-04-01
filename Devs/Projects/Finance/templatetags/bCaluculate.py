@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.20 Update:2021.03.30" |
+#//|    "VsV.Py3.Dj.TempTags.bCal.py - Ver.3.91.21 Update:2021.03.31" |
 #//+------------------------------------------------------------------+
 from datetime import datetime
 from decimal import *
@@ -130,9 +130,48 @@ def aTax_id(dt):
 
 ### ALLFreee : 計算式 ###
 ## 旧.現金売上（合計） - POSデータ ##
-def O_Cash_Cal(vl, tax):
+def O_Cash_Cal(vl, tax, red):
     o_vl = vl + tax
+    if red == 8:
+        o_vl = -(o_vl)
     return o_vl
+
+## aValue.現金売上（合計） ##
+def a_Cash_Cal(sc, am, vl, red, md):
+    ## aValue_DB ##
+    dlm = datetime.strftime(md, '%Y-%m-%d')
+    aVc = aValue.objects.all().filter(m_datetime__lte=dlm).order_by('id')
+
+    for ap in aVc:
+        if SC_Check(sc) == "OIL":
+            if sc == "10000":
+                aUn = ap.high_okayama
+            elif sc == "10100":
+                aUn = ap.reg_okayama
+            elif sc == "10200":
+                aUn = ap.ku_okayama
+            elif vl != 0 and sc == "10500":
+                aUn = ap.tut_okayama
+            elif vl == 0 and sc == "10500":
+                aUn = ap.tuh_okayama
+            else:
+                aUn = 0
+            # aUn = ap.high_okayama
+
+            aTax = ap.tax
+            a_vl = Decimal((aUn * (am / 100)) * (1 + aTax)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            # a_vl = aUn * (am / 100)
+            # a_vl = aUn
+            # a_vl = am / 100
+
+        else:
+            a_vl = 0
+
+    # a_vl = vl + tax
+    if red == 8:
+        a_vl = -(a_vl)
+    return a_vl
+
 
 ### PlusFreee : Setup ###
 def Income_Cal(entry, am):

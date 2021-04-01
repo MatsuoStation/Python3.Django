@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.20 Update:2021.03.30" |
+#//|      "VsV.Py3.Dj.TLs.bList.html - Ver.3.91.21 Update:2021.03.31" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -77,8 +77,9 @@
 
                         <!--td>Push</td-->
                         <td>pc / rc</td>
-                        <td>OLD.Value</td>
+                        <td>O.Value</td>
                         <td>a.Value</td>
+                        <td>o_vl-a_vl</td>
                     </tr>
                 </thead>
                 <thead>
@@ -110,6 +111,7 @@
                         <!--td>Send</td-->
                         <td>{{ s.p_code }} / {{ s.r_code }}</td>
                         <td>{{ s.value|one_two:s.tax|one_two:s.red_code|oCheck_value:s.s_code|intcomma }}</td>
+                        <td>{{ s.s_code|one_two:s.amount|one_two:s.value|one_two:s.red_code|aCheck_value:s.m_datetime|intcomma }}</td>
                         <td></td>
                     </tr>
                 {% endfor %}

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TempTags.bFilter.py - Ver.3.91.20 Update:2021.03.30" |
+#//| "VsV.Py3.Dj.TempTags.bFilter.py - Ver.3.91.21 Update:2021.03.31" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
@@ -15,7 +15,7 @@ from Finance.templatetags.bCaluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, 
 # from Finance.templatetags.caluculate import jTax, SC_Check, Cash_Cal, OIL_Cal, nOIL_Cal, Unit_Cal, Vl_Cal, inVl_Cal, kTax_Cal
 
 from Finance.templatetags.bCaluculate import aPartner_gc_name, aPartner_fc_id, aAccount_item_id, aItems_id, aBumon_id, aTax_name, aTax_id
-from Finance.templatetags.bCaluculate import O_Cash_Cal
+from Finance.templatetags.bCaluculate import O_Cash_Cal, a_Cash_Cal
 
 
 register = template.Library()
@@ -71,14 +71,29 @@ def oCheck_value(vl_tax_red, sc):
     # vl, tax = vl_tax
 
     # o_Vl = vl + tax
-    o_Vl = O_Cash_Cal(vl, tax)
-    if red == 8:
-        o_Vl = -(o_Vl)
+    o_Vl = O_Cash_Cal(vl, tax, red)
+    # if red == 8:
+    #    o_Vl = -(o_Vl)
 
     # a_Vl = vl + tax
     # a_Vl = SC_Check(sc)
 
     return o_Vl
+
+@register.filter("aCheck_value")
+def aCheck_value(sc_am_vl_red, md):
+    sc_am_vl, red = sc_am_vl_red
+    sc_am, vl = sc_am_vl
+    sc, am = sc_am
+
+    a_Vl = a_Cash_Cal(sc, am, vl, red, md)
+
+    # a_Vl = am
+    # if red == 8:
+    #    a_Vl = -(a_Vl)
+
+    return a_Vl
+
 
 ### Def : Setup ###
 # check_income_expense
