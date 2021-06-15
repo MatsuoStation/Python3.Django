@@ -183,6 +183,8 @@ Devs/ScanPDF/*
 Devs/Projects/Finance/models_K/*
 Devs/Projects/Finance/templatetags/Dev/*
 Devs/Projects/Finance/templatetags/__init__.py
+Devs/Projects/Finance/templatetags/filter.py
+Devs/Projects/Finance/templatetags/math.py
 
 Devs/Projects/__init__.py
 Devs/Projects/aInvoice/__init__.py
@@ -205,3 +207,6 @@ Devs/awscli-bundle.zip
 Devs/lambda/*
 
 Devs/static/bootstrap-4.1.1*
+
+Devs/Projects/cFreee/__init__.py
+Devs/Projects/cFreee/migrations/

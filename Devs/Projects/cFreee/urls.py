@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.cFreee.urls.py - Ver.3.92.1 Update:2021.04.22" |
+#//|       "VsV.Py3.Dj.cFreee.urls.py - Ver.3.92.2 Update:2021.06.16" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -31,4 +31,7 @@ app_name = 'cFreee'
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+
+    ### /cFreee/ ###
+    path('Python/', views.python, name='python'),
 ]
