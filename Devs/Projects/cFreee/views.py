@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.10 Update:2021.07.30" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.11 Update:2021.07.30" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -19,7 +19,17 @@ from oauth2client.service_account import ServiceAccountCredentials
 from django.http import HttpResponse
 
 def GAS(request):
-	return HttpResponse("Hello cFreee/GAS/ You're at the GAS.")
+
+	## GAS : JSON - Setup ##
+	gJsonFile = "../matsuostationapi-ca6cfa70cc81.json"
+
+	## GAS : SpreadSheet - Setup ##
+	spsh_name = "SS_64"
+	ws = connect_gspread(gJsonFile, spsh_name)
+	ws_list = ws.worksheets()
+
+	return HttpResponse("GAS.Json.File = %s : %s" % (len(ws_list), ws_list[0].title))
+	# return HttpResponse("Hello cFreee/GAS/ You're at the GAS.")
 
 
 def python(request):
