@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.11 Update:2021.07.30" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.12 Update:2021.07.30" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -28,7 +28,11 @@ def GAS(request):
 	ws = connect_gspread(gJsonFile, spsh_name)
 	ws_list = ws.worksheets()
 
-	return HttpResponse("GAS.Json.File = %s : %s" % (len(ws_list), ws_list[0].title))
+	## GAS : Read ##
+	cell_value = ws_list[0].acell('A1').value
+
+	return HttpResponse("A1 = %s" % cell_value)
+	# return HttpResponse("GAS.Json.File = %s : %s" % (len(ws_list), ws_list[0].title))
 	# return HttpResponse("Hello cFreee/GAS/ You're at the GAS.")
 
 
