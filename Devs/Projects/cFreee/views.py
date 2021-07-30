@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.4 Update:2021.06.16" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.10 Update:2021.07.30" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -17,6 +17,10 @@ from oauth2client.service_account import ServiceAccountCredentials
 # Create your views here.
 ### MatsuoStation.Com ###
 from django.http import HttpResponse
+
+def GAS(request):
+	return HttpResponse("Hello cFreee/GAS/ You're at the GAS.")
+
 
 def python(request):
 
