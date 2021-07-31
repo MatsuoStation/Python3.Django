@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.12 Update:2021.07.30" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.13 Update:2021.07.30" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -24,12 +24,15 @@ def GAS(request):
 	gJsonFile = "../matsuostationapi-ca6cfa70cc81.json"
 
 	## GAS : SpreadSheet - Setup ##
-	spsh_name = "SS_64"
-	ws = connect_gspread(gJsonFile, spsh_name)
+	spsh_64 = 'SS_#64'
+	ws = connect_gspread(gJsonFile, spsh_64)
 	ws_list = ws.worksheets()
 
 	## GAS : Read ##
 	cell_value = ws_list[0].acell('A1').value
+
+	## GAS : Write ##
+	ws_list[0].update_cell(1, 3, cell_value)
 
 	return HttpResponse("A1 = %s" % cell_value)
 	# return HttpResponse("GAS.Json.File = %s : %s" % (len(ws_list), ws_list[0].title))
