@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.39 Update:2019.11.21" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.40 Update:2021.08.25" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -1337,7 +1337,7 @@ class PDF_List(ListView):
 				for lt in LTs:
 					if lt.date00:
 						date00 = lt.date00
-						if dlb <= date00 and date00 <= dla:
+						if dlb <= date00 and date00+timedelta(days=1) <= dla:
 							context['dTJ00'] = date00
 
 							sTJ00 = lt.s_code00
@@ -1372,7 +1372,7 @@ class PDF_List(ListView):
 
 					if lt.date01:
 						date01 = lt.date01
-						if dlb <= date01 and date01 <= dla:
+						if dlb <= date01 and date01+timedelta(days=1) <= dla:
 							context['dTJ01'] = date01
 
 							sTJ01 = lt.s_code01
@@ -1407,7 +1407,7 @@ class PDF_List(ListView):
 
 					if lt.date02:
 						date02 = lt.date02
-						if dlb <= date02 and date02 <= dla:
+						if dlb <= date02 and date02+timedelta(days=1) <= dla:
 							context['dTJ02'] = date02
 
 							sTJ02 = lt.s_code02
@@ -1442,7 +1442,7 @@ class PDF_List(ListView):
 
 					if lt.date03:
 						date03 = lt.date03
-						if dlb <= date03 and date03 <= dla:
+						if dlb <= date03 and date03+timedelta(days=1) <= dla:
 							context['dTJ03'] = date03
 
 							sTJ03 = lt.s_code03
@@ -1477,7 +1477,7 @@ class PDF_List(ListView):
 
 					if lt.date04:
 						date04 = lt.date04
-						if dlb <= date04 and date04 <= dla:
+						if dlb <= date04 and date04+timedelta(days=1) <= dla:
 							context['dTJ04'] = date04
 
 							sTJ04 = lt.s_code04
@@ -1512,7 +1512,7 @@ class PDF_List(ListView):
 
 					if lt.date05:
 						date05 = lt.date05
-						if dlb <= date05 and date05 <= dla:
+						if dlb <= date05 and date05+timedelta(days=1) <= dla:
 							context['dTJ05'] = date05
 
 							sTJ05 = lt.s_code05
@@ -1547,7 +1547,7 @@ class PDF_List(ListView):
 
 					if lt.date06:
 						date06 = lt.date06
-						if dlb <= date06 and date06 <= dla:
+						if dlb <= date06 and date06+timedelta(days=1) <= dla:
 							context['dTJ06'] = date06
 
 							sTJ06 = lt.s_code06
@@ -1582,7 +1582,7 @@ class PDF_List(ListView):
 
 					if lt.date07:
 						date07 = lt.date07
-						if dlb <= date07 and date07 <= dla:
+						if dlb <= date07 and date07+timedelta(days=1) <= dla:
 							context['dTJ07'] = date07
 
 							sTJ07 = lt.s_code07
@@ -1617,7 +1617,7 @@ class PDF_List(ListView):
 
 					if lt.date08:
 						date08 = lt.date08
-						if dlb <= date08 and date08 <= dla:
+						if dlb <= date08 and date08+timedelta(days=1) <= dla:
 							context['dTJ08'] = date08
 
 							sTJ08 = lt.s_code08
@@ -1652,7 +1652,7 @@ class PDF_List(ListView):
 
 					if lt.date09:
 						date09 = lt.date09
-						if dlb <= date09 and date09 <= dla:
+						if dlb <= date09 and date09+timedelta(days=1) <= dla:
 							context['dTJ09'] = date09
 
 							sTJ09 = lt.s_code09
@@ -1687,7 +1687,7 @@ class PDF_List(ListView):
 
 					if lt.date10:
 						date10 = lt.date10
-						if dlb <= date10 and date10 <= dla:
+						if dlb <= date10 and date10+timedelta(days=1) <= dla:
 							context['dTJ10'] = date10
 
 							sTJ10 = lt.s_code10
@@ -1722,7 +1722,7 @@ class PDF_List(ListView):
 
 					if lt.date11:
 						date11 = lt.date11
-						if dlb <= date11 and date11 <= dla:
+						if dlb <= date11 and date11+timedelta(days=1) <= dla:
 							context['dTJ11'] = date11
 
 							sTJ11 = lt.s_code11
@@ -1757,7 +1757,7 @@ class PDF_List(ListView):
 
 					if lt.date12:
 						date12 = lt.date12
-						if dlb <= date12 and date12 <= dla:
+						if dlb <= date12 and date12+timedelta(days=1) <= dla:
 							context['dTJ12'] = date12
 
 							sTJ12 = lt.s_code12
@@ -1792,7 +1792,7 @@ class PDF_List(ListView):
 
 					if lt.date13:
 						date13 = lt.date13
-						if dlb <= date13 and date13 <= dla:
+						if dlb <= date13 and date13+timedelta(days=1) <= dla:
 							context['dTJ13'] = date13
 
 							sTJ13 = lt.s_code13
@@ -1827,7 +1827,7 @@ class PDF_List(ListView):
 
 					if lt.date14:
 						date14 = lt.date14
-						if dlb <= date14 and date14 <= dla:
+						if dlb <= date14 and date14+timedelta(days=1) <= dla:
 							context['dTJ14'] = date14
 
 							sTJ14 = lt.s_code14
@@ -1862,7 +1862,7 @@ class PDF_List(ListView):
 
 					if lt.date15:
 						date15 = lt.date15
-						if dlb <= date15 and date15 <= dla:
+						if dlb <= date15 and date15+timedelta(days=1) <= dla:
 							context['dTJ15'] = date15
 
 							sTJ15 = lt.s_code15
@@ -1897,7 +1897,7 @@ class PDF_List(ListView):
 
 					if lt.date16:
 						date16 = lt.date16
-						if dlb <= date16 and date16 <= dla:
+						if dlb <= date16 and date16+timedelta(days=1) <= dla:
 							context['dTJ16'] = date16
 
 							sTJ16 = lt.s_code16
@@ -1932,7 +1932,7 @@ class PDF_List(ListView):
 
 					if lt.date17:
 						date17 = lt.date17
-						if dlb <= date17 and date17 <= dla:
+						if dlb <= date17 and date17+timedelta(days=1) <= dla:
 							context['dTJ17'] = date17
 
 							sTJ17 = lt.s_code17
@@ -1967,7 +1967,7 @@ class PDF_List(ListView):
 
 					if lt.date18:
 						date18 = lt.date18
-						if dlb <= date18 and date18 <= dla:
+						if dlb <= date18 and date18+timedelta(days=1) <= dla:
 							context['dTJ18'] = date18
 
 							sTJ18 = lt.s_code18
@@ -2002,7 +2002,7 @@ class PDF_List(ListView):
 
 					if lt.date19:
 						date19 = lt.date19
-						if dlb <= date19 and date19 <= dla:
+						if dlb <= date19 and date19+timedelta(days=1) <= dla:
 							context['dTJ19'] = date19
 
 							sTJ19 = lt.s_code19
@@ -2037,7 +2037,7 @@ class PDF_List(ListView):
 
 					if lt.date20:
 						date20 = lt.date20
-						if dlb <= date20 and date20 <= dla:
+						if dlb <= date20 and date20+timedelta(days=1) <= dla:
 							context['dTJ20'] = date20
 
 							sTJ20 = lt.s_code20
@@ -2072,7 +2072,7 @@ class PDF_List(ListView):
 
 					if lt.date21:
 						date21 = lt.date21
-						if dlb <= date21 and date21 <= dla:
+						if dlb <= date21 and date21+timedelta(days=1) <= dla:
 							context['dTJ21'] = date21
 
 							sTJ21 = lt.s_code21
@@ -2107,7 +2107,7 @@ class PDF_List(ListView):
 
 					if lt.date22:
 						date22 = lt.date22
-						if dlb <= date22 and date22 <= dla:
+						if dlb <= date22 and date22+timedelta(days=1) <= dla:
 							context['dTJ22'] = date22
 
 							sTJ22 = lt.s_code22
@@ -2142,7 +2142,7 @@ class PDF_List(ListView):
 
 					if lt.date23:
 						date23 = lt.date23
-						if dlb <= date23 and date23 <= dla:
+						if dlb <= date23 and date23+timedelta(days=1) <= dla:
 							context['dTJ23'] = date23
 
 							sTJ23 = lt.s_code23
@@ -2177,7 +2177,7 @@ class PDF_List(ListView):
 
 					if lt.date24:
 						date24 = lt.date24
-						if dlb <= date24 and date24 <= dla:
+						if dlb <= date24 and date24+timedelta(days=1) <= dla:
 							context['dTJ24'] = date24
 
 							sTJ24 = lt.s_code24
@@ -2420,7 +2420,7 @@ class LPG_List(ListView):
 							dd_list.append(dls)
 
 						### LPG.検針データ ###
-						if dlt ==  dls:
+						if dlt == dls:
 							# 日付
 							monLPG = datetime.strftime(lm.m_datetime, '%-m')
 							dayLPG = datetime.strftime(lm.m_datetime, '%-d')
@@ -3378,7 +3378,7 @@ class LPG_List(ListView):
 				for lt in LTs:
 					if lt.date00:
 						date00 = lt.date00
-						if dlb <= date00 and date00 <= dla:
+						if dlb <= date00 and date00+timedelta(days=1) <= dla:
 							context['dTJ00'] = date00
 
 							sTJ00 = lt.s_code00
@@ -3413,7 +3413,7 @@ class LPG_List(ListView):
 
 					if lt.date01:
 						date01 = lt.date01
-						if dlb <= date01 and date01 <= dla:
+						if dlb <= date01 and date01+timedelta(days=1) <= dla:
 							context['dTJ01'] = date01
 
 							sTJ01 = lt.s_code01
@@ -3448,7 +3448,7 @@ class LPG_List(ListView):
 
 					if lt.date02:
 						date02 = lt.date02
-						if dlb <= date02 and date02 <= dla:
+						if dlb <= date02 and date02+timedelta(days=1) <= dla:
 							context['dTJ02'] = date02
 
 							sTJ02 = lt.s_code02
@@ -3483,7 +3483,7 @@ class LPG_List(ListView):
 
 					if lt.date03:
 						date03 = lt.date03
-						if dlb <= date03 and date03 <= dla:
+						if dlb <= date03 and date03+timedelta(days=1) <= dla:
 							context['dTJ03'] = date03
 
 							sTJ03 = lt.s_code03
@@ -3518,7 +3518,7 @@ class LPG_List(ListView):
 
 					if lt.date04:
 						date04 = lt.date04
-						if dlb <= date04 and date04 <= dla:
+						if dlb <= date04 and date04+timedelta(days=1) <= dla:
 							context['dTJ04'] = date04
 
 							sTJ04 = lt.s_code04
@@ -3553,7 +3553,7 @@ class LPG_List(ListView):
 
 					if lt.date05:
 						date05 = lt.date05
-						if dlb <= date05 and date05 <= dla:
+						if dlb <= date05 and date05+timedelta(days=1) <= dla:
 							context['dTJ05'] = date05
 
 							sTJ05 = lt.s_code05
@@ -3588,7 +3588,7 @@ class LPG_List(ListView):
 
 					if lt.date06:
 						date06 = lt.date06
-						if dlb <= date06 and date06 <= dla:
+						if dlb <= date06 and date06+timedelta(days=1) <= dla:
 							context['dTJ06'] = date06
 
 							sTJ06 = lt.s_code06
@@ -3623,7 +3623,7 @@ class LPG_List(ListView):
 
 					if lt.date07:
 						date07 = lt.date07
-						if dlb <= date07 and date07 <= dla:
+						if dlb <= date07 and date07+timedelta(days=1) <= dla:
 							context['dTJ07'] = date07
 
 							sTJ07 = lt.s_code07
@@ -3658,7 +3658,7 @@ class LPG_List(ListView):
 
 					if lt.date08:
 						date08 = lt.date08
-						if dlb <= date08 and date08 <= dla:
+						if dlb <= date08 and date08+timedelta(days=1) <= dla:
 							context['dTJ08'] = date08
 
 							sTJ08 = lt.s_code08
@@ -3693,7 +3693,7 @@ class LPG_List(ListView):
 
 					if lt.date09:
 						date09 = lt.date09
-						if dlb <= date09 and date09 <= dla:
+						if dlb <= date09 and date09+timedelta(days=1) <= dla:
 							context['dTJ09'] = date09
 
 							sTJ09 = lt.s_code09
@@ -3728,7 +3728,7 @@ class LPG_List(ListView):
 
 					if lt.date10:
 						date10 = lt.date10
-						if dlb <= date10 and date10 <= dla:
+						if dlb <= date10 and date10+timedelta(days=1) <= dla:
 							context['dTJ10'] = date10
 
 							sTJ10 = lt.s_code10
@@ -3763,7 +3763,7 @@ class LPG_List(ListView):
 
 					if lt.date11:
 						date11 = lt.date11
-						if dlb <= date11 and date11 <= dla:
+						if dlb <= date11 and date11+timedelta(days=1) <= dla:
 							context['dTJ11'] = date11
 
 							sTJ11 = lt.s_code11
@@ -3798,7 +3798,7 @@ class LPG_List(ListView):
 
 					if lt.date12:
 						date12 = lt.date12
-						if dlb <= date12 and date12 <= dla:
+						if dlb <= date12 and date12+timedelta(days=1) <= dla:
 							context['dTJ12'] = date12
 
 							sTJ12 = lt.s_code12
@@ -3833,7 +3833,7 @@ class LPG_List(ListView):
 
 					if lt.date13:
 						date13 = lt.date13
-						if dlb <= date13 and date13 <= dla:
+						if dlb <= date13 and date13+timedelta(days=1) <= dla:
 							context['dTJ13'] = date13
 
 							sTJ13 = lt.s_code13
@@ -3868,7 +3868,7 @@ class LPG_List(ListView):
 
 					if lt.date14:
 						date14 = lt.date14
-						if dlb <= date14 and date14 <= dla:
+						if dlb <= date14 and date14+timedelta(days=1) <= dla:
 							context['dTJ14'] = date14
 
 							sTJ14 = lt.s_code14
@@ -3903,7 +3903,7 @@ class LPG_List(ListView):
 
 					if lt.date15:
 						date15 = lt.date15
-						if dlb <= date15 and date15 <= dla:
+						if dlb <= date15 and date15+timedelta(days=1) <= dla:
 							context['dTJ15'] = date15
 
 							sTJ15 = lt.s_code15
@@ -3938,7 +3938,7 @@ class LPG_List(ListView):
 
 					if lt.date16:
 						date16 = lt.date16
-						if dlb <= date16 and date16 <= dla:
+						if dlb <= date16 and date16+timedelta(days=1) <= dla:
 							context['dTJ16'] = date16
 
 							sTJ16 = lt.s_code16
@@ -3973,7 +3973,7 @@ class LPG_List(ListView):
 
 					if lt.date17:
 						date17 = lt.date17
-						if dlb <= date17 and date17 <= dla:
+						if dlb <= date17 and date17+timedelta(days=1) <= dla:
 							context['dTJ17'] = date17
 
 							sTJ17 = lt.s_code17
@@ -4008,7 +4008,7 @@ class LPG_List(ListView):
 
 					if lt.date18:
 						date18 = lt.date18
-						if dlb <= date18 and date18 <= dla:
+						if dlb <= date18 and date18+timedelta(days=1) <= dla:
 							context['dTJ18'] = date18
 
 							sTJ18 = lt.s_code18
@@ -4043,7 +4043,7 @@ class LPG_List(ListView):
 
 					if lt.date19:
 						date19 = lt.date19
-						if dlb <= date19 and date19 <= dla:
+						if dlb <= date19 and date19+timedelta(days=1) <= dla:
 							context['dTJ19'] = date19
 
 							sTJ19 = lt.s_code19
@@ -4078,7 +4078,7 @@ class LPG_List(ListView):
 
 					if lt.date20:
 						date20 = lt.date20
-						if dlb <= date20 and date20 <= dla:
+						if dlb <= date20 and date20+timedelta(days=1) <= dla:
 							context['dTJ20'] = date20
 
 							sTJ20 = lt.s_code20
@@ -4113,7 +4113,7 @@ class LPG_List(ListView):
 
 					if lt.date21:
 						date21 = lt.date21
-						if dlb <= date21 and date21 <= dla:
+						if dlb <= date21 and date21+timedelta(days=1) <= dla:
 							context['dTJ21'] = date21
 
 							sTJ21 = lt.s_code21
@@ -4148,7 +4148,7 @@ class LPG_List(ListView):
 
 					if lt.date22:
 						date22 = lt.date22
-						if dlb <= date22 and date22 <= dla:
+						if dlb <= date22 and date22+timedelta(days=1) <= dla:
 							context['dTJ22'] = date22
 
 							sTJ22 = lt.s_code22
@@ -4183,7 +4183,7 @@ class LPG_List(ListView):
 
 					if lt.date23:
 						date23 = lt.date23
-						if dlb <= date23 and date23 <= dla:
+						if dlb <= date23 and date23+timedelta(days=1) <= dla:
 							context['dTJ23'] = date23
 
 							sTJ23 = lt.s_code23
@@ -4218,7 +4218,7 @@ class LPG_List(ListView):
 
 					if lt.date24:
 						date24 = lt.date24
-						if dlb <= date24 and date24 <= dla:
+						if dlb <= date24 and date24+timedelta(days=1) <= dla:
 							context['dTJ24'] = date24
 
 							sTJ24 = lt.s_code24
