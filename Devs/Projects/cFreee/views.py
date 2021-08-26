@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.20 Update:2021.08.26" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.21 Update:2021.08.26" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -21,6 +21,8 @@ from django.views.generic import ListView
 
 from .forms import NameForm, BankForm
 from Finance.models import Name_Test20, Bank_Test20, SHARPnPOS
+from .Util.db_cinvoice import DB_cInvoice, DB_Address
+from .Util.deadline import DeadLine, DeadLine_List
 
 
 ### cInvoice_List ###
@@ -31,8 +33,79 @@ class cInvoice_List(ListView):
 	context_object_name = "nametb"
 	paginate_by = 30
 
+	def post(self, request, *args, **kwargs):
+		form = self.form_class(request.POST)
+		nid_post = request.POST['nid']
+		if form.is_valid():
+			return HttpResponseRedirect('/cFreee/cInvoice/%s' % nid_post)
+		return render(request, self.template_name, {'form': form})
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
+
+		## Search : g_code ##
+		context['form'] = NameForm()
+		context['gid'] = self.kwargs.get('nid')
+
+		## DeadLine : Setup ##
+		dd_list = list()
+
+		## * try: * dl = Ture ##
+		try:
+			dl = self.request.GET.get('dl', '')
+			dlstr = datetime.strptime(dl, '%Y-%m-%d')
+
+			dd = dlstr.day  # DeadLine : Day
+			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
+
+			## DB : Setup ##
+			names, IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, dld, dlm, bld, blm)
+
+			## DeadLine : Month & Secconde
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			try:
+				if BFs:
+					d_values = BFs
+				dd_list = DeadLine_List(dlms, d_values)
+				dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+				context['dds'] = dds
+			except Exception as e:
+				print("Exception - views.py / dl=True / LastDay.Check : %s" % e)
+
+			context['deadlines'] = dl
+			context['dlb'] = dlb
+			context['dla'] = dla
+			## End of LastDay : Check (dl = True) ##
+
+		## * end try: * dl = False ##
+		except Exception as e:
+			print("Exception - views.py / dl=False  : %s" % e)
+
+			## DB : Setup ##
+			names, IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, "", "", "", "")
+
+			## DeadLine : Month & Secconde
+			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
+			context['dlms'] = dlms
+
+			## LastDay : Check (dl = False) ##
+			try:
+				if BFs:
+					d_values = BFs
+				dd_list = DeadLine_List(dlms, d_values)
+				dds = sorted(set(dd_list), key=dd_list.index, reverse=True)
+				context['dds'] = dds
+			except Exception as e:
+				print("Exception - views.py / dl=False / LastDay.Check : %s" % e)
+
+			context['deadlines'] = dl
+			## End of LastDay : Check (dl = False) ##
+
+		## name : Setup ##
+		for name in names:
+			context['names'] = name.g_code.name
 
 		return context
 
