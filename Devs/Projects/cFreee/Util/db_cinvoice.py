@@ -5,10 +5,11 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.Util.DB.cInvoice.py - Ver.3.92.23 Update:2021.08.27" |
+#//| "VsV.Py3.Dj.Util.DB.cInvoice.py - Ver.3.92.24 Update:2021.08.27" |
 #//+------------------------------------------------------------------+
 from Finance.models import Invoice_Test20, Bank_Test20, Value_Test30, Add_Test20, SHARPnPOS
 # from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30, Add_Test20
+from django.db.models import Q
 
 ### Google.API ###
 import gspread
@@ -65,9 +66,15 @@ def DB_cInvoice(self, dld, dlm, bld, blm):
 
     ## IVs ##
     if dld:
-        IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('s_code', 'car_code', 'm_datetime')
+        IVs = SHARPnPOS.objects.exclude(Q(p_code=91), Q(p_code=92), Q(p_code=93), Q(p_code=1), Q(p_code=50),Q(p_code=31)).filter(g_code__exact=self.kwargs.get('nid'), r_code=9, m_datetime__gte=dld, m_datetime__lte=dlm).order_by('s_code', 'car_code', 'm_datetime')
     else:
-        IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('s_code', 'car_code', 'm_datetime')
+        IVs = SHARPnPOS.objects.exclude(Q(p_code=91), Q(p_code=92), Q(p_code=93), Q(p_code=1), Q(p_code=50),Q(p_code=31)).filter(g_code__exact=self.kwargs.get('nid'), r_code=9).order_by('s_code', 'car_code', 'm_datetime')
+
+    # (Def) IVs = SHARPnPOS.objects.exclude(Q(p_code=91), Q(p_code=92), Q(p_code=93), Q(p_code=1), Q(p_code=50), Q(p_code=31)).filter(g_code__exact=self.kwargs.get('nid'), p_code=10, r_code=9).order_by('s_code', 'car_code', 'm_datetime')
+    # if dld:
+        # IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid'), m_datetime__gte=dld, m_datetime__lte=dlm).select_related('g_code').select_related('s_code').order_by('s_code', 'car_code', 'm_datetime')
+    # else:
+        # IVs = Invoice_Test20.objects.filter(g_code__uid=self.kwargs.get('nid')).select_related('g_code').select_related('s_code').order_by('s_code', 'car_code', 'm_datetime')
 
     ## bIVs ##
     if bld:
