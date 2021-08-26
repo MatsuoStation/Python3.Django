@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.22 Update:2021.08.26" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.23 Update:2021.08.27" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -18,6 +18,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 ### MatsuoStation.Com ###
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 from .forms import NameForm, BankForm
 from Finance.models import Name_Test20, Bank_Test20, SHARPnPOS
@@ -59,7 +60,8 @@ class cInvoice_List(ListView):
 			dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
 
 			## DB : Setup ##
-			names, IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, dld, dlm, bld, blm)
+			IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, dld, dlm, bld, blm)
+			# names, IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, dld, dlm, bld, blm)
 
 			## DeadLine : Month & Secconde
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
@@ -84,7 +86,8 @@ class cInvoice_List(ListView):
 			print("Exception - views.py / dl=False  : %s" % e)
 
 			## DB : Setup ##
-			names, IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, "", "", "", "")
+			IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, "", "", "", "")
+			# names, IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, "", "", "", "")
 
 			## DeadLine : Month & Secconde
 			dlms = lastmonths.dates('m_datetime', 'day', order='ASC')
@@ -109,6 +112,18 @@ class cInvoice_List(ListView):
 
 		name02 = GAS_SpSh_Name(self)
 		context['name02'] = name02
+
+		## Paginator : Setup ##
+		paginator = Paginator(IVs, 30)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+		try:
+			IVs = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			IVs = paginator.page(1)
+		context['ivs'] = IVs
 
 		return context
 
