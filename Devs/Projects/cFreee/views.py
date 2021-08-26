@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.21 Update:2021.08.26" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.22 Update:2021.08.26" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -21,7 +21,7 @@ from django.views.generic import ListView
 
 from .forms import NameForm, BankForm
 from Finance.models import Name_Test20, Bank_Test20, SHARPnPOS
-from .Util.db_cinvoice import DB_cInvoice, DB_Address
+from .Util.db_cinvoice import DB_cInvoice, DB_Address, GAS_SpSh_Name
 from .Util.deadline import DeadLine, DeadLine_List
 
 
@@ -104,8 +104,11 @@ class cInvoice_List(ListView):
 			## End of LastDay : Check (dl = False) ##
 
 		## name : Setup ##
-		for name in names:
-			context['names'] = name.g_code.name
+		#(Def) for name in names:
+		#(Def)	context['names'] = name.g_code.name
+
+		name02 = GAS_SpSh_Name(self)
+		context['name02'] = name02
 
 		return context
 

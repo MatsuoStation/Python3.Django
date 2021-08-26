@@ -5,9 +5,58 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.Util.DB.cInvoice.py - Ver.3.92.21  Update:2021.08.26" |
+#//| "VsV.Py3.Dj.Util.DB.cInvoice.py - Ver.3.92.22 Update:2021.08.26" |
 #//+------------------------------------------------------------------+
 from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30, Add_Test20
+
+### Google.API ###
+import gspread
+import json
+from oauth2client.service_account import ServiceAccountCredentials
+
+## GAS : SpreadSheet ##
+def GAS_SpSh_Name(self):
+    ## GAS : JSON - Setup ##
+    gJsonFile = "../matsuostationapi-ca6cfa70cc81.json"
+
+    ## GAS : SpreadSheet - Setup ##
+    spsh_name = 'aFreeeAPI_PartnersList'
+    ws = connect_gspread(gJsonFile, spsh_name)
+    ws_list = ws.worksheets()
+
+    ## GAS : Search ##
+    nid = self.kwargs.get('nid')
+
+    # 全行抽出 - 行検索
+    all_of_lists = ws_list[0].get_all_values()
+    for i in all_of_lists:
+        if str(nid) == i[3]:
+            return i[2]
+        else:
+            pass
+
+    # 行検索
+    # SC1_of_lists = ws_list[0].col_values(4)
+    # SC1_of_lists_in = [s for s in SC1_of_lists if s == str(nid) in s]
+    # for i in SC1_of_lists_in:
+    #    return i
+
+    ## GAS : Read ##
+    # cell_value = ws_list[0].acell('A1').value
+    # cell_value = "Test"
+
+    # return cell_value
+
+### Google.API : Connect ###
+def connect_gspread(jsonf, spsh):
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(jsonf, scope)
+    gc = gspread.authorize(credentials)
+
+    SPREADSHEET_KEY = spsh
+
+    worksheet = gc.open(SPREADSHEET_KEY)
+    return worksheet
 
 ## DB_cInvoice ##
 def DB_cInvoice(self, dld, dlm, bld, blm):
