@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.13 Update:2021.07.30" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.20 Update:2021.08.26" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -16,7 +16,26 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 # Create your views here.
 ### MatsuoStation.Com ###
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import ListView
+
+from .forms import NameForm, BankForm
+from Finance.models import Name_Test20, Bank_Test20, SHARPnPOS
+
+
+### cInvoice_List ###
+class cInvoice_List(ListView):
+	model = SHARPnPOS
+	form_class = NameForm
+	template_name = 'clist.html'
+	context_object_name = "nametb"
+	paginate_by = 30
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		return context
+
 
 def GAS(request):
 

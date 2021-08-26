@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.cFreee.urls.py - Ver.3.92.10 Update:2021.07.30" |
+#//|      "VsV.Py3.Dj.cFreee.urls.py - Ver.3.92.20 Update:2021.08.26" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -35,4 +35,7 @@ urlpatterns = [
     ### /cFreee/ ###
     path('Python/', views.python, name='python'),
     path('GAS/', views.GAS, name='GAS'),
+
+    path('cInvoice/', views.cInvoice_List.as_view(), name='cInvoice_List'),
+    # path('<int:nid>/', views.aInvoice_List.as_view(), name='ainvoice_list'),
 ]
