@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.23 Update:2021.08.27" |
+#//|     "VsV.Py3.Dj.cFreee.Views.py - Ver.3.92.25 Update:2021.08.31" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -22,7 +22,7 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 from .forms import NameForm, BankForm
 from Finance.models import Name_Test20, Bank_Test20, SHARPnPOS
-from .Util.db_cinvoice import DB_cInvoice, DB_Address, GAS_SpSh_Name
+from .Util.db_cinvoice import DB_cInvoice, DB_Address, GAS_SpSh
 from .Util.deadline import DeadLine, DeadLine_List
 
 
@@ -87,6 +87,7 @@ class cInvoice_List(ListView):
 
 			## DB : Setup ##
 			IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, "", "", "", "")
+			name02, checkDay, pdfFormat = GAS_SpSh(self)
 			# names, IVs, bIVs, lastmonths, BFs = DB_cInvoice(self, "", "", "", "")
 
 			## DeadLine : Month & Secconde
@@ -110,8 +111,12 @@ class cInvoice_List(ListView):
 		#(Def) for name in names:
 		#(Def)	context['names'] = name.g_code.name
 
-		name02 = GAS_SpSh_Name(self)
+		# name02 = GAS_SpSh_Name(self)
 		context['name02'] = name02
+
+		## CheckDay & PDF.Format ###
+		context['cDay'] = checkDay
+		context['fPDF'] = pdfFormat
 
 		## Paginator : Setup ##
 		paginator = Paginator(IVs, 30)

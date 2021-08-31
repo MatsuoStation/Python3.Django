@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.TLs.cList.html - Ver.3.92.24 Update:2021.08.26" |
+#//|      "VsV.Py3.Dj.TLs.cList.html - Ver.3.92.25 Update:2021.08.31" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -50,7 +50,7 @@
                     &k_am={{ ku_am|floatformat:2|intcomma }}&k_vl={{ ku_vl|intcomma }}
                     &t_am={{ tu_am|floatformat:2|intcomma }}&t_vl={{ tu_vl|intcomma }}&n_oil={{ no_oil|intcomma }}" target="_blank">PDF</a>
               {% else %}
-                <!-- {{ names }} -->{{ name02 }} : {{ gid }}
+                <!-- {{ names }} -->{{ name02 }} : {{ gid }} / {{ cDay }} : {{ fPDF }}
               {% endif %}
           </p>
 

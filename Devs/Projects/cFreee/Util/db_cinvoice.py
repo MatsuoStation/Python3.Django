@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.Util.DB.cInvoice.py - Ver.3.92.24 Update:2021.08.27" |
+#//| "VsV.Py3.Dj.Util.DB.cInvoice.py - Ver.3.92.25 Update:2021.08.31" |
 #//+------------------------------------------------------------------+
 from Finance.models import Invoice_Test20, Bank_Test20, Value_Test30, Add_Test20, SHARPnPOS
 # from Finance.models import Invoice_Test20, Name_Test20, Bank_Test20, Value_Test30, Add_Test20
@@ -17,7 +17,7 @@ import json
 from oauth2client.service_account import ServiceAccountCredentials
 
 ## GAS : SpreadSheet ##
-def GAS_SpSh_Name(self):
+def GAS_SpSh(self):
     ## GAS : JSON - Setup ##
     gJsonFile = "../matsuostationapi-ca6cfa70cc81.json"
 
@@ -33,7 +33,9 @@ def GAS_SpSh_Name(self):
     all_of_lists = ws_list[0].get_all_values()
     for i in all_of_lists:
         if str(nid) == i[3]:
-            return i[2]
+            Name02 = i[2]
+            checkDay, PdfFormat = i[5].split(',')
+            return Name02, checkDay, PdfFormat
         else:
             pass
 
