@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.74 Update:2021.01.12" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.75 Update:2021.09.01" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -432,14 +432,14 @@ class vInvoice_List(ListView):
 								slip_list.append(-1)
 							else:
 								slip_list.append(1)
-						elif iv.s_code.uid == "10100":
+						elif iv.s_code.uid == "10100" or iv.s_code.uid == "17100" or iv.s_code.uid == "14000":
 							reg_am_list.append(cAm/100)
 							reg_list.append(sv)
 							if iv.red_code:
 								slip_list.append(-1)
 							else:
 								slip_list.append(1)
-						elif iv.s_code.uid == "10200":
+						elif iv.s_code.uid == "10200" or iv.s_code.uid == "17200" or iv.s_code.uid == "13000":
 							ku_am_list.append(cAm/100)
 							ku_list.append(sv)
 							kc_tax = kTax_Cal(iv.s_code.uid, cAm)
@@ -458,7 +458,7 @@ class vInvoice_List(ListView):
 						# total_list.append(sv)
 						tax_list.append(cTax)
 
-						if iv.value == 0 and iv.s_code.uid == "10500":
+						if iv.value == 0 and (iv.s_code.uid == "10500" or iv.s_code.uid == "17500"):
 							tu_am_list.append(cAm/100)
 							# inVl_Cal(sc, gc, am, vl, tax, red, md):
 							tu_list.append(sv-cTax)
@@ -467,7 +467,7 @@ class vInvoice_List(ListView):
 								slip_list.append(-1)
 							else:
 								slip_list.append(1)
-						elif iv.s_code.uid == "10500":
+						elif iv.s_code.uid == "10500" or iv.s_code.uid == "17500":
 							tu_am_list.append(cAm/100)
 							tu_list.append(sv-cTax)
 							ntax_list.append(sv-cTax)
@@ -498,7 +498,7 @@ class vInvoice_List(ListView):
 						bntax_list.append(sv)
 						btax_list.append(cTax)
 
-						if biv.s_code.uid == "10200":
+						if biv.s_code.uid == "10200" or biv.s_code.uid == "17200" or biv.s_code.uid == "13000":
 							kc_tax = kTax_Cal(biv.s_code.uid, cAm)
 							bku_tx_list.append(kc_tax)
 
@@ -507,9 +507,9 @@ class vInvoice_List(ListView):
 						sv, cTax, cAm = nOIL_Cal(biv.s_code.uid, biv.g_code.uid, biv.amount, biv.value, biv.tax, jtax, biv.red_code, biv.m_datetime)
 						btax_list.append(cTax)
 
-						if biv.value == 0 and biv.s_code.uid == "10500":
+						if biv.value == 0 and (biv.s_code.uid == "10500" or biv.s_code.uid == "17500"):
 							bntax_list.append(sv - cTax)
-						elif biv.s_code.uid == "10500":
+						elif biv.s_code.uid == "10500" or biv.s_code.uid == "17500":
 							bntax_list.append(sv - cTax)
 						else:
 							bntax_list.append(sv-cTax)

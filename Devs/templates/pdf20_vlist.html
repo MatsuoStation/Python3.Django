@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.63 Update:2021.01.09" |
+#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.75 Update:2021.09.01" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -230,9 +230,9 @@
                 </thead>
                 {% endif %}
             {% endfor %}
-            <!-- レギュラー(10100) -->
+            <!-- レギュラー(10100) or 配達レギュラー(17100,14000) -->
             {% for iv in ivs %}
-                {% if iv.s_code.uid == "10100" %}
+                {% if iv.s_code.uid == "10100" or iv.s_code.uid == "17100" or iv.s_code.uid == "14000" %}
                 <thead>
                 <tr style="height: 15.5px; vertical-align: bottom;">
                     <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>
@@ -254,9 +254,9 @@
                 </thead>
                 {% endif %}
             {% endfor %}
-            <!-- 軽油(10200) -->
+            <!-- 軽油(10200) or 配達軽油(17200,13000) -->
             {% for iv in ivs %}
-                {% if iv.s_code.uid == "10200" %}
+                {% if iv.s_code.uid == "10200" or iv.s_code.uid == "17200" or iv.s_code.uid == "13000"  %}
                 <thead>
                 <tr style="height: 15.5px; vertical-align: bottom;">
                     <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>
@@ -291,9 +291,9 @@
                 </tr>
                 </thead>
             {% endif %}
-            <!-- 灯油(10500)  -->
+            <!-- 灯油(10500) or 配達灯油(17500)  -->
             {% for iv in ivs %}
-                {% if iv.s_code.uid == "10500" %}
+                {% if iv.s_code.uid == "10500" or iv.s_code.uid == "17500" %}
                 <thead>
                 <tr style="height: 15.5px; vertical-align: bottom;">
                     <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>

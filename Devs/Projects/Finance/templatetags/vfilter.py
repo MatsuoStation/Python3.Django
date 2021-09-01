@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.31 Update:2021.01.04" |
+#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.75 Update:2021.09.01" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
@@ -83,7 +83,7 @@ def check_tax(sc_gc_am_vl_tax_red, md):
     # 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収
     if SC_Check(sc) == "Cash":
         sv, cTax = Cash_Cal(sc, vl)
-    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300)
+    # ハイオク(10000) or レギュラー(10100) or 配達レギュラー(17100,14000) or 軽油(10200) or 配達軽油(17200,13000) or 免税軽油(10300)
     elif SC_Check(sc) == "OIL":
         sv, cTax, cAm = OIL_Cal(sc, gc, am, vl, tax, jtax, red, md)
         # sv, cTax = OIL_Cal(sc)
@@ -114,8 +114,8 @@ def red_value(value, rv):
 @register.filter("s_tax")
 def s_tax(sc, vl):
     # if OIL.SC >= 10000 AND OIL.SC <= 10600:
-    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) or 免税軽油(10300)
-    if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300":
+    # ハイオク(10000) or レギュラー(10100) or 配達レギュラー(17100,14000) or 軽油(10200) or 免税軽油(10300) or 配達軽油(17200,13000)
+    if sc == "10000" or sc == "10100" or sc == "17100" or sc == "14000" or sc == "10200" or sc == "10300" or sc == "17200" or sc == "13000":
     # if sc == "10000" or sc == "10100" or sc == "10300":
     # if sc == "10000" or sc == "10100" or sc == "10200" or sc == "10300" or sc == "10500" or sc == "10600":
         return str("")
