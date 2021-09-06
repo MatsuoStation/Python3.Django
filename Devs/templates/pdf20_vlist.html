@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.75 Update:2021.09.01" |
+#//|"VsV.Py3.Dj.TLs.PDF20_vList.html - Ver.3.80.76 Update:2021.09.06" |
 #//+------------------------------------------------------------------+
 -->
 {% load sass_tags %}
@@ -315,9 +315,9 @@
                 </thead>
                 {% endif %}
             {% endfor %}
-            <!-- 免税軽油(10300) or 重油(10600) or 油以外 -->
+            <!-- 免税軽油(10300) or 配達免税軽油(17300,11000) or 重油(10600) or 油以外 -->
             {% for iv in ivs %}
-                {% if iv.s_code.uid == "10300" or iv.s_code.uid == "10600" or iv.s_code.uid >= "20000" %}
+                {% if iv.s_code.uid == "10300" or iv.s_code.uid == "17300" or iv.s_code.uid == "11000" or iv.s_code.uid == "10600" or iv.s_code.uid >= "20000" %}
                 <thead>
                 <tr style="height: 15.5px; vertical-align: bottom;">
                     <td style="font-size: 18px; text-align: center; width: 12%;">{{ iv.m_datetime.date.month }}/{{ iv.m_datetime.date.day }}</td>
