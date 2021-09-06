@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.40 Update:2021.08.25" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.41 Update:2021.09.01" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -1347,6 +1347,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ00 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name00'] = s_code_name
 
 							aTJ00 = lt.amount00
@@ -1382,6 +1384,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ01 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name01'] = s_code_name
 
 							aTJ01 = lt.amount01
@@ -1417,6 +1421,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ02 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name02'] = s_code_name
 
 							aTJ02 = lt.amount02
@@ -1452,6 +1458,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ03 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name03'] = s_code_name
 
 							aTJ03 = lt.amount03
@@ -1487,6 +1495,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ04 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name04'] = s_code_name
 
 							aTJ04 = lt.amount04
@@ -1522,6 +1532,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ05 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name05'] = s_code_name
 
 							aTJ05 = lt.amount05
@@ -1557,6 +1569,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ06 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name06'] = s_code_name
 
 							aTJ06 = lt.amount06
@@ -1592,6 +1606,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ07 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name07'] = s_code_name
 
 							aTJ07 = lt.amount07
@@ -1627,6 +1643,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ08 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name08'] = s_code_name
 
 							aTJ08 = lt.amount08
@@ -1662,6 +1680,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ09 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name09'] = s_code_name
 
 							aTJ09 = lt.amount09
@@ -1697,6 +1717,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ10 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name10'] = s_code_name
 
 							aTJ10 = lt.amount10
@@ -1732,6 +1754,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ11 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name11'] = s_code_name
 
 							aTJ11 = lt.amount11
@@ -1767,6 +1791,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ12 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name12'] = s_code_name
 
 							aTJ12 = lt.amount12
@@ -1802,6 +1828,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ13 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name13'] = s_code_name
 
 							aTJ13 = lt.amount13
@@ -1837,6 +1865,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ14 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name14'] = s_code_name
 
 							aTJ14 = lt.amount14
@@ -1872,6 +1902,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ15 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name15'] = s_code_name
 
 							aTJ15 = lt.amount15
@@ -1907,6 +1939,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ16 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name16'] = s_code_name
 
 							aTJ16 = lt.amount16
@@ -1942,6 +1976,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ17 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name17'] = s_code_name
 
 							aTJ17 = lt.amount17
@@ -1977,6 +2013,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ18 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name18'] = s_code_name
 
 							aTJ18 = lt.amount18
@@ -2012,6 +2050,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ19 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name19'] = s_code_name
 
 							aTJ19 = lt.amount19
@@ -2047,6 +2087,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ20 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name20'] = s_code_name
 
 							aTJ20 = lt.amount20
@@ -2082,6 +2124,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ21 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name21'] = s_code_name
 
 							aTJ21 = lt.amount21
@@ -2117,6 +2161,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ22 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name22'] = s_code_name
 
 							aTJ22 = lt.amount22
@@ -2152,6 +2198,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ23 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name23'] = s_code_name
 
 							aTJ23 = lt.amount23
@@ -2187,6 +2235,8 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ24 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name24'] = s_code_name
 
 							aTJ24 = lt.amount24
@@ -3388,6 +3438,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ00 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name00'] = s_code_name
 
 							aTJ00 = lt.amount00
@@ -3423,6 +3475,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ01 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name01'] = s_code_name
 
 							aTJ01 = lt.amount01
@@ -3458,6 +3512,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ02 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）02"
+							if sTJ00 == "98000":
+								s_code_name = "配達代02"
 							context['sTJ_name02'] = s_code_name
 
 							aTJ02 = lt.amount02
@@ -3493,6 +3551,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ03 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name03'] = s_code_name
 
 							aTJ03 = lt.amount03
@@ -3528,6 +3588,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ04 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name04'] = s_code_name
 
 							aTJ04 = lt.amount04
@@ -3563,6 +3625,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ05 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name05'] = s_code_name
 
 							aTJ05 = lt.amount05
@@ -3598,6 +3662,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ06 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name06'] = s_code_name
 
 							aTJ06 = lt.amount06
@@ -3633,6 +3699,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ07 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name07'] = s_code_name
 
 							aTJ07 = lt.amount07
@@ -3668,6 +3736,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ08 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name08'] = s_code_name
 
 							aTJ08 = lt.amount08
@@ -3703,6 +3773,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ09 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name09'] = s_code_name
 
 							aTJ09 = lt.amount09
@@ -3738,6 +3810,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ10 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name10'] = s_code_name
 
 							aTJ10 = lt.amount10
@@ -3773,6 +3847,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ11 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name11'] = s_code_name
 
 							aTJ11 = lt.amount11
@@ -3808,6 +3884,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ12 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name12'] = s_code_name
 
 							aTJ12 = lt.amount12
@@ -3843,6 +3921,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ13 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name13'] = s_code_name
 
 							aTJ13 = lt.amount13
@@ -3878,6 +3958,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ14 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name14'] = s_code_name
 
 							aTJ14 = lt.amount14
@@ -3913,6 +3995,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ15 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name15'] = s_code_name
 
 							aTJ15 = lt.amount15
@@ -3948,6 +4032,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ16 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name16'] = s_code_name
 
 							aTJ16 = lt.amount16
@@ -3983,6 +4069,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ17 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name17'] = s_code_name
 
 							aTJ17 = lt.amount17
@@ -4018,6 +4106,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ18 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name18'] = s_code_name
 
 							aTJ18 = lt.amount18
@@ -4053,6 +4143,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ19 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name19'] = s_code_name
 
 							aTJ19 = lt.amount19
@@ -4088,6 +4180,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ20 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name20'] = s_code_name
 
 							aTJ20 = lt.amount20
@@ -4123,6 +4217,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ21 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name21'] = s_code_name
 
 							aTJ21 = lt.amount21
@@ -4158,6 +4254,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ22 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name22'] = s_code_name
 
 							aTJ22 = lt.amount22
@@ -4193,6 +4291,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ23 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name23'] = s_code_name
 
 							aTJ23 = lt.amount23
@@ -4228,6 +4328,8 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ24 == "10600":
 								s_code_name = "A重油"
+							if sTJ00 == "17500":
+								s_code_name = "灯油（配達）"
 							context['sTJ_name24'] = s_code_name
 
 							aTJ24 = lt.amount24
