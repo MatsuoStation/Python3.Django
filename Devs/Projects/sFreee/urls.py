@@ -1,11 +1,11 @@
 #//+------------------------------------------------------------------+
-#//|                       VerysVeryInc.Python3.Django.config.urls.py |
+#//|                       VerysVeryInc.Python3.Django.sFreee.urls.py |
 #//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
 #//|                 https://github.com/MatsuoStation/Python3.Django/ |
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|  "VsV.Python3.Django.cnf.urls.py - Ver.3.93.1 Update:2021.09.27" |
+#//|       "VsV.Py3.Dj.sFreee.urls.py - Ver.3.93.1 Update:2021.09.27" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -22,32 +22,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-# (Def.OK) from django.urls import path
+from django.urls import path
 
-### MatsuoStatino.Com ###
-from django.urls import include, path
+### MatsuoStation.Com ###
+from . import views
 
+app_name = 'sFreee'
 urlpatterns = [
-	### MatsuoStation.Com ###
-	path('', include('Projects.Index.urls')),
-    path('Finance/', include('Projects.Finance.urls')),
-	path('Invoice/', include('Projects.Invoice.urls')),
-    path('SS/', include('Projects.SS.urls')),
-    path('LPG/', include('Projects.LPG.urls')),
-    path('Freee/', include('Projects.Freee.urls')),
-
-    path('FreeeAPI/', include('Projects.FreeeAPI.urls')),
-    path('Py3PDF/', include('Projects.Py3PDF.urls')),
-
-    path('nInvoice/', include('Projects.nInvoice.urls')),
-    path('vInvoice/', include('Projects.vInvoice.urls')),
-    path('aInvoice/', include('Projects.aInvoice.urls')),
-
-    path('cFreee/', include('Projects.cFreee.urls')),
-
-    path('sFreee/', include('Projects.sFreee.urls')),
-
-	### Config ###
-	path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    path('', views.index, name='index'),
 ]
