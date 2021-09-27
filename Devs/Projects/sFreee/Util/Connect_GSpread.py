@@ -5,16 +5,21 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.sFreee.Util.GSp.py - Ver.3.93.3 Update:2021.08.27" |
+#//|   "VsV.Py3.Dj.sFreee.Util.GSp.py - Ver.3.93.4 Update:2021.08.27" |
 #//+------------------------------------------------------------------+
 ### Google.API ###
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 ### Google.API : Connect ###
-def connect_gspread(jsonf, spsh):
+def connect_gspread(spsh):
+# def connect_gspread(jsonf, spsh):
+	## GAS : JSON - Setup ##
+	gJsonFile = "../matsuostationapi-d4eecb8e23c3.json"
+
 	scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-	credentials = ServiceAccountCredentials.from_json_keyfile_name(jsonf, scope)
+	credentials = ServiceAccountCredentials.from_json_keyfile_name(gJsonFile, scope)
+	# credentials = ServiceAccountCredentials.from_json_keyfile_name(jsonf, scope)
 	gc = gspread.authorize(credentials)
 
 	SPREADSHEET_KEY = spsh
