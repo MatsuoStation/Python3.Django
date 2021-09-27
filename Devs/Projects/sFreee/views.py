@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.6 Update:2021.08.27" |
+#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.7 Update:2021.08.28" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -20,6 +20,8 @@ from .Util.Connect_GSpread import connect_gspread
 
 ### MySQL ###
 from Finance.models import SHARPnPOS_1501_2107
+from datetime import datetime, timedelta
+from .Util.deadline import DeadLine
 
 ### Google Apps Script ###
 class GAS(ListView):
@@ -44,13 +46,34 @@ class GAS(ListView):
 		ws = connect_gspread(spsh_name)
 		ws_list = ws.worksheets()
 
-		## Search : g_code ##
+		## Search : m_datetime ##
 		context['form'] = DateForm()
-		mdate_get = self.kwargs.get('mdate')
-		context['mdate'] = mdate_get
+		if self.kwargs.get('mdate'):
+			mdate = self.kwargs.get('mdate')
+		else:
+			mdate = '2000-01'
+
+		## * try: * dl = Ture ##
+		try:
+			dl = mdate + '-01'
+			dlstr = datetime.strptime(dl, '%Y-%m-%d')
+
+			# dd = dlstr.day  # DeadLine : Day
+			dlb, dla = DeadLine(dlstr)
+			# dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
+
+		## * end try: * dl = False ##
+		except Exception as e:
+			print("Exception - views.py / dl=False  : %s" % e)
+
+		context['mdate'] = mdate
+		context['dlb'] = dlb
+		context['dla'] = dla
+
 
 		## GAS : シート追加
-		newShName = mdate_get.replace('20', '').replace('-', '')
+		''' (OK)
+		newShName = dl.replace('20', '').replace('-', '')
 		ws_list_value = 0
 
 		for i in range(len(ws_list)):
@@ -65,6 +88,7 @@ class GAS(ListView):
 			ws.duplicate_sheet(source_sheet_id=ws_list_cpid, new_sheet_name=newShName, insert_sheet_index=len(ws_list))
 			# ws.add_worksheet(title=newShName, rows=100, cols=25)
 		# context['ws_list_vl'] = ws_list_value
+		'''
 
 		return context
 
