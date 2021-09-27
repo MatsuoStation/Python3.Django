@@ -108,6 +108,8 @@ ENV/
 # MatsuoStation.Com
 .DS_Store
 .local
+1
+Devs/.gitignore
 Django_Setup.*
 BackUp/
 MySQL_CSV_Setup.txt
@@ -210,3 +212,6 @@ Devs/static/bootstrap-4.1.1*
 
 Devs/Projects/cFreee/__init__.py
 Devs/Projects/cFreee/migrations/
+
+Devs/Projects/sFreee/__init__.py
+Devs/Projects/sFreee/migrations/
