@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.5 Update:2021.08.27" |
+#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.6 Update:2021.08.27" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -39,10 +39,32 @@ class GAS(ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
+		## GAS : SpreadSheet - Setup ##
+		spsh_name = "SS_U"
+		ws = connect_gspread(spsh_name)
+		ws_list = ws.worksheets()
+
 		## Search : g_code ##
 		context['form'] = DateForm()
 		mdate_get = self.kwargs.get('mdate')
 		context['mdate'] = mdate_get
+
+		## GAS : シート追加
+		newShName = mdate_get.replace('20', '').replace('-', '')
+		ws_list_value = 0
+
+		for i in range(len(ws_list)):
+			# context['ws_list_len'] = len(ws_list)
+			# context['ws_list_name'] = ws_list[i].title
+			if (ws_list[i].title == newShName):
+				ws_list_value = ws_list_value + 1
+		ws_list_cpid = ws_list[0].id
+		# context['ws_list_cpid'] = ws_list_cpid
+
+		if ws_list_value == 0:
+			ws.duplicate_sheet(source_sheet_id=ws_list_cpid, new_sheet_name=newShName, insert_sheet_index=len(ws_list))
+			# ws.add_worksheet(title=newShName, rows=100, cols=25)
+		# context['ws_list_vl'] = ws_list_value
 
 		return context
 
