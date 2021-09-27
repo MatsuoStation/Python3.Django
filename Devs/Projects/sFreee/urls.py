@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|       "VsV.Py3.Dj.sFreee.urls.py - Ver.3.93.2 Update:2021.09.27" |
+#//|       "VsV.Py3.Dj.sFreee.urls.py - Ver.3.93.5 Update:2021.09.27" |
 #//+------------------------------------------------------------------+
 """Devs URL Configuration
 
@@ -33,5 +33,6 @@ urlpatterns = [
     path('', views.index, name='index'),
 
     ### /sFreee/ ###
-    path('GAS/', views.GAS, name='GAS'),
+    path('GAS/', views.GAS.as_view(), name='GAS'),
+    path('GAS/<mdate>/', views.GAS.as_view(), name='GAS'),
 ]

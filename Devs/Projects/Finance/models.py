@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.91.16 Update:2021.03.30" |
+#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.93.5 Update:2021.09.27" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -15,6 +15,12 @@ from django.conf import settings
 
 
 # settings.DATETIME_FORMAT
+###* SHARPnPOS *###  ( m_datetime : DateTimeField )
+class SHARPnPOS_1501_2107(models.Model):
+	class Meta:
+		managed = False
+		db_table = 'SHARPnPOS_1501_2107'
+
 
 ###* ALLFreee_Partner *### ( m_datetime : DateTimeField )
 class ALLFreee_Partners(models.Model):
