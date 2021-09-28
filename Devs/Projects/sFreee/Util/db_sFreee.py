@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.Util.DB.sFreee.py - Ver.3.93.9 Update:2021.09.28" |
+#//|   "VsV.Py3.Dj.Util.DB.sFreee.py - Ver.3.93.10 Update:2021.09.28" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 # import django
@@ -28,4 +28,4 @@ def DB_sFreee(self, dlb, dla):
     # for q in SHARPnPOS_1501_2107.objects.all().filter(m_datetime__gte=dlb):
     #     SnPs = q
 
-    return SnPs, SnP00, SnP20, SnP30, SnP40, SnP50, SnP90
+    return SnPs, SnP20, SnP30, SnP40, SnP50, SnP90

@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.9 Update:2021.08.28" |
+#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.10 Update:2021.08.28" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -18,6 +18,9 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 ### Google.API ###
 from .Util.Connect_GSpread import connect_gspread
+import pandas as pd
+import numpy as np
+# import seaborn as sns
 
 ### MySQL ###
 from Finance.models import SHARPnPOS_1501_2107
@@ -65,10 +68,8 @@ class GAS(ListView):
 			dlb, dla = DeadLine(dlstr)
 
 			## DB : Setup ##
-			SnPs, SnP00, SnP20, SnP30, SnP40, SnP50, SnP90 = DB_sFreee(self, dlb, dla)
+			SnPs, SnP20, SnP30, SnP40, SnP50, SnP90 = DB_sFreee(self, dlb, dla)
 			# SnPs = DB_sFreee(self, dlb, dla)
-
-
 
 		## * end try: * dl = False ##
 		except Exception as e:
@@ -82,12 +83,17 @@ class GAS(ListView):
 			dlb, dla = DeadLine(dlstr)
 
 			## DB : Setup ##
-			SnPs, SnP00, SnP20, SnP30, SnP40, SnP50, SnP90 = DB_sFreee(self, dlb, dla)
+			SnPs, SnP20, SnP30, SnP40, SnP50, SnP90 = DB_sFreee(self, dlb, dla)
 			# SnPs = DB_sFreee(self, dlb, dla)
 
 		context['mdate'] = mdate
 		context['dlb'] = dlb
 		context['dla'] = dla
+
+		## GAS : 初期データ設定 ##
+		SnPs_count = len(SnPs)
+		context['snps_count'] = SnPs_count
+		SnPsVs = SnPs
 
 		## Paginator : Setup ##
 		paginator = Paginator(SnPs, 10)
@@ -105,10 +111,33 @@ class GAS(ListView):
 		context['snps'] = SnPs
 		# context['snps'] = SnP90
 
+		## GAS : データ設定 ##
+		snp_list = list()
 
-		## GAS : シート追加
-		''' (OK)
-		newShName = dl.replace('20', '').replace('-', '')
+		for snpv in SnPs:
+		# for snpv in SnPsVs:
+			''' CSV項目 : / 収支区分, 管理番号, 発生日, 決済期日, 取引先, 勘定科目:Z, 税区分, 金額, 税計算区分, 税額, 備考, 品目, 部門, \
+				(N) 決済日, 決済口座, 決済金額, Bank.ID, Row, \
+				(S) Deal.ID, Pay.ID, W.Type, W.ID, \
+				(W) 部門.ID, 取引先ID, g_code, 勘定科目ID, Tax.ID, Item.ID, 未支金額, 決済状況 '''
+			snp_list.append(['収入', snpv.slip, snpv.m_datetime.strftime('%Y-%m-%d'), '', snpv.g_code, '売上高', '', snpv.value, '', snpv.tax, snpv.red_code, snpv.s_code, 'SS関係', \
+							 '','','', 'BankID', '' , \
+							 'DealID', '', '', '', \
+							 '', '', snpv.g_code, '', '', '', '', ''])
+			# snp_list.append(['', snpv.slip, snpv.m_datetime.strftime('%Y-%m-%d'), '', snpv.g_code, '', '', snpv.value, '', snpv.tax, 'red_code:' + snpv.red_code, snpv.s_code, '', '', '', ''])
+			# m_date = datetime.strptime(snpv.m_datetime, '%Y-%m-%d')
+			# mdate_list.append(m_date)
+		df = pd.DataFrame(snp_list)
+		# df = pd.DataFrame(snp_list, columns=['s_code', 'g_code'])
+		# COLMAX = len(df.columns)
+		# ROWMAX = len(df.index) + 1
+		# print(snp_list)
+		print(str(len(df)))
+		print(df)
+
+		## GAS : シート追加 ##
+		newShName = dl[2:-2].replace('-', '')
+		# newShName = dl.replace('20', '').replace('-', '')
 		ws_list_value = 0
 
 		for i in range(len(ws_list)):
@@ -123,7 +152,25 @@ class GAS(ListView):
 			ws.duplicate_sheet(source_sheet_id=ws_list_cpid, new_sheet_name=newShName, insert_sheet_index=len(ws_list))
 			# ws.add_worksheet(title=newShName, rows=100, cols=25)
 		# context['ws_list_vl'] = ws_list_value
-		'''
+
+		## GAS : Write ##
+		# write_ws = ws.get_worksheets(newShName)
+		write_ws = ws.worksheet(newShName)
+		# write_ws = ws.get_worksheet(len(ws_list)-1)
+		# ws_list[0].update_cell(1, 3, cell_value)
+		context['write_ws'] = newShName
+
+		for index, record in df.iterrows():
+			cell_list = write_ws.range(index + 2, 1, index + 2, len(record) + 1)
+			# cell_list = write_ws.range('C3:G' + str(len(df)+2))
+
+			for cell, val in zip(cell_list, record):
+				cell.value = val
+			write_ws.update_cells(cell_list)
+
+		# (Def.OK) write_ws.update([df.columns.values.tolist()] + df.values.tolist())
+		# (OK) write_ws.update('E3:F12', snp_list)
+		# (OK) write_ws.append_row(snp_list)
 
 		return context
 
