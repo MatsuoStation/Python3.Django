@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.7 Update:2021.08.28" |
+#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.8 Update:2021.08.28" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -14,6 +14,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from .forms import DateForm
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 ### Google.API ###
 from .Util.Connect_GSpread import connect_gspread
@@ -22,6 +23,7 @@ from .Util.Connect_GSpread import connect_gspread
 from Finance.models import SHARPnPOS_1501_2107
 from datetime import datetime, timedelta
 from .Util.deadline import DeadLine
+from .Util.db_sFreee import DB_sFreee
 
 ### Google Apps Script ###
 class GAS(ListView):
@@ -55,20 +57,47 @@ class GAS(ListView):
 
 		## * try: * dl = Ture ##
 		try:
+			## 期間設定 ##
 			dl = mdate + '-01'
 			dlstr = datetime.strptime(dl, '%Y-%m-%d')
 
 			# dd = dlstr.day  # DeadLine : Day
 			dlb, dla = DeadLine(dlstr)
-			# dld, dlm, dlb, dla, bld, blm = DeadLine(dd, dlstr)
+
+			## DB : Setup ##
+			SnPs = DB_sFreee(self, dlb, dla)
+
+
 
 		## * end try: * dl = False ##
 		except Exception as e:
 			print("Exception - views.py / dl=False  : %s" % e)
 
+			## 期間設定 ##
+			dl = mdate + '-01'
+			dlstr = datetime.strptime(dl, '%Y-%m-%d')
+
+			# dd = dlstr.day  # DeadLine : Day
+			dlb, dla = DeadLine(dlstr)
+
+			## DB : Setup ##
+			SnPs = DB_sFreee(self, dlb, dla)
+
 		context['mdate'] = mdate
 		context['dlb'] = dlb
 		context['dla'] = dla
+
+		## Paginator : Setup ##
+		paginator = Paginator(SnPs, 10)
+		try:
+			page = int(self.request.GET.get('page'))
+		except:
+			page = 1
+		try:
+			SnPs = paginator.page(page)
+		except(EmptyPage, InvalidPage):
+			SnPs = paginator.page(1)
+		context['snps'] = SnPs
 
 
 		## GAS : シート追加
