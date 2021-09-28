@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.10 Update:2021.08.28" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.11 Update:2021.09.29" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -20,6 +20,7 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from .Util.Connect_GSpread import connect_gspread
 import pandas as pd
 import numpy as np
+import math
 # import seaborn as sns
 
 ### MySQL ###
@@ -93,10 +94,11 @@ class GAS(ListView):
 		## GAS : 初期データ設定 ##
 		SnPs_count = len(SnPs)
 		context['snps_count'] = SnPs_count
+		Pager_count = 50;
 		SnPsVs = SnPs
 
 		## Paginator : Setup ##
-		paginator = Paginator(SnPs, 10)
+		paginator = Paginator(SnPs, Pager_count)
 		# paginator = Paginator(SnP90, 10)
 		try:
 			page = int(self.request.GET.get('page'))
@@ -114,6 +116,12 @@ class GAS(ListView):
 		## GAS : データ設定 ##
 		snp_list = list()
 
+		try:
+			Pager_Page = SnPs.number
+			Pager_LastPage = math.ceil(SnPs_count / Pager_count)
+		except Exception as e:
+			print("Exception - Pager_page : %s" % e)
+
 		for snpv in SnPs:
 		# for snpv in SnPsVs:
 			''' CSV項目 : / 収支区分, 管理番号, 発生日, 決済期日, 取引先, 勘定科目:Z, 税区分, 金額, 税計算区分, 税額, 備考, 品目, 部門, \
@@ -127,13 +135,17 @@ class GAS(ListView):
 			# snp_list.append(['', snpv.slip, snpv.m_datetime.strftime('%Y-%m-%d'), '', snpv.g_code, '', '', snpv.value, '', snpv.tax, 'red_code:' + snpv.red_code, snpv.s_code, '', '', '', ''])
 			# m_date = datetime.strptime(snpv.m_datetime, '%Y-%m-%d')
 			# mdate_list.append(m_date)
+
 		df = pd.DataFrame(snp_list)
 		# df = pd.DataFrame(snp_list, columns=['s_code', 'g_code'])
 		# COLMAX = len(df.columns)
 		# ROWMAX = len(df.index) + 1
 		# print(snp_list)
-		print(str(len(df)))
 		print(df)
+		print(str(len(df)))
+		print('%s / %s' % (Pager_Page, Pager_LastPage))
+		# print(Pager_Page)
+		# print(Pager_LastPage)
 
 		## GAS : シート追加 ##
 		newShName = dl[2:-2].replace('-', '')
@@ -153,15 +165,17 @@ class GAS(ListView):
 			# ws.add_worksheet(title=newShName, rows=100, cols=25)
 		# context['ws_list_vl'] = ws_list_value
 
-		## GAS : Write ##
+		## GAS : 行数追加 ##
 		# write_ws = ws.get_worksheets(newShName)
 		write_ws = ws.worksheet(newShName)
+		write_ws.add_rows(SnPs_count)
 		# write_ws = ws.get_worksheet(len(ws_list)-1)
 		# ws_list[0].update_cell(1, 3, cell_value)
 		context['write_ws'] = newShName
 
+		## GAS : リスト書き込み　##
 		for index, record in df.iterrows():
-			cell_list = write_ws.range(index + 2, 1, index + 2, len(record) + 1)
+			cell_list = write_ws.range(index + 2, 1, index + 2, len(record))
 			# cell_list = write_ws.range('C3:G' + str(len(df)+2))
 
 			for cell, val in zip(cell_list, record):
