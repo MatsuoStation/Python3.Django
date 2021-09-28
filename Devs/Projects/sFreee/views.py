@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.8 Update:2021.08.28" |
+#//|      "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.9 Update:2021.08.28" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -65,7 +65,8 @@ class GAS(ListView):
 			dlb, dla = DeadLine(dlstr)
 
 			## DB : Setup ##
-			SnPs = DB_sFreee(self, dlb, dla)
+			SnPs, SnP00, SnP20, SnP30, SnP40, SnP50, SnP90 = DB_sFreee(self, dlb, dla)
+			# SnPs = DB_sFreee(self, dlb, dla)
 
 
 
@@ -81,7 +82,8 @@ class GAS(ListView):
 			dlb, dla = DeadLine(dlstr)
 
 			## DB : Setup ##
-			SnPs = DB_sFreee(self, dlb, dla)
+			SnPs, SnP00, SnP20, SnP30, SnP40, SnP50, SnP90 = DB_sFreee(self, dlb, dla)
+			# SnPs = DB_sFreee(self, dlb, dla)
 
 		context['mdate'] = mdate
 		context['dlb'] = dlb
@@ -89,15 +91,19 @@ class GAS(ListView):
 
 		## Paginator : Setup ##
 		paginator = Paginator(SnPs, 10)
+		# paginator = Paginator(SnP90, 10)
 		try:
 			page = int(self.request.GET.get('page'))
 		except:
 			page = 1
 		try:
 			SnPs = paginator.page(page)
+			# SnP90 = paginator.page(page)
 		except(EmptyPage, InvalidPage):
 			SnPs = paginator.page(1)
+			# SnP90 = paginator.page(1)
 		context['snps'] = SnPs
+		# context['snps'] = SnP90
 
 
 		## GAS : シート追加
