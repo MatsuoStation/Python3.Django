@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.11 Update:2021.09.29" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.12 Update:2021.09.29" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -174,8 +174,13 @@ class GAS(ListView):
 		context['write_ws'] = newShName
 
 		## GAS : リスト書き込み　##
+		if Pager_Page == 1:
+			p = 0
+		else:
+			p = ((Pager_Page - 1) * 50)
+
 		for index, record in df.iterrows():
-			cell_list = write_ws.range(index + 2, 1, index + 2, len(record))
+			cell_list = write_ws.range(index + 2 + p, 1, index + 2 + p, len(record))
 			# cell_list = write_ws.range('C3:G' + str(len(df)+2))
 
 			for cell, val in zip(cell_list, record):
