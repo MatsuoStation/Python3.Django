@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.20 Update:2021.09.30" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.21 Update:2021.09.30" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -15,6 +15,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from .forms import DateForm
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
+from ..Finance.templatetags.sCaluculate import *
 
 ### Google.API ###
 from .Util.Connect_GSpread import connect_gspread
@@ -121,49 +122,40 @@ class GAS(ListView):
 		for snpv in SnPs:
 		# for snpv in SnPsVs:
 
-			### GAS : 初期設定（ページ数)
+			## GAS : 初期設定（ページ数)
 			if Pager_Page == 1:
 				p = 0
 			else:
 				p = ((Pager_Page - 1) * 50)
 
-			### GAS : 初期設定（入力データ)
+			## GAS : 初期設定（入力データ)
 			pName = '=IFERROR(IF(Y' + str(c + 2 + p) + '<>"",VLOOKUP(VLOOKUP(Y' + str(c + 2 + p) + ',IMPORTRANGE("1gFItc1Ta3hXS1Ad6jEUjMfgNdU_y8ozHGuX_tmW1u5Q","PartnersList!D2:E"),2,false),IMPORTRANGE("1gFItc1Ta3hXS1Ad6jEUjMfgNdU_y8ozHGuX_tmW1u5Q","PartnersList!A2:C"),3,false),""))'
 			pItem = '=IFERROR(IF(AB' + str(c + 2 + p) + '<>"",VLOOKUP(VLOOKUP(AB' + str(c + 2 + p) + ',IMPORTRANGE("1vBG3-DMn8BANxhboZ2JkdzmNZm-DITy9-UPg9ID5bs8","ItemsList!D2:E"),2,false),IMPORTRANGE("1vBG3-DMn8BANxhboZ2JkdzmNZm-DITy9-UPg9ID5bs8","ItemsList!A2:C"),3,false),""))'
-			tax_section = '=IF(A' + str(c + 2 + p) + '<>"",1,0)'
 
-			'''
-			if snpv.amount != 0:
-				pAm = (snpv.amount / 100)
-				oAm = '=IFERROR(IF(AK' + str(c + 2 + p) + '=8,-(' + str(pAm) + '),' + str(pAm) + '))'
+			## GAS : 発生日
+			pMd = snpv.m_datetime.strftime('%Y-%m-%d')
 
-				if snpv.value != 0:
-					oUnit = (snpv.value / pAm)
-					oVl = '=IFERROR(IF(AK' + str(c + 2 + p) + '=8,-(' + str(snpv.value) + '),' + str(snpv.value) + '))'
-					oTax = '=IFERROR(IF(AK' + str(c + 2 + p) + '=8,-(' + str(snpv.tax) + '),' + str(snpv.tax) + '))'
-				else:
-					oUnit = 0
-					oVL = 0
-					oTax = 0
+			## GAS : 数量
+			pAm = Amount_Cal(snpv.amount)
+
+			## GAS : 旧単価 / 旧金額 / 旧税金
+			oUc, oVl, oTax = Unit_oCal(snpv.amount, snpv.unit, snpv.value, snpv.tax)
+
+			## GAS : 税区分
+			pTax = jTax(snpv.m_datetime)
+			if pTax == 0.08:
+				aTax = '課税売上8%'
 			else:
-				pAm = 0
-				oAm = 0
-				oUnit = 0
-				oVL = 0
-				oTax = 0
-			'''
+				aTax = '課税売上10%'
 
-
+			## GAS : 決済口座（現金）
 			p_r_code = str(snpv.p_code)+'/'+str(snpv.r_code)
 			if p_r_code == '10/0' or p_r_code == '10/1' or p_r_code == '20/9': pRcode = '現金'
 			else: pRcode = ''
 
-			## GAS : 赤伝先
+			## GAS : 赤伝先（20000101/0001)
 			if snpv.c_day != 0: oCC = str(snpv.c_day)+'/'+str(snpv.c_no)
 			else: oCC = ""
-
-
-			# oAllCash = '=IFERROR(IF(O'+str(c+2+p)+'="現金",AH'+str(c+2+p)+',""))'
 
 			### GAS : リスト設定
 			''' CSV項目 : / 収支区分, 管理番号, 発生日, 決済期日, 取引先, 勘定科目, 税区分, 金額, 税計算区分, 税額, 備考, 品目, 部門, \
@@ -171,11 +163,11 @@ class GAS(ListView):
 				(S) Deal.ID, Pay.ID, W.Type, W.ID, \
 				(W) 部門.ID, 取引先ID, g_code, 勘定科目ID, Tax.ID, Item.ID, 未支金額, 決済状況, \
 				(AE) 数量, 新単価, 旧単価, 旧金額, 旧税額, 新旧差額, 赤伝 '''
-			snp_list.append(['収入', snpv.slip, snpv.m_datetime.strftime('%Y-%m-%d'), '', pName, '売上高', '課税売上8%', 'snpv.value', '内税', 'snpv.tax', oCC, pItem, 'SS関係', \
+			snp_list.append(['収入', snpv.slip, pMd, '', pName, '売上高', str(aTax), 'snpv.value', '内税', 'snpv.tax', oCC, pItem, 'SS関係', \
 							 '', pRcode,'', 'BankID', '' , \
 							 'DealID', '', '', '', \
 							 '', '', snpv.g_code, '', '', snpv.s_code, '', '', \
-							 'oAm', '', 'oUnit', 'oVl', 'oTax', '', snpv.red_code])
+							 str(pAm), 'aUc', str(oUc), str(oVl), str(oTax), '', snpv.red_code])
 			c += 1
 			# print(c)
 
