@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.21 Update:2021.09.30" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.22 Update:2021.10.07" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -18,7 +18,8 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from ..Finance.templatetags.sCaluculate import *
 
 ### Google.API ###
-from .Util.Connect_GSpread import connect_gspread
+from ..Finance.templatetags.Connect_GSpread import connect_gspread
+# from .Util.Connect_GSpread import connect_gspread
 import pandas as pd
 import numpy as np
 import math
@@ -95,7 +96,7 @@ class GAS(ListView):
 		## GAS : 初期データ設定 ##
 		SnPs_count = len(SnPs)
 		context['snps_count'] = SnPs_count
-		Pager_count = 50;
+		Pager_count = 20;
 		SnPsVs = SnPs
 
 		## Paginator : Setup ##
@@ -126,7 +127,8 @@ class GAS(ListView):
 			if Pager_Page == 1:
 				p = 0
 			else:
-				p = ((Pager_Page - 1) * 50)
+				p = ((Pager_Page - 1) * Pager_count)
+				# p = ((Pager_Page - 1) * 50)
 
 			## GAS : 初期設定（入力データ)
 			pName = '=IFERROR(IF(Y' + str(c + 2 + p) + '<>"",VLOOKUP(VLOOKUP(Y' + str(c + 2 + p) + ',IMPORTRANGE("1gFItc1Ta3hXS1Ad6jEUjMfgNdU_y8ozHGuX_tmW1u5Q","PartnersList!D2:E"),2,false),IMPORTRANGE("1gFItc1Ta3hXS1Ad6jEUjMfgNdU_y8ozHGuX_tmW1u5Q","PartnersList!A2:C"),3,false),""))'
@@ -140,6 +142,9 @@ class GAS(ListView):
 
 			## GAS : 旧単価 / 旧金額 / 旧税金
 			oUc, oVl, oTax = Unit_oCal(snpv.amount, snpv.unit, snpv.value, snpv.tax)
+
+			## GAS : aValue.単価
+			aUc = Unit_aCal(snpv.s_code, snpv.g_code, snpv.amount, snpv.m_datetime)
 
 			## GAS : 税区分
 			pTax = jTax(snpv.m_datetime)
@@ -167,7 +172,7 @@ class GAS(ListView):
 							 '', pRcode,'', 'BankID', '' , \
 							 'DealID', '', '', '', \
 							 '', '', snpv.g_code, '', '', snpv.s_code, '', '', \
-							 str(pAm), 'aUc', str(oUc), str(oVl), str(oTax), '', snpv.red_code])
+							 str(pAm), str(aUc), str(oUc), str(oVl), str(oTax), '', snpv.red_code])
 			c += 1
 			# print(c)
 

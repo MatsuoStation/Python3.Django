@@ -1,11 +1,11 @@
 #//+------------------------------------------------------------------+
-#//|       VerysVeryInc.Python3.Django.sFreee.Util.Connect_GSpread.py |
+#//|  VerysVeryInc.Python3.Django.Finance.TemplateTags.Con_GSpread.py |
 #//|                  Copyright(c) 2018, VerysVery Inc. & Yoshio.Mr24 |
 #//|                 https://github.com/MatsuoStation/Python3.Django/ |
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.sFreee.Util.GSp.py - Ver.3.93.4 Update:2021.08.27" |
+#//|     "VsV.Py3.Dj.TempTags.GSp.py - Ver.3.93.22 Update:2021.10.07" |
 #//+------------------------------------------------------------------+
 ### Google.API ###
 import gspread

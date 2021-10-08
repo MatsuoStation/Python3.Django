@@ -5,14 +5,21 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.sCal.py - Ver.3.93.21 Update:2021.09.30" |
+#//|    "VsV.Py3.Dj.TempTags.sCal.py - Ver.3.93.22 Update:2021.10.07" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 from datetime import datetime
 from decimal import *
 
+### Google.API ###
+from .Connect_GSpread import connect_gspread
+
 jtax10 = 0.10
 jtax8 = 0.08
+
+## GAS : aValue.SpreadSheet - Setup ##
+spsh_name = "aValue_Okayama"
+ws = connect_gspread(spsh_name)
 
 ### 数量 : Setup ###
 def Amount_Cal(am):
@@ -41,7 +48,14 @@ def Unit_aCal(sc, gc, am, md):
         sv, cTax = Cash_Cal(sc, vl)
         uc = 0
 
-    # ハイオク(10000) or レギュラー(10100) or 軽油(10200) : 灯油特別(10500)
+    # ハイオク(10000)
+    elif SC_Check(sc) == "OIL" and sc == 10000: uc = 10000
+    # レギュラー(10100)
+    elif SC_Check(sc) == "OIL" and sc == 10100: uc = 10100
+    # 軽油(10200)
+    elif SC_Check(sc) == "OIL" and sc == 10200: uc = 10200
+    # 灯油特別(10500)
+    elif SC_Check(sc) == "OIL" and sc == 10500: uc = 10500
 
     # 油以外 : 免税軽油(10300) or 灯油(10500) or 重油(10600)含む
     elif SC_Check(sc) == "nOIL":
