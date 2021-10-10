@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.22 Update:2021.10.07" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.23 Update:2021.10.08" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -52,6 +52,32 @@ class GAS(ListView):
 		ws = connect_gspread(spsh_name)
 		ws_list = ws.worksheets()
 
+		## GAS : aValue.SpreadSheet - Setup ##
+		try:
+			aVspsh_name = "aValue_Okayama"
+			ws_aV = connect_gspread(aVspsh_name)
+
+			ws_high = ws_aV.worksheet('High')
+			df_high = pd.DataFrame(ws_high.get_all_values());
+
+			ws_reg = ws_aV.worksheet('Reg')
+			df_reg = pd.DataFrame(ws_reg.get_all_values());
+			df_reg.columns = list(df_reg.loc[0, :]);
+			df_reg.drop(0, inplace=True);
+			df_reg.reset_index(inplace=True)
+			df_reg.drop('index', axis=1, inplace=True)
+
+			ws_ku = ws_aV.worksheet('Ku')
+			df_ku = pd.DataFrame(ws_ku.get_all_values())
+			ws_tut = ws_aV.worksheet('TuT')
+			df_tut = pd.DataFrame(ws_tut.get_all_values())
+			ws_tuh = ws_aV.worksheet('TuH')
+			df_tuh = pd.DataFrame(ws_tuh.get_all_values())
+		except:
+			print("Exception - views.py / aValue.SpSh  : %s" % e)
+
+
+
 		## Search : m_datetime ##
 		context['form'] = DateForm()
 		if self.kwargs.get('mdate'):
@@ -96,7 +122,7 @@ class GAS(ListView):
 		## GAS : 初期データ設定 ##
 		SnPs_count = len(SnPs)
 		context['snps_count'] = SnPs_count
-		Pager_count = 20;
+		Pager_count = 45;
 		SnPsVs = SnPs
 
 		## Paginator : Setup ##
@@ -144,7 +170,8 @@ class GAS(ListView):
 			oUc, oVl, oTax = Unit_oCal(snpv.amount, snpv.unit, snpv.value, snpv.tax)
 
 			## GAS : aValue.単価
-			aUc = Unit_aCal(snpv.s_code, snpv.g_code, snpv.amount, snpv.m_datetime)
+			# aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.m_datetime, df_high, df_reg, df_ku, df_tut, df_tuh)
+			# aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.m_datetime, ws_aV)
 
 			## GAS : 税区分
 			pTax = jTax(snpv.m_datetime)
@@ -155,8 +182,15 @@ class GAS(ListView):
 
 			## GAS : 決済口座（現金）
 			p_r_code = str(snpv.p_code)+'/'+str(snpv.r_code)
-			if p_r_code == '10/0' or p_r_code == '10/1' or p_r_code == '20/9': pRcode = '現金'
-			else: pRcode = ''
+			if p_r_code == '10/0' or p_r_code == '10/1' or p_r_code == '20/9':
+				pRcode = '現金'
+
+				## GAS : aValue.単価
+				aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.value, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
+
+			else:
+				pRcode = ''
+				aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.value, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
 
 			## GAS : 赤伝先（20000101/0001)
 			if snpv.c_day != 0: oCC = str(snpv.c_day)+'/'+str(snpv.c_no)
