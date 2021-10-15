@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.23 Update:2021.10.08" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.24 Update:2021.10.10" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -57,9 +57,15 @@ class GAS(ListView):
 			aVspsh_name = "aValue_Okayama"
 			ws_aV = connect_gspread(aVspsh_name)
 
+			## ハイオク ##
 			ws_high = ws_aV.worksheet('High')
 			df_high = pd.DataFrame(ws_high.get_all_values());
+			df_high.columns = list(df_high.loc[0, :]);
+			df_high.drop(0, inplace=True);
+			df_high.reset_index(inplace=True)
+			df_high.drop('index', axis=1, inplace=True)
 
+			## レギュラー ##
 			ws_reg = ws_aV.worksheet('Reg')
 			df_reg = pd.DataFrame(ws_reg.get_all_values());
 			df_reg.columns = list(df_reg.loc[0, :]);
@@ -67,12 +73,40 @@ class GAS(ListView):
 			df_reg.reset_index(inplace=True)
 			df_reg.drop('index', axis=1, inplace=True)
 
+			## 軽油 ##
 			ws_ku = ws_aV.worksheet('Ku')
 			df_ku = pd.DataFrame(ws_ku.get_all_values())
+			df_ku.columns = list(df_ku.loc[0, :]);
+			df_ku.drop(0, inplace=True);
+			df_ku.reset_index(inplace=True)
+			df_ku.drop('index', axis=1, inplace=True)
+			df_ku['Okayama'] = pd.to_numeric(df_ku['Okayama'], errors='coerce')
+			df_ku['Okayama_Kake'] = pd.to_numeric(df_ku['Okayama_Kake'], errors='coerce')
+
+			## 灯油（店頭） ##
 			ws_tut = ws_aV.worksheet('TuT')
 			df_tut = pd.DataFrame(ws_tut.get_all_values())
+			df_tut.columns = list(df_tut.loc[0, :]);
+			df_tut.drop(0, inplace=True);
+			df_tut.reset_index(inplace=True)
+			df_tut.drop('index', axis=1, inplace=True)
+
+			## 灯油（配達）
 			ws_tuh = ws_aV.worksheet('TuH')
 			df_tuh = pd.DataFrame(ws_tuh.get_all_values())
+			df_tuh.columns = list(df_tuh.loc[0, :]);
+			df_tuh.drop(0, inplace=True);
+			df_tuh.reset_index(inplace=True)
+			df_tuh.drop('index', axis=1, inplace=True)
+
+			## A重油 ##
+			ws_aoil = ws_aV.worksheet('Aoil')
+			df_aoil = pd.DataFrame(ws_aoil.get_all_values());
+			df_aoil.columns = list(df_aoil.loc[0, :]);
+			df_aoil.drop(0, inplace=True);
+			df_aoil.reset_index(inplace=True)
+			df_aoil.drop('index', axis=1, inplace=True)
+
 		except:
 			print("Exception - views.py / aValue.SpSh  : %s" % e)
 
@@ -185,12 +219,15 @@ class GAS(ListView):
 			if p_r_code == '10/0' or p_r_code == '10/1' or p_r_code == '20/9':
 				pRcode = '現金'
 
-				## GAS : aValue.単価
-				aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.value, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
+				## GAS : aValue.単価 / 現金
+				aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
+				# aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
 
 			else:
 				pRcode = ''
-				aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.value, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
+				## GAS : aValue.単価 / 現金以外
+				aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
+				# aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
 
 			## GAS : 赤伝先（20000101/0001)
 			if snpv.c_day != 0: oCC = str(snpv.c_day)+'/'+str(snpv.c_no)
