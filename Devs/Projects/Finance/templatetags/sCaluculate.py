@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.sCal.py - Ver.3.93.25 Update:2021.10.17" |
+#//|    "VsV.Py3.Dj.TempTags.sCal.py - Ver.3.93.26 Update:2021.10.17" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 from datetime import datetime
@@ -293,13 +293,13 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
 
     # 油以外 : 免税軽油(10300) or 灯油(10500) or 重油(10600)含む
     elif SC_Check(sc) == "nOIL":
-        sv, cTax, cAm = nOIL_Cal(sc, am, md)
+        sv, cTax, cAm = nOIL_Cal(sc, am, vl, tax, red, md)
         # sv, cTax, cAm = nOIL_Cal(sc, gc, am, md)
         # sv, cTax, cAm = nOIL_Cal(sc, gc, am, vl, tax, jtax, red, md)
         # sv, cTax = nOIL_Cal(sc, vl, tax, jtax, red)
         uc = Decimal(sv / (am / 100)).quantize(Decimal('0.1'), rounding=ROUND_DOWN)
         # uc = sv
-        vc = vl
+        vc = sv
 
     # 例外
     else:
@@ -317,12 +317,29 @@ def Cash_Cal(sc, vl):
     return sv, cTax
 
 ### 売上高 : 油以外 - 灯油(10500) or 重油(10600)含む ###
-def nOIL_Cal(sc, am, md):
+def nOIL_Cal(sc, am, vl, tax, red, md):
 # def nOIL_Cal(sc, gc, am, md):
     if sc != "10000" or sc != "10100" or sc != "10200" or sc != "10300":
-        sv = 100
-        cTax = 10
-        cAm = 200
+        # 消費税 : True
+        if tax != 0 or vl != 0:
+            sv = vl + tax
+            cTax = tax
+            # 赤伝票 : True
+            if red:
+                sv = -(sv)
+                cTax = -(cTax)
+                am = -(am)
+            cAm = am
+
+        # 消費税 : False
+        else:
+            sv = 999999999
+            cTax = 999999999
+            cAm = 999999999
+
+        # sv = 100
+        # cTax = 10
+        # cAm = 200
 
     return sv, cTax, cAm
 
