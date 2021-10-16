@@ -130,6 +130,7 @@ Devs/templatetags/math.py
 Devs/templatetags/K_Filter04.py
 Devs/templates/uriage_Def.html
 Devs/templates/Bootstarp4_CSV.html
+Devs/templates/sFreeeList_Def.html
 
 Devs/Guest/
 Devs/Tools/

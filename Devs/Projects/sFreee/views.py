@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.24 Update:2021.10.10" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.25 Update:2021.10.17" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -64,6 +64,8 @@ class GAS(ListView):
 			df_high.drop(0, inplace=True);
 			df_high.reset_index(inplace=True)
 			df_high.drop('index', axis=1, inplace=True)
+			df_high['Okayama'] = pd.to_numeric(df_high['Okayama'], errors='coerce')
+			df_high['Okayama_Kake'] = pd.to_numeric(df_high['Okayama_Kake'], errors='coerce')
 
 			## レギュラー ##
 			ws_reg = ws_aV.worksheet('Reg')
@@ -72,6 +74,8 @@ class GAS(ListView):
 			df_reg.drop(0, inplace=True);
 			df_reg.reset_index(inplace=True)
 			df_reg.drop('index', axis=1, inplace=True)
+			df_reg['Okayama'] = pd.to_numeric(df_reg['Okayama'], errors='coerce')
+			df_reg['Okayama_Kake'] = pd.to_numeric(df_reg['Okayama_Kake'], errors='coerce')
 
 			## 軽油 ##
 			ws_ku = ws_aV.worksheet('Ku')
@@ -90,6 +94,8 @@ class GAS(ListView):
 			df_tut.drop(0, inplace=True);
 			df_tut.reset_index(inplace=True)
 			df_tut.drop('index', axis=1, inplace=True)
+			df_tut['Okayama'] = pd.to_numeric(df_tut['Okayama'], errors='coerce')
+			df_tut['Okayama_Kake'] = pd.to_numeric(df_tut['Okayama_Kake'], errors='coerce')
 
 			## 灯油（配達）
 			ws_tuh = ws_aV.worksheet('TuH')
@@ -98,6 +104,8 @@ class GAS(ListView):
 			df_tuh.drop(0, inplace=True);
 			df_tuh.reset_index(inplace=True)
 			df_tuh.drop('index', axis=1, inplace=True)
+			df_tuh['Okayama'] = pd.to_numeric(df_tuh['Okayama'], errors='coerce')
+			df_tuh['Okayama_Kake'] = pd.to_numeric(df_tuh['Okayama_Kake'], errors='coerce')
 
 			## A重油 ##
 			ws_aoil = ws_aV.worksheet('Aoil')
@@ -106,6 +114,8 @@ class GAS(ListView):
 			df_aoil.drop(0, inplace=True);
 			df_aoil.reset_index(inplace=True)
 			df_aoil.drop('index', axis=1, inplace=True)
+			df_aoil['Okayama_inTax'] = pd.to_numeric(df_aoil['Okayama_inTax'], errors='coerce')
+			df_aoil['Okayama_Kake'] = pd.to_numeric(df_aoil['Okayama_Kake'], errors='coerce')
 
 		except:
 			print("Exception - views.py / aValue.SpSh  : %s" % e)
@@ -156,7 +166,7 @@ class GAS(ListView):
 		## GAS : 初期データ設定 ##
 		SnPs_count = len(SnPs)
 		context['snps_count'] = SnPs_count
-		Pager_count = 45;
+		Pager_count = 155;
 		SnPsVs = SnPs
 
 		## Paginator : Setup ##
@@ -220,13 +230,14 @@ class GAS(ListView):
 				pRcode = '現金'
 
 				## GAS : aValue.単価 / 現金
-				aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
+				aUc, aVc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.red_code, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
 				# aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
 
 			else:
 				pRcode = ''
 				## GAS : aValue.単価 / 現金以外
-				aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
+				## GAS : aValue.金額
+				aUc, aVc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.red_code, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
 				# aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
 
 			## GAS : 赤伝先（20000101/0001)
@@ -239,7 +250,7 @@ class GAS(ListView):
 				(S) Deal.ID, Pay.ID, W.Type, W.ID, \
 				(W) 部門.ID, 取引先ID, g_code, 勘定科目ID, Tax.ID, Item.ID, 未支金額, 決済状況, \
 				(AE) 数量, 新単価, 旧単価, 旧金額, 旧税額, 新旧差額, 赤伝 '''
-			snp_list.append(['収入', snpv.slip, pMd, '', pName, '売上高', str(aTax), 'snpv.value', '内税', 'snpv.tax', oCC, pItem, 'SS関係', \
+			snp_list.append(['収入', snpv.slip, pMd, '', pName, '売上高', str(aTax), str(aVc), '内税', 'snpv.tax', oCC, pItem, 'SS関係', \
 							 '', pRcode,'', 'BankID', '' , \
 							 'DealID', '', '', '', \
 							 '', '', snpv.g_code, '', '', snpv.s_code, '', '', \

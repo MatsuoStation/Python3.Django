@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.sCal.py - Ver.3.93.24 Update:2021.10.10" |
+#//|    "VsV.Py3.Dj.TempTags.sCal.py - Ver.3.93.25 Update:2021.10.17" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 from datetime import datetime
@@ -83,7 +83,7 @@ def Unit_oCal(am, un, vl, tax):
 ### aValue.単価 : Setup　###
 # def Unit_aCal(sc, am, md, flag):
 # def Unit_aCal(sc, am, md, ws_aV):
-def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil):
+def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil):
 # def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_tuh):
 # def Unit_aCal(sc, am, md):
 # def Unit_Cal(sc, gc, am, vl, tax, red, md):
@@ -97,6 +97,7 @@ def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_
     if SC_Check(sc) == "Cash":
         sv, cTax = Cash_Cal(sc, vl)
         uc = '0'
+        vc = vl
 
     # ハイオク(10000)
     elif SC_Check(sc) == "OIL" and sc == '10000':
@@ -106,9 +107,16 @@ def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_
         df_high_len = len(df_high_md)
         if flag == "現金":
             uc = df_high_md.iat[df_high_len - 1, 1]
+            vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            if red:
+                vc = -(vc)
         else:
             uc = df_high_md.iat[df_high_len - 1, 2]
+            vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            if red:
+                vc = -(vc)
         # uc = '10000'
+        # vc = vl
 
     # レギュラー(10100)
     elif SC_Check(sc) == "OIL" and sc == '10100':
@@ -128,8 +136,14 @@ def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_
         df_reg_len = len(df_reg_md)
         if flag == "現金":
             uc = df_reg_md.iat[df_reg_len - 1, 1]
+            vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            if red:
+                vc = -(vc)
         else:
             uc = df_reg_md.iat[df_reg_len - 1, 2]
+            vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            if red:
+                vc = -(vc)
 
         # (Dev) df_reg_md = df_reg_fl[df_reg_fl['m_datetime'] == '2021-10-04']
         # (Test) uc = df_reg_md
@@ -140,6 +154,7 @@ def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_
         # uc = df_reg.filter(items=['A', 'E']).filter(items='2021-10-04', axis=0)
         # print(df_reg)
         # uc = '10100'
+        # vc = vl
 
     # 軽油(10200)
     elif SC_Check(sc) == "OIL" and sc == '10200':
@@ -149,9 +164,16 @@ def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_
         df_ku_len = len(df_ku_md)
         if flag == "現金":
             uc = df_ku_md.iat[df_ku_len - 1, 1]
+            vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            if red:
+                vc = -(vc)
         else:
             uc = df_ku_md.iat[df_ku_len - 1, 2]
+            vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            if red:
+                vc = -(vc)
         # uc = '10200'
+        # vc = vl
 
     # 免税軽油(10300)
     elif SC_Check(sc) == "OIL" and sc == '10300':
@@ -165,18 +187,31 @@ def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_
         aV_mKu_Kake = df_ku_md.iat[df_ku_len - 1, 2] - 32.1
 
         if flag == "現金":
-            if str(aV_mKu) < str(oUc_c):
-                uc = str(aV_mKu_Kake)
+            if aV_mKu < oUc_c:
+                uc = aV_mKu_Kake
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             else:
-                uc = str(aV_mKu)
+                uc = aV_mKu
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             # uc = df_ku_md.iat[df_ku_len - 1, 1] - 32.1
         else:
-            if str(aV_mKu) < str(oUc_c):
-                uc = str(aV_mKu_Kake)
+            if aV_mKu < oUc_c:
+                uc = aV_mKu_Kake
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             else:
-                uc = str(aV_mKu)
+                uc = aV_mKu
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             # uc = df_ku_md.iat[df_ku_len - 1, 2] - 32.1
         # uc = '10300'
+        # vc = vl
 
     # 灯油特別(10500)
     elif SC_Check(sc) == "nOIL" and sc == '10500':
@@ -197,36 +232,63 @@ def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_
 
 
         if flag == "現金":
-            if str(aV_TuT) < str(oUc_c):
-                uc = str(aV_TuH)
+            if aV_TuT < oUc_c:
+                uc = aV_TuH
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             else:
-                uc = str(aV_TuT)
+                uc = aV_TuT
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             # uc = df_tut_md.iat[df_tut_len - 1, 1]
         else:
-            if str(aV_TuT_Kake) < str(oUc_c):
+            if aV_TuT_Kake < oUc_c:
                 uc = aV_TuH_Kake
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             else:
                 uc = aV_TuT_Kake
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
 
             aV_TuT = df_tut_md.iat[df_tut_len - 1, 2]
-            if str(aV_TuT) < str(oUc_c):
+            if aV_TuT < oUc_c:
                 uc = df_tuh_md.iat[df_tut_len - 1, 2]
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             else:
                 uc = df_tut_md.iat[df_tut_len - 1, 2]
+                vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+                if red:
+                    vc = -(vc)
             # uc = df_tut_md.iat[df_tut_len - 1, 2]
-       # uc = '10500'
+        # uc = '10500'
+        # vc = vl
 
-    # A重油(10600)
+    # A重油(10600) : 配達のみ
     elif SC_Check(sc) == "nOIL" and sc == '10600':
         ## GAS : Aoil出力　##
         df_aoil_fl = df_aoil.filter(items=['m_datetime', 'Okayama_inTax', 'Okayama_Kake'])
         df_aoil_md = df_aoil_fl[df_aoil_fl['m_datetime'] <= str(md)].tail(1)
         df_aoil_len = len(df_aoil_md)
         if flag == "現金":
-            uc = df_aoil_md.iat[df_aoil_len - 1, 1]
+            uc = df_aoil_md.iat[df_aoil_len - 1, 1] + 10
+            vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            if red:
+                vc = -(vc)
+
         else:
-            uc = df_aoil_md.iat[df_aoil_len - 1, 2]
+            uc = df_aoil_md.iat[df_aoil_len - 1, 2] + 10
+            vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            if red:
+                vc = -(vc)
         # uc = '10600'
+        # vc = vl
 
 
     # 油以外 : 免税軽油(10300) or 灯油(10500) or 重油(10600)含む
@@ -237,12 +299,14 @@ def Unit_aCal(sc, am, un, vl, tax, md, flag, df_high, df_reg, df_ku, df_tut, df_
         # sv, cTax = nOIL_Cal(sc, vl, tax, jtax, red)
         uc = Decimal(sv / (am / 100)).quantize(Decimal('0.1'), rounding=ROUND_DOWN)
         # uc = sv
+        vc = vl
 
     # 例外
     else:
         uc = sc
+        vc = vl
 
-    return uc
+    return uc, vc
 
 
 ### 売上高 : 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収 ###
