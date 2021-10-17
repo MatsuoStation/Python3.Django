@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|    "VsV.Py3.Dj.TempTags.sCal.py - Ver.3.93.26 Update:2021.10.17" |
+#//|    "VsV.Py3.Dj.TempTags.sCal.py - Ver.3.93.27 Update:2021.10.18" |
 #//+------------------------------------------------------------------+
 ### MatsuoStation.Com ###
 from datetime import datetime
@@ -98,6 +98,7 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
         sv, cTax = Cash_Cal(sc, vl)
         uc = '0'
         vc = vl
+        tc = '0'
 
     # ハイオク(10000)
     elif SC_Check(sc) == "OIL" and sc == '10000':
@@ -115,8 +116,11 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
             vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
             if red:
                 vc = -(vc)
+
+        tc = Tax_aCal(vc, jtax)
         # uc = '10000'
         # vc = vl
+        # tc = '10000'
 
     # レギュラー(10100)
     elif SC_Check(sc) == "OIL" and sc == '10100':
@@ -145,6 +149,8 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
             if red:
                 vc = -(vc)
 
+        tc = Tax_aCal(vc, jtax)
+
         # (Dev) df_reg_md = df_reg_fl[df_reg_fl['m_datetime'] == '2021-10-04']
         # (Test) uc = df_reg_md
         # (OK) uc = df_reg_md.iat[df_reg_len-1, 1]
@@ -155,6 +161,7 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
         # print(df_reg)
         # uc = '10100'
         # vc = vl
+        # tc = '10100'
 
     # 軽油(10200)
     elif SC_Check(sc) == "OIL" and sc == '10200':
@@ -172,8 +179,11 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
             vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
             if red:
                 vc = -(vc)
+
+        tc = Tax_aCal(vc, jtax)
         # uc = '10200'
         # vc = vl
+        # tc = '10200'
 
     # 免税軽油(10300)
     elif SC_Check(sc) == "OIL" and sc == '10300':
@@ -210,8 +220,11 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
                 if red:
                     vc = -(vc)
             # uc = df_ku_md.iat[df_ku_len - 1, 2] - 32.1
+
+        tc = Tax_aCal(vc, jtax)
         # uc = '10300'
         # vc = vl
+        # tc = '10300'
 
     # 灯油特別(10500)
     elif SC_Check(sc) == "nOIL" and sc == '10500':
@@ -267,8 +280,11 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
                 if red:
                     vc = -(vc)
             # uc = df_tut_md.iat[df_tut_len - 1, 2]
+
+        tc = Tax_aCal(vc, jtax)
         # uc = '10500'
         # vc = vl
+        # tc = '10500'
 
     # A重油(10600) : 配達のみ
     elif SC_Check(sc) == "nOIL" and sc == '10600':
@@ -287,11 +303,14 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
             vc = Decimal(uc * (am / 100)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
             if red:
                 vc = -(vc)
+
+        tc = Tax_aCal(vc, jtax)
         # uc = '10600'
         # vc = vl
+        # tc = '10600'
 
 
-    # 油以外 : 免税軽油(10300) or 灯油(10500) or 重油(10600)含む
+    # 油以外 : 灯油(10500) or 重油(10600)を除く
     elif SC_Check(sc) == "nOIL":
         sv, cTax, cAm = nOIL_Cal(sc, am, vl, tax, red, md)
         # sv, cTax, cAm = nOIL_Cal(sc, gc, am, md)
@@ -300,13 +319,17 @@ def Unit_aCal(sc, am, un, vl, tax, red, md, flag, df_high, df_reg, df_ku, df_tut
         uc = Decimal(sv / (am / 100)).quantize(Decimal('0.1'), rounding=ROUND_DOWN)
         # uc = sv
         vc = sv
+        tc = Tax_aCal(vc, jtax)
+        # tc = 9999
+
 
     # 例外
     else:
         uc = sc
         vc = vl
+        tc = tax
 
-    return uc, vc
+    return uc, vc, tc
 
 
 ### 売上高 : 現金関係 or 小切手関係 or 振込関係 or 相殺関係 or 売掛回収 ###
@@ -343,7 +366,6 @@ def nOIL_Cal(sc, am, vl, tax, red, md):
 
     return sv, cTax, cAm
 
-
 ### 消費税率 : 2019/10/01 => 10%, 2014/4/1 => 8%
 def jTax(m_datetime):
     # 消費税率 : 設定
@@ -352,6 +374,12 @@ def jTax(m_datetime):
     else:
         jtax = jtax8
     return jtax
+
+### 消費税計算 ###
+def Tax_aCal(vc, jtax):
+    tc = Decimal(float(vc) - float(vc) / (1+jtax)).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+    # tc = 'TaxaCal'
+    return tc
 
 
 ### S_Code : Check

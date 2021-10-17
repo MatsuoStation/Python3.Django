@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.25 Update:2021.10.17" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.27 Update:2021.10.18" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -230,14 +230,14 @@ class GAS(ListView):
 				pRcode = '現金'
 
 				## GAS : aValue.単価 / 現金
-				aUc, aVc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.red_code, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
+				aUc, aVc, aTc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.red_code, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
 				# aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
 
 			else:
 				pRcode = ''
 				## GAS : aValue.単価 / 現金以外
 				## GAS : aValue.金額
-				aUc, aVc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.red_code, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
+				aUc, aVc , aTc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.red_code, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh, df_aoil)
 				# aUc = Unit_aCal(snpv.s_code, snpv.amount, snpv.unit, snpv.value, snpv.tax, snpv.m_datetime, pRcode, df_high, df_reg, df_ku, df_tut, df_tuh)
 
 			## GAS : 赤伝先（20000101/0001)
@@ -250,7 +250,7 @@ class GAS(ListView):
 				(S) Deal.ID, Pay.ID, W.Type, W.ID, \
 				(W) 部門.ID, 取引先ID, g_code, 勘定科目ID, Tax.ID, Item.ID, 未支金額, 決済状況, \
 				(AE) 数量, 新単価, 旧単価, 旧金額, 旧税額, 新旧差額, 赤伝 '''
-			snp_list.append(['収入', snpv.slip, pMd, '', pName, '売上高', str(aTax), str(aVc), '内税', 'snpv.tax', oCC, pItem, 'SS関係', \
+			snp_list.append(['収入', snpv.slip, pMd, '', pName, '売上高', str(aTax), str(aVc), '内税', str(aTc), oCC, pItem, 'SS関係', \
 							 '', pRcode,'', 'BankID', '' , \
 							 'DealID', '', '', '', \
 							 '', '', snpv.g_code, '', '', snpv.s_code, '', '', \
