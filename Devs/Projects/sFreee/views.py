@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.28 Update:2021.10.18" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.29 Update:2021.10.20" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -166,7 +166,7 @@ class GAS(ListView):
 		## GAS : 初期データ設定 ##
 		SnPs_count = len(SnPs)
 		context['snps_count'] = SnPs_count
-		Pager_count = 85;
+		Pager_count = 250;
 		# Pager_count = 155;
 		SnPsVs = SnPs
 
@@ -278,7 +278,7 @@ class GAS(ListView):
 		df = pd.DataFrame(snp_list)
 		print(df)
 		print(str(len(df)))
-		print('%s / %s' % (Pager_Page, Pager_LastPage))
+		print('%s / %s : %s' % (Pager_Page, Pager_LastPage, SnPs_count))
 
 		## GAS : シート追加 ##
 		newShName = dl[2:-2].replace('-', '')

@@ -6,7 +6,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TLs.sFreeeList.html - Ver.3.93.25 Update:2021.10.17" |
+#//| "VsV.Py3.Dj.TLs.sFreeeList.html - Ver.3.93.29 Update:2021.10.20" |
 #//+------------------------------------------------------------------+
 -->
 {% extends "./base.html" %}
@@ -37,14 +37,14 @@
             <span class="step-links">
                 {% if snps.has_previous %}
                     <a href="?page=1">&laquo; Top&nbsp;</a>
-                    <a href="?page={{ snps.previous_page_number }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
+                    <a href="?pages={{ snps.paginator.num_pages }}&page={{ snps.previous_page_number }}">|&nbsp;Prev&nbsp;|&nbsp;</a>&nbsp;
                 {% endif %}
                 <span class="current">
                     Page {{ snps.number }} of {{ snps.paginator.num_pages }}.
                 </span>
                 {% if snps.has_next %}
-                    &nbsp;<a href="?page={{ snps.next_page_number }}">&nbsp;|&nbsp;Next&nbsp;|</a>
-                    <a href="?page={{ snps.paginator.num_pages }}">&nbsp;&nbsp;Last &raquo;</a>
+                    &nbsp;<a class="page-next" href="?pages={{ snps.paginator.num_pages }}&page={{ snps.next_page_number }}">&nbsp;|&nbsp;Next&nbsp;|</a>
+                    <a href="?pages={{ snps.paginator.num_pages }}&page={{ snps.paginator.num_pages }}">&nbsp;&nbsp;Last &raquo;</a>
                 {% endif %}
             </span>
           </div>
