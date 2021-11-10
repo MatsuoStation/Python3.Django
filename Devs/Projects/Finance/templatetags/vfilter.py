@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.76 Update:2021.09.06" |
+#//| "VsV.Py3.Dj.TempTags.vFilter.py - Ver.3.80.77 Update:2021.11.10" |
 #//+------------------------------------------------------------------+
 from django import template
 from datetime import datetime
@@ -84,7 +84,7 @@ def check_tax(sc_gc_am_vl_tax_red, md):
     if SC_Check(sc) == "Cash":
         sv, cTax = Cash_Cal(sc, vl)
     # ハイオク(10000) or レギュラー(10100) or 配達レギュラー(17100,14000) or 軽油(10200) or 配達軽油(17200,13000) or 免税軽油(10300) or 配達免税軽油(17300,11000)
-    elif SC_Check(sc) == "OIL" or (vl == 0 and (sc == "17300" or sc == "11000")):
+    elif SC_Check(sc) == "OIL" or (vl == 0 and (sc == "10300" or sc == "17300" or sc == "11000")):
         sv, cTax, cAm = OIL_Cal(sc, gc, am, vl, tax, jtax, red, md)
         # sv, cTax = OIL_Cal(sc)
     # 油以外 : 灯油(10500) or 重油(10600)含む
