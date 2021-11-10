@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.76 Update:2021.09.06" |
+#//|   "VsV.Py3.Dj.vInvoice.Views.py - Ver.3.80.78 Update:2021.11.10" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -449,8 +449,8 @@ class vInvoice_List(ListView):
 							else:
 								slip_list.append(1)
 
-					# OIL以外(配達免税軽油：17300,11000)
-					elif SC_Check(iv.s_code.uid) == "nOIL" and iv.value == 0 and (iv.s_code.uid == "17300" or iv.s_code.uid == "11000"):
+					# OIL以外(免税軽油 : 10300 or 配達免税軽油：17300,11000)
+					elif SC_Check(iv.s_code.uid) == "nOIL" and iv.value == 0 and (iv.s_code.uid == "10300" or iv.s_code.uid == "17300" or iv.s_code.uid == "11000"):
 						sv, cTax, cAm = OIL_Cal(iv.s_code.uid, iv.g_code.uid, iv.amount, iv.value, iv.tax, jtax, iv.red_code, iv.m_datetime)
 						ntax_list.append(sv)
 						tax_list.append(cTax)
@@ -514,8 +514,8 @@ class vInvoice_List(ListView):
 							kc_tax = kTax_Cal(biv.s_code.uid, cAm)
 							bku_tx_list.append(kc_tax)
 
-					# OIL以外(配達免税軽油：17300,11000)
-					elif SC_Check(biv.s_code.uid) == "nOIL" and iv.value == 0 and (iv.s_code.uid == "17300" or iv.s_code.uid == "11000"):
+					# OIL以外(免税軽油 : 10300 or 配達免税軽油：17300,11000)
+					elif SC_Check(biv.s_code.uid) == "nOIL" and iv.value == 0 and (iv.s_code.uid == "10300" or iv.s_code.uid == "17300" or iv.s_code.uid == "11000"):
 						sv, cTax, cAm = OIL_Cal(biv.s_code.uid, biv.g_code.uid, biv.amount, biv.value, biv.tax, jtax, biv.red_code, biv.m_datetime)
 						bntax_list.append(sv)
 						btax_list.append(cTax)
