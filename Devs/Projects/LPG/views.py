@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.41 Update:2021.09.01" |
+#//|"VsV.Python3.Django.LPG.Views.py - Ver.3.11.42 Update:2022.01.08" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -1337,7 +1337,7 @@ class PDF_List(ListView):
 				for lt in LTs:
 					if lt.date00:
 						date00 = lt.date00
-						if dlb <= date00 and date00+timedelta(days=1) <= dla:
+						if dlb <= date00 and date00+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ00'] = date00
 
 							sTJ00 = lt.s_code00
@@ -1349,6 +1349,8 @@ class PDF_List(ListView):
 								s_code_name = "A重油"
 							if sTJ00 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ00 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name00'] = s_code_name
 
 							aTJ00 = lt.amount00
@@ -1366,7 +1368,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ00 = vTJ00 - tTJ00
 
-							if sTJ00 == "10500":
+							if sTJ00 == "10500" or sTJ00 == "17500":
 								aTJ_list.append(aTJ00)
 								ntax_vTJ_list.append(ntax_vTJ00)
 							else:
@@ -1374,7 +1376,7 @@ class PDF_List(ListView):
 
 					if lt.date01:
 						date01 = lt.date01
-						if dlb <= date01 and date01+timedelta(days=1) <= dla:
+						if dlb <= date01 and date01+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ01'] = date01
 
 							sTJ01 = lt.s_code01
@@ -1384,8 +1386,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ01 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ01 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ01 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name01'] = s_code_name
 
 							aTJ01 = lt.amount01
@@ -1403,7 +1407,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ01 = vTJ01 - tTJ01
 
-							if sTJ01 == "10500":
+							if sTJ01 == "10500" or sTJ01 == "17500":
 								aTJ_list.append(aTJ01)
 								ntax_vTJ_list.append(ntax_vTJ01)
 							else:
@@ -1411,7 +1415,7 @@ class PDF_List(ListView):
 
 					if lt.date02:
 						date02 = lt.date02
-						if dlb <= date02 and date02+timedelta(days=1) <= dla:
+						if dlb <= date02 and date02+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ02'] = date02
 
 							sTJ02 = lt.s_code02
@@ -1421,8 +1425,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ02 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ02 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ02 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name02'] = s_code_name
 
 							aTJ02 = lt.amount02
@@ -1440,7 +1446,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ02 = vTJ02 - tTJ02
 
-							if sTJ02 == "10500":
+							if sTJ02 == "10500" or sTJ02 == "17500":
 								aTJ_list.append(aTJ02)
 								ntax_vTJ_list.append(ntax_vTJ02)
 							else:
@@ -1448,7 +1454,7 @@ class PDF_List(ListView):
 
 					if lt.date03:
 						date03 = lt.date03
-						if dlb <= date03 and date03+timedelta(days=1) <= dla:
+						if dlb <= date03 and date03+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ03'] = date03
 
 							sTJ03 = lt.s_code03
@@ -1458,8 +1464,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ03 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ03 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ03 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name03'] = s_code_name
 
 							aTJ03 = lt.amount03
@@ -1477,7 +1485,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ03 = vTJ03 - tTJ03
 
-							if sTJ03 == "10500":
+							if sTJ03 == "10500" or sTJ03 == "17500":
 								aTJ_list.append(aTJ03)
 								ntax_vTJ_list.append(ntax_vTJ03)
 							else:
@@ -1485,7 +1493,7 @@ class PDF_List(ListView):
 
 					if lt.date04:
 						date04 = lt.date04
-						if dlb <= date04 and date04+timedelta(days=1) <= dla:
+						if dlb <= date04 and date04+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ04'] = date04
 
 							sTJ04 = lt.s_code04
@@ -1495,8 +1503,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ04 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ04 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ04 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name04'] = s_code_name
 
 							aTJ04 = lt.amount04
@@ -1514,7 +1524,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ04 = vTJ04 - tTJ04
 
-							if sTJ04 == "10500":
+							if sTJ04 == "10500" or sTJ04 == "17500":
 								aTJ_list.append(aTJ04)
 								ntax_vTJ_list.append(ntax_vTJ04)
 							else:
@@ -1522,7 +1532,7 @@ class PDF_List(ListView):
 
 					if lt.date05:
 						date05 = lt.date05
-						if dlb <= date05 and date05+timedelta(days=1) <= dla:
+						if dlb <= date05 and date05+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ05'] = date05
 
 							sTJ05 = lt.s_code05
@@ -1532,8 +1542,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ05 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ05 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ05 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name05'] = s_code_name
 
 							aTJ05 = lt.amount05
@@ -1551,7 +1563,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ05 = vTJ05 - tTJ05
 
-							if sTJ05 == "10500":
+							if sTJ05 == "10500" or sTJ05 == "17500":
 								aTJ_list.append(aTJ05)
 								ntax_vTJ_list.append(ntax_vTJ05)
 							else:
@@ -1559,7 +1571,7 @@ class PDF_List(ListView):
 
 					if lt.date06:
 						date06 = lt.date06
-						if dlb <= date06 and date06+timedelta(days=1) <= dla:
+						if dlb <= date06 and date06+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ06'] = date06
 
 							sTJ06 = lt.s_code06
@@ -1569,8 +1581,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ06 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ06 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ06 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name06'] = s_code_name
 
 							aTJ06 = lt.amount06
@@ -1588,7 +1602,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ06 = vTJ06 - tTJ06
 
-							if sTJ06 == "10500":
+							if sTJ06 == "10500" or sTJ06 == "17500":
 								aTJ_list.append(aTJ06)
 								ntax_vTJ_list.append(ntax_vTJ06)
 							else:
@@ -1596,7 +1610,7 @@ class PDF_List(ListView):
 
 					if lt.date07:
 						date07 = lt.date07
-						if dlb <= date07 and date07+timedelta(days=1) <= dla:
+						if dlb <= date07 and date07+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ07'] = date07
 
 							sTJ07 = lt.s_code07
@@ -1606,8 +1620,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ07 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ07 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ07 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name07'] = s_code_name
 
 							aTJ07 = lt.amount07
@@ -1625,7 +1641,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ07 = vTJ07 - tTJ07
 
-							if sTJ07 == "10500":
+							if sTJ07 == "10500" or sTJ07 == "17500":
 								aTJ_list.append(aTJ07)
 								ntax_vTJ_list.append(ntax_vTJ07)
 							else:
@@ -1633,7 +1649,7 @@ class PDF_List(ListView):
 
 					if lt.date08:
 						date08 = lt.date08
-						if dlb <= date08 and date08+timedelta(days=1) <= dla:
+						if dlb <= date08 and date08+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ08'] = date08
 
 							sTJ08 = lt.s_code08
@@ -1643,8 +1659,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ08 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ08 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ08 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name08'] = s_code_name
 
 							aTJ08 = lt.amount08
@@ -1662,7 +1680,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ08 = vTJ08 - tTJ08
 
-							if sTJ08 == "10500":
+							if sTJ08 == "10500" or sTJ08 == "17500":
 								aTJ_list.append(aTJ08)
 								ntax_vTJ_list.append(ntax_vTJ08)
 							else:
@@ -1670,7 +1688,7 @@ class PDF_List(ListView):
 
 					if lt.date09:
 						date09 = lt.date09
-						if dlb <= date09 and date09+timedelta(days=1) <= dla:
+						if dlb <= date09 and date09+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ09'] = date09
 
 							sTJ09 = lt.s_code09
@@ -1680,8 +1698,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ09 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ09 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ09 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name09'] = s_code_name
 
 							aTJ09 = lt.amount09
@@ -1699,7 +1719,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ09 = vTJ09 - tTJ09
 
-							if sTJ09 == "10500":
+							if sTJ09 == "10500" or sTJ09 == "17500":
 								aTJ_list.append(aTJ09)
 								ntax_vTJ_list.append(ntax_vTJ09)
 							else:
@@ -1707,7 +1727,7 @@ class PDF_List(ListView):
 
 					if lt.date10:
 						date10 = lt.date10
-						if dlb <= date10 and date10+timedelta(days=1) <= dla:
+						if dlb <= date10 and date10+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ10'] = date10
 
 							sTJ10 = lt.s_code10
@@ -1717,8 +1737,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ10 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ10 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ10 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name10'] = s_code_name
 
 							aTJ10 = lt.amount10
@@ -1736,7 +1758,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ10 = vTJ10 - tTJ10
 
-							if sTJ10 == "10500":
+							if sTJ10 == "10500" or sTJ10 == "17500":
 								aTJ_list.append(aTJ10)
 								ntax_vTJ_list.append(ntax_vTJ10)
 							else:
@@ -1744,7 +1766,7 @@ class PDF_List(ListView):
 
 					if lt.date11:
 						date11 = lt.date11
-						if dlb <= date11 and date11+timedelta(days=1) <= dla:
+						if dlb <= date11 and date11+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ11'] = date11
 
 							sTJ11 = lt.s_code11
@@ -1754,8 +1776,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ11 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ11 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ11 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name11'] = s_code_name
 
 							aTJ11 = lt.amount11
@@ -1773,7 +1797,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ11 = vTJ11 - tTJ11
 
-							if sTJ11 == "10500":
+							if sTJ11 == "10500" or sTJ11 == "17500":
 								aTJ_list.append(aTJ11)
 								ntax_vTJ_list.append(ntax_vTJ11)
 							else:
@@ -1781,7 +1805,7 @@ class PDF_List(ListView):
 
 					if lt.date12:
 						date12 = lt.date12
-						if dlb <= date12 and date12+timedelta(days=1) <= dla:
+						if dlb <= date12 and date12+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ12'] = date12
 
 							sTJ12 = lt.s_code12
@@ -1791,8 +1815,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ12 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ12 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ12 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name12'] = s_code_name
 
 							aTJ12 = lt.amount12
@@ -1810,7 +1836,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ12 = vTJ12 - tTJ12
 
-							if sTJ12 == "10500":
+							if sTJ12 == "10500" or sTJ12 == "17500":
 								aTJ_list.append(aTJ12)
 								ntax_vTJ_list.append(ntax_vTJ12)
 							else:
@@ -1818,7 +1844,7 @@ class PDF_List(ListView):
 
 					if lt.date13:
 						date13 = lt.date13
-						if dlb <= date13 and date13+timedelta(days=1) <= dla:
+						if dlb <= date13 and date13+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ13'] = date13
 
 							sTJ13 = lt.s_code13
@@ -1828,8 +1854,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ13 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ13 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ13 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name13'] = s_code_name
 
 							aTJ13 = lt.amount13
@@ -1847,7 +1875,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ13 = vTJ13 - tTJ13
 
-							if sTJ13 == "10500":
+							if sTJ13 == "10500" or sTJ13 == "17500":
 								aTJ_list.append(aTJ13)
 								ntax_vTJ_list.append(ntax_vTJ13)
 							else:
@@ -1855,7 +1883,7 @@ class PDF_List(ListView):
 
 					if lt.date14:
 						date14 = lt.date14
-						if dlb <= date14 and date14+timedelta(days=1) <= dla:
+						if dlb <= date14 and date14+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ14'] = date14
 
 							sTJ14 = lt.s_code14
@@ -1865,8 +1893,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ14 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ14 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ14 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name14'] = s_code_name
 
 							aTJ14 = lt.amount14
@@ -1884,7 +1914,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ14 = vTJ14 - tTJ14
 
-							if sTJ14 == "10500":
+							if sTJ14 == "10500" or sTJ14 == "17500":
 								aTJ_list.append(aTJ14)
 								ntax_vTJ_list.append(ntax_vTJ14)
 							else:
@@ -1892,7 +1922,7 @@ class PDF_List(ListView):
 
 					if lt.date15:
 						date15 = lt.date15
-						if dlb <= date15 and date15+timedelta(days=1) <= dla:
+						if dlb <= date15 and date15+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ15'] = date15
 
 							sTJ15 = lt.s_code15
@@ -1902,8 +1932,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ15 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ15 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ15 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name15'] = s_code_name
 
 							aTJ15 = lt.amount15
@@ -1921,7 +1953,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ15 = vTJ15 - tTJ15
 
-							if sTJ15 == "10500":
+							if sTJ15 == "10500" or sTJ15 == "17500":
 								aTJ_list.append(aTJ15)
 								ntax_vTJ_list.append(ntax_vTJ15)
 							else:
@@ -1929,7 +1961,7 @@ class PDF_List(ListView):
 
 					if lt.date16:
 						date16 = lt.date16
-						if dlb <= date16 and date16+timedelta(days=1) <= dla:
+						if dlb <= date16 and date16+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ16'] = date16
 
 							sTJ16 = lt.s_code16
@@ -1939,8 +1971,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ16 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ16 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ16 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name16'] = s_code_name
 
 							aTJ16 = lt.amount16
@@ -1958,7 +1992,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ16 = vTJ16 - tTJ16
 
-							if sTJ16 == "10500":
+							if sTJ16 == "10500" or sTJ16 == "17500":
 								aTJ_list.append(aTJ16)
 								ntax_vTJ_list.append(ntax_vTJ16)
 							else:
@@ -1966,7 +2000,7 @@ class PDF_List(ListView):
 
 					if lt.date17:
 						date17 = lt.date17
-						if dlb <= date17 and date17+timedelta(days=1) <= dla:
+						if dlb <= date17 and date17+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ17'] = date17
 
 							sTJ17 = lt.s_code17
@@ -1976,8 +2010,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ17 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ17 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ17 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name17'] = s_code_name
 
 							aTJ17 = lt.amount17
@@ -1995,7 +2031,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ17 = vTJ17 - tTJ17
 
-							if sTJ17 == "10500":
+							if sTJ17 == "10500" or sTJ17 == "17500":
 								aTJ_list.append(aTJ17)
 								ntax_vTJ_list.append(ntax_vTJ17)
 							else:
@@ -2003,7 +2039,7 @@ class PDF_List(ListView):
 
 					if lt.date18:
 						date18 = lt.date18
-						if dlb <= date18 and date18+timedelta(days=1) <= dla:
+						if dlb <= date18 and date18+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ18'] = date18
 
 							sTJ18 = lt.s_code18
@@ -2013,8 +2049,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ18 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ18 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ18 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name18'] = s_code_name
 
 							aTJ18 = lt.amount18
@@ -2032,7 +2070,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ18 = vTJ18 - tTJ18
 
-							if sTJ18 == "10500":
+							if sTJ18 == "10500" or sTJ18 == "17500":
 								aTJ_list.append(aTJ18)
 								ntax_vTJ_list.append(ntax_vTJ18)
 							else:
@@ -2040,7 +2078,7 @@ class PDF_List(ListView):
 
 					if lt.date19:
 						date19 = lt.date19
-						if dlb <= date19 and date19+timedelta(days=1) <= dla:
+						if dlb <= date19 and date19+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ19'] = date19
 
 							sTJ19 = lt.s_code19
@@ -2050,8 +2088,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ19 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ19 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ19 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name19'] = s_code_name
 
 							aTJ19 = lt.amount19
@@ -2069,7 +2109,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ19 = vTJ19 - tTJ19
 
-							if sTJ19 == "10500":
+							if sTJ19 == "10500" or sTJ19 == "17500":
 								aTJ_list.append(aTJ19)
 								ntax_vTJ_list.append(ntax_vTJ19)
 							else:
@@ -2077,7 +2117,7 @@ class PDF_List(ListView):
 
 					if lt.date20:
 						date20 = lt.date20
-						if dlb <= date20 and date20+timedelta(days=1) <= dla:
+						if dlb <= date20 and date20+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ20'] = date20
 
 							sTJ20 = lt.s_code20
@@ -2087,8 +2127,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ20 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ20 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ20 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name20'] = s_code_name
 
 							aTJ20 = lt.amount20
@@ -2106,7 +2148,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ20 = vTJ20 - tTJ20
 
-							if sTJ20 == "10500":
+							if sTJ20 == "10500" or sTJ20 == "17500":
 								aTJ_list.append(aTJ20)
 								ntax_vTJ_list.append(ntax_vTJ20)
 							else:
@@ -2114,7 +2156,7 @@ class PDF_List(ListView):
 
 					if lt.date21:
 						date21 = lt.date21
-						if dlb <= date21 and date21+timedelta(days=1) <= dla:
+						if dlb <= date21 and date21+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ21'] = date21
 
 							sTJ21 = lt.s_code21
@@ -2124,8 +2166,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ21 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ21 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ21 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name21'] = s_code_name
 
 							aTJ21 = lt.amount21
@@ -2143,7 +2187,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ21 = vTJ21 - tTJ21
 
-							if sTJ21 == "10500":
+							if sTJ21 == "10500" or sTJ21 == "17500":
 								aTJ_list.append(aTJ21)
 								ntax_vTJ_list.append(ntax_vTJ21)
 							else:
@@ -2151,7 +2195,7 @@ class PDF_List(ListView):
 
 					if lt.date22:
 						date22 = lt.date22
-						if dlb <= date22 and date22+timedelta(days=1) <= dla:
+						if dlb <= date22 and date22+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ22'] = date22
 
 							sTJ22 = lt.s_code22
@@ -2161,8 +2205,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ22 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ22 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ22 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name22'] = s_code_name
 
 							aTJ22 = lt.amount22
@@ -2180,7 +2226,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ22 = vTJ22 - tTJ22
 
-							if sTJ22 == "10500":
+							if sTJ22 == "10500" or sTJ22 == "17500":
 								aTJ_list.append(aTJ22)
 								ntax_vTJ_list.append(ntax_vTJ22)
 							else:
@@ -2188,7 +2234,7 @@ class PDF_List(ListView):
 
 					if lt.date23:
 						date23 = lt.date23
-						if dlb <= date23 and date23+timedelta(days=1) <= dla:
+						if dlb <= date23 and date23+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ23'] = date23
 
 							sTJ23 = lt.s_code23
@@ -2198,8 +2244,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ23 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ23 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ23 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name23'] = s_code_name
 
 							aTJ23 = lt.amount23
@@ -2217,7 +2265,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ23 = vTJ23 - tTJ23
 
-							if sTJ23 == "10500":
+							if sTJ23 == "10500" or sTJ23 == "17500":
 								aTJ_list.append(aTJ23)
 								ntax_vTJ_list.append(ntax_vTJ23)
 							else:
@@ -2225,7 +2273,7 @@ class PDF_List(ListView):
 
 					if lt.date24:
 						date24 = lt.date24
-						if dlb <= date24 and date24+timedelta(days=1) <= dla:
+						if dlb <= date24 and date24+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ24'] = date24
 
 							sTJ24 = lt.s_code24
@@ -2235,8 +2283,10 @@ class PDF_List(ListView):
 								s_code_name = "灯油"
 							if sTJ24 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ24 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ24 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name24'] = s_code_name
 
 							aTJ24 = lt.amount24
@@ -2254,7 +2304,7 @@ class PDF_List(ListView):
 
 							ntax_vTJ24 = vTJ24 - tTJ24
 
-							if sTJ24 == "10500":
+							if sTJ24 == "10500" or sTJ24 == "17500":
 								aTJ_list.append(aTJ24)
 								ntax_vTJ_list.append(ntax_vTJ24)
 							else:
@@ -3428,7 +3478,7 @@ class LPG_List(ListView):
 				for lt in LTs:
 					if lt.date00:
 						date00 = lt.date00
-						if dlb <= date00 and date00+timedelta(days=1) <= dla:
+						if dlb <= date00 and date00+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ00'] = date00
 
 							sTJ00 = lt.s_code00
@@ -3440,6 +3490,8 @@ class LPG_List(ListView):
 								s_code_name = "A重油"
 							if sTJ00 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ00 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name00'] = s_code_name
 
 							aTJ00 = lt.amount00
@@ -3457,7 +3509,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ00 = vTJ00 - tTJ00
 
-							if sTJ00 == "10500":
+							if sTJ00 == "10500" or sTJ00 == "17500":
 								aTJ_list.append(aTJ00)
 								ntax_vTJ_list.append(ntax_vTJ00)
 							else:
@@ -3465,7 +3517,7 @@ class LPG_List(ListView):
 
 					if lt.date01:
 						date01 = lt.date01
-						if dlb <= date01 and date01+timedelta(days=1) <= dla:
+						if dlb <= date01 and date01+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ01'] = date01
 
 							sTJ01 = lt.s_code01
@@ -3475,8 +3527,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ01 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ01 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ01 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name01'] = s_code_name
 
 							aTJ01 = lt.amount01
@@ -3494,7 +3548,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ01 = vTJ01 - tTJ01
 
-							if sTJ01 == "10500":
+							if sTJ01 == "10500" or sTJ01 == "17500":
 								aTJ_list.append(aTJ01)
 								ntax_vTJ_list.append(ntax_vTJ01)
 							else:
@@ -3502,7 +3556,7 @@ class LPG_List(ListView):
 
 					if lt.date02:
 						date02 = lt.date02
-						if dlb <= date02 and date02+timedelta(days=1) <= dla:
+						if dlb <= date02 and date02+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ02'] = date02
 
 							sTJ02 = lt.s_code02
@@ -3512,10 +3566,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ02 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
-								s_code_name = "灯油（配達）02"
-							if sTJ00 == "98000":
-								s_code_name = "配達代02"
+							if sTJ02 == "17500":
+								s_code_name = "灯油（配達）"
+							if sTJ02 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name02'] = s_code_name
 
 							aTJ02 = lt.amount02
@@ -3533,7 +3587,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ02 = vTJ02 - tTJ02
 
-							if sTJ02 == "10500":
+							if sTJ02 == "10500" or sTJ02 == "17500":
 								aTJ_list.append(aTJ02)
 								ntax_vTJ_list.append(ntax_vTJ02)
 							else:
@@ -3541,7 +3595,7 @@ class LPG_List(ListView):
 
 					if lt.date03:
 						date03 = lt.date03
-						if dlb <= date03 and date03+timedelta(days=1) <= dla:
+						if dlb <= date03 and date03+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ03'] = date03
 
 							sTJ03 = lt.s_code03
@@ -3551,8 +3605,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ03 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ03 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ03 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name03'] = s_code_name
 
 							aTJ03 = lt.amount03
@@ -3570,7 +3626,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ03 = vTJ03 - tTJ03
 
-							if sTJ03 == "10500":
+							if sTJ03 == "10500" or sTJ03 == "17500":
 								aTJ_list.append(aTJ03)
 								ntax_vTJ_list.append(ntax_vTJ03)
 							else:
@@ -3578,7 +3634,7 @@ class LPG_List(ListView):
 
 					if lt.date04:
 						date04 = lt.date04
-						if dlb <= date04 and date04+timedelta(days=1) <= dla:
+						if dlb <= date04 and date04+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ04'] = date04
 
 							sTJ04 = lt.s_code04
@@ -3588,8 +3644,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ04 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ04 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ04 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name04'] = s_code_name
 
 							aTJ04 = lt.amount04
@@ -3607,7 +3665,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ04 = vTJ04 - tTJ04
 
-							if sTJ04 == "10500":
+							if sTJ04 == "10500" or sTJ04 == "17500":
 								aTJ_list.append(aTJ04)
 								ntax_vTJ_list.append(ntax_vTJ04)
 							else:
@@ -3615,7 +3673,7 @@ class LPG_List(ListView):
 
 					if lt.date05:
 						date05 = lt.date05
-						if dlb <= date05 and date05+timedelta(days=1) <= dla:
+						if dlb <= date05 and date05+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ05'] = date05
 
 							sTJ05 = lt.s_code05
@@ -3625,8 +3683,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ05 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ05 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ05 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name05'] = s_code_name
 
 							aTJ05 = lt.amount05
@@ -3644,7 +3704,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ05 = vTJ05 - tTJ05
 
-							if sTJ05 == "10500":
+							if sTJ05 == "10500" or sTJ05 == "17500":
 								aTJ_list.append(aTJ05)
 								ntax_vTJ_list.append(ntax_vTJ05)
 							else:
@@ -3652,7 +3712,7 @@ class LPG_List(ListView):
 
 					if lt.date06:
 						date06 = lt.date06
-						if dlb <= date06 and date06+timedelta(days=1) <= dla:
+						if dlb <= date06 and date06+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ06'] = date06
 
 							sTJ06 = lt.s_code06
@@ -3662,8 +3722,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ06 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ06 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ06 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name06'] = s_code_name
 
 							aTJ06 = lt.amount06
@@ -3681,7 +3743,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ06 = vTJ06 - tTJ06
 
-							if sTJ06 == "10500":
+							if sTJ06 == "10500" or sTJ06 == "17500":
 								aTJ_list.append(aTJ06)
 								ntax_vTJ_list.append(ntax_vTJ06)
 							else:
@@ -3689,7 +3751,7 @@ class LPG_List(ListView):
 
 					if lt.date07:
 						date07 = lt.date07
-						if dlb <= date07 and date07+timedelta(days=1) <= dla:
+						if dlb <= date07 and date07+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ07'] = date07
 
 							sTJ07 = lt.s_code07
@@ -3699,8 +3761,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ07 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ07 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ07 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name07'] = s_code_name
 
 							aTJ07 = lt.amount07
@@ -3718,7 +3782,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ07 = vTJ07 - tTJ07
 
-							if sTJ07 == "10500":
+							if sTJ07 == "10500" or sTJ07 == "17500":
 								aTJ_list.append(aTJ07)
 								ntax_vTJ_list.append(ntax_vTJ07)
 							else:
@@ -3726,7 +3790,7 @@ class LPG_List(ListView):
 
 					if lt.date08:
 						date08 = lt.date08
-						if dlb <= date08 and date08+timedelta(days=1) <= dla:
+						if dlb <= date08 and date08+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ08'] = date08
 
 							sTJ08 = lt.s_code08
@@ -3736,8 +3800,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ08 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ08 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ08 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name08'] = s_code_name
 
 							aTJ08 = lt.amount08
@@ -3755,7 +3821,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ08 = vTJ08 - tTJ08
 
-							if sTJ08 == "10500":
+							if sTJ08 == "10500" or sTJ08 == "17500":
 								aTJ_list.append(aTJ08)
 								ntax_vTJ_list.append(ntax_vTJ08)
 							else:
@@ -3763,7 +3829,7 @@ class LPG_List(ListView):
 
 					if lt.date09:
 						date09 = lt.date09
-						if dlb <= date09 and date09+timedelta(days=1) <= dla:
+						if dlb <= date09 and date09+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ09'] = date09
 
 							sTJ09 = lt.s_code09
@@ -3773,8 +3839,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ09 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ09 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ09 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name09'] = s_code_name
 
 							aTJ09 = lt.amount09
@@ -3792,7 +3860,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ09 = vTJ09 - tTJ09
 
-							if sTJ09 == "10500":
+							if sTJ09 == "10500" or sTJ09 == "17500":
 								aTJ_list.append(aTJ09)
 								ntax_vTJ_list.append(ntax_vTJ09)
 							else:
@@ -3800,7 +3868,7 @@ class LPG_List(ListView):
 
 					if lt.date10:
 						date10 = lt.date10
-						if dlb <= date10 and date10+timedelta(days=1) <= dla:
+						if dlb <= date10 and date10+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ10'] = date10
 
 							sTJ10 = lt.s_code10
@@ -3810,8 +3878,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ10 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ10 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ10 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name10'] = s_code_name
 
 							aTJ10 = lt.amount10
@@ -3829,7 +3899,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ10 = vTJ10 - tTJ10
 
-							if sTJ10 == "10500":
+							if sTJ10 == "10500" or sTJ10 == "17500":
 								aTJ_list.append(aTJ10)
 								ntax_vTJ_list.append(ntax_vTJ10)
 							else:
@@ -3837,7 +3907,7 @@ class LPG_List(ListView):
 
 					if lt.date11:
 						date11 = lt.date11
-						if dlb <= date11 and date11+timedelta(days=1) <= dla:
+						if dlb <= date11 and date11+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ11'] = date11
 
 							sTJ11 = lt.s_code11
@@ -3847,8 +3917,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ11 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ11 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ11 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name11'] = s_code_name
 
 							aTJ11 = lt.amount11
@@ -3866,7 +3938,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ11 = vTJ11 - tTJ11
 
-							if sTJ11 == "10500":
+							if sTJ11 == "10500" or sTJ11 == "17500":
 								aTJ_list.append(aTJ11)
 								ntax_vTJ_list.append(ntax_vTJ11)
 							else:
@@ -3874,7 +3946,7 @@ class LPG_List(ListView):
 
 					if lt.date12:
 						date12 = lt.date12
-						if dlb <= date12 and date12+timedelta(days=1) <= dla:
+						if dlb <= date12 and date12+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ12'] = date12
 
 							sTJ12 = lt.s_code12
@@ -3884,8 +3956,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ12 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ12 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ12 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name12'] = s_code_name
 
 							aTJ12 = lt.amount12
@@ -3903,7 +3977,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ12 = vTJ12 - tTJ12
 
-							if sTJ12 == "10500":
+							if sTJ12 == "10500" or sTJ12 == "17500":
 								aTJ_list.append(aTJ12)
 								ntax_vTJ_list.append(ntax_vTJ12)
 							else:
@@ -3911,7 +3985,7 @@ class LPG_List(ListView):
 
 					if lt.date13:
 						date13 = lt.date13
-						if dlb <= date13 and date13+timedelta(days=1) <= dla:
+						if dlb <= date13 and date13+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ13'] = date13
 
 							sTJ13 = lt.s_code13
@@ -3921,8 +3995,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ13 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ13 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ13 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name13'] = s_code_name
 
 							aTJ13 = lt.amount13
@@ -3940,7 +4016,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ13 = vTJ13 - tTJ13
 
-							if sTJ13 == "10500":
+							if sTJ13 == "10500" or sTJ13 == "17500":
 								aTJ_list.append(aTJ13)
 								ntax_vTJ_list.append(ntax_vTJ13)
 							else:
@@ -3948,7 +4024,7 @@ class LPG_List(ListView):
 
 					if lt.date14:
 						date14 = lt.date14
-						if dlb <= date14 and date14+timedelta(days=1) <= dla:
+						if dlb <= date14 and date14+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ14'] = date14
 
 							sTJ14 = lt.s_code14
@@ -3958,8 +4034,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ14 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ14 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ14 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name14'] = s_code_name
 
 							aTJ14 = lt.amount14
@@ -3977,7 +4055,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ14 = vTJ14 - tTJ14
 
-							if sTJ14 == "10500":
+							if sTJ14 == "10500" or sTJ14 == "17500":
 								aTJ_list.append(aTJ14)
 								ntax_vTJ_list.append(ntax_vTJ14)
 							else:
@@ -3985,7 +4063,7 @@ class LPG_List(ListView):
 
 					if lt.date15:
 						date15 = lt.date15
-						if dlb <= date15 and date15+timedelta(days=1) <= dla:
+						if dlb <= date15 and date15+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ15'] = date15
 
 							sTJ15 = lt.s_code15
@@ -3995,8 +4073,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ15 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ15 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ15 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name15'] = s_code_name
 
 							aTJ15 = lt.amount15
@@ -4014,7 +4094,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ15 = vTJ15 - tTJ15
 
-							if sTJ15 == "10500":
+							if sTJ15 == "10500" or sTJ15 == "17500":
 								aTJ_list.append(aTJ15)
 								ntax_vTJ_list.append(ntax_vTJ15)
 							else:
@@ -4022,7 +4102,7 @@ class LPG_List(ListView):
 
 					if lt.date16:
 						date16 = lt.date16
-						if dlb <= date16 and date16+timedelta(days=1) <= dla:
+						if dlb <= date16 and date16+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ16'] = date16
 
 							sTJ16 = lt.s_code16
@@ -4032,8 +4112,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ16 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ16 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ16 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name16'] = s_code_name
 
 							aTJ16 = lt.amount16
@@ -4051,7 +4133,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ16 = vTJ16 - tTJ16
 
-							if sTJ16 == "10500":
+							if sTJ16 == "10500" or sTJ16 == "17500":
 								aTJ_list.append(aTJ16)
 								ntax_vTJ_list.append(ntax_vTJ16)
 							else:
@@ -4059,7 +4141,7 @@ class LPG_List(ListView):
 
 					if lt.date17:
 						date17 = lt.date17
-						if dlb <= date17 and date17+timedelta(days=1) <= dla:
+						if dlb <= date17 and date17+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ17'] = date17
 
 							sTJ17 = lt.s_code17
@@ -4069,8 +4151,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ17 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ17 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ17 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name17'] = s_code_name
 
 							aTJ17 = lt.amount17
@@ -4088,7 +4172,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ17 = vTJ17 - tTJ17
 
-							if sTJ17 == "10500":
+							if sTJ17 == "10500" or sTJ17 == "17500":
 								aTJ_list.append(aTJ17)
 								ntax_vTJ_list.append(ntax_vTJ17)
 							else:
@@ -4096,7 +4180,7 @@ class LPG_List(ListView):
 
 					if lt.date18:
 						date18 = lt.date18
-						if dlb <= date18 and date18+timedelta(days=1) <= dla:
+						if dlb <= date18 and date18+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ18'] = date18
 
 							sTJ18 = lt.s_code18
@@ -4106,8 +4190,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ18 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ18 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ18 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name18'] = s_code_name
 
 							aTJ18 = lt.amount18
@@ -4125,7 +4211,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ18 = vTJ18 - tTJ18
 
-							if sTJ18 == "10500":
+							if sTJ18 == "10500" or sTJ18 == "17500":
 								aTJ_list.append(aTJ18)
 								ntax_vTJ_list.append(ntax_vTJ18)
 							else:
@@ -4133,7 +4219,7 @@ class LPG_List(ListView):
 
 					if lt.date19:
 						date19 = lt.date19
-						if dlb <= date19 and date19+timedelta(days=1) <= dla:
+						if dlb <= date19 and date19+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ19'] = date19
 
 							sTJ19 = lt.s_code19
@@ -4143,8 +4229,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ19 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ19 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ19 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name19'] = s_code_name
 
 							aTJ19 = lt.amount19
@@ -4162,7 +4250,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ19 = vTJ19 - tTJ19
 
-							if sTJ19 == "10500":
+							if sTJ19 == "10500" or sTJ19 == "17500":
 								aTJ_list.append(aTJ19)
 								ntax_vTJ_list.append(ntax_vTJ19)
 							else:
@@ -4170,7 +4258,7 @@ class LPG_List(ListView):
 
 					if lt.date20:
 						date20 = lt.date20
-						if dlb <= date20 and date20+timedelta(days=1) <= dla:
+						if dlb <= date20 and date20+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ20'] = date20
 
 							sTJ20 = lt.s_code20
@@ -4180,8 +4268,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ20 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ20 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ20 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name20'] = s_code_name
 
 							aTJ20 = lt.amount20
@@ -4199,7 +4289,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ20 = vTJ20 - tTJ20
 
-							if sTJ20 == "10500":
+							if sTJ20 == "10500" or sTJ20 == "17500":
 								aTJ_list.append(aTJ20)
 								ntax_vTJ_list.append(ntax_vTJ20)
 							else:
@@ -4207,7 +4297,7 @@ class LPG_List(ListView):
 
 					if lt.date21:
 						date21 = lt.date21
-						if dlb <= date21 and date21+timedelta(days=1) <= dla:
+						if dlb <= date21 and date21+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ21'] = date21
 
 							sTJ21 = lt.s_code21
@@ -4217,8 +4307,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ21 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ21 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ21 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name21'] = s_code_name
 
 							aTJ21 = lt.amount21
@@ -4236,7 +4328,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ21 = vTJ21 - tTJ21
 
-							if sTJ21 == "10500":
+							if sTJ21 == "10500" or sTJ21 == "17500":
 								aTJ_list.append(aTJ21)
 								ntax_vTJ_list.append(ntax_vTJ21)
 							else:
@@ -4244,7 +4336,7 @@ class LPG_List(ListView):
 
 					if lt.date22:
 						date22 = lt.date22
-						if dlb <= date22 and date22+timedelta(days=1) <= dla:
+						if dlb <= date22 and date22+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ22'] = date22
 
 							sTJ22 = lt.s_code22
@@ -4254,8 +4346,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ22 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ22 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ22 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name22'] = s_code_name
 
 							aTJ22 = lt.amount22
@@ -4273,7 +4367,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ22 = vTJ22 - tTJ22
 
-							if sTJ22 == "10500":
+							if sTJ22 == "10500" or sTJ22 == "17500":
 								aTJ_list.append(aTJ22)
 								ntax_vTJ_list.append(ntax_vTJ22)
 							else:
@@ -4281,7 +4375,7 @@ class LPG_List(ListView):
 
 					if lt.date23:
 						date23 = lt.date23
-						if dlb <= date23 and date23+timedelta(days=1) <= dla:
+						if dlb <= date23 and date23+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ23'] = date23
 
 							sTJ23 = lt.s_code23
@@ -4291,8 +4385,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ23 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ23 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ23 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name23'] = s_code_name
 
 							aTJ23 = lt.amount23
@@ -4310,7 +4406,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ23 = vTJ23 - tTJ23
 
-							if sTJ23 == "10500":
+							if sTJ23 == "10500" or sTJ23 == "17500":
 								aTJ_list.append(aTJ23)
 								ntax_vTJ_list.append(ntax_vTJ23)
 							else:
@@ -4318,7 +4414,7 @@ class LPG_List(ListView):
 
 					if lt.date24:
 						date24 = lt.date24
-						if dlb <= date24 and date24+timedelta(days=1) <= dla:
+						if dlb <= date24 and date24+timedelta(days=1)-timedelta(microseconds=1) <= dla:
 							context['dTJ24'] = date24
 
 							sTJ24 = lt.s_code24
@@ -4328,8 +4424,10 @@ class LPG_List(ListView):
 								s_code_name = "灯油"
 							if sTJ24 == "10600":
 								s_code_name = "A重油"
-							if sTJ00 == "17500":
+							if sTJ24 == "17500":
 								s_code_name = "灯油（配達）"
+							if sTJ24 == "98000":
+								s_code_name = "配達代"
 							context['sTJ_name24'] = s_code_name
 
 							aTJ24 = lt.amount24
@@ -4347,7 +4445,7 @@ class LPG_List(ListView):
 
 							ntax_vTJ24 = vTJ24 - tTJ24
 
-							if sTJ24 == "10500":
+							if sTJ24 == "10500" or sTJ24 == "17500":
 								aTJ_list.append(aTJ24)
 								ntax_vTJ_list.append(ntax_vTJ24)
 							else:
