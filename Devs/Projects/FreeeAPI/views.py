@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.FreeeAPI.Views.py - Ver.3.50.12 Update:2020.05.25" |
+#//|   "VsV.Py3.Dj.FreeeAPI.Views.py - Ver.3.50.13 Update:2022.08.05" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -20,7 +20,7 @@ import json
 
 
 
-
+### Test ###
 def Test(request):
 	# return HttpResponse("Test.Freee.API Page!! Welcome to Devs.MatsuoStation.Com!")
 
@@ -163,8 +163,6 @@ def Test(request):
 					'WALLET_ID' 	: Wallet_ID,
 					'WALLET_ABL'	: Wallet_ABL,
 				})
-
-
 
 ### GET_Data_CompanyID ###
 def GET_Data_CompanyID(FreeeOAuth, COMPANY_API_URL):
