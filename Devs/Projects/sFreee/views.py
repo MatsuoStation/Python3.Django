@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.32 Update:2022.09.05" |
+#//|     "VsV.Py3.Dj.sFreee.Views.py - Ver.3.93.33 Update:2022.09.15" |
 #//+------------------------------------------------------------------+
 from django.shortcuts import render
 
@@ -333,7 +333,8 @@ class GAS_2207(ListView):
 
 		## GAS : aValue.SpreadSheet - Setup ##
 		try:
-			aVspsh_name = "aValue_Okayama"
+			aVspsh_name = "aValue_Okayama_141222_220731"
+			# aVspsh_name = "aValue_Okayama"
 			ws_aV = connect_gspread(aVspsh_name)
 
 			## ハイオク ##
@@ -612,7 +613,8 @@ class GAS_2107(ListView):
 
 		## GAS : aValue.SpreadSheet - Setup ##
 		try:
-			aVspsh_name = "aValue_Okayama"
+			aVspsh_name = "aValue_Okayama_141222_220731"
+			# aVspsh_name = "aValue_Okayama"
 			ws_aV = connect_gspread(aVspsh_name)
 
 			## ハイオク ##
