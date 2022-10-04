@@ -5,7 +5,7 @@
 #//|                                                 Since:2018.03.05 |
 #//|                                Released under the Apache license |
 #//|                       https://opensource.org/licenses/Apache-2.0 |
-#//|   "VsV.Py3.Dj.Finance.Models.py - Ver.3.93.32 Update:2022.09.05" |
+#//|    "VsV.Py3.Dj.Finance.Models.py - Ver.3.94.1 Update:2022.09.20" |
 #//+------------------------------------------------------------------+
 from django.db import models
 
@@ -15,6 +15,33 @@ from django.conf import settings
 
 
 # settings.DATETIME_FORMAT
+
+###* ALLFreee_IncomeExpense *### ( m_datetime : DateTimeField )
+class ALLFreee_InEx(models.Model):
+	class Meta:
+		db_table = 'ALLFreee_InEx'
+		verbose_name = 'ALLFreee_InEx'
+		verbose_name_plural = verbose_name
+		ordering = ['id']
+
+	entry_side = models.CharField(verbose_name='入金/出金', default=None, max_length=8)
+	m_datetime = models.DateTimeField(verbose_name='取引日')  # 0000-00-00 00:00
+	bank_id = models.IntegerField(verbose_name='銀行ID', default=0)  # max_length=1,
+	bank_name = models.CharField(verbose_name='銀行名', default=None, max_length=32)
+	id = models.IntegerField(verbose_name='id', unique=True, primary_key=True)  # max_length=4
+	description = models.CharField("取引内容", default=None, max_length=255)
+	in_amount = models.IntegerField(verbose_name='入金額', default=None)
+	ex_amount = models.IntegerField(verbose_name='出金額', default=None)
+	balance = models.IntegerField(verbose_name='残高', default=None)
+	status = models.IntegerField(verbose_name='状態', default=None)
+	due_amount = models.IntegerField(verbose_name='未決済金額', default=None)
+	memo = models.CharField("メモ", default=None, max_length=255)
+	balance_diff = models.IntegerField(verbose_name='残高差額', default=None)
+
+	def __str__(self):
+		return self.id
+
+
 ###* SHARPnPOS_2108_2207 *###  ( m_datetime : DateTimeField )
 class SHARPnPOS_2108_2207(models.Model):
 
